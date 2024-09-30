@@ -11,7 +11,10 @@ const Page = ({ children }) => {
                 height: '100vh',
                 width: '80%',
                 margin: '0 auto',
-                position: 'relative'
+                position: 'relative',
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
             }}
         >
             <div
