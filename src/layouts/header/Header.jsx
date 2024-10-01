@@ -1,5 +1,9 @@
+import { useNavigate } from "react-router-dom"
+
 import Logo from "../../assets/image/logo_.png"
 const Header = () => {
+    let navigate = useNavigate()
+
     return (
         <div className='h-[15vh] w-screen px-28 flex items-center justify-between'>
             <div id="logo-header">
@@ -14,7 +18,12 @@ const Header = () => {
                 </ul>
             </div>
             <div className="pb-4">
-                <button className="bg-custom_yellow px-4 py-2 font-semibold rounded-md border border-black">Đăng nhập</button>
+                <button
+                    className="bg-custom_yellow px-4 py-2 font-semibold rounded-md border border-black"
+                    onClick={() => navigate(`/login`)}
+                >
+                    Đăng nhập
+                </button>
             </div>
         </div>
     )
