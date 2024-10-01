@@ -1,3 +1,4 @@
+
 // import Footer from "./layouts/footer/Footer"
 // import Header from "./layouts/header/Header"
 // import Page from "./layouts/login_signup/Page"
@@ -13,9 +14,12 @@ import CreateNewPassword from "./pages/login/CreateNewPassword"
 // import Login_Page from "./pages/login/Login_Page"
 
 
-function App() {
 
+
+
+function App() {
   return (
+
     <div className="overflow-hidden">
 
       {/* <Header />
@@ -33,6 +37,9 @@ function App() {
 
     </div>
   )
+
+
+
 }
 
-export default App
+export default App;
