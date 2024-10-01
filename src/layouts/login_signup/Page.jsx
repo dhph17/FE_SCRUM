@@ -25,7 +25,9 @@ const Page = ({ children }) => {
                     zIndex: 0,
                 }}
             />
-            <div style={{ zIndex: 1, position: 'absolute' }}>
+            <div style={{ zIndex: 1, position: 'absolute' ,width: '80%',
+                margin: '0 auto',left: '50%',   
+                transform: 'translate(-50%,10%)', }}>
                 {children}
             </div>
 
