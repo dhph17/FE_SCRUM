@@ -1,11 +1,10 @@
 
-// import Footer from "./layouts/footer/Footer"
-// import Header from "./layouts/header/Header"
-// import Page from "./layouts/login_signup/Page"
-// import Login from "./pages/login/Login"
+import Footer from "./layouts/footer/Footer"
+import Header from "./layouts/header/Header"
+import Login from "./pages/login/Login"
 
 // import ForgotPasswordPage from "./pages/login/ForgotPasswordPage"
-import CreateNewPassword from "./pages/login/CreateNewPassword"
+// import CreateNewPassword from "./pages/login/CreateNewPassword"
 // import VerifyEmail from "./pages/login/VerifyEmail"
 
 // import Start from "./pages/start/start"
@@ -22,17 +21,18 @@ function App() {
 
     <div className="overflow-hidden">
 
-      {/* <Header />
-      <Start />
-      <Footer /> */}
+      <Header />
+      <Login_Page />
+      {/* <Start /> */}
+      <Footer />
       {/* <Login/> */}
       {/* <ForgotPasswordPage/> */}
-      <CreateNewPassword/>
+      {/* <CreateNewPassword/> */}
       {/* <VerifyEmail/> */}
-
+      
 
       {/* <Start /> */}
-      {/* <Login_Page /> */}
+      
 
 
     </div>

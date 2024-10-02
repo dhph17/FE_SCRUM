@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import Page from '../../layouts/login_signup/Page'; // Import the Page component
 
 const Register = () => {
