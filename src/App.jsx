@@ -1,45 +1,29 @@
+import { Route, Routes } from 'react-router-dom';
 
 import Footer from "./layouts/footer/Footer"
 import Header from "./layouts/header/Header"
-import Login from "./pages/login/Login"
-
-// import ForgotPasswordPage from "./pages/login/ForgotPasswordPage"
-// import CreateNewPassword from "./pages/login/CreateNewPassword"
-// import VerifyEmail from "./pages/login/VerifyEmail"
-
-// import Start from "./pages/start/start"
-
-// import Start from "./pages/start/start"
-// import Login_Page from "./pages/login/Login_Page"
-
-
-
-
+import VerifyEmail from "./pages/login/VerifyEmail";
+import Register from "./pages/register/register";
+import ForgotPasswordPage from "./pages/login/ForgotPasswordPage";
+import CreateNewPassword from "./pages/login/CreateNewPassword";
+import Login from "./pages/login/Login";
+import Start from "./pages/start/Start"
 
 function App() {
   return (
-
     <div className="overflow-hidden">
-
       <Header />
-      <Login_Page />
-      {/* <Start /> */}
+      <Routes>
+        <Route path='/' element={<Start />} />
+        <Route path='/login' element={<Login />} />
+        <Route path='/register' element={<Register />} />
+        <Route path='/verifyEmail' element={<VerifyEmail />} />
+        <Route path='/forgotPassword' element={<ForgotPasswordPage />} />
+        <Route path='/createNewPassword' element={<CreateNewPassword />} />
+      </Routes>
       <Footer />
-      {/* <Login/> */}
-      {/* <ForgotPasswordPage/> */}
-      {/* <CreateNewPassword/> */}
-      {/* <VerifyEmail/> */}
-      
-
-      {/* <Start /> */}
-      
-
-
     </div>
   )
-
-
-
 }
 
 export default App;
