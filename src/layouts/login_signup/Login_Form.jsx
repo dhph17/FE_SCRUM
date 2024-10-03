@@ -12,13 +12,19 @@ const LoginForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const isEmail = emailRegex.test(username);
     try {
       const response = await fetch(`${import.meta.env.VITE_API_ENDPOINT}/api/login/`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ username, password }),
+        body: JSON.stringify({
+          [isEmail ? 'email' : 'username']: username,
+          password
+        }),
       });
 
       const data = await response.json();

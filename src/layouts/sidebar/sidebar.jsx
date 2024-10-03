@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import PropTypes from 'prop-types';
+import { useState } from 'react';
 
 import Image1 from "../../assets/image/User.png";
 import Image2 from "../../assets/image/Nav.png";
@@ -8,6 +9,7 @@ const Sidebar = ({ role }) => {
     const [showDropdown, setShowDropdown] = useState(false);
 
     const handleMouseEnter = () => {
+        setActiveItem(3);
         setShowDropdown(true);
     };
 
@@ -28,11 +30,11 @@ const Sidebar = ({ role }) => {
     };
 
     const renderSidebarContent = () => {
-        
+
         switch (role) {
             case 'admin':
                 return (
-                    <div className="space-y-4">
+                    <div className="space-y-4 w-full">
                         <p
                             className={`flex items-center cursor-pointer p-2 rounded-lg ${activeItem === 1 ? 'bg-blue-600 text-white' : 'hover:bg-blue-600 hover:text-white'}`}
                             onClick={() => setActiveItem(1)}
@@ -58,13 +60,13 @@ const Sidebar = ({ role }) => {
                 );
             case 'tutor':
                 return (
-                    <div className="space-y-4">
-                        <p className={`flex items-center cursor-pointer p-2 rounded-lg ${activeItem === 1 ? 'bg-blue-600 text-white' : 'hover:bg-blue-600 hover:text-white'}`}
+                    <div className="space-y-4 w-full ">
+                        <p className={`flex  items-center cursor-pointer p-2 rounded-lg ${activeItem === 1 ? 'bg-blue-600 text-white' : 'hover:bg-blue-600 hover:text-white'}`}
                             onClick={() => handleMainItemClick(1)}>
                             <i className="fas fa-pencil-alt mr-3"></i>
                             Thông tin tài khoản
                         </p>
-                        
+
                         <p className={`flex items-center cursor-pointer p-2 rounded-lg ${activeItem === 2 ? 'bg-blue-600 text-white' : 'hover:bg-blue-600 hover:text-white'}`}
                             onClick={() => handleMainItemClick(2)}>
                             <i className="fas fa-pencil-alt mr-3"></i>
@@ -72,8 +74,8 @@ const Sidebar = ({ role }) => {
                         </p>
 
                         <div className="space-y-2" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
-                            <p 
-                                className={`flex items-center cursor-pointer p-2 rounded-lg ${ showDropdown || (activeItem >= 3 && activeItem <= 5) ? 'bg-blue-600 text-white' : 'hover:bg-blue-600 hover:text-white'}`}
+                            <p
+                                className={`flex items-center cursor-pointer p-2 rounded-lg ${showDropdown || (activeItem >= 3 && activeItem <= 5) ? 'bg-blue-600 text-white' : 'hover:bg-blue-600 hover:text-white'}`}
                             >
                                 <i className="fas fa-pencil-alt mr-3"></i>
                                 Quản lý suất dạy
@@ -101,40 +103,40 @@ const Sidebar = ({ role }) => {
                             )}
                         </div>
                     </div>
-                );  
-                case 'parent':
-                    return (
-                        <div className="space-y-4">
-                            <p
-                                className={`flex items-center cursor-pointer p-2 rounded-lg ${activeItem === 1 ? 'bg-blue-600 text-white' : 'hover:bg-blue-600 hover:text-white'}`}
-                                onClick={() => setActiveItem(1)}
-                            >
-                                <i className="fas fa-pencil-alt mr-3"></i>
-                                Thông tin tài khoản
-                            </p>
-                            <p
-                                className={`flex items-center cursor-pointer p-2 rounded-lg ${activeItem === 2 ? 'bg-blue-600 text-white' : 'hover:bg-blue-600 hover:text-white'}`}
-                                onClick={() => setActiveItem(2)}
-                            >
-                                <i className="fas fa-pencil-alt mr-3"></i>
-                                Quản lý hồ sơ
-                            </p>
-                            <p
-                                className={`flex items-center cursor-pointer p-2 rounded-lg ${activeItem === 3 ? 'bg-blue-600 text-white' : 'hover:bg-blue-600 hover:text-white'}`}
-                                onClick={() => setActiveItem(3)}
-                            >
-                                <i className="fas fa-pencil-alt mr-3"></i>
-                                Quản lý bài đăng
-                            </p>
-                        </div>
-                    );
+                );
+            case 'parent':
+                return (
+                    <div className="space-y-4 w-full">
+                        <p
+                            className={`flex items-center cursor-pointer p-2 rounded-lg ${activeItem === 1 ? 'bg-blue-600 text-white' : 'hover:bg-blue-600 hover:text-white'}`}
+                            onClick={() => setActiveItem(1)}
+                        >
+                            <i className="fas fa-pencil-alt mr-3"></i>
+                            Thông tin tài khoản
+                        </p>
+                        <p
+                            className={`flex items-center cursor-pointer p-2 rounded-lg ${activeItem === 2 ? 'bg-blue-600 text-white' : 'hover:bg-blue-600 hover:text-white'}`}
+                            onClick={() => setActiveItem(2)}
+                        >
+                            <i className="fas fa-pencil-alt mr-3"></i>
+                            Quản lý hồ sơ
+                        </p>
+                        <p
+                            className={`flex items-center cursor-pointer p-2 rounded-lg ${activeItem === 3 ? 'bg-blue-600 text-white' : 'hover:bg-blue-600 hover:text-white'}`}
+                            onClick={() => setActiveItem(3)}
+                        >
+                            <i className="fas fa-pencil-alt mr-3"></i>
+                            Quản lý bài đăng
+                        </p>
+                    </div>
+                );
             default:
                 return <p>No menu available for this role.</p>;
         }
     };
 
     return (
-        <div className="w-72 flex flex-col ml-4 mt-6">
+        <div className="w-80 flex flex-col ml-4 mt-6">
             <div className="bg-blue-700 text-white p-4 flex items-center justify-between rounded-t-lg">
                 <div className="flex items-center">
                     <img src={Image1} alt="Profile" className="w-14 h-14 rounded-full mr-3" />
@@ -148,6 +150,10 @@ const Sidebar = ({ role }) => {
             </div>
         </div>
     );
+};
+
+Sidebar.propTypes = {
+    role: PropTypes.string,
 };
 
 export default Sidebar;

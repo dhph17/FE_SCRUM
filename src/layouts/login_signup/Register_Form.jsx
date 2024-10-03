@@ -40,8 +40,8 @@ const Register_Form = () => {
             const data = await response.json();
 
             if (response.ok) {
-                console.log("Đăng kí thành công!");
-                toast.success("Đăng kí thành công!", {
+                console.log("Register Successfully");
+                toast.success("Register Successfully", {
                     position: "bottom-right",
                     autoClose: 5000,
                     hideProgressBar: true,
@@ -52,7 +52,7 @@ const Register_Form = () => {
                 });
                 navigate("/");
             } else {
-                setError(data.message || "Đăng kí thất bại!");
+                setError(data.message || "User with this username already exists!");
             }
         } catch (error) {
             console.log(error)

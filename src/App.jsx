@@ -12,7 +12,7 @@ import ForgotPasswordPage from "./pages/login/ForgotPasswordPage";
 import CreateNewPassword from "./pages/login/CreateNewPassword";
 import Login from "./pages/login/Login";
 import Start from "./pages/start/Start"
-import Panel from "./pages/panel/Panel"
+import Panel from "./layouts/panel/Panel"
 
 function App() {
   return (
@@ -20,6 +20,7 @@ function App() {
       <ToastContainer />
       <div className="overflow-hidden">
         <Header />
+        {/* <Panel /> */}
         <Routes>
           <Route path='/' element={<Start />} />
           <Route path='/login' element={<Login />} />
@@ -30,7 +31,7 @@ function App() {
           <Route path='/panel' element={<Panel />} />
 
         </Routes>
-        {location.pathname !== '/panel' && <Footer />}
+        <Footer />
       </div>
     </AppProvider>
 

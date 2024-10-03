@@ -1,4 +1,4 @@
-import React from "react";
+import PropTypes from 'prop-types';
 
 const Pagination = ({ currentPage, totalPages, onPageChange }) => {
   const generatePageNumbers = () => {
@@ -57,11 +57,10 @@ const Pagination = ({ currentPage, totalPages, onPageChange }) => {
         {generatePageNumbers().map((page, index) => (
           <button
             key={index}
-            className={`w-12 h-10 flex items-center justify-center rounded-full ${
-              currentPage === page
-                ? "bg-blue-600 text-white"
-                : "bg-gray-300 text-gray-800"
-            } ${page === "..." ? "cursor-default" : ""}`}
+            className={`w-12 h-10 flex items-center justify-center rounded-full ${currentPage === page
+              ? "bg-blue-600 text-white"
+              : "bg-gray-300 text-gray-800"
+              } ${page === "..." ? "cursor-default" : ""}`}
             onClick={() => page !== "..." && onPageChange(page)}
             disabled={page === "..."}
           >
@@ -80,6 +79,12 @@ const Pagination = ({ currentPage, totalPages, onPageChange }) => {
       </button>
     </div>
   );
+};
+
+Pagination.propTypes = {
+  currentPage: PropTypes.number,
+  totalPages: PropTypes.number,
+  onPageChange: PropTypes.number
 };
 
 export default Pagination;
