@@ -7,8 +7,7 @@ import Register from "./pages/register/register";
 import ForgotPasswordPage from "./pages/login/ForgotPasswordPage";
 import CreateNewPassword from "./pages/login/CreateNewPassword";
 import Login from "./pages/login/Login";
-import Start from "./pages/start/Start";
-import Panel from "./pages/panel/Panel";
+import Start from "./pages/start/Start"
 
 function App() {
   return (
@@ -21,7 +20,6 @@ function App() {
         <Route path='/verifyEmail' element={<VerifyEmail />} />
         <Route path='/forgotPassword' element={<ForgotPasswordPage />} />
         <Route path='/createNewPassword' element={<CreateNewPassword />} />
-        <Route path='/panel' element={<Panel />} />
       </Routes>
       <Footer />
     </div>
