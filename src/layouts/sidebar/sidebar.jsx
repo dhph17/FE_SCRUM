@@ -101,34 +101,7 @@ const Sidebar = ({ role }) => {
                             )}
                         </div>
                     </div>
-                );
-                            case 'admin':
-                return (
-                    <div className="space-y-4">
-                        <p
-                            className={`flex items-center cursor-pointer p-2 rounded-lg ${activeItem === 1 ? 'bg-blue-600 text-white' : 'hover:bg-blue-600 hover:text-white'}`}
-                            onClick={() => setActiveItem(1)}
-                        >
-                            <i className="fas fa-pencil-alt mr-3"></i>
-                            Quản lý bài đăng
-                        </p>
-                        <p
-                            className={`flex items-center cursor-pointer p-2 rounded-lg ${activeItem === 2 ? 'bg-blue-600 text-white' : 'hover:bg-blue-600 hover:text-white'}`}
-                            onClick={() => setActiveItem(2)}
-                        >
-                            <i className="fas fa-pencil-alt mr-3"></i>
-                            Quản lý tài khoản gia sư
-                        </p>
-                        <p
-                            className={`flex items-center cursor-pointer p-2 rounded-lg ${activeItem === 3 ? 'bg-blue-600 text-white' : 'hover:bg-blue-600 hover:text-white'}`}
-                            onClick={() => setActiveItem(3)}
-                        >
-                            <i className="fas fa-pencil-alt mr-3"></i>
-                            Quản lý tài khoản phụ huynh
-                        </p>
-                    </div>
-                );
-        
+                );  
                 case 'parent':
                     return (
                         <div className="space-y-4">
@@ -161,7 +134,7 @@ const Sidebar = ({ role }) => {
     };
 
     return (
-        <div className="w-72 flex flex-col ml-4">
+        <div className="w-72 flex flex-col ml-4 mt-6">
             <div className="bg-blue-700 text-white p-4 flex items-center justify-between rounded-t-lg">
                 <div className="flex items-center">
                     <img src={Image1} alt="Profile" className="w-14 h-14 rounded-full mr-3" />

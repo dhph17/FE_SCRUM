@@ -30,7 +30,7 @@ function App() {
           <Route path='/panel' element={<Panel />} />
 
         </Routes>
-        <Footer />
+        {location.pathname !== '/panel' && <Footer />}
       </div>
     </AppProvider>
 
