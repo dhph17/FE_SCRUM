@@ -1,6 +1,6 @@
 const Footer = () => {
     return (
-        <div className="px-36 py-11 bg-custom_darkblue flex w-full items-center">
+        <div id='footer' className="px-36 py-11 bg-custom_darkblue flex w-full items-center">
             <div className="text-white mr-36">
                 <h1 className="font-ruslan_display font-semibold text-3xl">LTMTUTOR</h1>
                 <p>Giới thiệu</p>
