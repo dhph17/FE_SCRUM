@@ -1,14 +1,46 @@
 import { useState } from "react";
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
+import { useAppContext } from '../../AppProvider'
 
 const LoginForm = () => {
-  const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState(null);
+  let navigate = useNavigate()
 
-  const handleSubmit = (e) => {
+  const { setSessionToken } = useAppContext()
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Email:", email);
-    console.log("Password:", password);
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const isEmail = emailRegex.test(username);
+    try {
+      const response = await fetch(`${import.meta.env.VITE_API_ENDPOINT}/api/login/`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          [isEmail ? 'email' : 'username']: username,
+          password
+        }),
+      });
+
+      const data = await response.json();
+
+
+      if (response.ok) {
+        setSessionToken(data.token.access);
+        localStorage.setItem('refreshToken', data.token.refresh);
+        console.log("Đăng nhập thành công!");
+        navigate("/");
+      } else {
+        setError(data.message || "Đăng nhập thất bại!");
+      }
+    } catch (error) {
+      console.log(error)
+    }
   };
 
   return (
@@ -22,11 +54,11 @@ const LoginForm = () => {
       <h2 className="text-[1.5rem] font-bold mb-9 ">ĐĂNG NHẬP</h2>
       <div className="mb-8">
         <input
-          type="email"
-          id="email"
+          type="text"
+          id="username"
           placeholder="Username or email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
+          value={username}
+          onChange={(e) => (setUsername(e.target.value), setError(''))}
           required
           className="w-[90%] text-[1.2 rem] px-5 py-3 bg-[#F1BB45] bg-opacity-50 rounded-[15px] border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder:text-[1.2 rem] placeholder:font-medium placeholder:font-poppins"
           style={{
@@ -40,7 +72,7 @@ const LoginForm = () => {
           id="password"
           placeholder="Password*"
           value={password}
-          onChange={(e) => setPassword(e.target.value)}
+          onChange={(e) => (setPassword(e.target.value), setError(''))}
           required
           className="w-[90%] text-[1.2 rem] px-5 py-3 bg-[#F1BB45] bg-opacity-50 rounded-[15px] border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder:text-[1.2 rem] placeholder:font-medium placeholder:font-poppins"
           style={{
@@ -53,6 +85,13 @@ const LoginForm = () => {
           Quên mật khẩu?
         </Link>
       </h3>
+      <p
+        className="text-red-500 pt-1 font-semibold"
+        style={{
+          height: "0.5rem",
+        }}
+        dangerouslySetInnerHTML={{ __html: error }}
+      ></p>
       <button
         type="submit"
         className=" w-[92%] h-[3.3rem] mt-9 px-4 py-2 bg-[#F1BB45] rounded-[20px] text-black font-semibold font-poppins text-[1.1rem] hover:bg-[#F1BB45] hover:transition-all "
