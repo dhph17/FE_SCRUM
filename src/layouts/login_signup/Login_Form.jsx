@@ -1,33 +1,66 @@
 import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom"
+import { useAppContext } from '../../AppProvider'
 
 const LoginForm = () => {
-  const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState(null);
+  let navigate = useNavigate()
 
-  const handleSubmit = (e) => {
+  const { setSessionToken } = useAppContext()
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Email:", email);
-    console.log("Password:", password);
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const isEmail = emailRegex.test(username);
+    try {
+      const response = await fetch(`${import.meta.env.VITE_API_ENDPOINT}/api/login/`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          [isEmail ? 'email' : 'username']: username,
+          password
+        }),
+      });
+
+      const data = await response.json();
+
+
+      if (response.ok) {
+        setSessionToken(data.token.access);
+        localStorage.setItem('refreshToken', data.token.refresh);
+        console.log("Đăng nhập thành công!");
+        navigate("/");
+      } else {
+        setError(data.message || "Đăng nhập thất bại!");
+      }
+    } catch (error) {
+      console.log(error)
+    }
   };
 
   return (
     <form
       onSubmit={handleSubmit}
-      className="w-[25rem] bg-[#E3E6F0] p-3 mt-5 ml-[35%] rounded-[20px] shadow-lg h-[690px] text-center relative z-10 border-2 border-[#002182]"
+      className="w-[25rem] bg-[#E3E6F0] rounded-[20px] shadow-lg text-center relative z-1 border-2 border-[#002182] -mt-6 pb-16 pt-12"
       style={{
         boxShadow: "0 4px 6px rgba(0, 0, 0, 0.7)",
       }}
     >
-      <h2 className="text-[1.5rem] font-bold mt-12 mb-11 ">ĐĂNG NHẬP</h2>
-      <div className="mb-4 pb-[1.2rem]">
+      <h2 className="text-[1.5rem] font-bold mb-9 ">ĐĂNG NHẬP</h2>
+      <div className="mb-8">
         <input
-          type="email"
-          id="email"
+          type="text"
+          id="username"
           placeholder="Username or email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
+          value={username}
+          onChange={(e) => (setUsername(e.target.value), setError(''))}
           required
-          className="w-[90%] h-[3.5rem] p-2 bg-[#F1BB45] bg-opacity-50 rounded-[15px] border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder:text-[115%] placeholder:font-medium placeholder:font-poppins"
+          className="w-[90%] text-[1.2 rem] px-5 py-3 bg-[#F1BB45] bg-opacity-50 rounded-[15px] border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder:text-[1.2 rem] placeholder:font-medium placeholder:font-poppins"
           style={{
             boxShadow: "inset 0 4px 6px rgba(0, 0, 0, 0.3)",
           }}
@@ -39,19 +72,26 @@ const LoginForm = () => {
           id="password"
           placeholder="Password*"
           value={password}
-          onChange={(e) => setPassword(e.target.value)}
+          onChange={(e) => (setPassword(e.target.value), setError(''))}
           required
-          className="w-[90%] h-[3.5rem] p-2 bg-[#F1BB45] bg-opacity-50 rounded-[15px] border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500  placeholder:text-[115%] placeholder:font-medium placeholder:font-poppins"
+          className="w-[90%] text-[1.2 rem] px-5 py-3 bg-[#F1BB45] bg-opacity-50 rounded-[15px] border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder:text-[1.2 rem] placeholder:font-medium placeholder:font-poppins"
           style={{
             boxShadow: "inset 0 4px 6px rgba(0, 0, 0, 0.3)",
           }}
         />
       </div>
-      <h3 className="mt-5 mr-5 text-[0.9rem] text-right font-medium font-poppins">
-        <a href="#" className="text-black ">
+      <h3 className="mt-5 mr-5 text-[0.9rem] text-right font-medium">
+        <Link to="/forgotPassword" className="text-black ">
           Quên mật khẩu?
-        </a>
+        </Link>
       </h3>
+      <p
+        className="text-red-500 pt-1 font-semibold"
+        style={{
+          height: "0.5rem",
+        }}
+        dangerouslySetInnerHTML={{ __html: error }}
+      ></p>
       <button
         type="submit"
         className=" w-[92%] h-[3.3rem] mt-9 px-4 py-2 bg-[#F1BB45] rounded-[20px] text-black font-semibold font-poppins text-[1.1rem] hover:bg-[#F1BB45] hover:transition-all "
@@ -61,13 +101,13 @@ const LoginForm = () => {
       >
         Đăng nhập
       </button>
-      <h3 className="w-80px mt-[5.5rem] text-[0.9rem] font-medium font-poppins">
+      <h3 className="w-80px mt-6 mb-2 text-[0.9rem] font-medium">
         Bạn chưa có tài khoản?{" "}
-        <a href="#" className="text-black underline">
+        <Link to="/register" className="text-black underline">
           Tạo tài khoản
-        </a>
+        </Link>
       </h3>
-      <hr className="w-[60%] mx-auto border-t-2 border-dashed border-black my-4" />
+      <hr className="w-[60%] mx-auto border-t-2 border-dashed border-black" />
     </form>
   );
 };

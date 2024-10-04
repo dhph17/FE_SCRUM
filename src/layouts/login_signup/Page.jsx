@@ -12,9 +12,6 @@ const Page = ({ children }) => {
                 width: '80%',
                 margin: '0 auto',
                 position: 'relative',
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center',
             }}
         >
             <div
@@ -28,9 +25,11 @@ const Page = ({ children }) => {
                     zIndex: 0,
                 }}
             />
-            <div style={{ zIndex: 1, position: 'absolute' ,width: '80%',
-                margin: '0 auto',left: '50%',   
-                transform: 'translate(-50%,10%)', }}>
+            <div style={{
+                zIndex: 1, position: 'absolute', width: '80%',
+                margin: '0 auto', left: '50%',
+                transform: 'translate(-50%,10%)',
+            }}>
                 {children}
             </div>
 
