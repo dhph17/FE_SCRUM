@@ -13,6 +13,8 @@ import CreateNewPassword from "./pages/login/CreateNewPassword";
 import Login from "./pages/login/Login";
 import Start from "./pages/start/Start"
 import Panel from "./layouts/panel/Panel"
+import PostManagement from './pages/Admin(DucAnh)/DuyetBaiDang';
+import PostPendingApproval from './pages/User(DucAnh)/BaiDangDuocDuyet';
 
 function App() {
   return (
@@ -29,6 +31,8 @@ function App() {
           <Route path='/forgotPassword' element={<ForgotPasswordPage />} />
           <Route path='/createNewPassword' element={<CreateNewPassword />} />
           <Route path='/panel' element={<Panel />} />
+          <Route path='/PostManagement' element={<PostManagement/>}/>
+          <Route path='/PostPendingApproval' element={<PostPendingApproval/>}/>
 
         </Routes>
         <Footer />
