@@ -13,7 +13,7 @@ const LoginForm = () => {
   return (
     <form
       onSubmit={handleSubmit}
-      className="w-[25rem] bg-[#E3E6F0] p-3 mt-5 ml-[35%] rounded-[20px] shadow-lg w-[140%] h-[690px] text-center relative z-10 border-2 border-[#002182]"
+      className="w-[25rem] bg-[#E3E6F0] p-3 mt-5 ml-[35%] rounded-[20px] shadow-lg h-[690px] text-center relative z-10 border-2 border-[#002182]"
       style={{
         boxShadow: "0 4px 6px rgba(0, 0, 0, 0.7)",
       }}

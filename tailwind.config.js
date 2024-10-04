@@ -7,6 +7,7 @@ export default {
   theme: {
     extend: {
       colors: {
+        
         custom_yellow: 'rgba(241, 187, 69, 1)',
         custom_purple: 'rgba(70, 29, 124, 1)',
         custom_gray: 'rgba(126, 126, 126, 1)',
