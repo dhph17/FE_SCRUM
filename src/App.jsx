@@ -19,7 +19,7 @@ function App() {
       <ToastContainer />
       <div className="overflow-hidden">
         <Header />
-        {/* <Panel /> */}
+        <Panel />
         <Routes>
           <Route path='/' element={<Start />} />
           <Route path='/login' element={<Login />} />
