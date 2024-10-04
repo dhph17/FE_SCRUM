@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import { useAppContext } from '../../AppProvider';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
@@ -66,11 +66,11 @@ const Header = () => {
                 (
                     <div className='h-[15vh] w-screen px-28 flex items-center justify-between'>
                         <div id="logo-header">
-                            <img src={Logo} alt="Logo" className="w-20 h-20 bg-center rounded-full object-cover cursor-pointer" />
+                            <Link to='/'><img src={Logo} alt="Logo" className="w-20 h-20 bg-center rounded-full object-cover cursor-pointer" /></Link>
                         </div>
                         <div className="pb-4">
                             <ul className="flex">
-                                <li className="font-semibold mx-6 cursor-pointer"><a href="">GIỚI THIỆU</a></li>
+                                <li className="font-semibold mx-6 cursor-pointer"><Link to='/'>GIỚI THIỆU</Link></li>
                                 <li className="font-semibold mx-6 cursor-pointer"><a href="">ĐĂNG KÍ PHỤ HUYNH</a></li>
                                 <li className="font-semibold mx-6 cursor-pointer"><a href="">ĐĂNG KÍ GIA SƯ</a></li>
                                 <li className="font-semibold mx-6 cursor-pointer"><a href="#footer">LIÊN HỆ</a></li>
