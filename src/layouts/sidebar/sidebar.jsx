@@ -9,7 +9,6 @@ const Sidebar = ({ role }) => {
     const [showDropdown, setShowDropdown] = useState(false);
 
     const handleMouseEnter = () => {
-        setActiveItem(3);
         setShowDropdown(true);
     };
 
