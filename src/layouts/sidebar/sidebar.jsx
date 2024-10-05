@@ -1,11 +1,9 @@
 import PropTypes from 'prop-types';
 import { useState } from 'react';
-
 import Image1 from "../../assets/image/User.png";
 import Image2 from "../../assets/image/Nav.png";
 
-const Sidebar = ({ role }) => {
-    const [activeItem, setActiveItem] = useState(1);
+const Sidebar = ({ role, activeItem }) => {
     const [showDropdown, setShowDropdown] = useState(false);
 
     const handleMouseEnter = () => {
@@ -19,38 +17,28 @@ const Sidebar = ({ role }) => {
     };
 
     const handleDropdownClick = (itemNumber) => {
-        setActiveItem(itemNumber);
         setShowDropdown(true);
     };
 
-    const handleMainItemClick = (itemNumber) => {
-        setActiveItem(itemNumber);
-        setShowDropdown(false);
-    };
-
     const renderSidebarContent = () => {
-
         switch (role) {
             case 'admin':
                 return (
                     <div className="space-y-4 w-full">
                         <p
                             className={`flex items-center cursor-pointer p-2 rounded-lg ${activeItem === 1 ? 'bg-blue-600 text-white' : 'hover:bg-blue-600 hover:text-white'}`}
-                            onClick={() => setActiveItem(1)}
                         >
                             <i className="fas fa-pencil-alt mr-3"></i>
                             Quản lý bài đăng
                         </p>
                         <p
                             className={`flex items-center cursor-pointer p-2 rounded-lg ${activeItem === 2 ? 'bg-blue-600 text-white' : 'hover:bg-blue-600 hover:text-white'}`}
-                            onClick={() => setActiveItem(2)}
                         >
                             <i className="fas fa-pencil-alt mr-3"></i>
                             Quản lý tài khoản gia sư
                         </p>
                         <p
                             className={`flex items-center cursor-pointer p-2 rounded-lg ${activeItem === 3 ? 'bg-blue-600 text-white' : 'hover:bg-blue-600 hover:text-white'}`}
-                            onClick={() => setActiveItem(3)}
                         >
                             <i className="fas fa-pencil-alt mr-3"></i>
                             Quản lý tài khoản phụ huynh
@@ -59,15 +47,12 @@ const Sidebar = ({ role }) => {
                 );
             case 'tutor':
                 return (
-                    <div className="space-y-4 w-full ">
-                        <p className={`flex  items-center cursor-pointer p-2 rounded-lg ${activeItem === 1 ? 'bg-blue-600 text-white' : 'hover:bg-blue-600 hover:text-white'}`}
-                            onClick={() => handleMainItemClick(1)}>
+                    <div className="space-y-4 w-full">
+                        <p className={`flex items-center cursor-pointer p-2 rounded-lg ${activeItem === 1 ? 'bg-blue-600 text-white' : 'hover:bg-blue-600 hover:text-white'}`}>
                             <i className="fas fa-pencil-alt mr-3"></i>
                             Thông tin tài khoản
                         </p>
-
-                        <p className={`flex items-center cursor-pointer p-2 rounded-lg ${activeItem === 2 ? 'bg-blue-600 text-white' : 'hover:bg-blue-600 hover:text-white'}`}
-                            onClick={() => handleMainItemClick(2)}>
+                        <p className={`flex items-center cursor-pointer p-2 rounded-lg ${activeItem === 2 ? 'bg-blue-600 text-white' : 'hover:bg-blue-600 hover:text-white'}`}>
                             <i className="fas fa-pencil-alt mr-3"></i>
                             Quản lý hồ sơ
                         </p>
@@ -83,18 +68,15 @@ const Sidebar = ({ role }) => {
 
                             {showDropdown && (
                                 <div className="bg-gray-300 p-2 rounded-lg space-y-2">
-                                    <p className={`flex items-center cursor-pointer p-2 rounded-lg ${activeItem === 3 ? 'bg-blue-600 text-white' : 'hover:bg-blue-600 hover:text-white'}`}
-                                        onClick={() => handleDropdownClick(3)}>
+                                    <p className={`flex items-center cursor-pointer p-2 rounded-lg ${activeItem === 3 ? 'bg-blue-600 text-white' : 'hover:bg-blue-600 hover:text-white'}`}>
                                         <i className="fas fa-book mr-2"></i>
                                         Suất dạy đã đăng kí
                                     </p>
-                                    <p className={`flex items-center cursor-pointer p-2 rounded-lg ${activeItem === 4 ? 'bg-blue-600 text-white' : 'hover:bg-blue-600 hover:text-white'}`}
-                                        onClick={() => handleDropdownClick(4)}>
+                                    <p className={`flex items-center cursor-pointer p-2 rounded-lg ${activeItem === 4 ? 'bg-blue-600 text-white' : 'hover:bg-blue-600 hover:text-white'}`}>
                                         <i className="fas fa-check mr-2"></i>
                                         Suất dạy được nhận
                                     </p>
-                                    <p className={`flex items-center cursor-pointer p-2 rounded-lg ${activeItem === 5 ? 'bg-blue-600 text-white' : 'hover:bg-blue-600 hover:text-white'}`}
-                                        onClick={() => handleDropdownClick(5)}>
+                                    <p className={`flex items-center cursor-pointer p-2 rounded-lg ${activeItem === 5 ? 'bg-blue-600 text-white' : 'hover:bg-blue-600 hover:text-white'}`}>
                                         <i className="fas fa-star mr-2"></i>
                                         Đánh giá của tôi
                                     </p>
@@ -108,21 +90,18 @@ const Sidebar = ({ role }) => {
                     <div className="space-y-4 w-full">
                         <p
                             className={`flex items-center cursor-pointer p-2 rounded-lg ${activeItem === 1 ? 'bg-blue-600 text-white' : 'hover:bg-blue-600 hover:text-white'}`}
-                            onClick={() => setActiveItem(1)}
                         >
                             <i className="fas fa-pencil-alt mr-3"></i>
                             Thông tin tài khoản
                         </p>
                         <p
                             className={`flex items-center cursor-pointer p-2 rounded-lg ${activeItem === 2 ? 'bg-blue-600 text-white' : 'hover:bg-blue-600 hover:text-white'}`}
-                            onClick={() => setActiveItem(2)}
                         >
                             <i className="fas fa-pencil-alt mr-3"></i>
                             Quản lý hồ sơ
                         </p>
                         <p
                             className={`flex items-center cursor-pointer p-2 rounded-lg ${activeItem === 3 ? 'bg-blue-600 text-white' : 'hover:bg-blue-600 hover:text-white'}`}
-                            onClick={() => setActiveItem(3)}
                         >
                             <i className="fas fa-pencil-alt mr-3"></i>
                             Quản lý bài đăng
@@ -152,7 +131,8 @@ const Sidebar = ({ role }) => {
 };
 
 Sidebar.propTypes = {
-    role: PropTypes.string,
+    role: PropTypes.string.isRequired,
+    activeItem: PropTypes.number.isRequired 
 };
 
 export default Sidebar;

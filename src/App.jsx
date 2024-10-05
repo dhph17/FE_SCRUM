@@ -11,8 +11,10 @@ import Register from "./pages/register/register";
 import ForgotPasswordPage from "./pages/login/ForgotPasswordPage";
 import CreateNewPassword from "./pages/login/CreateNewPassword";
 import Login from "./pages/login/Login";
-import Start from "./pages/start/Start"
-import Panel from "./layouts/panel/Panel"
+import Start from "./pages/start/Start";
+import TutorAccount from "./pages/admin/tutorAccount";
+import ParentAccount from "./pages/admin/parentAccount";
+import Panel from "./layouts/panel/Panel";
 
 function App() {
   return (
@@ -29,6 +31,8 @@ function App() {
           <Route path='/forgotPassword' element={<ForgotPasswordPage />} />
           <Route path='/createNewPassword' element={<CreateNewPassword />} />
           <Route path='/panel' element={<Panel />} />
+          <Route path="/tutor-account" element={<TutorAccount />} />
+          <Route path="/parent-account" element={<ParentAccount />} />
 
         </Routes>
         <Footer />
