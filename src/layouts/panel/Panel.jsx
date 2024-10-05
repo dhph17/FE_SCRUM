@@ -1,15 +1,13 @@
 import PropTypes from 'prop-types';
-import SideBarSearch from '../sidebar/SideBar_Search';
-
 import Sidebar from "../sidebar/sidebar";
 
 const Panel = ({ children, role, activeItem }) => {
   return (
-    <div className="flex mt-4">
+    <div className="flex -mt-4">
       <Sidebar role={role} activeItem={activeItem} />
 
       <div className="flex-1 p-6">
-        <div className="bg-gray-200 min-h-[70vh] p-4 rounded-lg mb-4">
+        <div className="bg-gray-200 min-h-[50vh] p-4 rounded-lg mb-4">
           {children}
         </div>
       </div>

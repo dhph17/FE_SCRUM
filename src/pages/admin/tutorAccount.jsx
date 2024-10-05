@@ -6,7 +6,7 @@ const TutorAccount = () => {
     const tutors = Array(30).fill({ username: "Chickendance", password: "Chickendance@123" }); // Mock data
 
     const [currentPage, setCurrentPage] = useState(1);
-    const itemsPerPage = 9;
+    const itemsPerPage = 8;
     const totalPages = Math.ceil(tutors.length / itemsPerPage);
 
     const currentTutors = tutors.slice(
@@ -20,7 +20,7 @@ const TutorAccount = () => {
 
     return (
         <Panel role="admin" activeItem={2}>
-            <div className="relative h-[600px]">
+            <div className="relative h-[550px]">
                 <div>
                     <h2 className="text-xl font-bold mb-4">Quản lý tài khoản gia sư</h2>
                     <table className="w-full border-collapse bg-white shadow-lg">

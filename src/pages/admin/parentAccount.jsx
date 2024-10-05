@@ -20,7 +20,7 @@ const TutorAccount = () => {
 
     return (
         <Panel role="admin" activeItem={3}>
-            <div className="relative h-[600px]">
+            <div className="relative h-[550px]">
                 <div>
                     <h2 className="text-xl font-bold mb-4">Quản lý tài khoản gia sư</h2>
                     <table className="w-full border-collapse bg-white shadow-lg">

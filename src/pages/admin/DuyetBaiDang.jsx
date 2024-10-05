@@ -3,7 +3,7 @@ import ItemPost from "../../layouts/itemPost/ItemPost";
 
 const DuyetBaiDang = () => {
   return (
-    <Page>
+    <Page role="admin" activeItem={1}>
       <div className="border-solid border-2 border-custom_darkblue rounded-2xl mb-2">
         <ItemPost state="Chờ duyệt" />
         <div className="bg-custom_darkblue h-[55px] flex justify-center items-center gap-10 rounded-b-xl">

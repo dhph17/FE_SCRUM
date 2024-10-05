@@ -26,7 +26,6 @@ function App() {
       <ToastContainer />
       <div className="overflow-hidden">
         <Header />
-        <Panel />
         <Routes>
           <Route path='/' element={<Start />} />
           <Route path='/login' element={<Login />} />
@@ -37,11 +36,12 @@ function App() {
           <Route path='/panel' element={<Panel />} />
           <Route path='/PostManagement' element={<PostManagement />} />
           <Route path='/PostPendingApproval' element={<PostPendingApproval />} />
-          <Route path="/tutor-account" element={<TutorAccount />} />
-          <Route path="/parent-account" element={<ParentAccount />} />
-
+          <Route path="/admin/tutor-account" element={<TutorAccount />} />
+          <Route path="/admin/parent-account" element={<ParentAccount />} />
+          <Route path="/admin/approve-post" element={<DuyetBaiDang />} />
+          <Route path="/parent/assigned" element={<SuatDayDaGiao />} />
+          <Route path="/parent/view-post" element={<BaiDangDuocDuyet />} />
         </Routes>
-        <DuyetBaiDang />
         <Footer />
       </div>
     </AppProvider>
