@@ -17,6 +17,8 @@ import PostPendingApproval from './pages/user/BaiDangDuocDuyet';
 import BaiDangDuocDuyet from './pages/user/BaiDangDuocDuyet';
 import SuatDayDaGiao from './pages/user/SuatDayDaGiao';
 import DuyetBaiDang from './pages/admin/DuyetBaiDang';
+import TutorAccount from "./pages/admin/tutorAccount";
+import ParentAccount from "./pages/admin/parentAccount";
 
 function App() {
   return (
@@ -35,6 +37,9 @@ function App() {
           <Route path='/panel' element={<Panel />} />
           <Route path='/PostManagement' element={<PostManagement />} />
           <Route path='/PostPendingApproval' element={<PostPendingApproval />} />
+          <Route path="/tutor-account" element={<TutorAccount />} />
+          <Route path="/parent-account" element={<ParentAccount />} />
+
         </Routes>
         <DuyetBaiDang />
         <Footer />
