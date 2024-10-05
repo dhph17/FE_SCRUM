@@ -1,11 +1,10 @@
-import { Route, Routes } from 'react-router-dom';
+import { Route, Routes } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-
 import AppProvider from "./AppProvider";
-import Footer from "./layouts/footer/Footer"
-import Header from "./layouts/header/Header"
+import Footer from "./layouts/footer/Footer";
+import Header from "./layouts/header/Header";
 import VerifyEmail from "./pages/login/VerifyEmail";
 import Register from "./pages/register/register";
 import ForgotPasswordPage from "./pages/login/ForgotPasswordPage";
@@ -25,8 +24,8 @@ function App() {
       <ToastContainer />
       <div className="overflow-hidden">
         <Header />
-        {/* <Panel /> */}
-        {/* <Routes>
+        <Panel />
+        <Routes>
           <Route path='/' element={<Start />} />
           <Route path='/login' element={<Login />} />
           <Route path='/register' element={<Register />} />
@@ -36,13 +35,12 @@ function App() {
           <Route path='/panel' element={<Panel />} />
           <Route path='/PostManagement' element={<PostManagement />} />
           <Route path='/PostPendingApproval' element={<PostPendingApproval />} />
-        </Routes> */}
+        </Routes>
         <DuyetBaiDang />
         <Footer />
       </div>
     </AppProvider>
-
-  )
+  );
 }
 
 export default App;

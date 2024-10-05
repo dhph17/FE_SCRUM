@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { useState } from "react";
 import Sidebar from "../sidebar/sidebar";
 import Pagination from "../pagination/pagination";
+import SideBarSearch from '../sidebar/SideBar_Search';
 
 
 const Panel = ({ children }) => {
