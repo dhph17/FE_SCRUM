@@ -13,8 +13,11 @@ import CreateNewPassword from "./pages/login/CreateNewPassword";
 import Login from "./pages/login/Login";
 import Start from "./pages/start/Start"
 import Panel from "./layouts/panel/Panel"
-import PostManagement from './pages/Admin(DucAnh)/DuyetBaiDang';
-import PostPendingApproval from './pages/User(DucAnh)/BaiDangDuocDuyet';
+import PostManagement from './pages/admin/DuyetBaiDang';
+import PostPendingApproval from './pages/user/BaiDangDuocDuyet';
+import BaiDangDuocDuyet from './pages/user/BaiDangDuocDuyet';
+import SuatDayDaGiao from './pages/user/SuatDayDaGiao';
+import DuyetBaiDang from './pages/admin/DuyetBaiDang';
 
 function App() {
   return (
@@ -23,7 +26,7 @@ function App() {
       <div className="overflow-hidden">
         <Header />
         {/* <Panel /> */}
-        <Routes>
+        {/* <Routes>
           <Route path='/' element={<Start />} />
           <Route path='/login' element={<Login />} />
           <Route path='/register' element={<Register />} />
@@ -31,10 +34,10 @@ function App() {
           <Route path='/forgotPassword' element={<ForgotPasswordPage />} />
           <Route path='/createNewPassword' element={<CreateNewPassword />} />
           <Route path='/panel' element={<Panel />} />
-          <Route path='/PostManagement' element={<PostManagement/>}/>
-          <Route path='/PostPendingApproval' element={<PostPendingApproval/>}/>
-
-        </Routes>
+          <Route path='/PostManagement' element={<PostManagement />} />
+          <Route path='/PostPendingApproval' element={<PostPendingApproval />} />
+        </Routes> */}
+        <DuyetBaiDang />
         <Footer />
       </div>
     </AppProvider>
