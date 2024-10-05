@@ -1,7 +1,6 @@
 import PropTypes from 'prop-types';
 
 import { useState } from "react";
-import Sidebar from "../sidebar/sidebar";
 import Pagination from "../pagination/pagination";
 import SideBarSearch from '../sidebar/SideBar_Search';
 
@@ -16,7 +15,7 @@ const Panel = ({ children }) => {
 
   return (
     <div className="flex -mt-4">
-      <Sidebar role="tutor" />
+      <SideBarSearch />
 
       <div className="flex-1 p-6">
         <div className="bg-gray-200 min-h-[70vh] p-4 rounded-lg mb-4">

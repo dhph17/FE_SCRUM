@@ -4,11 +4,11 @@ const SideBarSearch = () => {
   const [selectedDropdown, setSelectedDropdown] = useState(null);
   const [selectedSubject, setSelectedSubject] = useState("Môn học");
   const [selectedFee, setSelectedFee] = useState("Học phí (/h)");
-  const [selectedClasses, setSelectedClasses] = useState([]);
 
   //Num_Student
   const [minStudents, setMinStudents] = useState(1);
   const [maxStudents, setMaxStudents] = useState(1);
+  const [selectStudent, setSelectStudents] = useState("Số học viên")
 
   const [selectedSessions, setSelectedSessions] = useState([]);
 
@@ -70,32 +70,34 @@ const SideBarSearch = () => {
     setSelectedDropdown(null);
   };
 
-  const handleClassSelection = (classItem) => {
-    if (selectedClasses.includes(classItem)) {
-      // Nếu lớp đã được chọn, bỏ chọn
-      setSelectedClasses(selectedClasses.filter((item) => item !== classItem));
-    } else {
-      // Nếu lớp chưa được chọn, thêm vào danh sách lớp đã chọn
-      setSelectedClasses([...selectedClasses, classItem]);
-    }
-  };
-
   const handleMinStudentsChange = (event) => {
-    setMinStudents(event.target.value);
+    const value = parseInt(event.target.value);
+    if (value <= maxStudents) {
+      setMinStudents(value);
+      if (value === maxStudents) {
+        setSelectStudents(`${value} học viên`);
+      } else {
+        setSelectStudents(`Từ ${value} đến ${maxStudents} học viên`);
+
+      }
+    } else {
+      alert("Yêu cầu nhập đúng thông tin");
+    }
   };
 
   const handleMaxStudentsChange = (event) => {
-    setMaxStudents(event.target.value);
-  };
-
-  const handleSessionSelection = (sessionItem) => {
-    if (selectedSessions.includes(sessionItem)) {
-      setSelectedSessions(selectedSessions.filter((item) => item !== sessionItem));
+    const value = parseInt(event.target.value);
+    if (value >= minStudents) {
+      setMaxStudents(value);
+      if (value === minStudents) {
+        setSelectStudents(`${value} học viên`);
+      } else {
+        setSelectStudents(`Từ ${minStudents} đến ${value} học viên`);
+      }
     } else {
-      setSelectedSessions([...selectedSessions, sessionItem]);
+      alert("Yêu cầu nhập đúng thông tin");
     }
   };
-
 
   return (
     <div className="flex flex-col w-80 p-6 font-poppins">
@@ -115,9 +117,8 @@ const SideBarSearch = () => {
               <i className="fas fa-book mr-2"></i> {selectedSubject}
             </span>
             <i
-              className={`fas fa-chevron-down transition-transform duration-2000 ${
-                selectedDropdown === "subjects" ? "transform rotate-180" : ""
-              }`}
+              className={`fas fa-chevron-down transition-transform duration-2000 ${selectedDropdown === "subjects" ? "transform rotate-180" : ""
+                }`}
             ></i>
           </div>
           {selectedDropdown === "subjects" && (
@@ -139,34 +140,19 @@ const SideBarSearch = () => {
         <div className="flex flex-col">
           <div
             className="flex items-center justify-between bg-yellow-400 p-2 rounded-md cursor-pointer hover:bg-yellow-300"
-            onClick={() => toggleDropdown("classes")}
           >
             <span className="flex items-center">
-              <i className="fas fa-chalkboard-teacher mr-2"></i> Lớp{" "}
-              {selectedClasses.length > 0 ? `(${selectedClasses.length})` : ""}
+              <i className="fas fa-chalkboard-teacher mr-2"></i> Lớp
             </span>
-            <i
-              className={`fas fa-chevron-down transition-transform duration-2000 ${
-                selectedDropdown === "classes" ? "transform rotate-180" : ""
-              }`}
-            ></i>
           </div>
-          {selectedDropdown === "classes" && (
-            <ul className="bg-white mt-2 rounded-md p-2 space-y-2 max-h-48 overflow-y-auto">
-              {data.classes.map((classItem, index) => (
-                <li key={index} className="flex items-center p-2">
-                  <input
-                    type="checkbox"
-                    id={`class-${index}`}
-                    checked={selectedClasses.includes(classItem)}
-                    onChange={() => handleClassSelection(classItem)}
-                    className="mr-2"
-                  />
-                  <label htmlFor={`class-${index}`}>{classItem}</label>
-                </li>
-              ))}
-            </ul>
-          )}
+        </div>
+        <div className="grid grid-cols-2 ml-5 justify-self-center">
+          {data.classes.map((classItem, index) => (
+            <div key={index}>
+              <input type="checkbox" id={classItem} value={classItem} />
+              <label htmlFor={classItem} className="ml-2">{classItem}</label>
+            </div>
+          ))}
         </div>
 
         {/* Học phí */}
@@ -179,9 +165,8 @@ const SideBarSearch = () => {
               <i className="fas fa-dollar-sign mr-2"></i> {selectedFee}
             </span>
             <i
-              className={`fas fa-chevron-down transition-transform duration-2000 ${
-                selectedDropdown === "fees" ? "transform rotate-180" : ""
-              }`}
+              className={`fas fa-chevron-down transition-transform duration-2000 ${selectedDropdown === "fees" ? "transform rotate-180" : ""
+                }`}
             ></i>
           </div>
           {selectedDropdown === "fees" && (
@@ -206,12 +191,11 @@ const SideBarSearch = () => {
             onClick={() => toggleDropdown("students")}
           >
             <span className="flex items-center">
-              <i className="fas fa-users mr-2"></i> Số học viên
+              <i className="fas fa-users mr-2"></i>{selectStudent}
             </span>
             <i
-              className={`fas fa-chevron-down transition-transform duration-2000 ${
-                selectedDropdown === "students" ? "transform rotate-180" : ""
-              }`}
+              className={`fas fa-chevron-down transition-transform duration-2000 ${selectedDropdown === "students" ? "transform rotate-180" : ""
+                }`}
             ></i>
           </div>
           {selectedDropdown === "students" && (
@@ -235,7 +219,7 @@ const SideBarSearch = () => {
                     id="max-students"
                     value={maxStudents}
                     onChange={handleMaxStudentsChange}
-                    min="1"
+                    min={minStudents}
                     className="border rounded-md p-2"
                   />
                 </div>
@@ -248,42 +232,27 @@ const SideBarSearch = () => {
         <div className="flex flex-col">
           <div
             className="flex items-center justify-between bg-yellow-400 p-2 rounded-md cursor-pointer hover:bg-yellow-300"
-            onClick={() => toggleDropdown("sessions")}
           >
             <span className="flex items-center">
-              <i className="fas fa-calendar-alt mr-2"></i> Buổi{" "}
-              {selectedSessions.length > 0 ? `(${selectedSessions.length})` : ""}
+              <i className="fas fa-calendar-alt mr-2"></i> Buổi
             </span>
-            <i
-              className={`fas fa-chevron-down transition-transform duration-2000 ${
-                selectedDropdown === "sessions" ? "transform rotate-180" : ""
-              }`}
-            ></i>
           </div>
-          {selectedDropdown === "sessions" && (
-            <ul className="bg-white mt-2 rounded-md p-2 space-y-2 max-h-48 overflow-y-auto">
-              {data.sessions.map((sessionItem, index) => (
-                <li key={index} className="flex items-center p-2">
-                  <input
-                    type="checkbox"
-                    id={`session-${index}`}
-                    checked={selectedSessions.includes(sessionItem)}
-                    onChange={() => handleSessionSelection(sessionItem)}
-                    className="mr-2"
-                  />
-                  <label htmlFor={`session-${index}`}>{sessionItem}</label>
-                </li>
-              ))}
-            </ul>
-          )}
+        </div>
+        <div className="grid grid-cols-2 ml-5 justify-self-center">
+          {data.sessions.map((classItem, index) => (
+            <div key={index}>
+              <input type="checkbox" id={classItem} value={classItem} />
+              <label htmlFor={classItem} className="ml-2">{classItem}</label>
+            </div>
+          ))}
         </div>
       </div>
 
       <div className="flex justify-between mt-4 space-x-4">
-        <button className="bg-[#002182] text-white py-2 px-4 rounded-md">
+        <button className="bg-[#002182] w-[10vw] text-white py-2 px-4 rounded-md">
           Xóa tất cả
         </button>
-        <button className="bg-[#002182] text-white py-2 px-4 rounded-md">
+        <button className="bg-[#002182] w-[10vw] text-white py-2 px-4 rounded-md">
           Áp dụng
         </button>
       </div>
