@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import Panel from "../../layouts/panel/Panel";
-import Pagination from "../../layouts/pagination/Pagination";
+import Pagination from "../../layouts/pagination/pagination";
 
 const TutorAccount = () => {
     const tutors = Array(30).fill({ username: "Chickendance", password: "Chickendance@123" }); // Mock data
@@ -25,7 +25,7 @@ const TutorAccount = () => {
                     <h2 className="text-xl font-bold mb-4">Quản lý tài khoản gia sư</h2>
                     <table className="w-full border-collapse bg-white shadow-lg">
                         <thead>
-                            <tr className="bg-blue-500 text-white">
+                            <tr className="bg-custom_darkblue text-white">
                                 <th className="border p-2">STT</th>
                                 <th className="border p-2">Tên tài khoản</th>
                                 <th className="border p-2">Mật khẩu</th>
