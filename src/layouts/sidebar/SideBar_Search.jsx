@@ -4,6 +4,8 @@ const SideBarSearch = () => {
   const [selectedDropdown, setSelectedDropdown] = useState(null);
   const [selectedSubject, setSelectedSubject] = useState("Môn học");
   const [selectedFee, setSelectedFee] = useState("Học phí (/h)");
+  const [selectedClasses, setSelectedClasses] = useState([]);
+
 
   //Num_Student
   const [minStudents, setMinStudents] = useState(1);
@@ -65,6 +67,16 @@ const SideBarSearch = () => {
     setSelectedDropdown(null);
   };
 
+  const handleClassSelection = (classItem) => {
+    if (selectedClasses.includes(classItem)) {
+      // Nếu lớp đã được chọn, bỏ chọn
+      setSelectedClasses(selectedClasses.filter((item) => item !== classItem));
+    } else {
+      // Nếu lớp chưa được chọn, thêm vào danh sách lớp đã chọn
+      setSelectedClasses([...selectedClasses, classItem]);
+    }
+  };
+
   const handleSelectFee = (fee) => {
     setSelectedFee(fee);
     setSelectedDropdown(null);
@@ -96,6 +108,14 @@ const SideBarSearch = () => {
       }
     } else {
       alert("Yêu cầu nhập đúng thông tin");
+    }
+  };
+
+  const handleSessionSelection = (sessionItem) => {
+    if (selectedSessions.includes(sessionItem)) {
+      setSelectedSessions(selectedSessions.filter((item) => item !== sessionItem));
+    } else {
+      setSelectedSessions([...selectedSessions, sessionItem]);
     }
   };
 
