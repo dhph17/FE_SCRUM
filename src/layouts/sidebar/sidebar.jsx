@@ -16,29 +16,25 @@ const Sidebar = ({ role, activeItem }) => {
         }
     };
 
-    const handleDropdownClick = (itemNumber) => {
-        setShowDropdown(true);
-    };
-
     const renderSidebarContent = () => {
         switch (role) {
             case 'admin':
                 return (
                     <div className="space-y-4 w-full">
                         <p
-                            className={`flex items-center cursor-pointer p-2 rounded-lg ${activeItem === 1 ? 'bg-blue-600 text-white' : 'hover:bg-blue-600 hover:text-white'}`}
+                            className={`flex items-center cursor-pointer p-2 rounded-lg ${activeItem === 1 ? 'bg-custom_darkblue text-white' : 'hover:bg-custom_darkblue hover:text-white'}`}
                         >
                             <i className="fas fa-pencil-alt mr-3"></i>
                             Quản lý bài đăng
                         </p>
                         <p
-                            className={`flex items-center cursor-pointer p-2 rounded-lg ${activeItem === 2 ? 'bg-blue-600 text-white' : 'hover:bg-blue-600 hover:text-white'}`}
+                            className={`flex items-center cursor-pointer p-2 rounded-lg ${activeItem === 2 ? 'bg-custom_darkblue text-white' : 'hover:bg-custom_darkblue hover:text-white'}`}
                         >
                             <i className="fas fa-pencil-alt mr-3"></i>
                             Quản lý tài khoản gia sư
                         </p>
                         <p
-                            className={`flex items-center cursor-pointer p-2 rounded-lg ${activeItem === 3 ? 'bg-blue-600 text-white' : 'hover:bg-blue-600 hover:text-white'}`}
+                            className={`flex items-center cursor-pointer p-2 rounded-lg ${activeItem === 3 ? 'bg-custom_darkblue text-white' : 'hover:bg-custom_darkblue hover:text-white'}`}
                         >
                             <i className="fas fa-pencil-alt mr-3"></i>
                             Quản lý tài khoản phụ huynh
@@ -48,18 +44,18 @@ const Sidebar = ({ role, activeItem }) => {
             case 'tutor':
                 return (
                     <div className="space-y-4 w-full">
-                        <p className={`flex items-center cursor-pointer p-2 rounded-lg ${activeItem === 1 ? 'bg-blue-600 text-white' : 'hover:bg-blue-600 hover:text-white'}`}>
+                        <p className={`flex items-center cursor-pointer p-2 rounded-lg ${activeItem === 1 ? 'bg-custom_darkblue text-white' : 'hover:bg-custom_darkblue hover:text-white'}`}>
                             <i className="fas fa-pencil-alt mr-3"></i>
                             Thông tin tài khoản
                         </p>
-                        <p className={`flex items-center cursor-pointer p-2 rounded-lg ${activeItem === 2 ? 'bg-blue-600 text-white' : 'hover:bg-blue-600 hover:text-white'}`}>
+                        <p className={`flex items-center cursor-pointer p-2 rounded-lg ${activeItem === 2 ? 'bg-custom_darkblue text-white' : 'hover:bg-custom_darkblue hover:text-white'}`}>
                             <i className="fas fa-pencil-alt mr-3"></i>
                             Quản lý hồ sơ
                         </p>
 
                         <div className="space-y-2" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
                             <p
-                                className={`flex items-center cursor-pointer p-2 rounded-lg ${showDropdown || (activeItem >= 3 && activeItem <= 5) ? 'bg-blue-600 text-white' : 'hover:bg-blue-600 hover:text-white'}`}
+                                className={`flex items-center cursor-pointer p-2 rounded-lg ${showDropdown || (activeItem >= 3 && activeItem <= 5) ? 'bg-custom_darkblue text-white' : 'hover:bg-custom_darkblue hover:text-white'}`}
                             >
                                 <i className="fas fa-pencil-alt mr-3"></i>
                                 Quản lý suất dạy
@@ -68,15 +64,15 @@ const Sidebar = ({ role, activeItem }) => {
 
                             {showDropdown && (
                                 <div className="bg-gray-300 p-2 rounded-lg space-y-2">
-                                    <p className={`flex items-center cursor-pointer p-2 rounded-lg ${activeItem === 3 ? 'bg-blue-600 text-white' : 'hover:bg-blue-600 hover:text-white'}`}>
+                                    <p className={`flex items-center cursor-pointer p-2 rounded-lg ${activeItem === 3 ? 'bg-custom_darkblue text-white' : 'hover:bg-custom_darkblue hover:text-white'}`}>
                                         <i className="fas fa-book mr-2"></i>
                                         Suất dạy đã đăng kí
                                     </p>
-                                    <p className={`flex items-center cursor-pointer p-2 rounded-lg ${activeItem === 4 ? 'bg-blue-600 text-white' : 'hover:bg-blue-600 hover:text-white'}`}>
+                                    <p className={`flex items-center cursor-pointer p-2 rounded-lg ${activeItem === 4 ? 'bg-custom_darkblue text-white' : 'hover:bg-custom_darkblue hover:text-white'}`}>
                                         <i className="fas fa-check mr-2"></i>
                                         Suất dạy được nhận
                                     </p>
-                                    <p className={`flex items-center cursor-pointer p-2 rounded-lg ${activeItem === 5 ? 'bg-blue-600 text-white' : 'hover:bg-blue-600 hover:text-white'}`}>
+                                    <p className={`flex items-center cursor-pointer p-2 rounded-lg ${activeItem === 5 ? 'bg-custom_darkblue text-white' : 'hover:bg-custom_darkblue hover:text-white'}`}>
                                         <i className="fas fa-star mr-2"></i>
                                         Đánh giá của tôi
                                     </p>
@@ -89,19 +85,19 @@ const Sidebar = ({ role, activeItem }) => {
                 return (
                     <div className="space-y-4 w-full">
                         <p
-                            className={`flex items-center cursor-pointer p-2 rounded-lg ${activeItem === 1 ? 'bg-blue-600 text-white' : 'hover:bg-blue-600 hover:text-white'}`}
+                            className={`flex items-center cursor-pointer p-2 rounded-lg ${activeItem === 1 ? 'bg-custom_darkblue text-white' : 'hover:bg-custom_darkblue hover:text-white'}`}
                         >
                             <i className="fas fa-pencil-alt mr-3"></i>
                             Thông tin tài khoản
                         </p>
                         <p
-                            className={`flex items-center cursor-pointer p-2 rounded-lg ${activeItem === 2 ? 'bg-blue-600 text-white' : 'hover:bg-blue-600 hover:text-white'}`}
+                            className={`flex items-center cursor-pointer p-2 rounded-lg ${activeItem === 2 ? 'bg-custom_darkblue text-white' : 'hover:bg-custom_darkblue hover:text-white'}`}
                         >
                             <i className="fas fa-pencil-alt mr-3"></i>
                             Quản lý hồ sơ
                         </p>
                         <p
-                            className={`flex items-center cursor-pointer p-2 rounded-lg ${activeItem === 3 ? 'bg-blue-600 text-white' : 'hover:bg-blue-600 hover:text-white'}`}
+                            className={`flex items-center cursor-pointer p-2 rounded-lg ${activeItem === 3 ? 'bg-custom_darkblue text-white' : 'hover:bg-custom_darkblue hover:text-white'}`}
                         >
                             <i className="fas fa-pencil-alt mr-3"></i>
                             Quản lý bài đăng

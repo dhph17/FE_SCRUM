@@ -43,7 +43,7 @@ const Pagination = ({ currentPage, totalPages, onPageChange }) => {
   };
 
   return (
-    <div className="flex justify-between items-center mt-4 bg-gray-200 p-2 rounded-lg w-full border-4 border-black">
+    <div className="flex justify-between items-center mt-4 bg-gray-200 p-2 rounded-lg w-full border-2 border-black">
       <button
         className="px-4 py-2 bg-gray-300 text-gray-800 rounded-l-lg font-bold"
         onClick={handlePreviousPage}

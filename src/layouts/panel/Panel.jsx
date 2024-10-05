@@ -4,7 +4,7 @@ import Sidebar from "../sidebar/sidebar";
 
 const Panel = ({ children, role, activeItem }) => {
   return (
-    <div className="flex">
+    <div className="flex mt-4">
       <Sidebar role={role} activeItem={activeItem} />
 
       <div className="flex-1 p-6">
