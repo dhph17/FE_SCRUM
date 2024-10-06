@@ -4,7 +4,7 @@ import Image1 from "../../assets/image/User.png";
 import Image2 from "../../assets/image/Nav.png";
 
 const Sidebar = ({ role, activeItem }) => {
-    const [showDropdown, setShowDropdown] = useState(false);
+    const [showDropdown, setShowDropdown] = useState(activeItem >= 3 && activeItem <= 5);
 
     const handleMouseEnter = () => {
         setShowDropdown(true);
