@@ -4,6 +4,7 @@ import { useState } from "react";
 import Sidebar from "../sidebar/sidebar";
 import Pagination from "../pagination/pagination";
 import SideBarSearch from '../sidebar/SideBar_Search';
+import Post from '../post/Post';
 
 
 const Panel = ({ children }) => {
@@ -21,7 +22,7 @@ const Panel = ({ children }) => {
 
       <div className="flex-1 p-6">
         <div className="bg-gray-200 min-h-[70vh] p-4 rounded-lg mb-4">
-          {children}
+          <Post />
         </div>
 
         <Pagination
