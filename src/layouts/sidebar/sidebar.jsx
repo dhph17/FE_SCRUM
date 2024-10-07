@@ -6,7 +6,7 @@ import { useAppContext } from '../../AppProvider';
 
 const Sidebar = ({ activeItem }) => {
     const { role } = useAppContext();
-    const [showDropdown, setShowDropdown] = useState(false);
+    const [showDropdown, setShowDropdown] = useState(activeItem >= 3 && activeItem <= 5);
 
     const handleMouseEnter = () => {
         setShowDropdown(true);
@@ -23,12 +23,28 @@ const Sidebar = ({ activeItem }) => {
             case 'admin':
                 return (
                     <div className="space-y-4 w-full">
-                        <p
-                            className={`flex items-center cursor-pointer p-2 rounded-lg ${activeItem === 1 ? 'bg-custom_darkblue text-white' : 'hover:bg-custom_darkblue hover:text-white'}`}
-                        >
-                            <i className="fas fa-pencil-alt mr-3"></i>
-                            Quản lý bài đăng
-                        </p>
+                        <div className="space-y-2" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
+                            <p
+                                className={`flex items-center cursor-pointer p-2 rounded-lg ${activeItem === 3 ? 'bg-custom_darkblue text-white' : 'hover:bg-custom_darkblue hover:text-white'}`}
+                            >
+                                <i className="fas fa-pencil-alt mr-3"></i>
+                                Quản lý bài đăng
+                                <i className={`fas ml-auto ${showDropdown || (activeItem >= 3 && activeItem <= 4) ? 'fa-chevron-up' : 'fa-chevron-down'}`}></i>
+                            </p>
+                            {showDropdown && (
+                                <div className="bg-gray-300 p-2 rounded-lg space-y-2">
+                                    <p className={`flex items-center cursor-pointer p-2 rounded-lg ${activeItem === 3 ? 'bg-custom_darkblue text-white' : 'hover:bg-custom_darkblue hover:text-white'}`}>
+                                        <i className="fas fa-check mr-2"></i>
+                                        Bài đăng chờ duyệt
+                                    </p>
+                                    <p className={`flex items-center cursor-pointer p-2 rounded-lg ${activeItem === 4 ? 'bg-custom_darkblue text-white' : 'hover:bg-custom_darkblue hover:text-white'}`}>
+                                        <i className="fas fa-clock mr-2"></i>
+                                        Bài đăng được duyệt
+                                    </p>
+                                </div>
+                            )}
+                        </div>
+
                         <p
                             className={`flex items-center cursor-pointer p-2 rounded-lg ${activeItem === 2 ? 'bg-custom_darkblue text-white' : 'hover:bg-custom_darkblue hover:text-white'}`}
                         >
@@ -36,7 +52,7 @@ const Sidebar = ({ activeItem }) => {
                             Quản lý tài khoản gia sư
                         </p>
                         <p
-                            className={`flex items-center cursor-pointer p-2 rounded-lg ${activeItem === 3 ? 'bg-custom_darkblue text-white' : 'hover:bg-custom_darkblue hover:text-white'}`}
+                            className={`flex items-center cursor-pointer p-2 rounded-lg ${activeItem === 1 ? 'bg-custom_darkblue text-white' : 'hover:bg-custom_darkblue hover:text-white'}`}
                         >
                             <i className="fas fa-pencil-alt mr-3"></i>
                             Quản lý tài khoản phụ huynh

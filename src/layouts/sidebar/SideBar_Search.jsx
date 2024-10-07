@@ -1,6 +1,8 @@
 import { useState } from "react";
+import { useAppContext } from '../../AppProvider';
 
-const SideBarSearchTutor = () => {
+const SideBarSearchParent = () => {
+  const { role } = useAppContext();
   const [selectedDropdown, setSelectedDropdown] = useState(null);
   const [selectedSubject, setSelectedSubject] = useState("Môn học");
   const [selectedFee, setSelectedFee] = useState("Học phí (/h)");
@@ -143,9 +145,8 @@ const SideBarSearchTutor = () => {
               <i className="fas fa-book mr-2"></i> {selectedSubject}
             </span>
             <i
-              className={`fas fa-chevron-down transition-transform duration-2000 ${
-                selectedDropdown === "subjects" ? "transform rotate-180" : ""
-              }`}
+              className={`fas fa-chevron-down transition-transform duration-2000 ${selectedDropdown === "subjects" ? "transform rotate-180" : ""
+                }`}
             ></i>
           </div>
           {selectedDropdown === "subjects" && (
@@ -192,9 +193,8 @@ const SideBarSearchTutor = () => {
               <i className="fas fa-dollar-sign mr-2"></i> {selectedFee}
             </span>
             <i
-              className={`fas fa-chevron-down transition-transform duration-2000 ${
-                selectedDropdown === "fees" ? "transform rotate-180" : ""
-              }`}
+              className={`fas fa-chevron-down transition-transform duration-2000 ${selectedDropdown === "fees" ? "transform rotate-180" : ""
+                }`}
             ></i>
           </div>
           {selectedDropdown === "fees" && (
@@ -223,9 +223,8 @@ const SideBarSearchTutor = () => {
               {selectStudent}
             </span>
             <i
-              className={`fas fa-chevron-down transition-transform duration-2000 ${
-                selectedDropdown === "students" ? "transform rotate-180" : ""
-              }`}
+              className={`fas fa-chevron-down transition-transform duration-2000 ${selectedDropdown === "students" ? "transform rotate-180" : ""
+                }`}
             ></i>
           </div>
           {selectedDropdown === "students" && (
@@ -286,8 +285,15 @@ const SideBarSearchTutor = () => {
           Áp dụng
         </button>
       </div>
+      {
+        role === 'parent' &&
+        (<button className="bg-custom_yellow text-black mt-4 py-2 px-4 rounded-md w-full">
+          Tạo bài đăng mới
+        </button>)
+      }
+
     </div>
   );
 };
 
-export default SideBarSearchTutor;
+export default SideBarSearchParent;

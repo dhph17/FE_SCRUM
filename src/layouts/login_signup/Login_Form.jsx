@@ -33,9 +33,17 @@ const LoginForm = () => {
       if (response.ok) {
         setSessionToken(data.token.access);
         setRole(data.data.role || data.data.user.role);
+        const role = data.data.role || data.data.user.role;
         localStorage.setItem('refreshToken', data.token.refresh);
         console.log("Đăng nhập thành công!");
-        navigate("/");
+        console.log("Role: ", role)
+        if (role === 'admin') {
+          navigate('/admin/approve-post')
+        } else if (role === 'tutor') {
+          navigate('/tutor/main-page')
+        } else if (role === 'parent') {
+          navigate('/parent/main-page')
+        }
       } else {
         setError(data.message || "Đăng nhập thất bại!");
       }
