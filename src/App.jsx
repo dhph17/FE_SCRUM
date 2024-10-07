@@ -19,6 +19,8 @@ import SuatDayDaGiao from './pages/user/SuatDayDaGiao';
 import DuyetBaiDang from './pages/admin/DuyetBaiDang';
 import TutorAccount from "./pages/admin/tutorAccount";
 import ParentAccount from "./pages/admin/parentAccount";
+import CreatePost from "./pages/user/CreatePost";
+import UpdatePost from "./pages/user/UpdatePost";
 
 function App() {
   return (
@@ -41,6 +43,8 @@ function App() {
           <Route path="/admin/approve-post" element={<DuyetBaiDang />} />
           <Route path="/parent/assigned" element={<SuatDayDaGiao />} />
           <Route path="/parent/view-post" element={<BaiDangDuocDuyet />} />
+          <Route path="/parent/create-post" element={<CreatePost />} />
+          <Route path="/parent/update-post" element={<UpdatePost />} />
         </Routes>
         <Footer />
       </div>

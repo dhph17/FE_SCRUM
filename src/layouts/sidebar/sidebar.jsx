@@ -2,8 +2,10 @@ import PropTypes from 'prop-types';
 import { useState } from 'react';
 import Image1 from "../../assets/image/User.png";
 import Image2 from "../../assets/image/Nav.png";
+import { useAppContext } from '../../AppProvider';
 
-const Sidebar = ({ role, activeItem }) => {
+const Sidebar = ({ activeItem }) => {
+    const { role } = useAppContext();
     const [showDropdown, setShowDropdown] = useState(false);
 
     const handleMouseEnter = () => {
@@ -96,12 +98,32 @@ const Sidebar = ({ role, activeItem }) => {
                             <i className="fas fa-pencil-alt mr-3"></i>
                             Quản lý hồ sơ
                         </p>
-                        <p
-                            className={`flex items-center cursor-pointer p-2 rounded-lg ${activeItem === 3 ? 'bg-custom_darkblue text-white' : 'hover:bg-custom_darkblue hover:text-white'}`}
-                        >
-                            <i className="fas fa-pencil-alt mr-3"></i>
-                            Quản lý bài đăng
-                        </p>
+                        <div className="space-y-2" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
+                            <p
+                                className={`flex items-center cursor-pointer p-2 rounded-lg ${showDropdown || (activeItem >= 3 && activeItem <= 5) ? 'bg-custom_darkblue text-white' : 'hover:bg-custom_darkblue hover:text-white'}`}
+                            >
+                                <i className="fas fa-pencil-alt mr-3"></i>
+                                Quản lý bài đăng
+                                <i className={`fas ml-auto ${showDropdown || (activeItem >= 3 && activeItem <= 5) ? 'fa-chevron-up' : 'fa-chevron-down'}`}></i>
+                            </p>
+
+                            {showDropdown && (
+                                <div className="bg-gray-300 p-2 rounded-lg space-y-2">
+                                    <p className={`flex items-center cursor-pointer p-2 rounded-lg ${activeItem === 3 ? 'bg-custom_darkblue text-white' : 'hover:bg-custom_darkblue hover:text-white'}`}>
+                                        <i className="fas fa-check mr-2"></i>
+                                        Bài đăng được duyệt
+                                    </p>
+                                    <p className={`flex items-center cursor-pointer p-2 rounded-lg ${activeItem === 4 ? 'bg-custom_darkblue text-white' : 'hover:bg-custom_darkblue hover:text-white'}`}>
+                                        <i className="fas fa-clock mr-2"></i>
+                                        Bài đăng chờ duyệt
+                                    </p>
+                                    <p className={`flex items-center cursor-pointer p-2 rounded-lg ${activeItem === 5 ? 'bg-custom_darkblue text-white' : 'hover:bg-custom_darkblue hover:text-white'}`}>
+                                        <i className="fas fa-star mr-2"></i>
+                                        Suất dạy đã giao
+                                    </p>
+                                </div>
+                            )}
+                        </div>
                     </div>
                 );
             default:
