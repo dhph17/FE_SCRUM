@@ -1,18 +1,17 @@
 import { useState } from "react";
 
-const SideBarSearch = () => {
+const SideBarSearchTutor = () => {
   const [selectedDropdown, setSelectedDropdown] = useState(null);
   const [selectedSubject, setSelectedSubject] = useState("Môn học");
   const [selectedFee, setSelectedFee] = useState("Học phí (/h)");
-  const [selectedClasses, setSelectedClasses] = useState([]);
-
+  // const [selectedClasses, setSelectedClasses] = useState([]);
 
   //Num_Student
   const [minStudents, setMinStudents] = useState(1);
   const [maxStudents, setMaxStudents] = useState(1);
-  const [selectStudent, setSelectStudents] = useState("Số học viên")
+  const [selectStudent, setSelectStudents] = useState("Số học viên");
 
-  const [selectedSessions, setSelectedSessions] = useState([]);
+  // const [selectedSessions, setSelectedSessions] = useState([]);
 
   // Dữ liệu cho từng mục
   const data = {
@@ -50,7 +49,15 @@ const SideBarSearch = () => {
       "Trên 100.000đ",
     ],
     students: ["Dưới 10 học viên", "10-20 học viên", "Trên 20 học viên"],
-    sessions: ["Thứ Hai", "Thứ Ba", "Thứ Tư", "Thứ Năm", "Thứ Sáu", "Thứ Bảy", "Chủ Nhật"],
+    sessions: [
+      "Thứ Hai",
+      "Thứ Ba",
+      "Thứ Tư",
+      "Thứ Năm",
+      "Thứ Sáu",
+      "Thứ Bảy",
+      "Chủ Nhật",
+    ],
   };
 
   // Hàm xử lý khi bấm vào từng mục
@@ -67,15 +74,15 @@ const SideBarSearch = () => {
     setSelectedDropdown(null);
   };
 
-  const handleClassSelection = (classItem) => {
-    if (selectedClasses.includes(classItem)) {
-      // Nếu lớp đã được chọn, bỏ chọn
-      setSelectedClasses(selectedClasses.filter((item) => item !== classItem));
-    } else {
-      // Nếu lớp chưa được chọn, thêm vào danh sách lớp đã chọn
-      setSelectedClasses([...selectedClasses, classItem]);
-    }
-  };
+  // const handleClassSelection = (classItem) => {
+  //   if (selectedClasses.includes(classItem)) {
+  //     // Nếu lớp đã được chọn, bỏ chọn
+  //     setSelectedClasses(selectedClasses.filter((item) => item !== classItem));
+  //   } else {
+  //     // Nếu lớp chưa được chọn, thêm vào danh sách lớp đã chọn
+  //     setSelectedClasses([...selectedClasses, classItem]);
+  //   }
+  // };
 
   const handleSelectFee = (fee) => {
     setSelectedFee(fee);
@@ -90,7 +97,6 @@ const SideBarSearch = () => {
         setSelectStudents(`${value} học viên`);
       } else {
         setSelectStudents(`Từ ${value} đến ${maxStudents} học viên`);
-
       }
     } else {
       alert("Yêu cầu nhập đúng thông tin");
@@ -111,13 +117,13 @@ const SideBarSearch = () => {
     }
   };
 
-  const handleSessionSelection = (sessionItem) => {
-    if (selectedSessions.includes(sessionItem)) {
-      setSelectedSessions(selectedSessions.filter((item) => item !== sessionItem));
-    } else {
-      setSelectedSessions([...selectedSessions, sessionItem]);
-    }
-  };
+  // const handleSessionSelection = (sessionItem) => {
+  //   if (selectedSessions.includes(sessionItem)) {
+  //     setSelectedSessions(selectedSessions.filter((item) => item !== sessionItem));
+  //   } else {
+  //     setSelectedSessions([...selectedSessions, sessionItem]);
+  //   }
+  // };
 
   return (
     <div className="flex flex-col w-80 p-6 font-poppins">
@@ -137,8 +143,9 @@ const SideBarSearch = () => {
               <i className="fas fa-book mr-2"></i> {selectedSubject}
             </span>
             <i
-              className={`fas fa-chevron-down transition-transform duration-2000 ${selectedDropdown === "subjects" ? "transform rotate-180" : ""
-                }`}
+              className={`fas fa-chevron-down transition-transform duration-2000 ${
+                selectedDropdown === "subjects" ? "transform rotate-180" : ""
+              }`}
             ></i>
           </div>
           {selectedDropdown === "subjects" && (
@@ -158,9 +165,7 @@ const SideBarSearch = () => {
 
         {/* Lớp */}
         <div className="flex flex-col">
-          <div
-            className="flex items-center justify-between bg-yellow-400 p-2 rounded-md cursor-pointer hover:bg-yellow-300"
-          >
+          <div className="flex items-center justify-between bg-yellow-400 p-2 rounded-md cursor-pointer hover:bg-yellow-300">
             <span className="flex items-center">
               <i className="fas fa-chalkboard-teacher mr-2"></i> Lớp
             </span>
@@ -170,7 +175,9 @@ const SideBarSearch = () => {
           {data.classes.map((classItem, index) => (
             <div key={index}>
               <input type="checkbox" id={classItem} value={classItem} />
-              <label htmlFor={classItem} className="ml-2">{classItem}</label>
+              <label htmlFor={classItem} className="ml-2">
+                {classItem}
+              </label>
             </div>
           ))}
         </div>
@@ -185,8 +192,9 @@ const SideBarSearch = () => {
               <i className="fas fa-dollar-sign mr-2"></i> {selectedFee}
             </span>
             <i
-              className={`fas fa-chevron-down transition-transform duration-2000 ${selectedDropdown === "fees" ? "transform rotate-180" : ""
-                }`}
+              className={`fas fa-chevron-down transition-transform duration-2000 ${
+                selectedDropdown === "fees" ? "transform rotate-180" : ""
+              }`}
             ></i>
           </div>
           {selectedDropdown === "fees" && (
@@ -211,11 +219,13 @@ const SideBarSearch = () => {
             onClick={() => toggleDropdown("students")}
           >
             <span className="flex items-center">
-              <i className="fas fa-users mr-2"></i>{selectStudent}
+              <i className="fas fa-users mr-2"></i>
+              {selectStudent}
             </span>
             <i
-              className={`fas fa-chevron-down transition-transform duration-2000 ${selectedDropdown === "students" ? "transform rotate-180" : ""
-                }`}
+              className={`fas fa-chevron-down transition-transform duration-2000 ${
+                selectedDropdown === "students" ? "transform rotate-180" : ""
+              }`}
             ></i>
           </div>
           {selectedDropdown === "students" && (
@@ -250,9 +260,7 @@ const SideBarSearch = () => {
 
         {/* Số buổi */}
         <div className="flex flex-col">
-          <div
-            className="flex items-center justify-between bg-yellow-400 p-2 rounded-md cursor-pointer hover:bg-yellow-300"
-          >
+          <div className="flex items-center justify-between bg-yellow-400 p-2 rounded-md cursor-pointer hover:bg-yellow-300">
             <span className="flex items-center">
               <i className="fas fa-calendar-alt mr-2"></i> Buổi
             </span>
@@ -262,7 +270,9 @@ const SideBarSearch = () => {
           {data.sessions.map((classItem, index) => (
             <div key={index}>
               <input type="checkbox" id={classItem} value={classItem} />
-              <label htmlFor={classItem} className="ml-2">{classItem}</label>
+              <label htmlFor={classItem} className="ml-2">
+                {classItem}
+              </label>
             </div>
           ))}
         </div>
@@ -276,12 +286,8 @@ const SideBarSearch = () => {
           Áp dụng
         </button>
       </div>
-
-      <button className="bg-[#F1BB45] text-black mt-4 py-2 px-4 rounded-md w-full">
-        Tạo bài đăng mới
-      </button>
     </div>
   );
 };
 
-export default SideBarSearch;
+export default SideBarSearchTutor;
