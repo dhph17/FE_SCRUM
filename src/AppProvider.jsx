@@ -11,22 +11,27 @@ export const useAppContext = () => {
     return context;
 };
 
-export default function AppProvider({ children, initialSessionToken }) {
+export default function AppProvider({ children, initialSessionToken, initialRole }) {
+    const [role, setRole] = useState(() => {
+        return initialRole || localStorage.getItem('role');
+    });
 
     const [sessionToken, setSessionToken] = useState(() => {
         return initialSessionToken || localStorage.getItem('accessToken') || '';
     });
 
     useEffect(() => {
-        if (sessionToken) {
+        if (sessionToken && role) {
+            localStorage.setItem('role', role)
             localStorage.setItem('accessToken', sessionToken);
         } else {
             localStorage.removeItem('accessToken');
+            localStorage.removeItem('role')
         }
-    }, [sessionToken]);
+    }, [sessionToken, role]);
 
     return (
-        <AppContext.Provider value={{ sessionToken, setSessionToken }}>
+        <AppContext.Provider value={{ sessionToken, setSessionToken, role, setRole }}>
             {children}
         </AppContext.Provider>
     );
@@ -35,4 +40,5 @@ export default function AppProvider({ children, initialSessionToken }) {
 AppProvider.propTypes = {
     children: PropTypes.node,
     initialSessionToken: PropTypes.string,
+    initialRole: PropTypes.string
 };

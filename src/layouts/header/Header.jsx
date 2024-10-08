@@ -10,7 +10,7 @@ import Logo from "../../assets/image/logo_.png"
 const Header = () => {
     let navigate = useNavigate()
 
-    const { sessionToken, setSessionToken } = useAppContext();
+    const { sessionToken, setSessionToken, setRole } = useAppContext();
 
     const handleLogout = async () => {
         try {
@@ -24,6 +24,7 @@ const Header = () => {
 
             if (response.ok) {
                 setSessionToken('');
+                setRole('')
                 localStorage.removeItem('refreshToken');
                 navigate('/');
             } else {

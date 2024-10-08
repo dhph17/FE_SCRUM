@@ -84,7 +84,7 @@ const Pagination = ({ currentPage, totalPages, onPageChange }) => {
 Pagination.propTypes = {
   currentPage: PropTypes.number,
   totalPages: PropTypes.number,
-  onPageChange: PropTypes.number
+  onPageChange: PropTypes.func
 };
 
 export default Pagination;
