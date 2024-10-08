@@ -21,6 +21,8 @@ import CreatePost from "./pages/user/CreatePost";
 import UpdatePost from "./pages/user/UpdatePost";
 import MainPageParent from "./pages/user/MainPageParent";
 import MainPageTutor from "./pages/user/MainPageTutor";
+import ApprovedPost from "./pages/admin/approvedPost";
+
 function App() {
   return (
     <AppProvider>
@@ -38,6 +40,8 @@ function App() {
           <Route path="/admin/tutor-account" element={<TutorAccount />} />
           <Route path="/admin/parent-account" element={<ParentAccount />} />
           <Route path="/admin/approve-post" element={<DuyetBaiDang />} />
+          <Route path="/admin/approved-post" element={<ApprovedPost />} />
+
           <Route path="/parent/assigned" element={<PostManagement />} />
           <Route path="/parent/view-post" element={<PostPendingApproval />} />
           <Route path="/parent/create-post" element={<CreatePost />} />
