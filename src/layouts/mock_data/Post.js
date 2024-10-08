@@ -10,9 +10,35 @@ const Post = Array(60).fill({
   soHocVien: "2",
   hocPhi: "300.000 VNĐ/tháng",
   diaChi: "130 Nguyễn Chánh",
-  buoiHoc: "Thứ 2, 4, 6  |  17:00 - 19:00",
   ghiChu: "Kèm từ căn bản do 2 cháu bị mất gốc",
   date: "12:30 12/10/2024",
+  class_times: [
+    {
+      id: 1,
+      weekday: "Thứ 2",
+      time_start: "17:00",
+      time_end: "19:00",
+    },
+    {
+      id: 2,
+      weekday: "Thứ 4",
+      time_start: "17:00",
+      time_end: "19:00",
+    },
+    {
+      id: 3,
+      weekday: "Thứ 6",
+      time_start: "17:00",
+      time_end: "19:00",
+    },
+    {
+      id: 3,
+      weekday: "Thứ 6",
+      time_start: "17:00",
+      time_end: "19:00",
+    },
+
+  ],
 });
 
 export default Post;
