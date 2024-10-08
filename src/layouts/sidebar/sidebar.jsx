@@ -7,7 +7,7 @@ import { useAppContext } from '../../AppProvider';
 const Sidebar = ({ activeItem }) => {
     const { role } = useAppContext();
     const [showDropdown, setShowDropdown] = useState(activeItem >= 3 && activeItem <= 5);
-    
+
     const handleMouseEnter = () => {
         setShowDropdown(true);
     };
@@ -35,11 +35,11 @@ const Sidebar = ({ activeItem }) => {
                                 <div className="bg-gray-300 p-2 rounded-lg space-y-2">
                                     <p className={`flex items-center cursor-pointer p-2 rounded-lg ${activeItem === 3 ? 'bg-custom_darkblue text-white' : 'hover:bg-custom_darkblue hover:text-white'}`}>
                                         <i className="fas fa-check mr-2"></i>
-                                        <a href="/admin/approve-post">Bài đăng chờ duyệt</a>
+                                        Bài đăng đã duyệt
                                     </p>
                                     <p className={`flex items-center cursor-pointer p-2 rounded-lg ${activeItem === 4 ? 'bg-custom_darkblue text-white' : 'hover:bg-custom_darkblue hover:text-white'}`}>
                                         <i className="fas fa-clock mr-2"></i>
-                                         <a href="/admin/approved-post">Bài đăng được duyệt</a>
+                                        Bài đăng chờ duyệt
                                     </p>
                                 </div>
                             )}

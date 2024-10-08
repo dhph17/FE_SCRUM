@@ -41,6 +41,7 @@ function App() {
           <Route path="/admin/parent-account" element={<ParentAccount />} />
           <Route path="/admin/pending-posts" element={<DuyetBaiDang />} />
           <Route path="/admin/approved-posts" element={<ApprovedPost />} />
+
           <Route path="/parent/assigned" element={<PostManagement />} />
           <Route path="/parent/view-posts" element={<PostApproval />} />
           <Route path="/parent/pending-posts" element={<BaiDangChoDuyet />} />
