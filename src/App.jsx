@@ -23,6 +23,9 @@ import MainPageParent from "./pages/user/MainPageParent";
 import MainPageTutor from "./pages/user/MainPageTutor";
 import BaiDangChoDuyet from "./pages/user/BaiDangChoDuyet";
 import ApprovedPost from "./pages/admin/approvedPost";
+import TutorProfile from "./pages/user/tutorProfile";
+import ParentProfile from "./pages/user/parentProfile";
+
 function App() {
   return (
     <AppProvider>
@@ -48,8 +51,11 @@ function App() {
           <Route path="/parent/create-post" element={<CreatePost />} />
           <Route path="/parent/update-post" element={<UpdatePost />} />
           <Route path="/parent/main-page" element={<MainPageParent />} />
+          <Route path="/parent/profile" element={<ParentProfile />} />
 
           <Route path="/tutor/main-page" element={<MainPageTutor />} />
+          <Route path="/tutor/profile" element={<TutorProfile />} />
+
         </Routes>
         <Footer />
       </div>
