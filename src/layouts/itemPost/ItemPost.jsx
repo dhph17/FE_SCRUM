@@ -107,21 +107,10 @@ const ItemPostVu = ({ user, children, tag }) => {
                         <strong>Trình độ:</strong>
                         <p>{user.background_desired}</p>
                     </li>
-                    <li className="flex gap-2">
+                    <li className="flex items-center">
                         <strong>Buổi học:</strong>
-                        <p className="flex flex-wrap gap-2">
-                            {" "}
-                            {user.class_times.map((time, index) => (
-                                <span
-                                    key={index}
-                                    className="bg-[#002182] text-white px-3 py-1 rounded-full"
-                                >
-                                    {time.weekday}
-                                </span>
-                            ))}
-                        </p>
                         <button
-                            className="bg-[#F1BB45] text-black font-semibold font-poppins py-1 px-3.5 ml-7 rounded-lg shadow hover:bg-yellow-400 transition duration-300"
+                            className="bg-[#F1BB45] text-black font-semibold font-poppins py-1 px-3.5 ml-4 rounded-lg shadow hover:bg-yellow-400 transition duration-300"
                             onClick={() => handleBuoiHocClick(user)}
                         >
                             Chi tiết
