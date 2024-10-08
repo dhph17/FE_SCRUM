@@ -20,7 +20,7 @@ const SideBarSearchParent = () => {
     subjects: [
       "Toán",
       "Lý",
-      "Hóa",
+      "Hóa học",
       "Sinh",
       "Văn",
       "Anh",

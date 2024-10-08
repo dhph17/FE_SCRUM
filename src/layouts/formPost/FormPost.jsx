@@ -1,18 +1,37 @@
 import PropTypes from 'prop-types';
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useAppContext } from '../../AppProvider';
+
+import Popup from 'reactjs-popup';
+import 'reactjs-popup/dist/index.css';
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 
 const FormPost = ({ func }) => {
+    let navigate = useNavigate()
+    const [subject, setSubject] = useState('Toán');
+    const [selectedClasses, setSelectedClasses] = useState([]);
+    const [level, setLevel] = useState('Tốt nghiệp THPT');
+    const [studentNumber, setStudentNumber] = useState(0);
+    const [fees, setFees] = useState(0);
+    const [location, setLocation] = useState('');
     const [days, setDays] = useState(1);
-    const handleDays = (e) => {
-        setDays(e.target.value)
-    }
+    const [classTimes, setClassTimes] = useState([]);
+    const [note, setNote] = useState('');
+
+    const { id } = useAppContext()
+
+    const [showPopup, setShowPopup] = useState(false);
+
     const data = {
         subjects: [
             "Toán",
             "Lý",
             "Hóa",
             "Sinh",
-            "Văn",
+            "Văn học",
             "Anh",
             "Tin học",
             "Vẽ",
@@ -20,18 +39,18 @@ const FormPost = ({ func }) => {
             "Khác",
         ],
         classesFrom: [
-            "Lớp 1",
-            "Lớp 2",
-            "Lớp 3",
-            "Lớp 4",
-            "Lớp 5",
-            "Lớp 6",
-            "Lớp 7",
-            "Lớp 8",
-            "Lớp 9",
-            "Lớp 10",
-            "Lớp 11",
-            "Lớp 12",
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
         ],
         fees: [
             "Dưới 20.000đ",
@@ -41,8 +60,85 @@ const FormPost = ({ func }) => {
             "Trên 100.000đ",
         ],
         students: ["Dưới 10 học viên", "10-20 học viên", "Trên 20 học viên"],
-        sessions: ["Thứ Hai", "Thứ Ba", "Thứ Tư", "Thứ Năm", "Thứ Sáu", "Thứ Bảy", "Chủ Nhật"],
-        levels: ["Tốt nghiệp THPT", "Sinh viên", "Tốt nghiệp Đại học", "Tốt nghiệp Đại học Sư Phạm"]
+        sessions: ["Thứ hai", "Thứ ba", "Thứ tư", "Thứ năm", "Thứ sáu", "Thứ bảy", "Chủ nhật"],
+        levels: ["Có bằng tốt nghiệp trung học phổ thông",
+            "Có bằng cử nhân",
+            "Có bằng kĩ sư",
+            "Có bằng thạc sĩ",
+            "Có bằng tiến sĩ"]
+    };
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        setShowPopup(true);
+    };
+
+    const confirmSubmission = async () => {
+        setShowPopup(false);
+
+        const formData = {
+            id,
+            subject,
+            selectedClasses,
+            level,
+            studentNumber,
+            fees,
+            location,
+            days,
+            classTimes,
+            note
+        };
+        console.log(formData);
+
+        try {
+            const response = await fetch(`${import.meta.env.VITE_API_ENDPOINT}/api/posts/`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    parent_id: formData.id,
+                    subject: formData.subject,
+                    address: formData.location,
+                    grade: formData.selectedClasses,
+                    background_desired: formData.level,
+                    session_per_week: formData.days,
+                    wage_per_session: formData.fees,
+                    student_number: formData.studentNumber,
+                    class_times: formData.classTimes.map((time) => ({
+                        weekday: time.session,
+                        time_start: time.timeStart,
+                        time_end: time.timeEnd,
+                    })),
+                    description: formData.note,
+                    duration: 2,
+                }),
+            });
+
+            if (response.ok) {
+                toast.success("Đăng bài thành công", {
+                    position: "bottom-right",
+                    autoClose: 5000,
+                    hideProgressBar: true,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                });
+                navigate('/parent/pending-posts')
+            } else {
+                toast.error("Đăng bài thất bại", {
+                    position: "bottom-right",
+                    autoClose: 5000,
+                    hideProgressBar: true,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                });
+            }
+        } catch (error) {
+            console.log(error);
+        }
     };
     return (
         <div>
@@ -125,10 +221,17 @@ const FormPost = ({ func }) => {
                 <p className='font-semibold text-[1.2rem] text-shadow-sm'>{func}</p>
             </div>
             <div>
-                <form action="" className='flex flex-col ml-[20vw]'>
+                <form
+                    className='flex flex-col ml-[20vw]'
+                    onSubmit={handleSubmit}
+                >
                     <div className="form__row flex mb-5 items-center">
                         <label className="form__label min-w-[125px] font-semibold" htmlFor="subject">Môn học:</label>
-                        <select className="w-[20vw] shadow-md border-2 border-custom_gray bg-gray-200 rounded-md py-1 px-2 text-[0.9rem] focus:outline-none" id="subject" >
+                        <select
+                            className="w-[20vw] shadow-md border-2 border-custom_gray bg-gray-200 rounded-md py-1 px-2 text-[0.9rem] focus:outline-none"
+                            id="subject"
+                            onChange={(e) => setSubject(e.target.value)}
+                        >
                             {data.subjects.map((subject, index) => (
                                 <option key={index} value={subject}>{subject}</option>
                             ))}
@@ -139,31 +242,64 @@ const FormPost = ({ func }) => {
                         <div className="w-[30vw] grid grid-cols-3 justify-self-center">
                             {data.classesFrom.map((classItem, index) => (
                                 <div key={index}>
-                                    <input type="checkbox" id={index} value={classItem} />
-                                    <label htmlFor={index} className="ml-2">{classItem}</label>
+                                    <input
+                                        type="radio"
+                                        id={index}
+                                        name="classes"
+                                        value={classItem}
+                                        onChange={(e) => {
+                                            if (e.target.checked) {
+                                                setSelectedClasses(classItem);
+                                            } else {
+                                                setSelectedClasses(selectedClasses.filter(item => item !== classItem));
+                                            }
+                                        }}
+                                    />
+                                    <label htmlFor={index} className="ml-2">Lớp {classItem}</label>
                                 </div>
                             ))}
                         </div>
                     </div>
                     <div className="form__row flex mb-5 items-center">
                         <label className="form__label min-w-[125px] font-semibold" htmlFor="levels">Trình độ:</label>
-                        <select className="w-[20vw] shadow-md border-2 border-custom_gray bg-gray-200 rounded-md py-1 px-2 text-[0.9rem] focus:outline-none" id="levels" >
-                            {data.levels.map((subject, index) => (
-                                <option key={index} value={subject}>{subject}</option>
+                        <select
+                            className="w-[20vw] shadow-md border-2 border-custom_gray bg-gray-200 rounded-md py-1 px-2 text-[0.9rem] focus:outline-none"
+                            id="levels"
+                            onChange={(e) => setLevel(e.target.value)}
+                        >
+                            {data.levels.map((level, index) => (
+                                <option key={index} value={level}>{level}</option>
                             ))}
                         </select>
                     </div>
                     <div className="form__row flex mb-5 items-center">
                         <label className="form__label min-w-[125px] font-semibold" htmlFor="studentNumber">Số học viên:</label>
-                        <input className="w-[20vw] shadow-md border-2 border-custom_gray bg-gray-200 rounded-md py-1 px-2 text-[0.9rem] focus:outline-none" type='number' min='0' id="studentNumber" />
+                        <input
+                            className="w-[20vw] shadow-md border-2 border-custom_gray bg-gray-200 rounded-md py-1 px-2 text-[0.9rem] focus:outline-none"
+                            type='number'
+                            min='0'
+                            id="studentNumber"
+                            onChange={(e) => setStudentNumber(Number(e.target.value))}
+                        />
                     </div>
                     <div className="form__row flex mb-5 items-center">
                         <label className="form__label min-w-[125px] font-semibold" htmlFor="fees">Học phí (/h):</label>
-                        <input className="w-[20vw] shadow-md border-2 border-custom_gray bg-gray-200 rounded-md py-1 px-2 text-[0.9rem] focus:outline-none" type='number' min='0' id="studentNumber" />
+                        <input
+                            className="w-[20vw] shadow-md border-2 border-custom_gray bg-gray-200 rounded-md py-1 px-2 text-[0.9rem] focus:outline-none"
+                            type='number'
+                            min='0'
+                            id="studentNumber"
+                            onChange={(e) => setFees(Number(e.target.value))}
+                        />
                     </div>
                     <div className="form__row flex mb-5 items-center">
                         <label className="form__label min-w-[125px] font-semibold" htmlFor="locations">Địa chỉ:</label>
-                        <input className="w-[20vw] shadow-md border-2 border-custom_gray bg-gray-200 rounded-md py-1 px-2 text-[0.9rem] focus:outline-none" type='text' id="locations" />
+                        <input
+                            className="w-[20vw] shadow-md border-2 border-custom_gray bg-gray-200 rounded-md py-1 px-2 text-[0.9rem] focus:outline-none"
+                            type='text'
+                            id="locations"
+                            onChange={(e) => setLocation(e.target.value)}
+                        />
                     </div>
                     <div className="form__row flex mb-5 items-center">
                         <label className="form__label min-w-[125px] font-semibold" htmlFor="days">Số buổi (/tuần:)</label>
@@ -171,7 +307,10 @@ const FormPost = ({ func }) => {
                             className="w-[20vw] shadow-md border-2 border-custom_gray bg-gray-200 rounded-md py-1 px-2 text-[0.9rem] focus:outline-none"
                             type='number'
                             id="days"
-                            onChange={handleDays}
+                            onChange={(e) => {
+                                setDays(e.target.value)
+                                setClassTimes(Array.from({ length: Number(e.target.value) }, () => ({ timeStart: '', timeEnd: '', session: 'Thứ Hai' })));
+                            }}
                             min='1'
                         />
                     </div>
@@ -181,7 +320,15 @@ const FormPost = ({ func }) => {
                             {
                                 Array.from({ length: days }).map((_, index) => (
                                     <div key={index} className='flex items-center mb-2'>
-                                        <select className="w-[8vw] shadow-md border-2 border-gray-300 bg-gray-200 rounded-md py-1 px-2 text-[0.9rem] focus:outline-none" id="levels" >
+                                        <select
+                                            className="w-[8vw] shadow-md border-2 border-gray-300 bg-gray-200 rounded-md py-1 px-2 text-[0.9rem] focus:outline-none"
+                                            id="levels"
+                                            onChange={(e) => {
+                                                const updatedClassTimes = [...classTimes];
+                                                updatedClassTimes[index].session = e.target.value;
+                                                setClassTimes(updatedClassTimes);
+                                            }}
+                                        >
                                             {data.sessions.map((subject, index) => (
                                                 <option key={index} value={subject}>{subject}</option>
                                             ))}
@@ -191,15 +338,22 @@ const FormPost = ({ func }) => {
                                             Từ &nbsp;
                                             <input
                                                 type="time"
-                                                defaultValue="--:--"
                                                 className="w-[8rem] py-1 px-3 bg-gray-200 border border-gray-300 rounded-md shadow-md focus:outline-none transition-all duration-150 ease-in-out"
-                                                onInput={(e) => e.target.setCustomValidity('')}
-                                                onInvalid={(e) => e.target.setCustomValidity('--:--')}
+                                                onChange={(e) => {
+                                                    const updatedClassTimes = [...classTimes];
+                                                    updatedClassTimes[index].timeStart = e.target.value;
+                                                    setClassTimes(updatedClassTimes);
+                                                }}
                                             />
                                             &nbsp;đến&nbsp;
                                             <input
                                                 type="time"
                                                 className="w-[8rem] py-1 px-3 bg-gray-200 border border-gray-300 rounded-md shadow-md focus:outline-none transition-all duration-150 ease-in-out"
+                                                onChange={(e) => {
+                                                    const updatedClassTimes = [...classTimes];
+                                                    updatedClassTimes[index].timeEnd = e.target.value;
+                                                    setClassTimes(updatedClassTimes);
+                                                }}
                                             />
                                         </div>
                                     </div>
@@ -210,7 +364,12 @@ const FormPost = ({ func }) => {
                     </div>
                     <div className="form__row flex mb-5">
                         <label className="form__label min-w-[125px] font-semibold" htmlFor="note">Ghi chú:</label>
-                        <textarea className="w-[20vw] h-[10vh] shadow-md border-2 border-custom_gray bg-gray-200 rounded-md py-1 px-2 text-[0.9rem] focus:outline-none" type='text' id="note" />
+                        <textarea
+                            className="w-[20vw] h-[10vh] shadow-md border-2 border-custom_gray bg-gray-200 rounded-md py-1 px-2 text-[0.9rem] focus:outline-none"
+                            type='text'
+                            id="note"
+                            onChange={(e) => setNote(e.target.value)}
+                        />
                     </div>
                     <div>
                         <button className='flex bg-custom_darkblue p-2 rounded-lg ml-48'>
@@ -223,6 +382,42 @@ const FormPost = ({ func }) => {
                     </div>
                 </form>
             </div>
+
+            {showPopup && (
+                <Popup
+                    open={showPopup}
+                    closeOnDocumentClick={false}
+                    onClose={() => setShowPopup(false)}
+                    position="right center"
+                    contentStyle={{ width: '400px', borderRadius: '10px', padding: '1%' }}
+                >
+                    <div >
+                        <div className=''>
+                            <p className='font-bold text-[1.1rem]'>Xác nhận</p>
+                        </div>
+                        <hr className='my-2' />
+                        <p>Bạn có muốn tạo bài đăng này?</p>
+
+                        <div className="flex justify-end mt-4">
+                            <button
+                                className="bg-red-500 text-white py-1 rounded w-[90px]"
+                                onClick={() => setShowPopup(false)}
+                            >
+                                <i className="fa-solid fa-ban mr-2"></i>
+                                Cancel
+                            </button>
+                            <button
+                                className="bg-custom_darkblue text-white py-1 rounded w-[90px] ml-2"
+                                onClick={confirmSubmission}
+                            >
+                                <i className="fa-solid fa-check mr-2"></i>
+                                OK
+                            </button>
+
+                        </div>
+                    </div>
+                </Popup>
+            )}
         </div>
     )
 }

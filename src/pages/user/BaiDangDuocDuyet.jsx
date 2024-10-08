@@ -21,6 +21,9 @@ const BaiDangDuocDuyet = () => {
   const handlePageChange = (page) => {
     setCurrentPage(page);
   };
+
+
+
   return (
     <Parent>
       <Page role='parent' activeItem={3}>
@@ -31,7 +34,7 @@ const BaiDangDuocDuyet = () => {
               className="border-[3px] rounded-[1rem] border-[#002182] shadow-md bg-white"
             >
               <ItemPost user={parent} tag="Được duyệt" >
-                <button className="bg-yellow-500 w-[14vw] p-2 rounded-2xl font-semibold mx-8">Duyệt bài đăng</button>
+                <button className="bg-yellow-500 w-[14vw] p-2 rounded-2xl font-semibold mx-8">Sửa bài đăng</button>
                 <button className="bg-yellow-500 w-[14vw] p-2 rounded-2xl font-semibold mx-8">Xóa bài đăng</button>
                 <button className="bg-yellow-500 w-[14vw] p-2 rounded-2xl font-semibold mx-8">Danh sách gia sư đăng ký</button>
               </ItemPost>
