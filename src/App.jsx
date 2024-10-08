@@ -21,6 +21,8 @@ import CreatePost from "./pages/user/CreatePost";
 import UpdatePost from "./pages/user/UpdatePost";
 import MainPageParent from "./pages/user/MainPageParent";
 import MainPageTutor from "./pages/user/MainPageTutor";
+import TutorProfile from "./pages/user/tutorProfile";
+import ParentProfile from "./pages/user/parentProfile";
 function App() {
   return (
     <AppProvider>
@@ -44,6 +46,8 @@ function App() {
           <Route path="/parent/update-post" element={<UpdatePost />} />
           <Route path="/parent/main-page" element={<MainPageParent />} />
           <Route path="/tutor/main-page" element={<MainPageTutor />} />
+          <Route path="/tutor/profile" element={<TutorProfile />} />
+          <Route path="/parent/profile" element={<ParentProfile />} />
         </Routes>
         <Footer />
       </div>
