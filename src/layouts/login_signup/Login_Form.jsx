@@ -38,7 +38,7 @@ const LoginForm = () => {
         console.log("Đăng nhập thành công!");
         console.log("Role: ", role)
         if (role === 'admin') {
-          navigate('/admin/approve-post')
+          navigate('/admin/approved-post')
         } else if (role === 'tutor') {
           navigate('/tutor/main-page')
         } else if (role === 'parent') {
