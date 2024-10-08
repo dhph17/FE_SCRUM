@@ -1,13 +1,23 @@
 import PropTypes from "prop-types";
 import { useEffect, useState } from "react";
 
-import Img1 from "../../assets/image/quiz.png"
-import Img2 from "../../assets/image/assignment.png"
-import Img3 from "../../assets/image/medal.png"
+import Img1 from "../../assets/image/quiz.png";
+import Img2 from "../../assets/image/assignment.png";
+import Img3 from "../../assets/image/medal.png";
+import ClassTimeDetail from "../../layouts/popup/classTime_Popup";
 
 const ItemPostVu = ({ user, children, tag }) => {
     const [tagPost, setTagPost] = useState()
     const [userName, setUserName] = useState(null);
+    const [selectedTime, setSelectedTime] = useState(null);
+
+    const handleBuoiHocClick = (post) => {
+        setSelectedTime(post);
+    };
+
+    const handleClosePopup = () => {
+        setSelectedTime(null);
+    };
 
     useEffect(() => {
         if (tag === "Đã giao") {
@@ -99,7 +109,23 @@ const ItemPostVu = ({ user, children, tag }) => {
                     </li>
                     <li className="flex gap-2">
                         <strong>Buổi học:</strong>
-                        <p>{user.session_per_week}</p>
+                        <p className="flex flex-wrap gap-2">
+                            {" "}
+                            {user.class_times.map((time, index) => (
+                                <span
+                                    key={index}
+                                    className="bg-[#002182] text-white px-3 py-1 rounded-full"
+                                >
+                                    {time.weekday}
+                                </span>
+                            ))}
+                        </p>
+                        <button
+                            className="bg-[#F1BB45] text-black font-semibold font-poppins py-1 px-3.5 ml-7 rounded-lg shadow hover:bg-yellow-400 transition duration-300"
+                            onClick={() => handleBuoiHocClick(user)}
+                        >
+                            Chi tiết
+                        </button>
                     </li>
                     <li className="flex gap-2">
                         <strong>Số học viên:</strong>
@@ -114,14 +140,21 @@ const ItemPostVu = ({ user, children, tag }) => {
                     {children}
                 </div>
             </div>
-        </div>
-    )
-}
 
-ItemPostVu.propTypes = {
-    user: PropTypes.object,
-    children: PropTypes.node,
-    tag: PropTypes.string
+            {selectedTime && (
+                <ClassTimeDetail
+                    classTimes={selectedTime.class_times}
+                    onClose={handleClosePopup}
+                />
+            )}
+        </div>
+    );
 };
 
-export default ItemPostVu
+ItemPostVu.propTypes = {
+    user: PropTypes.array,
+    children: PropTypes.node,
+    tag: PropTypes.string.isRequired,
+};
+
+export default ItemPostVu;
