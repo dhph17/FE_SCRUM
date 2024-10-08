@@ -22,7 +22,7 @@ const ItemPostVu = ({ user, children, tag }) => {
     useEffect(() => {
         if (tag === "Đã giao") {
             setTagPost(Img2)
-        } else if (tag === "Được duyệt") {
+        } else if (tag === "Đã phê duyệt") {
             setTagPost(Img3)
         } else if (tag === "Chờ duyệt") {
             setTagPost(Img1)

@@ -22,6 +22,7 @@ import UpdatePost from "./pages/user/UpdatePost";
 import MainPageParent from "./pages/user/MainPageParent";
 import MainPageTutor from "./pages/user/MainPageTutor";
 import BaiDangChoDuyet from "./pages/user/BaiDangChoDuyet";
+import ApprovedPost from "./pages/admin/approvedPost";
 function App() {
   return (
     <AppProvider>
@@ -38,8 +39,8 @@ function App() {
           <Route path="/panel" element={<Panel />} />
           <Route path="/admin/tutor-account" element={<TutorAccount />} />
           <Route path="/admin/parent-account" element={<ParentAccount />} />
-          <Route path="/admin/approve-post" element={<DuyetBaiDang />} />
-
+          <Route path="/admin/pending-posts" element={<DuyetBaiDang />} />
+          <Route path="/admin/approved-posts" element={<ApprovedPost />} />
           <Route path="/parent/assigned" element={<PostManagement />} />
           <Route path="/parent/view-posts" element={<PostApproval />} />
           <Route path="/parent/pending-posts" element={<BaiDangChoDuyet />} />
