@@ -18,10 +18,12 @@ const DuyetBaiDang = () => {
             headers: {
               Authorization: `Bearer ${sessionToken}`,
               "Content-Type": "application/json",
+
             },
           }
         );
         const data = await response.json();
+
         if (response.ok) {
           setPostList(data.results);
         } else {
