@@ -12,6 +12,7 @@ const DuyetBaiDang = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
   const { sessionToken, setSessionToken, setRole } = useAppContext();
+  console.log("Current session token:", sessionToken);
   useEffect(() => {
     const fetchPosts = async () => {
       try {
@@ -22,10 +23,12 @@ const DuyetBaiDang = () => {
             headers: {
               Authorization: `Bearer ${sessionToken}`,
               "Content-Type": "application/json",
+              
             },
           }
         );
         const data = await response.json();
+        
         if (response.ok) {
           const approvedPosts = data.filter(
             (post) => post.status === "Đang chờ phê duyệt"
