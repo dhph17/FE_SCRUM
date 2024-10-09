@@ -3,20 +3,23 @@ import Page from "../../layouts/panel/Panel";
 import ItemPost from "../../layouts/itemPost/ItemPost";
 import Pagination from "../../layouts/pagination/pagination";
 import Admin from "../../layouts/PageAuthorization/admin/admin";
+import { useAppContext } from "../../AppProvider";
 
 const ApprovedPost = () => {
   const [postList, setPostList] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
+  const { sessionToken } = useAppContext();
   const itemsPerPage = 10;
 
   useEffect(() => {
     const fetchApprovedPosts = async () => {
       try {
         const response = await fetch(
-          `${import.meta.env.VITE_API_ENDPOINT}/api/admin/posts/`,
+          `${import.meta.env.VITE_API_ENDPOINT}/api/posts/`,
           {
             method: "GET",
             headers: {
+              "Authorization": `Bearer ${sessionToken}`,
               "Content-Type": "application/json",
             },
           }
@@ -37,6 +40,8 @@ const ApprovedPost = () => {
 
     fetchApprovedPosts();
   }, []);
+
+
 
   const totalPages = Math.ceil(postList.length / itemsPerPage);
 
@@ -66,15 +71,14 @@ const ApprovedPost = () => {
             </div>
           ))}
         </div>
+        <div className="mt-8">
+          <Pagination
+            currentPage={currentPage}
+            totalPages={totalPages}
+            onPageChange={handlePageChange}
+          />
+        </div>
       </Page>
-
-      <div className="mt-8">
-        <Pagination
-          currentPage={currentPage}
-          totalPages={totalPages}
-          onPageChange={handlePageChange}
-        />
-      </div>
     </Admin>
   );
 };

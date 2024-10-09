@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { useAppContext } from "../../AppProvider";
 import Page from "../../layouts/panel/Panel";
 import ItemPost from "../../layouts/itemPost/ItemPost";
@@ -7,11 +6,8 @@ import Pagination from "../../layouts/pagination/pagination";
 import Admin from "../../layouts/PageAuthorization/admin/admin";
 
 const DuyetBaiDang = () => {
-  let navigate = useNavigate();
   const [postList, setPostList] = useState([]);
-  const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 10;
-  const { sessionToken, setSessionToken, setRole } = useAppContext();
+  const { sessionToken } = useAppContext();
   useEffect(() => {
     const fetchPosts = async () => {
       try {
@@ -27,10 +23,7 @@ const DuyetBaiDang = () => {
         );
         const data = await response.json();
         if (response.ok) {
-          const approvedPosts = data.filter(
-            (post) => post.status === "Đang chờ phê duyệt"
-          );
-          setPostList(approvedPosts);
+          setPostList(data.results);
         } else {
           console.error("Failed to fetch posts");
         }
@@ -42,6 +35,8 @@ const DuyetBaiDang = () => {
     fetchPosts();
   }, []);
 
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 10;
   const totalPages = Math.ceil(postList.length / itemsPerPage);
 
   const currentPosts = postList.slice(
@@ -56,7 +51,7 @@ const DuyetBaiDang = () => {
   const approvePost = async (postId, status) => {
     try {
       const response = await fetch(
-        "${import.meta.env.VITE_API_ENDPOINT}/api/admin/posts/",
+        `${import.meta.env.VITE_API_ENDPOINT}/api/admin/posts/`,
         {
           method: "POST",
           headers: {
@@ -71,10 +66,6 @@ const DuyetBaiDang = () => {
       );
 
       if (response.ok) {
-        setSessionToken("");
-        setRole("");
-        localStorage.removeItem("refreshToken");
-        navigate("/");
         console.log("Cập nhật trạng thái thành công!");
       } else {
         console.error("Lỗi khi cập nhật trạng thái!");
@@ -86,7 +77,7 @@ const DuyetBaiDang = () => {
 
   return (
     <Admin>
-      <Page activeItem={3}>
+      <Page activeItem={4}>
         <div className="relative max-h-[38rem] overflow-y-auto grid grid-cols-1 gap-4">
           {currentPosts.map((post, index) => (
             <div
@@ -96,7 +87,7 @@ const DuyetBaiDang = () => {
               <ItemPost user={post} tag={post.status || "Chờ duyệt"}>
                 <button
                   className="bg-yellow-500 w-[14vw] p-2 rounded-2xl font-semibold mx-8"
-                  onClick={() => approvePost(post.id, "Đã phê duyệt")}
+                  onClick={() => approvePost(post.post_id, "Đã phê duyệt")}
                 >
                   Duyệt bài đăng
                 </button>
@@ -107,15 +98,17 @@ const DuyetBaiDang = () => {
             </div>
           ))}
         </div>
+
+        <div className="mt-8">
+          <Pagination
+            currentPage={currentPage}
+            totalPages={totalPages}
+            onPageChange={handlePageChange}
+          />
+        </div>
       </Page>
 
-      <div className="mt-8">
-        <Pagination
-          currentPage={currentPage}
-          totalPages={totalPages}
-          onPageChange={handlePageChange}
-        />
-      </div>
+
     </Admin>
   );
 };

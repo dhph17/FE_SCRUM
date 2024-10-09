@@ -1,5 +1,7 @@
 import PropTypes from 'prop-types';
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
+
 import Image1 from "../../assets/image/User.png";
 import Image2 from "../../assets/image/Nav.png";
 import { useAppContext } from '../../AppProvider';
@@ -33,16 +35,16 @@ const Sidebar = ({ activeItem }) => {
                             </p>
                             {showDropdown && (
                                 <div className="bg-gray-300 p-2 rounded-lg space-y-2">
-                                    <a href="/admin/approved-posts" className={`flex items-center cursor-pointer p-2 rounded-lg ${activeItem === 3 ? 'bg-custom_darkblue text-white' : 'hover:bg-custom_darkblue hover:text-white'}`}>
+                                    <Link to="/admin/approved-posts" className={`flex items-center cursor-pointer p-2 rounded-lg ${activeItem === 3 ? 'bg-custom_darkblue text-white' : 'hover:bg-custom_darkblue hover:text-white'}`}>
                                         <i className="fas fa-check mr-2"></i>
                                         Bài đăng đã duyệt
-                                        
-                                    </a>
-                                    <a href="/admin/pending-posts" className={`flex items-center cursor-pointer p-2 rounded-lg ${activeItem === 4 ? 'bg-custom_darkblue text-white' : 'hover:bg-custom_darkblue hover:text-white'}`}>
+
+                                    </Link>
+                                    <Link to='/admin/pending-posts' className={`flex items-center cursor-pointer p-2 rounded-lg ${activeItem === 4 ? 'bg-custom_darkblue text-white' : 'hover:bg-custom_darkblue hover:text-white'}`}>
                                         <i className="fas fa-clock mr-2"></i>
                                         Bài đăng chờ duyệt
-                                        
-                                    </a>
+
+                                    </Link>
                                 </div>
                             )}
                         </div>
