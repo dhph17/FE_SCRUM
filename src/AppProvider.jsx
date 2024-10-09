@@ -11,7 +11,10 @@ export const useAppContext = () => {
     return context;
 };
 
-export default function AppProvider({ children, initialSessionToken, initialRole }) {
+export default function AppProvider({ children, initialSessionToken, initialRole, initialId }) {
+    const [id, setId] = useState(() => {
+        return initialId || localStorage.getItem('id');
+    });
     const [role, setRole] = useState(() => {
         return initialRole || localStorage.getItem('role');
     });
@@ -24,14 +27,16 @@ export default function AppProvider({ children, initialSessionToken, initialRole
         if (sessionToken && role) {
             localStorage.setItem('role', role)
             localStorage.setItem('accessToken', sessionToken);
+            localStorage.setItem('id', id)
         } else {
             localStorage.removeItem('accessToken');
             localStorage.removeItem('role')
+            localStorage.removeItem('id')
         }
-    }, [sessionToken, role]);
+    }, [sessionToken, role, id]);
 
     return (
-        <AppContext.Provider value={{ sessionToken, setSessionToken, role, setRole }}>
+        <AppContext.Provider value={{ sessionToken, setSessionToken, role, setRole, id, setId }}>
             {children}
         </AppContext.Provider>
     );
@@ -40,5 +45,6 @@ export default function AppProvider({ children, initialSessionToken, initialRole
 AppProvider.propTypes = {
     children: PropTypes.node,
     initialSessionToken: PropTypes.string,
-    initialRole: PropTypes.string
+    initialRole: PropTypes.string,
+    initialId: PropTypes.string
 };

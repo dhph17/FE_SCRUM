@@ -8,7 +8,7 @@ const LoginForm = () => {
   const [error, setError] = useState(null);
   let navigate = useNavigate()
 
-  const { setSessionToken, setRole } = useAppContext()
+  const { setSessionToken, setRole, setId } = useAppContext()
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -38,10 +38,11 @@ const LoginForm = () => {
         console.log("Đăng nhập thành công!");
         console.log("Role: ", role)
         if (role === 'admin') {
-          navigate('/admin/approve-post')
+          navigate('/admin/approved-post')
         } else if (role === 'tutor') {
           navigate('/tutor/main-page')
         } else if (role === 'parent') {
+          setId(data.data.parent_id)
           navigate('/parent/main-page')
         }
       } else {

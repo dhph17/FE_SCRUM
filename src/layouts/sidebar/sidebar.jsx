@@ -35,11 +35,11 @@ const Sidebar = ({ activeItem }) => {
                                 <div className="bg-gray-300 p-2 rounded-lg space-y-2">
                                     <p className={`flex items-center cursor-pointer p-2 rounded-lg ${activeItem === 3 ? 'bg-custom_darkblue text-white' : 'hover:bg-custom_darkblue hover:text-white'}`}>
                                         <i className="fas fa-check mr-2"></i>
-                                        Bài đăng chờ duyệt
+                                        Bài đăng đã duyệt
                                     </p>
                                     <p className={`flex items-center cursor-pointer p-2 rounded-lg ${activeItem === 4 ? 'bg-custom_darkblue text-white' : 'hover:bg-custom_darkblue hover:text-white'}`}>
                                         <i className="fas fa-clock mr-2"></i>
-                                        Bài đăng được duyệt
+                                        Bài đăng chờ duyệt
                                     </p>
                                 </div>
                             )}

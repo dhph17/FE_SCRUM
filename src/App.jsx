@@ -12,7 +12,7 @@ import CreateNewPassword from "./pages/login/CreateNewPassword";
 import Login from "./pages/login/Login";
 import Start from "./pages/start/Start";
 import Panel from "./layouts/panel/Panel";
-import PostPendingApproval from "./pages/user/BaiDangDuocDuyet";
+import PostApproval from "./pages/user/BaiDangDuocDuyet";
 import PostManagement from "./pages/user/SuatDayDaGiao";
 import DuyetBaiDang from "./pages/admin/DuyetBaiDang";
 import TutorAccount from "./pages/admin/tutorAccount";
@@ -21,6 +21,11 @@ import CreatePost from "./pages/user/CreatePost";
 import UpdatePost from "./pages/user/UpdatePost";
 import MainPageParent from "./pages/user/MainPageParent";
 import MainPageTutor from "./pages/user/MainPageTutor";
+import BaiDangChoDuyet from "./pages/user/BaiDangChoDuyet";
+import ApprovedPost from "./pages/admin/approvedPost";
+import TutorProfile from "./pages/user/tutorProfile";
+import ParentProfile from "./pages/user/parentProfile";
+
 function App() {
   return (
     <AppProvider>
@@ -37,13 +42,20 @@ function App() {
           <Route path="/panel" element={<Panel />} />
           <Route path="/admin/tutor-account" element={<TutorAccount />} />
           <Route path="/admin/parent-account" element={<ParentAccount />} />
-          <Route path="/admin/approve-post" element={<DuyetBaiDang />} />
+          <Route path="/admin/pending-posts" element={<DuyetBaiDang />} />
+          <Route path="/admin/approved-posts" element={<ApprovedPost />} />
+
           <Route path="/parent/assigned" element={<PostManagement />} />
-          <Route path="/parent/view-post" element={<PostPendingApproval />} />
+          <Route path="/parent/view-posts" element={<PostApproval />} />
+          <Route path="/parent/pending-posts" element={<BaiDangChoDuyet />} />
           <Route path="/parent/create-post" element={<CreatePost />} />
           <Route path="/parent/update-post" element={<UpdatePost />} />
           <Route path="/parent/main-page" element={<MainPageParent />} />
+          <Route path="/parent/profile" element={<ParentProfile />} />
+
           <Route path="/tutor/main-page" element={<MainPageTutor />} />
+          <Route path="/tutor/profile" element={<TutorProfile />} />
+
         </Routes>
         <Footer />
       </div>
