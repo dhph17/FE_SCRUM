@@ -5,6 +5,8 @@ import ItemPost from "../../layouts/itemPost/ItemPost";
 import Pagination from "../../layouts/pagination/pagination";
 import Admin from "../../layouts/PageAuthorization/admin/admin";
 import VerifyPost from "../../layouts/popup/Verify_Post";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const DuyetBaiDang = () => {
   const [postList, setPostList] = useState([]);
@@ -12,11 +14,11 @@ const DuyetBaiDang = () => {
   const [selectedPost, setSelectedPost] = useState(null); // Chọn bài đăng hiện tại để duyệt
 
   const handleApproveClick = (post) => {
-    setSelectedPost(post); 
+    setSelectedPost(post);
   };
 
   const handleClosePopup = () => {
-    setSelectedPost(null); 
+    setSelectedPost(null);
   };
 
   const handleApprovePost = async () => {
@@ -40,7 +42,17 @@ const DuyetBaiDang = () => {
 
       if (response.ok) {
         console.log("Cập nhật trạng thái thành công!");
-        setSelectedPost(null); 
+        setPostList((prevPosts) => prevPosts.filter(post => post.post_id !== selectedPost.post_id));
+        toast.success("Đăng bài thành công", {
+          position: "bottom-right",
+          autoClose: 5000,
+          hideProgressBar: true,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
+        setSelectedPost(null);
       } else {
         console.error("Lỗi khi cập nhật trạng thái!");
       }
@@ -125,8 +137,8 @@ const DuyetBaiDang = () => {
         {selectedPost && (
           <VerifyPost
             post={selectedPost}
-            onApprove={handleApprovePost} 
-            onClose={handleClosePopup}  
+            onApprove={handleApprovePost}
+            onClose={handleClosePopup}
           />
         )}
       </Page>

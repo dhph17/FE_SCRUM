@@ -9,14 +9,14 @@ const VerifyPost = ({ onApprove, onClose }) => {
 
         <div className="flex justify-around mt-6">
           <button
-            className="bg-green-500 text-white px-6 py-3 rounded-lg shadow hover:bg-green-600 transition duration-300"
-            onClick={onApprove} 
+            className="bg-green-500 w-[120px] text-white py-2 rounded-lg shadow hover:bg-green-600 transition duration-300"
+            onClick={onApprove}
           >
             Xác nhận
           </button>
           <button
-            className="bg-red-500 text-white px-6 py-3 rounded-lg shadow hover:bg-red-600 transition duration-300"
-            onClick={onClose} 
+            className="bg-red-500 w-[120px] text-white py-2 rounded-lg shadow hover:bg-red-600 transition duration-300"
+            onClick={onClose}
           >
             Đóng
           </button>
@@ -27,9 +27,9 @@ const VerifyPost = ({ onApprove, onClose }) => {
 };
 
 VerifyPost.propTypes = {
-  post: PropTypes.object.isRequired, 
-  onApprove: PropTypes.func.isRequired, 
-  onClose: PropTypes.func.isRequired,   
+  post: PropTypes.object.isRequired,
+  onApprove: PropTypes.func.isRequired,
+  onClose: PropTypes.func.isRequired,
 };
 
 export default VerifyPost;
