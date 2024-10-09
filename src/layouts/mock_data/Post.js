@@ -41,4 +41,5 @@ const Post = Array(60).fill({
   ],
 });
 
+
 export default Post;
