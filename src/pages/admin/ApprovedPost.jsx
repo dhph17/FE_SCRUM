@@ -1,19 +1,46 @@
-import { useState } from "react";
-
+import { useEffect, useState } from "react";
 import Page from "../../layouts/panel/Panel";
-import postMockData from "../../layouts/mock_data/Post";
 import ItemPost from "../../layouts/itemPost/ItemPost";
 import Pagination from "../../layouts/pagination/pagination";
 import Admin from "../../layouts/PageAuthorization/admin/admin";
 
 const ApprovedPost = () => {
-  const post = postMockData;
-
+  const [postList, setPostList] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
-  const totalPages = Math.ceil(post.length / itemsPerPage);
 
-  const currentPosts = post.slice(
+  useEffect(() => {
+    const fetchApprovedPosts = async () => {
+      try {
+        const response = await fetch(
+          `${import.meta.env.VITE_API_ENDPOINT}/api/admin/posts/`,
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
+        const data = await response.json();
+        if (response.ok) {
+          const approvedPosts = data.filter(
+            (post) => post.status === "Đã phê duyệt"
+          );
+          setPostList(approvedPosts);
+        } else {
+          console.error("Failed to fetch posts");
+        }
+      } catch (error) {
+        console.error("Error fetching posts:", error);
+      }
+    };
+
+    fetchApprovedPosts();
+  }, []);
+
+  const totalPages = Math.ceil(postList.length / itemsPerPage);
+
+  const currentPosts = postList.slice(
     (currentPage - 1) * itemsPerPage,
     currentPage * itemsPerPage
   );
@@ -21,17 +48,20 @@ const ApprovedPost = () => {
   const handlePageChange = (page) => {
     setCurrentPage(page);
   };
+
   return (
     <Admin>
       <Page activeItem={3}>
         <div className="relative max-h-[38rem] overflow-y-auto grid grid-cols-1 gap-4">
-          {currentPosts.map((tutor, index) => (
+          {currentPosts.map((post, index) => (
             <div
               key={index}
               className="border-[3px] rounded-[1rem] border-[#002182] shadow-md bg-white"
             >
-              <ItemPost user={tutor} tag="Đã phê duyệt" >
-                <button className="bg-yellow-500 w-[14vw] p-2 rounded-2xl font-semibold mx-8">Xóa bài đăng</button>
+              <ItemPost user={post} tag="Đã phê duyệt">
+                <button className="bg-yellow-500 w-[14vw] p-2 rounded-2xl font-semibold mx-8">
+                  Xóa bài đăng
+                </button>
               </ItemPost>
             </div>
           ))}
@@ -46,9 +76,6 @@ const ApprovedPost = () => {
         />
       </div>
     </Admin>
-
-
-
   );
 };
 

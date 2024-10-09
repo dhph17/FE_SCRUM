@@ -24,7 +24,7 @@ const ItemPostVu = ({ user, children, tag }) => {
             setTagPost(Img2)
         } else if (tag === "Đã phê duyệt") {
             setTagPost(Img3)
-        } else if (tag === "Chờ duyệt") {
+        } else if (tag === "Đang chờ phê duyệt") {
             setTagPost(Img1)
         }
     }, [])
