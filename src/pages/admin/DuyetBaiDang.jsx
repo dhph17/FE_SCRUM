@@ -4,10 +4,51 @@ import Page from "../../layouts/panel/Panel";
 import ItemPost from "../../layouts/itemPost/ItemPost";
 import Pagination from "../../layouts/pagination/pagination";
 import Admin from "../../layouts/PageAuthorization/admin/admin";
+import VerifyPost from "../../layouts/popup/Verify_Post";
 
 const DuyetBaiDang = () => {
   const [postList, setPostList] = useState([]);
   const { sessionToken } = useAppContext();
+  const [selectedPost, setSelectedPost] = useState(null); // Chọn bài đăng hiện tại để duyệt
+
+  const handleApproveClick = (post) => {
+    setSelectedPost(post); 
+  };
+
+  const handleClosePopup = () => {
+    setSelectedPost(null); 
+  };
+
+  const handleApprovePost = async () => {
+    if (!selectedPost) return;
+
+    try {
+      const response = await fetch(
+        `${import.meta.env.VITE_API_ENDPOINT}/api/admin/posts/`,
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${sessionToken}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            post_id: selectedPost.post_id,
+            status: "Đã phê duyệt",
+          }),
+        }
+      );
+
+      if (response.ok) {
+        console.log("Cập nhật trạng thái thành công!");
+        setSelectedPost(null); 
+      } else {
+        console.error("Lỗi khi cập nhật trạng thái!");
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  };
+
   useEffect(() => {
     const fetchPosts = async () => {
       try {
@@ -18,7 +59,6 @@ const DuyetBaiDang = () => {
             headers: {
               Authorization: `Bearer ${sessionToken}`,
               "Content-Type": "application/json",
-
             },
           }
         );
@@ -50,33 +90,6 @@ const DuyetBaiDang = () => {
     setCurrentPage(page);
   };
 
-  const approvePost = async (postId, status) => {
-    try {
-      const response = await fetch(
-        `${import.meta.env.VITE_API_ENDPOINT}/api/admin/posts/`,
-        {
-          method: "POST",
-          headers: {
-            Authorization: `Bearer ${sessionToken}`,
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            post_id: postId,
-            status: status,
-          }),
-        }
-      );
-
-      if (response.ok) {
-        console.log("Cập nhật trạng thái thành công!");
-      } else {
-        console.error("Lỗi khi cập nhật trạng thái!");
-      }
-    } catch (error) {
-      console.error("Error:", error);
-    }
-  };
-
   return (
     <Admin>
       <Page activeItem={4}>
@@ -89,7 +102,7 @@ const DuyetBaiDang = () => {
               <ItemPost user={post} tag={post.status || "Chờ duyệt"}>
                 <button
                   className="bg-yellow-500 w-[14vw] p-2 rounded-2xl font-semibold mx-8"
-                  onClick={() => approvePost(post.post_id, "Đã phê duyệt")}
+                  onClick={() => handleApproveClick(post)} // Mở popup xác nhận
                 >
                   Duyệt bài đăng
                 </button>
@@ -108,9 +121,15 @@ const DuyetBaiDang = () => {
             onPageChange={handlePageChange}
           />
         </div>
+
+        {selectedPost && (
+          <VerifyPost
+            post={selectedPost}
+            onApprove={handleApprovePost} 
+            onClose={handleClosePopup}  
+          />
+        )}
       </Page>
-
-
     </Admin>
   );
 };
