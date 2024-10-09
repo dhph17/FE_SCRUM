@@ -15,7 +15,7 @@ const ApprovedPost = () => {
     const fetchApprovedPosts = async () => {
       try {
         const response = await fetch(
-          `${import.meta.env.VITE_API_ENDPOINT}/api/posts/`,
+          `${import.meta.env.VITE_API_ENDPOINT}/api/admin/posts/?status=approved`,
           {
             method: "GET",
             headers: {
@@ -26,10 +26,7 @@ const ApprovedPost = () => {
         );
         const data = await response.json();
         if (response.ok) {
-          const approvedPosts = data.filter(
-            (post) => post.status === "Đã phê duyệt"
-          );
-          setPostList(approvedPosts);
+          setPostList(data.results);
         } else {
           console.error("Failed to fetch posts");
         }

@@ -7,15 +7,15 @@ const VerifyPost = ({ onApprove, onClose }) => {
         <h2 className="text-xl font-bold mb-4">Xác nhận duyệt bài</h2>
         <p>Bạn có chắc chắn muốn duyệt bài đăng này không?</p>
 
-        <div className="flex justify-around mt-6">
+        <div className="flex justify-end mt-6">
           <button
-            className="bg-green-500 w-[120px] text-white py-2 rounded-lg shadow hover:bg-green-600 transition duration-300"
+            className="bg-green-600 w-[100px] text-white py-2 rounded-lg shadow hover:bg-green-700 transition duration-300"
             onClick={onApprove}
           >
             Xác nhận
           </button>
           <button
-            className="bg-red-500 w-[120px] text-white py-2 rounded-lg shadow hover:bg-red-600 transition duration-300"
+            className="ml-3 bg-red-500 w-[100px] text-white py-2 rounded-lg shadow hover:bg-red-600 transition duration-300"
             onClick={onClose}
           >
             Đóng

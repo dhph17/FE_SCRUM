@@ -141,9 +141,9 @@ const ItemPostVu = ({ user, children, tag }) => {
 };
 
 ItemPostVu.propTypes = {
-    user: PropTypes.array,
+    user: PropTypes.object,
     children: PropTypes.node,
-    tag: PropTypes.string.isRequired,
+    tag: PropTypes.string,
 };
 
 export default ItemPostVu;

@@ -65,7 +65,7 @@ const DuyetBaiDang = () => {
     const fetchPosts = async () => {
       try {
         const response = await fetch(
-          `${import.meta.env.VITE_API_ENDPOINT}/api/admin/posts`,
+          `${import.meta.env.VITE_API_ENDPOINT}/api/admin/posts/?status=pending`,
           {
             method: "GET",
             headers: {

@@ -12,8 +12,8 @@ import "react-toastify/dist/ReactToastify.css";
 const FormPost = ({ func }) => {
     let navigate = useNavigate()
     const [subject, setSubject] = useState('Toán');
-    const [selectedClasses, setSelectedClasses] = useState([]);
-    const [level, setLevel] = useState('Tốt nghiệp THPT');
+    const [selectedClasses, setSelectedClasses] = useState(1);
+    const [level, setLevel] = useState('Có bằng tốt nghiệp trung học phổ thông');
     const [studentNumber, setStudentNumber] = useState(0);
     const [fees, setFees] = useState(0);
     const [location, setLocation] = useState('');
@@ -21,52 +21,10 @@ const FormPost = ({ func }) => {
     const [classTimes, setClassTimes] = useState([]);
     const [note, setNote] = useState('');
 
-    const { id } = useAppContext()
+    const { id, dataEnum } = useAppContext()
 
     const [showPopup, setShowPopup] = useState(false);
 
-    const data = {
-        subjects: [
-            "Toán",
-            "Lý",
-            "Hóa",
-            "Sinh",
-            "Văn học",
-            "Anh",
-            "Tin học",
-            "Vẽ",
-            "Nhạc cụ",
-            "Khác",
-        ],
-        classesFrom: [
-            1,
-            2,
-            3,
-            4,
-            5,
-            6,
-            7,
-            8,
-            9,
-            10,
-            11,
-            12,
-        ],
-        fees: [
-            "Dưới 20.000đ",
-            "20.000đ - 50.000đ",
-            "50.000đ - 80.000đ",
-            "80.000đ - 100.000đ",
-            "Trên 100.000đ",
-        ],
-        students: ["Dưới 10 học viên", "10-20 học viên", "Trên 20 học viên"],
-        sessions: ["Thứ hai", "Thứ ba", "Thứ tư", "Thứ năm", "Thứ sáu", "Thứ bảy", "Chủ nhật"],
-        levels: ["Có bằng tốt nghiệp trung học phổ thông",
-            "Có bằng cử nhân",
-            "Có bằng kĩ sư",
-            "Có bằng thạc sĩ",
-            "Có bằng tiến sĩ"]
-    };
     const handleSubmit = async (e) => {
         e.preventDefault();
         setShowPopup(true);
@@ -232,33 +190,22 @@ const FormPost = ({ func }) => {
                             id="subject"
                             onChange={(e) => setSubject(e.target.value)}
                         >
-                            {data.subjects.map((subject, index) => (
+                            {dataEnum.subject_enum?.map((subject, index) => (
                                 <option key={index} value={subject}>{subject}</option>
                             ))}
                         </select>
                     </div>
                     <div className="form__row flex mb-5">
                         <label className="form__label min-w-[125px] font-semibold" htmlFor="classes">Lớp:</label>
-                        <div className="w-[30vw] grid grid-cols-3 justify-self-center">
-                            {data.classesFrom.map((classItem, index) => (
-                                <div key={index}>
-                                    <input
-                                        type="radio"
-                                        id={index}
-                                        name="classes"
-                                        value={classItem}
-                                        onChange={(e) => {
-                                            if (e.target.checked) {
-                                                setSelectedClasses(classItem);
-                                            } else {
-                                                setSelectedClasses(selectedClasses.filter(item => item !== classItem));
-                                            }
-                                        }}
-                                    />
-                                    <label htmlFor={index} className="ml-2">Lớp {classItem}</label>
-                                </div>
+                        <select
+                            className="w-[20vw] shadow-md border-2 border-custom_gray bg-gray-200 rounded-md py-1 px-2 text-[0.9rem] focus:outline-none"
+                            id="subject"
+                            onChange={(e) => setSelectedClasses(e.target.value)}
+                        >
+                            {dataEnum.classes.map((subject, index) => (
+                                <option key={index} value={subject}>Lớp {subject}</option>
                             ))}
-                        </div>
+                        </select>
                     </div>
                     <div className="form__row flex mb-5 items-center">
                         <label className="form__label min-w-[125px] font-semibold" htmlFor="levels">Trình độ:</label>
@@ -267,7 +214,7 @@ const FormPost = ({ func }) => {
                             id="levels"
                             onChange={(e) => setLevel(e.target.value)}
                         >
-                            {data.levels.map((level, index) => (
+                            {dataEnum.background_enum?.map((level, index) => (
                                 <option key={index} value={level}>{level}</option>
                             ))}
                         </select>
@@ -329,7 +276,7 @@ const FormPost = ({ func }) => {
                                                 setClassTimes(updatedClassTimes);
                                             }}
                                         >
-                                            {data.sessions.map((subject, index) => (
+                                            {dataEnum.sessions.map((subject, index) => (
                                                 <option key={index} value={subject}>{subject}</option>
                                             ))}
                                         </select>

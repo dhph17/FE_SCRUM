@@ -169,8 +169,8 @@ const Sidebar = ({ activeItem }) => {
 };
 
 Sidebar.propTypes = {
-    role: PropTypes.string.isRequired,
-    activeItem: PropTypes.number.isRequired
+    role: PropTypes.string,
+    activeItem: PropTypes.number
 };
 
 export default Sidebar;
