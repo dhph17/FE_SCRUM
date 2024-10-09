@@ -27,10 +27,6 @@ const DuyetBaiDang = () => {
         );
         const data = await response.json();
         if (response.ok) {
-          setSessionToken("");
-          setRole("");
-          localStorage.removeItem("refreshToken");
-          navigate("/");
           const approvedPosts = data.filter(
             (post) => post.status === "Đang chờ phê duyệt"
           );
