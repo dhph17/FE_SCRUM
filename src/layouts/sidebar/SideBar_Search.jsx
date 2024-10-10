@@ -1,7 +1,9 @@
 import { useState } from "react";
 import { useAppContext } from '../../AppProvider';
+import { useNavigate } from "react-router-dom";
 
 const SideBarSearchParent = () => {
+  let navigate = useNavigate()
   const { role, dataEnum } = useAppContext();
   const [selectedDropdown, setSelectedDropdown] = useState(null);
   const [selectedSubject, setSelectedSubject] = useState("Môn học");
@@ -240,7 +242,10 @@ const SideBarSearchParent = () => {
       </div>
       {
         role === 'parent' &&
-        (<button className="bg-custom_yellow text-black mt-4 py-2 px-4 rounded-md w-full">
+        (<button
+          className="bg-custom_yellow text-black mt-4 py-2 px-4 rounded-md w-full"
+          onClick={() => navigate(`/parent/create-post`)}
+        >
           Tạo bài đăng mới
         </button>)
       }

@@ -224,7 +224,8 @@ const FormPost = ({ func }) => {
                         <input
                             className="w-[20vw] shadow-md border-2 border-custom_gray bg-gray-200 rounded-md py-1 px-2 text-[0.9rem] focus:outline-none"
                             type='number'
-                            min='0'
+                            min='1'
+                            required
                             id="studentNumber"
                             onChange={(e) => setStudentNumber(Number(e.target.value))}
                         />
@@ -234,8 +235,9 @@ const FormPost = ({ func }) => {
                         <input
                             className="w-[20vw] shadow-md border-2 border-custom_gray bg-gray-200 rounded-md py-1 px-2 text-[0.9rem] focus:outline-none"
                             type='number'
-                            min='0'
-                            id="studentNumber"
+                            min='1'
+                            required
+                            id="fees"
                             onChange={(e) => setFees(Number(e.target.value))}
                         />
                     </div>
@@ -244,6 +246,7 @@ const FormPost = ({ func }) => {
                         <input
                             className="w-[20vw] shadow-md border-2 border-custom_gray bg-gray-200 rounded-md py-1 px-2 text-[0.9rem] focus:outline-none"
                             type='text'
+                            required
                             id="locations"
                             onChange={(e) => setLocation(e.target.value)}
                         />
@@ -254,6 +257,7 @@ const FormPost = ({ func }) => {
                             className="w-[20vw] shadow-md border-2 border-custom_gray bg-gray-200 rounded-md py-1 px-2 text-[0.9rem] focus:outline-none"
                             type='number'
                             id="days"
+                            required
                             onChange={(e) => {
                                 setDays(e.target.value)
                                 setClassTimes(Array.from({ length: Number(e.target.value) }, () => ({ timeStart: '', timeEnd: '', session: 'Thứ Hai' })));
@@ -284,6 +288,7 @@ const FormPost = ({ func }) => {
                                         <div className="flex items-center space-x-2">
                                             Từ &nbsp;
                                             <input
+                                                required
                                                 type="time"
                                                 className="w-[8rem] py-1 px-3 bg-gray-200 border border-gray-300 rounded-md shadow-md focus:outline-none transition-all duration-150 ease-in-out"
                                                 onChange={(e) => {
@@ -294,6 +299,7 @@ const FormPost = ({ func }) => {
                                             />
                                             &nbsp;đến&nbsp;
                                             <input
+                                                required
                                                 type="time"
                                                 className="w-[8rem] py-1 px-3 bg-gray-200 border border-gray-300 rounded-md shadow-md focus:outline-none transition-all duration-150 ease-in-out"
                                                 onChange={(e) => {

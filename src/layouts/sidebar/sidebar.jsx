@@ -49,18 +49,20 @@ const Sidebar = ({ activeItem }) => {
                             )}
                         </div>
 
-                        <p
-                            className={`flex items-center cursor-pointer p-2 rounded-lg ${activeItem === 2 ? 'bg-custom_darkblue text-white' : 'hover:bg-custom_darkblue hover:text-white'}`}
+                        <Link to="/admin/tutor-account"
+                            className={`flex mt-3 items-center cursor-pointer p-2 rounded-lg ${activeItem === 1 ? 'bg-custom_darkblue text-white' : 'hover:bg-custom_darkblue hover:text-white'}`}
                         >
                             <i className="fas fa-pencil-alt mr-3"></i>
                             Quản lý tài khoản gia sư
-                        </p>
-                        <p
-                            className={`flex items-center cursor-pointer p-2 rounded-lg ${activeItem === 1 ? 'bg-custom_darkblue text-white' : 'hover:bg-custom_darkblue hover:text-white'}`}
+                        </Link>
+
+                        <Link to="/admin/parent-account"
+                            className={`flex items-center cursor-pointer p-2 rounded-lg ${activeItem === 2 ? 'bg-custom_darkblue text-white' : 'hover:bg-custom_darkblue hover:text-white'}`}
                         >
                             <i className="fas fa-pencil-alt mr-3"></i>
                             Quản lý tài khoản phụ huynh
-                        </p>
+                        </Link>
+
                     </div>
                 );
             case 'tutor':

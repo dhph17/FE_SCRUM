@@ -40,6 +40,7 @@ const LoginForm = () => {
         if (role === 'admin') {
           navigate('/admin/approved-posts')
         } else if (role === 'tutor') {
+          setId(data.data.tutor_id)
           navigate('/tutor/main-page')
         } else if (role === 'parent') {
           setId(data.data.parent_id)
