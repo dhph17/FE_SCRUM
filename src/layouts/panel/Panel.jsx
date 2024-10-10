@@ -17,7 +17,7 @@ const Panel = ({ children, activeItem }) => {
 
 Panel.propTypes = {
   children: PropTypes.node,
-  activeItem: PropTypes.number.isRequired
+  activeItem: PropTypes.number
 };
 
 export default Panel;

@@ -8,7 +8,7 @@ import Pagination from "../../layouts/pagination/pagination";
 
 const BaiDangChoDuyet = () => {
 
-    const { sessionToken } = useAppContext();
+    const { sessionToken, id } = useAppContext();
     const [posts, setPost] = useState([])
 
     const [currentPage, setCurrentPage] = useState(1);
@@ -27,7 +27,7 @@ const BaiDangChoDuyet = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await fetch(`${import.meta.env.VITE_API_ENDPOINT}/api/posts/`, {
+                const response = await fetch(`${import.meta.env.VITE_API_ENDPOINT}/api/posts/${id}`, {
                     method: "GET",
                     headers: {
                         "Authorization": `Bearer ${sessionToken}`,

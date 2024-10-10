@@ -1,5 +1,7 @@
 import PropTypes from 'prop-types';
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
+
 import Image1 from "../../assets/image/User.png";
 import Image2 from "../../assets/image/Nav.png";
 import { useAppContext } from '../../AppProvider';
@@ -33,30 +35,34 @@ const Sidebar = ({ activeItem }) => {
                             </p>
                             {showDropdown && (
                                 <div className="bg-gray-300 p-2 rounded-lg space-y-2">
-                                    <p className={`flex items-center cursor-pointer p-2 rounded-lg ${activeItem === 3 ? 'bg-custom_darkblue text-white' : 'hover:bg-custom_darkblue hover:text-white'}`}>
+                                    <Link to="/admin/approved-posts" className={`flex items-center cursor-pointer p-2 rounded-lg ${activeItem === 3 ? 'bg-custom_darkblue text-white' : 'hover:bg-custom_darkblue hover:text-white'}`}>
                                         <i className="fas fa-check mr-2"></i>
                                         Bài đăng đã duyệt
-                                    </p>
-                                    <p className={`flex items-center cursor-pointer p-2 rounded-lg ${activeItem === 4 ? 'bg-custom_darkblue text-white' : 'hover:bg-custom_darkblue hover:text-white'}`}>
+
+                                    </Link>
+                                    <Link to='/admin/pending-posts' className={`flex items-center cursor-pointer p-2 rounded-lg ${activeItem === 4 ? 'bg-custom_darkblue text-white' : 'hover:bg-custom_darkblue hover:text-white'}`}>
                                         <i className="fas fa-clock mr-2"></i>
                                         Bài đăng chờ duyệt
-                                    </p>
+
+                                    </Link>
                                 </div>
                             )}
                         </div>
 
-                        <p
-                            className={`flex items-center cursor-pointer p-2 rounded-lg ${activeItem === 2 ? 'bg-custom_darkblue text-white' : 'hover:bg-custom_darkblue hover:text-white'}`}
+                        <Link to="/admin/tutor-account"
+                            className={`flex mt-3 items-center cursor-pointer p-2 rounded-lg ${activeItem === 1 ? 'bg-custom_darkblue text-white' : 'hover:bg-custom_darkblue hover:text-white'}`}
                         >
                             <i className="fas fa-pencil-alt mr-3"></i>
                             Quản lý tài khoản gia sư
-                        </p>
-                        <p
-                            className={`flex items-center cursor-pointer p-2 rounded-lg ${activeItem === 1 ? 'bg-custom_darkblue text-white' : 'hover:bg-custom_darkblue hover:text-white'}`}
+                        </Link>
+
+                        <Link to="/admin/parent-account"
+                            className={`flex items-center cursor-pointer p-2 rounded-lg ${activeItem === 2 ? 'bg-custom_darkblue text-white' : 'hover:bg-custom_darkblue hover:text-white'}`}
                         >
                             <i className="fas fa-pencil-alt mr-3"></i>
                             Quản lý tài khoản phụ huynh
-                        </p>
+                        </Link>
+
                     </div>
                 );
             case 'tutor':
@@ -165,8 +171,8 @@ const Sidebar = ({ activeItem }) => {
 };
 
 Sidebar.propTypes = {
-    role: PropTypes.string.isRequired,
-    activeItem: PropTypes.number.isRequired
+    role: PropTypes.string,
+    activeItem: PropTypes.number
 };
 
 export default Sidebar;

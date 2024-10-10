@@ -10,7 +10,7 @@ import Logo from "../../assets/image/logo_.png"
 const Header = () => {
     let navigate = useNavigate()
 
-    const { sessionToken, setSessionToken, setRole } = useAppContext();
+    const { sessionToken, setSessionToken, setRole, role } = useAppContext();
 
     const handleLogout = async () => {
         try {
@@ -44,10 +44,22 @@ const Header = () => {
                             <img src={Logo} alt="Logo" className="w-20 h-20 bg-center rounded-full object-cover cursor-pointer" />
                         </div>
                         <div className="">
-                            <ul className="flex text-white text-[1.1rem]">
-                                <li className="font-semibold mx-6 cursor-pointer">Trang chủ</li>
-                                <li className="font-semibold mx-6 cursor-pointer">Hồ sơ cá nhân</li>
-                            </ul>
+                            {
+                                role === "parent" ?
+                                    (
+                                        <ul className="flex text-white text-[1.1rem]">
+                                            <Link to='parent/main-page' className="font-semibold mx-6 cursor-pointer">Trang chủ</Link>
+                                            <li className="font-semibold mx-6 cursor-pointer">Hồ sơ cá nhân</li>
+                                        </ul>
+                                    ) : (
+                                        <ul className="flex text-white text-[1.1rem]">
+                                            <Link to='tutor/main-page' className="font-semibold mx-6 cursor-pointer">Trang chủ</Link>
+                                            <li className="font-semibold mx-6 cursor-pointer">Hồ sơ cá nhân</li>
+                                        </ul>
+
+                                    )
+                            }
+
                         </div>
                         <div id="search-header" className="bg-white/50 py-2 w-[25%] relative pl-4 pr-8 rounded-xl">
                             <input type="text" placeholder="Tìm kiếm" className="w-full text-white bg-transparent border-none outline-none placeholder:text-white" />

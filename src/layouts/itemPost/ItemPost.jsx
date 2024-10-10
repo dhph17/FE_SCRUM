@@ -24,7 +24,7 @@ const ItemPostVu = ({ user, children, tag }) => {
             setTagPost(Img2)
         } else if (tag === "Đã phê duyệt") {
             setTagPost(Img3)
-        } else if (tag === "Chờ duyệt") {
+        } else if (tag === "Đang chờ phê duyệt" || tag === "Chờ duyệt") {
             setTagPost(Img1)
         }
     }, [])
@@ -93,7 +93,7 @@ const ItemPostVu = ({ user, children, tag }) => {
                     </li>
                     <li className="flex gap-2">
                         <strong>Học phí:</strong>
-                        <p>{user.wage_per_session}</p>
+                        <p>{user.wage_per_session.toLocaleString('vi-VN')}</p>
                     </li>
                     <li className="flex gap-2">
                         <strong>Lớp:</strong>
@@ -141,9 +141,9 @@ const ItemPostVu = ({ user, children, tag }) => {
 };
 
 ItemPostVu.propTypes = {
-    user: PropTypes.array,
+    user: PropTypes.object,
     children: PropTypes.node,
-    tag: PropTypes.string.isRequired,
+    tag: PropTypes.string,
 };
 
 export default ItemPostVu;

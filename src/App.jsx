@@ -12,8 +12,8 @@ import CreateNewPassword from "./pages/login/CreateNewPassword";
 import Login from "./pages/login/Login";
 import Start from "./pages/start/Start";
 import Panel from "./layouts/panel/Panel";
-import PostApproval from "./pages/user/BaiDangDuocDuyet";
-import PostManagement from "./pages/user/SuatDayDaGiao";
+// import PostApproval from "./pages/user/BaiDangDuocDuyet";
+// import PostManagement from "./pages/user/SuatDayDaGiao";
 import DuyetBaiDang from "./pages/admin/DuyetBaiDang";
 import TutorAccount from "./pages/admin/tutorAccount";
 import ParentAccount from "./pages/admin/parentAccount";
@@ -22,10 +22,9 @@ import UpdatePost from "./pages/user/UpdatePost";
 import MainPageParent from "./pages/user/MainPageParent";
 import MainPageTutor from "./pages/user/MainPageTutor";
 import BaiDangChoDuyet from "./pages/user/BaiDangChoDuyet";
-import ApprovedPost from "./pages/admin/approvedPost";
+import ApprovedPost from "./pages/admin/ApprovedPost";
 import TutorProfile from "./pages/user/tutorProfile";
 import ParentProfile from "./pages/user/parentProfile";
-
 
 function App() {
   return (
@@ -46,8 +45,8 @@ function App() {
           <Route path="/admin/pending-posts" element={<DuyetBaiDang />} />
           <Route path="/admin/approved-posts" element={<ApprovedPost />} />
 
-          <Route path="/parent/assigned" element={<PostManagement />} />
-          <Route path="/parent/view-posts" element={<PostApproval />} />
+          {/* <Route path="/parent/assigned" element={<PostManagement />} /> */}
+          {/* <Route path="/parent/view-posts" element={<PostApproval />} /> */}
           <Route path="/parent/pending-posts" element={<BaiDangChoDuyet />} />
           <Route path="/parent/create-post" element={<CreatePost />} />
           <Route path="/parent/update-post" element={<UpdatePost />} />

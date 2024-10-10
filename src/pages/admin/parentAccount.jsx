@@ -23,7 +23,7 @@ const ParentAccount = () => {
         const fetchParents = async () => {
             try {
                 const response = await axios.get("http://127.0.0.1:8000/api/parents/");
-                setParents(response.data); 
+                setParents(response.data);
             } catch (error) {
                 console.error("Error fetching parent data", error);
             }
@@ -34,7 +34,7 @@ const ParentAccount = () => {
 
     return (
         <Admin>
-            <Panel activeItem={1}>
+            <Panel activeItem={2}>
                 <div className="relative h-[550px]">
                     <div>
                         <h2 className="text-xl font-bold mb-4">Quản lý tài khoản phụ huynh</h2>

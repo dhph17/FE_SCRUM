@@ -1,8 +1,10 @@
 import { useState } from "react";
 import { useAppContext } from '../../AppProvider';
+import { useNavigate } from "react-router-dom";
 
 const SideBarSearchParent = () => {
-  const { role } = useAppContext();
+  let navigate = useNavigate()
+  const { role, dataEnum } = useAppContext();
   const [selectedDropdown, setSelectedDropdown] = useState(null);
   const [selectedSubject, setSelectedSubject] = useState("Môn học");
   const [selectedFee, setSelectedFee] = useState("Học phí (/h)");
@@ -14,53 +16,6 @@ const SideBarSearchParent = () => {
   const [selectStudent, setSelectStudents] = useState("Số học viên");
 
   // const [selectedSessions, setSelectedSessions] = useState([]);
-
-  // Dữ liệu cho từng mục
-  const data = {
-    subjects: [
-      "Toán",
-      "Lý",
-      "Hóa học",
-      "Sinh",
-      "Văn",
-      "Anh",
-      "Tin học",
-      "Vẽ",
-      "Nhạc cụ",
-      "Khác",
-    ],
-    classes: [
-      "Lớp 1",
-      "Lớp 2",
-      "Lớp 3",
-      "Lớp 4",
-      "Lớp 5",
-      "Lớp 6",
-      "Lớp 7",
-      "Lớp 8",
-      "Lớp 9",
-      "Lớp 10",
-      "Lớp 11",
-      "Lớp 12",
-    ],
-    fees: [
-      "Dưới 20.000đ",
-      "20.000đ - 50.000đ",
-      "50.000đ - 80.000đ",
-      "80.000đ - 100.000đ",
-      "Trên 100.000đ",
-    ],
-    students: ["Dưới 10 học viên", "10-20 học viên", "Trên 20 học viên"],
-    sessions: [
-      "Thứ Hai",
-      "Thứ Ba",
-      "Thứ Tư",
-      "Thứ Năm",
-      "Thứ Sáu",
-      "Thứ Bảy",
-      "Chủ Nhật",
-    ],
-  };
 
   // Hàm xử lý khi bấm vào từng mục
   const toggleDropdown = (dropdownName) => {
@@ -151,7 +106,7 @@ const SideBarSearchParent = () => {
           </div>
           {selectedDropdown === "subjects" && (
             <ul className="bg-white mt-2 rounded-md p-2 space-y-2 max-h-48 overflow-y-auto">
-              {data.subjects.map((subject, index) => (
+              {dataEnum.subject_enum.map((subject, index) => (
                 <li
                   key={index}
                   className="hover:bg-yellow-200 p-2 rounded-md cursor-pointer"
@@ -173,11 +128,11 @@ const SideBarSearchParent = () => {
           </div>
         </div>
         <div className="grid grid-cols-2 ml-5 justify-self-center">
-          {data.classes.map((classItem, index) => (
+          {dataEnum.classes.map((classItem, index) => (
             <div key={index}>
               <input type="checkbox" id={classItem} value={classItem} />
               <label htmlFor={classItem} className="ml-2">
-                {classItem}
+                Lớp {classItem}
               </label>
             </div>
           ))}
@@ -199,7 +154,7 @@ const SideBarSearchParent = () => {
           </div>
           {selectedDropdown === "fees" && (
             <ul className="bg-white mt-2 rounded-md p-2 space-y-2 max-h-48 overflow-y-auto">
-              {data.fees.map((fee, index) => (
+              {dataEnum.fees.map((fee, index) => (
                 <li
                   key={index}
                   className="hover:bg-yellow-200 p-2 rounded-md cursor-pointer"
@@ -266,7 +221,7 @@ const SideBarSearchParent = () => {
           </div>
         </div>
         <div className="grid grid-cols-2 ml-5 justify-self-center">
-          {data.sessions.map((classItem, index) => (
+          {dataEnum.sessions.map((classItem, index) => (
             <div key={index}>
               <input type="checkbox" id={classItem} value={classItem} />
               <label htmlFor={classItem} className="ml-2">
@@ -287,7 +242,10 @@ const SideBarSearchParent = () => {
       </div>
       {
         role === 'parent' &&
-        (<button className="bg-custom_yellow text-black mt-4 py-2 px-4 rounded-md w-full">
+        (<button
+          className="bg-custom_yellow text-black mt-4 py-2 px-4 rounded-md w-full"
+          onClick={() => navigate(`/parent/create-post`)}
+        >
           Tạo bài đăng mới
         </button>)
       }
