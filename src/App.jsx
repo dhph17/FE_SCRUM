@@ -25,7 +25,7 @@ import BaiDangChoDuyet from "./pages/user/BaiDangChoDuyet";
 import ApprovedPost from "./pages/admin/approvedPost";
 import TutorProfile from "./pages/user/tutorProfile";
 import ParentProfile from "./pages/user/parentProfile";
-import PostList from "./pages/user/PostList";
+
 
 function App() {
   return (
@@ -53,7 +53,6 @@ function App() {
           <Route path="/parent/update-post" element={<UpdatePost />} />
           <Route path="/parent/main-page" element={<MainPageParent />} />
           <Route path="/parent/profile" element={<ParentProfile />} />
-          <Route path="/parent/test-view-posts" element={<PostList />} />
 
           <Route path="/tutor/main-page" element={<MainPageTutor />} />
           <Route path="/tutor/profile" element={<TutorProfile />} />
