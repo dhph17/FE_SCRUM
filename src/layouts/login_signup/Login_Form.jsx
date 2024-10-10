@@ -8,7 +8,7 @@ const LoginForm = () => {
   const [error, setError] = useState(null);
   let navigate = useNavigate()
 
-  const { setSessionToken } = useAppContext()
+  const { setSessionToken, setRole, setId } = useAppContext()
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -32,9 +32,20 @@ const LoginForm = () => {
 
       if (response.ok) {
         setSessionToken(data.token.access);
+        setRole(data.data.role || data.data.user.role);
+        const role = data.data.role || data.data.user.role;
         localStorage.setItem('refreshToken', data.token.refresh);
         console.log("Đăng nhập thành công!");
-        navigate("/");
+        console.log("Role: ", role)
+        if (role === 'admin') {
+          navigate('/admin/approved-posts')
+        } else if (role === 'tutor') {
+          setId(data.data.tutor_id)
+          navigate('/tutor/main-page')
+        } else if (role === 'parent') {
+          setId(data.data.parent_id)
+          navigate('/parent/main-page')
+        }
       } else {
         setError(data.message || "Đăng nhập thất bại!");
       }

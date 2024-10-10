@@ -1,10 +1,10 @@
-import PropTypes from 'prop-types';
-import Sidebar from "../sidebar/sidebar";
+import PropTypes from "prop-types";
+import SideBarSearch from "../sidebar/SideBar_Search";
 
-const Panel = ({ children, activeItem }) => {
+const Panel_Search_Tutor = ({ children }) => {
   return (
     <div className="flex -mt-4">
-      <Sidebar activeItem={activeItem} />
+      <SideBarSearch />
 
       <div className="flex-1 p-6">
         <div className="bg-gray-200 min-h-[50vh] p-4 rounded-lg mb-4">
@@ -15,9 +15,8 @@ const Panel = ({ children, activeItem }) => {
   );
 };
 
-Panel.propTypes = {
+Panel_Search_Tutor.propTypes = {
   children: PropTypes.node,
-  activeItem: PropTypes.number
 };
 
-export default Panel;
+export default Panel_Search_Tutor;

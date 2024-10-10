@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import { createContext, useContext, useEffect, useState } from 'react';
+import { fetchEnumData, getEnumData } from './assets/data/enum';
 
 const AppContext = createContext();
 
@@ -11,22 +12,84 @@ export const useAppContext = () => {
     return context;
 };
 
-export default function AppProvider({ children, initialSessionToken }) {
+export default function AppProvider({ children, initialSessionToken, initialRole, initialId }) {
+    const [id, setId] = useState(() => {
+        return initialId || localStorage.getItem('id');
+    });
+    const [role, setRole] = useState(() => {
+        return initialRole || localStorage.getItem('role');
+    });
 
     const [sessionToken, setSessionToken] = useState(() => {
         return initialSessionToken || localStorage.getItem('accessToken') || '';
     });
 
+    const localDataEnum = {
+        classes: [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+        ],
+        fees: [
+            "Dưới 20.000đ",
+            "20.000đ - 50.000đ",
+            "50.000đ - 80.000đ",
+            "80.000đ - 100.000đ",
+            "Trên 100.000đ",
+        ],
+        students: ["Dưới 10 học viên", "10-20 học viên", "Trên 20 học viên"],
+        sessions: [
+            "Thứ Hai",
+            "Thứ Ba",
+            "Thứ Tư",
+            "Thứ Năm",
+            "Thứ Sáu",
+            "Thứ Bảy",
+            "Chủ Nhật",
+        ],
+    };
+
+    const [dataEnum, setDataEnum] = useState(localDataEnum);
+
     useEffect(() => {
-        if (sessionToken) {
+        const loadData = async () => {
+            await fetchEnumData();
+            const apiData = getEnumData();
+
+            if (apiData) {
+                setDataEnum((prevData) => ({
+                    ...prevData,
+                    ...apiData,
+                }));
+            }
+        };
+
+        loadData();
+    }, []);
+
+    useEffect(() => {
+        if (sessionToken && role) {
+            localStorage.setItem('role', role)
             localStorage.setItem('accessToken', sessionToken);
+            localStorage.setItem('id', id)
         } else {
             localStorage.removeItem('accessToken');
+            localStorage.removeItem('role')
+            localStorage.removeItem('id')
         }
-    }, [sessionToken]);
+    }, [sessionToken, role, id]);
 
     return (
-        <AppContext.Provider value={{ sessionToken, setSessionToken }}>
+        <AppContext.Provider value={{ sessionToken, setSessionToken, role, setRole, id, setId, dataEnum }}>
             {children}
         </AppContext.Provider>
     );
@@ -35,4 +98,6 @@ export default function AppProvider({ children, initialSessionToken }) {
 AppProvider.propTypes = {
     children: PropTypes.node,
     initialSessionToken: PropTypes.string,
+    initialRole: PropTypes.string,
+    initialId: PropTypes.string
 };

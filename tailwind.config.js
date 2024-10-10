@@ -1,4 +1,6 @@
 /** @type {import('tailwindcss').Config} */
+import tailwindcssTextshadow from 'tailwindcss-textshadow';
+
 export default {
   content: [
     "./index.html",
@@ -18,8 +20,14 @@ export default {
         poppins: ['Poppins', 'sans-serif'],
         ruslan_display: ['Ruslan Display', 'sans-serif']
       },
+      textShadow: {
+        sm: '1px 1px 2px rgba(0, 0, 0, 0.5)',
+        lg: '2px 2px 4px rgba(0, 0, 0, 0.5)',
+      }
     },
   },
-  plugins: [],
+  plugins: [
+    tailwindcssTextshadow
+  ],
 }
 

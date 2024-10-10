@@ -41,7 +41,7 @@ const Register_Form = () => {
 
             if (response.ok) {
                 console.log("Register Successfully");
-                toast.success("Register Successfully", {
+                toast.success("Đăng kí thành công", {
                     position: "bottom-right",
                     autoClose: 5000,
                     hideProgressBar: true,
