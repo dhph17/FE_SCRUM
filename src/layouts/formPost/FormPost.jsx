@@ -21,7 +21,7 @@ const FormPost = ({ func }) => {
     const [classTimes, setClassTimes] = useState([]);
     const [note, setNote] = useState('');
 
-    const { id, dataEnum } = useAppContext()
+    const { id, dataEnum, sessionToken } = useAppContext()
 
     const [showPopup, setShowPopup] = useState(false);
 
@@ -51,6 +51,7 @@ const FormPost = ({ func }) => {
             const response = await fetch(`${import.meta.env.VITE_API_ENDPOINT}/api/posts/`, {
                 method: "POST",
                 headers: {
+                    "Authorization": `Bearer ${sessionToken}`,
                     "Content-Type": "application/json",
                 },
                 body: JSON.stringify({

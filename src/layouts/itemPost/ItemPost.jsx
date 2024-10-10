@@ -5,11 +5,14 @@ import Img1 from "../../assets/image/quiz.png";
 import Img2 from "../../assets/image/assignment.png";
 import Img3 from "../../assets/image/medal.png";
 import ClassTimeDetail from "../../layouts/popup/classTime_Popup";
+import { useAppContext } from "../../AppProvider";
 
 const ItemPostVu = ({ user, children, tag }) => {
     const [tagPost, setTagPost] = useState()
     const [userName, setUserName] = useState(null);
     const [selectedTime, setSelectedTime] = useState(null);
+
+    const { role } = useAppContext();
 
     const handleBuoiHocClick = (post) => {
         setSelectedTime(post);
@@ -76,7 +79,16 @@ const ItemPostVu = ({ user, children, tag }) => {
                     />
                     <div>
                         <strong>{userName}</strong>
-                        <p className="opacity-60">{formatDate(user.created_at)}</p>
+                        {
+                            role === 'admin' ?
+                                (
+                                    <p className="opacity-60">{formatDate(user.created_at)}. Được duyệt lúc {formatDate(user.last_updated)}</p>
+                                )
+                                :
+                                (
+                                    <p className="opacity-60">{formatDate(user.created_at)}</p>
+                                )
+                        }
                     </div>
                 </div>
                 <div className="flex">
