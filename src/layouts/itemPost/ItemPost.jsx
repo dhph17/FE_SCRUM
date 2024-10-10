@@ -93,7 +93,7 @@ const ItemPostVu = ({ user, children, tag }) => {
                     </li>
                     <li className="flex gap-2">
                         <strong>Học phí:</strong>
-                        <p>{user.wage_per_session}</p>
+                        <p>{user.wage_per_session.toLocaleString('vi-VN')}</p>
                     </li>
                     <li className="flex gap-2">
                         <strong>Lớp:</strong>

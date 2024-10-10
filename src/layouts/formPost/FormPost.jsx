@@ -15,7 +15,7 @@ const FormPost = ({ func }) => {
     const [selectedClasses, setSelectedClasses] = useState(1);
     const [level, setLevel] = useState('Có bằng tốt nghiệp trung học phổ thông');
     const [studentNumber, setStudentNumber] = useState(0);
-    const [fees, setFees] = useState(0);
+    const [fees, setFees] = useState("");
     const [location, setLocation] = useState('');
     const [days, setDays] = useState(1);
     const [classTimes, setClassTimes] = useState([]);
@@ -98,6 +98,13 @@ const FormPost = ({ func }) => {
             console.log(error);
         }
     };
+
+    const handleChange = (e) => {
+        let value = e.target.value.replace(/[^0-9]/g, ''); // Remove any non-numeric characters
+        setFees(value ? parseInt(value).toLocaleString('vi-VN') : '');
+    };
+
+
     return (
         <div>
             <div className='flex items-center'>
@@ -234,11 +241,11 @@ const FormPost = ({ func }) => {
                         <label className="form__label min-w-[125px] font-semibold" htmlFor="fees">Học phí (/h):</label>
                         <input
                             className="w-[20vw] shadow-md border-2 border-custom_gray bg-gray-200 rounded-md py-1 px-2 text-[0.9rem] focus:outline-none"
-                            type='number'
-                            min='1'
+                            type='text'
                             required
                             id="fees"
-                            onChange={(e) => setFees(Number(e.target.value))}
+                            value={fees}
+                            onChange={(e) => handleChange(e)}
                         />
                     </div>
                     <div className="form__row flex mb-5 items-center">
