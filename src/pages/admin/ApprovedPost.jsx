@@ -53,7 +53,7 @@ const ApprovedPost = () => {
 
   return (
     <Admin>
-      <Page activeItem={3}>
+      <Page activeItem={4}>
         <div className="relative max-h-[38rem] overflow-y-auto grid grid-cols-1 gap-4">
           {currentPosts.map((post, index) => (
             <div
