@@ -35,7 +35,7 @@ const ItemPostVu = ({ user, children, tag }) => {
     useEffect(() => {
         const fetchUser = async () => {
             try {
-                const response = await fetch(`http://127.0.0.1:8000/api/parents/${user.parent_id}`, {
+                const response = await fetch(`${import.meta.env.VITE_API_ENDPOINT}/api/parents/${user.parent_id}/`, {
                     method: "GET",
                     headers: {
                         "Content-Type": "application/json",
@@ -44,7 +44,7 @@ const ItemPostVu = ({ user, children, tag }) => {
                 const data = await response.json();
 
                 if (response.ok) {
-                    setUserName(data.parentname || data.user.username);
+                    setUserName(data.user.username || data.parentname);
                 } else {
                     console.error("Failed to fetch user data");
                 }
@@ -80,7 +80,7 @@ const ItemPostVu = ({ user, children, tag }) => {
                     <div>
                         <strong>{userName}</strong>
                         {
-                            role === 'admin' ?
+                            role === 'admin' && tag === "Đã phê duyệt" ?
                                 (
                                     <p className="opacity-60">{formatDate(user.created_at)}. Được duyệt lúc {formatDate(user.last_updated)}</p>
                                 )
