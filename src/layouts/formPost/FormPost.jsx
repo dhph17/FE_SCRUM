@@ -15,6 +15,7 @@ const FormPost = ({ func }) => {
     const [selectedClasses, setSelectedClasses] = useState(1);
     const [level, setLevel] = useState('Có bằng tốt nghiệp trung học phổ thông');
     const [studentNumber, setStudentNumber] = useState(0);
+    const [feesView, setFeesView] = useState("");
     const [fees, setFees] = useState("");
     const [location, setLocation] = useState('');
     const [days, setDays] = useState(1);
@@ -101,8 +102,9 @@ const FormPost = ({ func }) => {
     };
 
     const handleChange = (e) => {
-        let value = e.target.value.replace(/[^0-9]/g, ''); // Remove any non-numeric characters
-        setFees(value ? parseInt(value).toLocaleString('vi-VN') : '');
+        let value = e.target.value.replace(/[^0-9]/g, '');
+        setFees(value)
+        setFeesView(value ? parseInt(value).toLocaleString('vi-VN') : '');
     };
 
 
@@ -245,7 +247,7 @@ const FormPost = ({ func }) => {
                             type='text'
                             required
                             id="fees"
-                            value={fees}
+                            value={feesView}
                             onChange={(e) => handleChange(e)}
                         />
                     </div>
@@ -265,12 +267,13 @@ const FormPost = ({ func }) => {
                             className="w-[20vw] shadow-md border-2 border-custom_gray bg-gray-200 rounded-md py-1 px-2 text-[0.9rem] focus:outline-none"
                             type='number'
                             id="days"
+                            min="1"
+                            max="10"
                             required
                             onChange={(e) => {
                                 setDays(e.target.value)
                                 setClassTimes(Array.from({ length: Number(e.target.value) }, () => ({ timeStart: '', timeEnd: '', session: 'Thứ Hai' })));
                             }}
-                            min='1'
                         />
                     </div>
                     <div className="form__row flex mb-5">

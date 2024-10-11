@@ -27,7 +27,7 @@ const BaiDangChoDuyet = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await fetch(`${import.meta.env.VITE_API_ENDPOINT}/api/posts/${id}`, {
+                const response = await fetch(`${import.meta.env.VITE_API_ENDPOINT}/api/posts/${id}/`, {
                     method: "GET",
                     headers: {
                         "Authorization": `Bearer ${sessionToken}`,
