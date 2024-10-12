@@ -8,6 +8,9 @@ import 'reactjs-popup/dist/index.css';
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
+const RequiredIndicator = () => {
+    return <span className="text-red-500">*</span>;
+};
 
 const FormPost = ({ func }) => {
     let navigate = useNavigate()
@@ -104,7 +107,7 @@ const FormPost = ({ func }) => {
     const handleChange = (e) => {
         let value = e.target.value.replace(/[^0-9]/g, '');
         setFees(value)
-        setFeesView(value ? parseInt(value).toLocaleString('vi-VN') : '');
+        setFeesView(value ? parseInt(value).toLocaleString('vi-VN') + ' VNĐ' : '');
     };
 
 
@@ -194,7 +197,10 @@ const FormPost = ({ func }) => {
                     onSubmit={handleSubmit}
                 >
                     <div className="form__row flex mb-5 items-center">
-                        <label className="form__label min-w-[125px] font-semibold" htmlFor="subject">Môn học:</label>
+                        <label className="form__label min-w-[125px] font-semibold" htmlFor="subject">
+                            Môn học
+                            <RequiredIndicator />
+                        </label>
                         <select
                             className="w-[20vw] shadow-md border-2 border-custom_gray bg-gray-200 rounded-md py-1 px-2 text-[0.9rem] focus:outline-none"
                             id="subject"
@@ -206,7 +212,8 @@ const FormPost = ({ func }) => {
                         </select>
                     </div>
                     <div className="form__row flex mb-5">
-                        <label className="form__label min-w-[125px] font-semibold" htmlFor="classes">Lớp:</label>
+                        <label className="form__label min-w-[125px] font-semibold" htmlFor="classes">Lớp
+                            <RequiredIndicator /></label>
                         <select
                             className="w-[20vw] shadow-md border-2 border-custom_gray bg-gray-200 rounded-md py-1 px-2 text-[0.9rem] focus:outline-none"
                             id="subject"
@@ -218,7 +225,8 @@ const FormPost = ({ func }) => {
                         </select>
                     </div>
                     <div className="form__row flex mb-5 items-center">
-                        <label className="form__label min-w-[125px] font-semibold" htmlFor="levels">Trình độ:</label>
+                        <label className="form__label min-w-[125px] font-semibold" htmlFor="levels">Trình độ
+                            <RequiredIndicator /></label>
                         <select
                             className="w-[20vw] shadow-md border-2 border-custom_gray bg-gray-200 rounded-md py-1 px-2 text-[0.9rem] focus:outline-none"
                             id="levels"
@@ -230,7 +238,8 @@ const FormPost = ({ func }) => {
                         </select>
                     </div>
                     <div className="form__row flex mb-5 items-center">
-                        <label className="form__label min-w-[125px] font-semibold" htmlFor="studentNumber">Số học viên:</label>
+                        <label className="form__label min-w-[125px] font-semibold" htmlFor="studentNumber">Số học viên
+                            <RequiredIndicator /></label>
                         <input
                             className="w-[20vw] shadow-md border-2 border-custom_gray bg-gray-200 rounded-md py-1 px-2 text-[0.9rem] focus:outline-none"
                             type='number'
@@ -241,7 +250,8 @@ const FormPost = ({ func }) => {
                         />
                     </div>
                     <div className="form__row flex mb-5 items-center">
-                        <label className="form__label min-w-[125px] font-semibold" htmlFor="fees">Học phí (/h):</label>
+                        <label className="form__label min-w-[125px] font-semibold" htmlFor="fees">Học phí (/h)
+                            <RequiredIndicator /></label>
                         <input
                             className="w-[20vw] shadow-md border-2 border-custom_gray bg-gray-200 rounded-md py-1 px-2 text-[0.9rem] focus:outline-none"
                             type='text'
@@ -252,7 +262,8 @@ const FormPost = ({ func }) => {
                         />
                     </div>
                     <div className="form__row flex mb-5 items-center">
-                        <label className="form__label min-w-[125px] font-semibold" htmlFor="locations">Địa chỉ:</label>
+                        <label className="form__label min-w-[125px] font-semibold" htmlFor="locations">Địa chỉ
+                            <RequiredIndicator /></label>
                         <input
                             className="w-[20vw] shadow-md border-2 border-custom_gray bg-gray-200 rounded-md py-1 px-2 text-[0.9rem] focus:outline-none"
                             type='text'
@@ -262,7 +273,8 @@ const FormPost = ({ func }) => {
                         />
                     </div>
                     <div className="form__row flex mb-5 items-center">
-                        <label className="form__label min-w-[125px] font-semibold" htmlFor="days">Số buổi (/tuần:)</label>
+                        <label className="form__label min-w-[125px] font-semibold" htmlFor="days">Số buổi (/tuần)
+                            <RequiredIndicator /></label>
                         <input
                             className="w-[20vw] shadow-md border-2 border-custom_gray bg-gray-200 rounded-md py-1 px-2 text-[0.9rem] focus:outline-none"
                             type='number'
@@ -277,7 +289,8 @@ const FormPost = ({ func }) => {
                         />
                     </div>
                     <div className="form__row flex mb-5">
-                        <label className="form__label min-w-[125px] font-semibold" htmlFor="times">Thời gian:</label>
+                        <label className="form__label min-w-[125px] font-semibold" htmlFor="times">Thời gian
+                            <RequiredIndicator /></label>
                         <div className='flex flex-col'>
                             {
                                 Array.from({ length: days }).map((_, index) => (
