@@ -47,7 +47,7 @@ const BaiDangChoDuyet = () => {
         if (response.ok) {
           console.log("Lấy thành công");
           const filteredPosts = data.filter(
-            (post) => post.status !== "Đã phê duyệt"
+            (post) => post.status === "Đang chờ phê duyệt"
           );
           const sortedPosts = filteredPosts.sort(
             (a, b) => new Date(b.created_at) - new Date(a.created_at)

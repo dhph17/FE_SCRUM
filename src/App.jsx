@@ -12,7 +12,7 @@ import CreateNewPassword from "./pages/login/CreateNewPassword";
 import Login from "./pages/login/Login";
 import Start from "./pages/start/Start";
 import Panel from "./layouts/panel/Panel";
-// import PostApproval from "./pages/user/BaiDangDuocDuyet";
+import PostApproval from "./pages/user/BaiDangDuocDuyet";
 // import PostManagement from "./pages/user/SuatDayDaGiao";
 import DuyetBaiDang from "./pages/admin/DuyetBaiDang";
 import TutorAccount from "./pages/admin/tutorAccount";
@@ -46,7 +46,7 @@ function App() {
           <Route path="/admin/approved-posts" element={<ApprovedPost />} />
 
           {/* <Route path="/parent/assigned" element={<PostManagement />} /> */}
-          {/* <Route path="/parent/view-posts" element={<PostApproval />} /> */}
+          <Route path="/parent/view-posts" element={<PostApproval />} />
           <Route path="/parent/pending-posts" element={<BaiDangChoDuyet />} />
           <Route path="/parent/create-post" element={<CreatePost />} />
           <Route path="/parent/update-post/:postId" element={<UpdatePost />} />
