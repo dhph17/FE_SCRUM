@@ -49,7 +49,7 @@ function App() {
           {/* <Route path="/parent/view-posts" element={<PostApproval />} /> */}
           <Route path="/parent/pending-posts" element={<BaiDangChoDuyet />} />
           <Route path="/parent/create-post" element={<CreatePost />} />
-          <Route path="/parent/update-post" element={<UpdatePost />} />
+          <Route path="/parent/update-post/:postId" element={<UpdatePost />} />
           <Route path="/parent/main-page" element={<MainPageParent />} />
           <Route path="/parent/profile" element={<ParentProfile />} />
 
