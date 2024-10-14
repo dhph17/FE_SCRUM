@@ -35,12 +35,12 @@ const Sidebar = ({ activeItem }) => {
                             </p>
                             {showDropdown && (
                                 <div className="bg-gray-300 p-2 rounded-lg space-y-2">
-                                    <Link to="/admin/approved-posts" className={`flex items-center cursor-pointer p-2 rounded-lg ${activeItem === 4 ? 'bg-custom_darkblue text-white' : 'hover:text-custom_darkblue hover:text-white'}`}>
+                                    <Link to="/admin/approved-posts" className={`flex items-center cursor-pointer p-2 rounded-lg ${activeItem === 4 ? 'bg-custom_darkblue text-white' : 'hover:text-custom_darkblue'}`}>
                                         <i className="fas fa-check mr-2"></i>
                                         Bài đăng đã duyệt
 
                                     </Link>
-                                    <Link to='/admin/pending-posts' className={`flex items-center cursor-pointer p-2 rounded-lg ${activeItem === 5 ? 'bg-custom_darkblue text-white' : 'hover:text-custom_darkblue hover:text-white'}`}>
+                                    <Link to='/admin/pending-posts' className={`flex items-center cursor-pointer p-2 rounded-lg ${activeItem === 5 ? 'bg-custom_darkblue text-white' : 'hover:text-custom_darkblue'}`}>
                                         <i className="fas fa-clock mr-2"></i>
                                         Bài đăng chờ duyệt
 
@@ -131,14 +131,14 @@ const Sidebar = ({ activeItem }) => {
 
                             {showDropdown && (
                                 <div className="bg-gray-300 p-2 rounded-lg space-y-2">
-                                    <p className={`flex items-center cursor-pointer p-2 rounded-lg ${activeItem === 3 ? 'bg-custom_darkblue text-white' : 'hover:text-custom_darkblue'}`}>
+                                    <Link to='/parent/view-posts' className={`flex items-center cursor-pointer p-2 rounded-lg ${activeItem === 3 ? 'bg-custom_darkblue text-white' : 'hover:text-custom_darkblue'}`}>
                                         <i className="fas fa-check mr-2"></i>
                                         Bài đăng được duyệt
-                                    </p>
-                                    <p className={`flex items-center cursor-pointer p-2 rounded-lg ${activeItem === 4 ? 'bg-custom_darkblue text-white' : 'hover:text-custom_darkblue '}`}>
+                                    </Link>
+                                    <Link to='/parent/pending-posts' className={`flex items-center cursor-pointer p-2 rounded-lg ${activeItem === 4 ? 'bg-custom_darkblue text-white' : 'hover:text-custom_darkblue '}`}>
                                         <i className="fas fa-clock mr-2"></i>
                                         Bài đăng chờ duyệt
-                                    </p>
+                                    </Link>
                                     <p className={`flex items-center cursor-pointer p-2 rounded-lg ${activeItem === 5 ? 'bg-custom_darkblue text-white' : 'hover:text-custom_darkblue'}`}>
                                         <i className="fas fa-star mr-2"></i>
                                         Suất dạy đã giao
