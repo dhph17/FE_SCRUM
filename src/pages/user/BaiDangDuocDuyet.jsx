@@ -109,7 +109,7 @@ const BaiDangDuocDuyet = () => {
               key={index}
               className="border-[3px] rounded-[1rem] border-[#002182] shadow-md bg-white"
             >
-              <ItemPost user={parent} tag="Chờ duyệt">
+              <ItemPost user={parent} tag="Đã phê duyệt">
                 <Link to={`/parent/update-post/${parent.post_id}`}>
                   <button className="bg-yellow-500 w-[14vw] p-2 rounded-2xl font-semibold mx-8">
                     Sửa bài đăng
