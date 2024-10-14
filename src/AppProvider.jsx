@@ -48,13 +48,13 @@ export default function AppProvider({ children, initialSessionToken, initialRole
         ],
         students: ["Dưới 10 học viên", "10-20 học viên", "Trên 20 học viên"],
         sessions: [
-            "Thứ Hai",
-            "Thứ Ba",
-            "Thứ Tư",
-            "Thứ Năm",
-            "Thứ Sáu",
-            "Thứ Bảy",
-            "Chủ Nhật",
+            "Thứ hai",
+            "Thứ ba",
+            "Thứ tư",
+            "Thứ năm",
+            "Thứ sáu",
+            "Thứ bảy",
+            "Chủ nhật",
         ],
     };
 

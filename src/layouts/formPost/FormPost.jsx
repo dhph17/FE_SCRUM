@@ -21,7 +21,7 @@ const FormPost = ({ func, postId }) => {
   const [feesView, setFeesView] = useState("");
   const [fees, setFees] = useState("");
   const [location, setLocation] = useState("");
-  const [days, setDays] = useState(1);
+  const [days, setDays] = useState(0);
   const [classTimes, setClassTimes] = useState([]);
   const [note, setNote] = useState("");
 
@@ -58,7 +58,7 @@ const FormPost = ({ func, postId }) => {
             setStudentNumber(data.student_number || 0);
             setFees(data.wage_per_session || 0);
             setLocation(data.address || "");
-            setDays(data.session_per_week || 1);
+            setDays(data.session_per_week || 0);
             setClassTimes(data.class_times || []);
             setNote(data.description || "");
             setFeesView(
@@ -77,6 +77,7 @@ const FormPost = ({ func, postId }) => {
       fetchPostData();
     }
   }, [postId, sessionToken]);
+
   const confirmSubmission = async () => {
     setShowPopup(false);
 
@@ -116,9 +117,9 @@ const FormPost = ({ func, postId }) => {
           wage_per_session: formData.fees,
           student_number: formData.studentNumber,
           class_times: formData.classTimes.map((time) => ({
-            weekday: time.session,
-            time_start: time.timeStart,
-            time_end: time.timeEnd,
+            weekday: time.weekday,
+            time_start: time.time_start,
+            time_end: time.time_end
           })),
           description: formData.note,
           duration: 2,
@@ -500,7 +501,7 @@ const FormPost = ({ func, postId }) => {
             <label
               className="form__label min-w-[125px] font-semibold"
               htmlFor="studentNumber"
-              
+
             >
               Số học viên <RequiredIndicator />
             </label>
@@ -563,7 +564,7 @@ const FormPost = ({ func, postId }) => {
               className="w-[20vw] shadow-md border-2 border-custom_gray bg-gray-200 rounded-md py-1 px-2 text-[0.9rem] focus:outline-none"
               type="number"
               id="days"
-              min="1"
+              min="0"
               max="10"
               required
               value={days}
@@ -571,9 +572,9 @@ const FormPost = ({ func, postId }) => {
                 setDays(e.target.value);
                 setClassTimes(
                   Array.from({ length: Number(e.target.value) }, () => ({
-                    timeStart: "",
-                    timeEnd: "",
-                    session: "Thứ Hai",
+                    time_start: "",
+                    time_end: "",
+                    weekday: "Thứ hai",
                   }))
                 );
               }}
@@ -594,10 +595,10 @@ const FormPost = ({ func, postId }) => {
                   <select
                     className="w-[8vw] shadow-md border-2 border-gray-300 bg-gray-200 rounded-md py-1 px-2 text-[0.9rem] focus:outline-none"
                     id={`session-${index}`}
-                    value={classTimes}
+                    value={classTimes[index]?.weekday || "Thứ hai"}
                     onChange={(e) => {
                       const updatedClassTimes = [...classTimes];
-                      updatedClassTimes[index].session = e.target.value;
+                      updatedClassTimes[index].weekday = e.target.value;
                       setClassTimes(updatedClassTimes);
                     }}
                   >
@@ -613,7 +614,54 @@ const FormPost = ({ func, postId }) => {
                     <input
                       required
                       type="time"
-                      
+                      value={classTimes[index]?.time_start}
+                      className="w-[8rem] py-1 px-3 bg-gray-200 border border-gray-300 rounded-md shadow-md focus:outline-none transition-all duration-150 ease-in-out"
+                      onChange={(e) => {
+                        const updatedClassTimes = [...classTimes];
+                        updatedClassTimes[index].time_start = e.target.value;
+                        setClassTimes(updatedClassTimes);
+                      }}
+                    />
+                    &nbsp;đến&nbsp;
+                    <input
+                      required
+                      type="time"
+                      value={classTimes[index]?.time_end}
+                      className="w-[8rem] py-1 px-3 bg-gray-200 border border-gray-300 rounded-md shadow-md focus:outline-none transition-all duration-150 ease-in-out"
+                      onChange={(e) => {
+                        const updatedClassTimes = [...classTimes];
+                        updatedClassTimes[index].time_end = e.target.value;
+                        setClassTimes(updatedClassTimes);
+                      }}
+                    />
+                  </div>
+                </div>
+              ))}
+              {/* {Array.from({ length: days }).map((_, index) => (
+                <div key={index} className="flex items-center mb-2">
+                  <select
+                    className="w-[8vw] shadow-md border-2 border-gray-300 bg-gray-200 rounded-md py-1 px-2 text-[0.9rem] focus:outline-none"
+                    id={`session-${index}`}
+                    value={classTimes[index]?.weekday || "Thứ Hai"} // lấy giá trị session hoặc mặc định
+                    onChange={(e) => {
+                      const updatedClassTimes = [...classTimes];
+                      updatedClassTimes[index].session = e.target.value;
+                      setClassTimes(updatedClassTimes);
+                    }}
+                  >
+                    {dataEnum.sessions.map((session, idx) => (
+                      <option key={idx} value={session}>
+                        {session}
+                      </option>
+                    ))}
+                  </select>
+                  <div className="bg-black w-5"></div>
+                  <div className="flex items-center space-x-2">
+                    Từ &nbsp;
+                    <input
+                      required
+                      type="time"
+                      value={classTimes[index]?.timeStart || ""} // giá trị thời gian bắt đầu
                       className="w-[8rem] py-1 px-3 bg-gray-200 border border-gray-300 rounded-md shadow-md focus:outline-none transition-all duration-150 ease-in-out"
                       onChange={(e) => {
                         const updatedClassTimes = [...classTimes];
@@ -625,6 +673,7 @@ const FormPost = ({ func, postId }) => {
                     <input
                       required
                       type="time"
+                      value={classTimes[index]?.timeEnd || ""}
                       className="w-[8rem] py-1 px-3 bg-gray-200 border border-gray-300 rounded-md shadow-md focus:outline-none transition-all duration-150 ease-in-out"
                       onChange={(e) => {
                         const updatedClassTimes = [...classTimes];
@@ -634,7 +683,62 @@ const FormPost = ({ func, postId }) => {
                     />
                   </div>
                 </div>
-              ))}
+              ))} */}
+              {/* {classTimes.map((time, index) => (
+                <div key={index} className="flex items-center mb-2">
+                  <select
+                    className="w-[8vw] shadow-md border-2 border-gray-300 bg-gray-200 rounded-md py-1 px-2 text-[0.9rem] focus:outline-none"
+                    id={`session-${index}`}
+                    value={time.session}
+                    onChange={(e) => {
+                      const updatedClassTimes = [...classTimes];
+                      updatedClassTimes[index] = {
+                        ...updatedClassTimes[index],
+                        session: e.target.value,
+                      };
+                      setClassTimes(updatedClassTimes);
+                    }}
+                  >
+                    {dataEnum.session.map((session, idx) => (
+                      <option key={idx} value={session}>
+                        {session}
+                      </option>
+                    ))}
+                  </select>
+
+                  <div className="mx-2">Từ</div>
+                  <input
+                    type="time"
+                    className="w-[8rem] py-1 px-3 bg-gray-200 border border-gray-300 rounded-md shadow-md focus:outline-none"
+                    value={time.timeStart}
+                    onChange={(e) => {
+                      const updatedClassTimes = [...classTimes];
+                      updatedClassTimes[index] = {
+                        ...updatedClassTimes[index],
+                        timeStart: e.target.value,
+                      };
+                      setClassTimes(updatedClassTimes);
+                    }}
+                    required
+                  />
+
+                  <div className="mx-2">đến</div>
+                  <input
+                    type="time"
+                    className="w-[8rem] py-1 px-3 bg-gray-200 border border-gray-300 rounded-md shadow-md focus:outline-none"
+                    value={time.timeEnd}
+                    onChange={(e) => {
+                      const updatedClassTimes = [...classTimes];
+                      updatedClassTimes[index] = {
+                        ...updatedClassTimes[index],
+                        timeEnd: e.target.value,
+                      };
+                      setClassTimes(updatedClassTimes);
+                    }}
+                    required
+                  />
+                </div>
+              ))} */}
             </div>
           </div>
 
