@@ -8,6 +8,7 @@ import {
 
 import Logo from "../../assets/image/logo_.png";
 import PropTypes from "prop-types";
+import Notify from "../notify/Notify";
 
 const Header = ({ setSearch }) => {
   let navigate = useNavigate();
@@ -98,6 +99,11 @@ const Header = ({ setSearch }) => {
               className="text-white absolute right-3 top-3"
             />
           </div>
+          {
+            role === 'parent' && (
+              <Notify />
+            )
+          }
           <div
             className="flex text-white items-center cursor-pointer text-[1.1rem]"
             onClick={handleLogout}
