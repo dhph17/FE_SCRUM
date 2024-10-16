@@ -1,6 +1,8 @@
 import { Route, Routes } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { useState } from "react";
+
 
 import AppProvider from "./AppProvider";
 import Footer from "./layouts/footer/Footer";
@@ -27,11 +29,13 @@ import TutorProfile from "./pages/user/tutorProfile";
 import ParentProfile from "./pages/user/parentProfile";
 
 function App() {
+  const [searchTerm, setSearchTerm] = useState("");
+
   return (
     <AppProvider>
       <ToastContainer />
       <div className="overflow-hidden">
-        <Header />
+        <Header setSearch={setSearchTerm} />
         <Routes>
           <Route path="/" element={<Start />} />
           <Route path="/login" element={<Login />} />
@@ -50,7 +54,10 @@ function App() {
           <Route path="/parent/pending-posts" element={<BaiDangChoDuyet />} />
           <Route path="/parent/create-post" element={<CreatePost />} />
           <Route path="/parent/update-post" element={<UpdatePost />} />
-          <Route path="/parent/main-page" element={<MainPageParent />} />
+          <Route
+            path="/parent/main-page"
+            element={<MainPageParent searchTerm={searchTerm} />}
+          />
           <Route path="/parent/profile" element={<ParentProfile />} />
 
           <Route path="/tutor/main-page" element={<MainPageTutor />} />
