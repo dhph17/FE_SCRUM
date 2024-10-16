@@ -9,7 +9,6 @@ import { useAppContext } from "../../AppProvider";
 
 const ItemPostVu = ({ user, children, tag }) => {
     const [tagPost, setTagPost] = useState()
-    const [userName, setUserName] = useState(null);
     const [selectedTime, setSelectedTime] = useState(null);
 
     const { role } = useAppContext();
@@ -31,30 +30,6 @@ const ItemPostVu = ({ user, children, tag }) => {
             setTagPost(Img1)
         }
     }, [])
-
-    useEffect(() => {
-        const fetchUser = async () => {
-            try {
-                const response = await fetch(`${import.meta.env.VITE_API_ENDPOINT}/api/parents/${user.parent_id}/`, {
-                    method: "GET",
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                });
-                const data = await response.json();
-
-                if (response.ok) {
-                    setUserName(data.user.username || data.parentname);
-                } else {
-                    console.error("Failed to fetch user data");
-                }
-            } catch (error) {
-                console.error("Error fetching user data:", error);
-            }
-        };
-
-        fetchUser();
-    }, [user.parent_id]);
 
     const formatDate = (isoDate) => {
         const date = new Date(isoDate);
@@ -78,7 +53,7 @@ const ItemPostVu = ({ user, children, tag }) => {
                         alt="avatar"
                     />
                     <div>
-                        <strong>{userName}</strong>
+                        <strong>{user.parentname || user.username}</strong>
                         {
                             role === 'admin' && tag === "Đã phê duyệt" ?
                                 (
