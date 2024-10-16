@@ -20,14 +20,21 @@ const Notify = () => {
 
     useEffect(() => {
         const eventSource = new EventSource(`http://127.0.0.1:8000/api/notifications/${id}`);
+        // const eventSource = new EventSource(`http://127.0.0.1:8080/api/sse/`);
+
         eventSource.onopen = function () {
             console.log("SSE connection opened.");
         };
 
+        eventSource.onerror = function (event) {
+            console.error('Error with SSE, trying to reconnect...', event);
+        };
 
         eventSource.onmessage = function (event) {
             try {
                 const dataArray = JSON.parse(event.data);
+                console.log(dataArray);
+
                 if (Array.isArray(dataArray)) {
                     const newNotifications = dataArray.map(dataString => {
                         const data = JSON.parse(dataString);
@@ -47,24 +54,23 @@ const Notify = () => {
 
                             const formattedTime = `${newDay}, ${String(newHours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
 
-                            return { message: "Bài đăng của bạn đã được duyệt", time: formattedTime };
+                            return { message: data.message, time: formattedTime };
                         } else {
                             console.error("Invalid time format:", data.time);
                             return null;
                         }
                     }).filter(notification => notification !== null);
                     setNotifications(prevNotifications => [...prevNotifications, ...newNotifications]);
-                    setShowNotify(false)
+
+                    // setShowNotify(false)
                 } else {
                     console.error("Invalid data received:", dataArray);
                 }
             } catch (error) {
                 console.error("Error parsing notification:", error);
             }
-        };
+            console.log(event);
 
-        eventSource.onerror = function (event) {
-            console.error("Error with SSE connection:", event);
         };
 
         return () => {
