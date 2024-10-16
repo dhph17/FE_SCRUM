@@ -1,6 +1,8 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useAppContext } from "../../AppProvider";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useCallback } from "react";
+
 import {
   faMagnifyingGlass,
   faArrowRightFromBracket,
@@ -14,6 +16,7 @@ const Header = ({ setSearch }) => {
   let navigate = useNavigate();
 
   const { sessionToken, setSessionToken, setRole, role } = useAppContext();
+
 
   const handleLogout = async () => {
     try {
@@ -41,9 +44,33 @@ const Header = ({ setSearch }) => {
     }
   };
 
-  const handleInputChange = (e) => {
-    setSearch(e.target.value);
+  // const handleInputChange = (e) => {
+  //   setSearch(e.target.value);
+  // };
+
+  const debounce = (func, delay) => {
+    let timeoutId;
+    return (...args) => {
+      if (timeoutId) {
+        clearTimeout(timeoutId);
+      }
+      timeoutId = setTimeout(() => {
+        func(...args);
+      }, delay);
+    };
   };
+
+  const handleSearch = (query) => {
+    setSearch(query);
+  };
+
+  const debouncedHandleSearch = useCallback(debounce(handleSearch, 1000), []);
+
+  const handleInputChange = (e) => {
+    const query = e.target.value;
+    debouncedHandleSearch(query);
+  };
+
   return (
     <>
       {sessionToken ? (
@@ -99,11 +126,7 @@ const Header = ({ setSearch }) => {
               className="text-white absolute right-3 top-3"
             />
           </div>
-          {
-            role === 'parent' && (
-              <Notify />
-            )
-          }
+          {role === "parent" && <Notify />}
           <div
             className="flex text-white items-center cursor-pointer text-[1.1rem]"
             onClick={handleLogout}
