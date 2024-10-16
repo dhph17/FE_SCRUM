@@ -50,6 +50,8 @@ const MainPageParent = ({ searchTerm }) => {
           url = `http://127.0.0.1:8000/api/search/?text=${searchTerm}`;
         }
 
+        await new Promise((resolve) => setTimeout(resolve, 1000));
+
         const response = await fetch(url, {
           method: "GET",
           headers: {
