@@ -60,7 +60,10 @@ function App() {
           />
           <Route path="/parent/profile" element={<ParentProfile />} />
 
-          <Route path="/tutor/main-page" element={<MainPageTutor />} />
+          <Route
+            path="/tutor/main-page"
+            element={<MainPageTutor searchTerm={searchTerm} />}
+          />
           <Route path="/tutor/profile" element={<TutorProfile />} />
         </Routes>
         <Footer />

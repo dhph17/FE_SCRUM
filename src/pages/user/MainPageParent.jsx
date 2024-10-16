@@ -47,10 +47,11 @@ const MainPageParent = ({ searchTerm }) => {
         // );
         let url = `${import.meta.env.VITE_API_ENDPOINT}/api/posts/`;
         if (searchTerm && searchTerm.trim() !== "") {
+
           url = `http://127.0.0.1:8000/api/search/?text=${searchTerm}`;
         }
 
-        await new Promise((resolve) => setTimeout(resolve, 1000));
+        // await new Promise((resolve) => setTimeout(resolve, 1000));
 
         const response = await fetch(url, {
           method: "GET",
@@ -83,31 +84,47 @@ const MainPageParent = ({ searchTerm }) => {
             });
           }
 
-          // Lọc học phí (Dưới 20.000đ, 20.000đ - 50.000đ, 50.000đ - 80.000đ, 80.000đ - 100.000đ, Trên 100.000đ)
+          // Lọc học phí       "Dưới 20.000đ",
+      // "20.000đ - 70.000đ",
+      // "70.000đ - 120.000đ",
+      // "120.000đ - 170.000đ",
+      // "170.000đ - 220.000đ",
+      // "220.000đ - 250.000đ",
+      // "Trên 250.000đ"
           if (filters.fee) {
             if (filters.fee === "Dưới 20.000đ") {
               filteredPosts = filteredPosts.filter(
                 (post) => post.wage_per_session < 20000
               );
             }
-            if (filters.fee === "20.000đ - 50.000đ") {
+            if (filters.fee === "20.000đ - 70.000đ") {
               filteredPosts = filteredPosts.filter(
-                (post) => post.fee >= 20000 && post.wage_per_session <= 50000
+                (post) => post.fee >= 20000 && post.wage_per_session <= 70000
               );
             }
-            if (filters.fee === "50.000đ - 80.000đ") {
+            if (filters.fee === "70.000đ - 120.000đ") {
               filteredPosts = filteredPosts.filter(
-                (post) => post.fee >= 50000 && post.wage_per_session <= 80000
+                (post) => post.fee >= 70000 && post.wage_per_session <= 120000
               );
             }
-            if (filters.fee === "80.000đ - 100.000đ") {
+            if (filters.fee === "120.000đ - 170.000đ") {
               filteredPosts = filteredPosts.filter(
-                (post) => post.fee >= 80000 && post.wage_per_session <= 100000
+                (post) => post.fee >= 120000 && post.wage_per_session <= 170000
               );
             }
-            if (filters.fee === "Trên 100.000đ") {
+            if (filters.fee === "170.000đ - 220.000đ") {
               filteredPosts = filteredPosts.filter(
-                (post) => post.wage_per_session > 100000
+                (post) => post.fee >= 170000 && post.wage_per_session <= 220000
+              );
+            }
+            if (filters.fee === "220.000đ - 250.000đ") {
+              filteredPosts = filteredPosts.filter(
+                (post) => post.fee >= 220000 && post.wage_per_session <= 250000
+              );
+            }
+            if (filters.fee === "Trên 250.000đ") {
+              filteredPosts = filteredPosts.filter(
+                (post) => post.wage_per_session > 250000
               );
             }
           }
