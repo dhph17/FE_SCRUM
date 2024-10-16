@@ -77,6 +77,8 @@ const FormPost = ({ func, postId }) => {
       fetchPostData();
     }
   }, [postId, sessionToken]);
+  console.log(classTimes);
+
 
   const confirmSubmission = async () => {
     setShowPopup(false);
@@ -565,18 +567,31 @@ const FormPost = ({ func, postId }) => {
               type="number"
               id="days"
               min="0"
-              max="10"
+              max="7"
               required
               value={days}
               onChange={(e) => {
-                setDays(e.target.value);
-                setClassTimes(
-                  Array.from({ length: Number(e.target.value) }, () => ({
-                    time_start: "",
-                    time_end: "",
-                    weekday: "Thứ hai",
-                  }))
-                );
+                let newDays = Number(e.target.value);
+                if (newDays > 7) {
+                  newDays = 7;
+                }
+                setDays(newDays);
+
+                setClassTimes((prevClassTimes) => {
+                  if (newDays > prevClassTimes.length) {
+                    return [
+                      ...prevClassTimes,
+                      ...Array.from({ length: newDays - prevClassTimes.length }).map(() => ({
+                        id: null,
+                        weekday: "Thứ hai",
+                        time_start: "",
+                        time_end: "",
+                      })),
+                    ];
+                  } else {
+                    return prevClassTimes.slice(0, newDays);
+                  }
+                });
               }}
             />
           </div>
@@ -630,7 +645,11 @@ const FormPost = ({ func, postId }) => {
                       className="w-[8rem] py-1 px-3 bg-gray-200 border border-gray-300 rounded-md shadow-md focus:outline-none transition-all duration-150 ease-in-out"
                       onChange={(e) => {
                         const updatedClassTimes = [...classTimes];
-                        updatedClassTimes[index].time_end = e.target.value;
+                        if (e.target.value > updatedClassTimes[index].time_start) {
+                          updatedClassTimes[index].time_end = e.target.value;
+                        } else {
+                          alert("Thời gian kết thúc phải lớn hơn thời gian bắt đầu.");
+                        }
                         setClassTimes(updatedClassTimes);
                       }}
                     />
