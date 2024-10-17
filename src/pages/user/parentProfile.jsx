@@ -5,11 +5,11 @@ import Parent from "../../layouts/PageAuthorization/parent/parent";
 
 const ParentProfile = () => {
     const [formData, setFormData] = useState({
-        hoTen: '',
-        ngaySinh: '',
+        parentname: '',
+        birthdate: '',
         username: '',
-        diaChiHienTai: '',
-        soDienThoai: '',
+        address: '',
+        phone_number: '',
     });
 
     const [profileImage, setProfileImage] = useState(null);
@@ -39,11 +39,11 @@ const ParentProfile = () => {
                 const data = response.data;
 
                 setFormData({
-                    hoTen: data.parentname || '',
-                    ngaySinh: data.birthdate || '',
+                    parentname: data.parentname || '',
+                    birthdate: data.birthdate || '',
                     username: data.username || '',
-                    diaChiHienTai: data.address || '',
-                    soDienThoai: data.phone_number || '',
+                    address: data.address || '',
+                    phone_number: data.phone_number || '',
                 });
 
                 if (data.profile_image) {
@@ -79,14 +79,14 @@ const ParentProfile = () => {
         setLoading(true);
         try {
             const formDataToSend = new FormData();
-            formDataToSend.append('parentname', formData.hoTen);
-            formDataToSend.append('birthdate', formData.ngaySinh);
+            formDataToSend.append('parentname', formData.parentname);
+            formDataToSend.append('birthdate', formData.birthdate);
             formDataToSend.append('username', formData.username);
-            formDataToSend.append('address', formData.diaChiHienTai);
-            formDataToSend.append('phone_number', formData.soDienThoai);
+            formDataToSend.append('address', formData.address);
+            formDataToSend.append('phone_number', formData.phone_number);
 
             if (profileImage) {
-                formDataToSend.append('profile_image', profileImage); // Include profile image
+                formDataToSend.append('profile_image', profileImage);
             }
 
             const response = await axios.put(
@@ -146,8 +146,8 @@ const ParentProfile = () => {
                                 <label className="block mb-1 font-medium">Họ tên *</label>
                                 <input
                                     type="text"
-                                    name="hoTen"
-                                    value={formData.hoTen}
+                                    name="parentname"
+                                    value={formData.parentname}
                                     onChange={handleChange}
                                     className="w-full border border-gray-300 p-2 rounded"
                                 />
@@ -156,7 +156,7 @@ const ParentProfile = () => {
                                 <label className="block mb-1 font-medium">Tên đăng nhập</label>
                                 <input
                                     type="text"
-                                    name="diaChiThuongTru"
+                                    name="username"
                                     value={formData.username}
                                     onChange={handleChange}
                                     className="w-full border border-gray-300 p-2 rounded"
@@ -166,8 +166,8 @@ const ParentProfile = () => {
                                 <label className="block mb-1 font-medium">Ngày sinh *</label>
                                 <input
                                     type="date"
-                                    name="ngaySinh"
-                                    value={formData.ngaySinh}
+                                    name="birthdate"
+                                    value={formData.birthdate}
                                     onChange={handleChange}
                                     className="w-full border border-gray-300 p-2 rounded"
                                 />
@@ -176,8 +176,8 @@ const ParentProfile = () => {
                                 <label className="block mb-1 font-medium">Địa chỉ hiện tại *</label>
                                 <input
                                     type="text"
-                                    name="diaChiHienTai"
-                                    value={formData.diaChiHienTai}
+                                    name="address"
+                                    value={formData.address}
                                     onChange={handleChange}
                                     className="w-full border border-gray-300 p-2 rounded"
                                 />
@@ -186,8 +186,8 @@ const ParentProfile = () => {
                                 <label className="block mb-1 font-medium">Số điện thoại *</label>
                                 <input
                                     type="text"
-                                    name="soDienThoai"
-                                    value={formData.soDienThoai}
+                                    name="phone_number"
+                                    value={formData.phone_number}
                                     onChange={handleChange}
                                     className="w-full border border-gray-300 p-2 rounded"
                                 />
