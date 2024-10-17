@@ -54,7 +54,7 @@ const TutorProfile = () => {
                     birthdate: data.birthdate !== "Not recorded" ? data.birthdate : '',
                     bio_link: data.bio_link !== "Not recorded" ? data.bio_link : '',
                     phone_number: data.phone_number !== "Not recorded" ? data.phone_number : '',
-                    gender: data.gender || '',
+                    gender: data.gender !== "Not recorded" ? data.phone_number : '',
                     educational_background:
                         data.educational_background !== "Not recorded"
                             ? data.educational_background
@@ -93,6 +93,10 @@ const TutorProfile = () => {
             formDataToSend.append('tutorname', formData.tutorname);
             formDataToSend.append('address', formData.address);
             formDataToSend.append('gender', formData.gender);
+            formDataToSend.append('birthdate', formData.birthdate);
+            formDataToSend.append('bio_link', formData.bio_link);
+            formDataToSend.append('phone_number', formData.phone_number);
+            formDataToSend.append('educational_background', formData.educational_background);
 
             if (profileImage) {
                 formDataToSend.append('profile_image', profileImage);

@@ -15,11 +15,9 @@ const ParentProfile = () => {
     const [profileImage, setProfileImage] = useState(null);
     const [loading, setLoading] = useState(false);
 
-    // Retrieve the parent ID and token from local storage
     const rawParentId = localStorage.getItem("id") || "";
     const token = localStorage.getItem("accessToken");
 
-    // Clean the ID by removing all hyphens
     const parentId = rawParentId.replace(/-/g, "");
 
     useEffect(() => {
