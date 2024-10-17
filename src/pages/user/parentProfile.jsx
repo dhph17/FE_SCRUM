@@ -79,11 +79,11 @@ const ParentProfile = () => {
         setLoading(true);
         try {
             const formDataToSend = new FormData();
-            formDataToSend.append('hoTen', formData.hoTen);
-            formDataToSend.append('ngaySinh', formData.ngaySinh);
+            formDataToSend.append('parentname', formData.hoTen);
+            formDataToSend.append('birthdate', formData.ngaySinh);
             formDataToSend.append('username', formData.username);
-            formDataToSend.append('diaChiHienTai', formData.address);
-            formDataToSend.append('soDienThoai', formData.phone_number);
+            formDataToSend.append('address', formData.diaChiHienTai);
+            formDataToSend.append('phone_number', formData.soDienThoai);
 
             if (profileImage) {
                 formDataToSend.append('profile_image', profileImage); // Include profile image
