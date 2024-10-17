@@ -34,6 +34,7 @@ const Header = ({ setSearch }) => {
       if (response.ok) {
         setSessionToken("");
         setRole("");
+        setSearch('')
         localStorage.removeItem("refreshToken");
         navigate("/");
       } else {

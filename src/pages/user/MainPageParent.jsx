@@ -435,7 +435,7 @@ const MainPageParent = ({ searchTerm }) => {
           </svg>
           <p className="font-semibold text-[1.2rem] text-shadow-sm">
             {
-              searchTerm ? `Kết quả tìm kiếm: ${searchTerm}` : 'BÀI ĐĂNG GẦN ĐÂY'
+              searchTerm ? `Kết quả tìm kiếm "${searchTerm}": ` : 'BÀI ĐĂNG GẦN ĐÂY'
             }
           </p>
         </div>

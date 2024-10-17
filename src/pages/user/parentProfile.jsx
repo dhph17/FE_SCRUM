@@ -163,13 +163,15 @@ const ParentProfile = () => {
                                 </div>
                                 <div>
                                     <label className="block mb-1 font-medium">Giới tính *</label>
-                                    <input
-                                        type="text"
+                                    <select
                                         name="gender"
                                         value={formData.gender}
                                         onChange={handleChange}
                                         className="w-full border border-gray-300 p-2 rounded"
-                                    />
+                                    >
+                                        <option value="male">Nam</option>
+                                        <option value="female">Nữ</option>
+                                    </select>
                                 </div>
                                 <div>
                                     <label className="block mb-1 font-medium">Ngày sinh *</label>
