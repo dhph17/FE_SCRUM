@@ -32,7 +32,7 @@ const TutorProfile = () => {
                 console.error("No tutor ID found in local storage.");
                 return;
             }
-
+    
             try {
                 const response = await axios.get(
                     `http://127.0.0.1:8000/api/tutors/${tutorId}/`,
@@ -43,21 +43,20 @@ const TutorProfile = () => {
                     }
                 );
                 const data = response.data;
-
+    
                 setFormData({
-                    tutor_id: data.tutor_id,
-                    username: data.user.username || '',
-                    email: data.user.email || '',
-                    role: data.user.role || '',
-                    tutorname: data.tutorname || '',
-                    address: data.address !== "Not recorded" ? data.address : '',
-                    birthdate: data.birthdate !== "Not recorded" ? data.birthdate : '',
-                    bio_link: data.bio_link !== "Not recorded" ? data.bio_link : '',
-                    phone_number: data.phone_number !== "Not recorded" ? data.phone_number : '',
-                    gender: data.gender !== "Not recorded" ? data.gender : '',
-                    educational_background: data.educational_background !== "Not recorded" ? data.educational_background : '',
+                    tutor_id: cleanData(data.tutor_id),
+                    username: cleanData(data.user.username),
+                    email: cleanData(data.user.email),
+                    role: cleanData(data.user.role),
+                    tutorname: cleanData(data.tutorname),
+                    address: cleanData(data.address !== "Not recorded" ? data.address : ''),
+                    birthdate: cleanData(data.birthdate !== "Not recorded" ? data.birthdate : ''),
+                    bio_link: cleanData(data.bio_link !== "Not recorded" ? data.bio_link : ''),
+                    phone_number: cleanData(data.phone_number !== "Not recorded" ? data.phone_number : ''),
+                    gender: cleanData(data.gender !== "Not recorded" ? data.gender : ''),
+                    educational_background: cleanData(data.educational_background !== "Not recorded" ? data.educational_background : ''),
                 });
-
                 if (data.profile_image) {
                     setProfileImage(data.profile_image);
                 }
@@ -65,7 +64,6 @@ const TutorProfile = () => {
                 console.error("Error fetching tutor data:", error);
             }
         };
-
         fetchTutorData();
     }, [tutorId, token]);
 
@@ -74,6 +72,13 @@ const TutorProfile = () => {
             ...formData,
             [e.target.name]: e.target.value
         });
+    };
+
+    const cleanData = (value) => {
+        if (typeof value === "string") {
+            return value.replace(/[\[\]\\'"]/g, "");
+        }
+        return value;
     };
 
     const handleImageUpload = (e) => {
