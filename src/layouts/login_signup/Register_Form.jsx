@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom"
-import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 const Register_Form = () => {
@@ -38,21 +37,15 @@ const Register_Form = () => {
             });
 
             const data = await response.json();
+            console.log(response);
+
 
             if (response.ok) {
-                console.log("Register Successfully");
-                toast.success("Đăng kí thành công", {
-                    position: "bottom-right",
-                    autoClose: 5000,
-                    hideProgressBar: true,
-                    closeOnClick: true,
-                    pauseOnHover: true,
-                    draggable: true,
-                    progress: undefined,
-                });
-                navigate("/");
+                navigate("/VerifyEmail", { state: { email: email } });
+                // console.log(data);
+
             } else {
-                setError(data.message || "User with this username already exists!");
+                setError(data.message || "Đã tồn tại người dùng có tên đăng nhập này");
             }
         } catch (error) {
             console.log(error)
@@ -60,7 +53,7 @@ const Register_Form = () => {
         }
     };
     return (
-        <div className="bg-white shadow-lg rounded-3xl px-10 py-4 w-[400px] mx-auto border-2 border-[#002182] -mt-12">
+        <div className="bg-white shadow-lg rounded-3xl px-9 py-4 w-[400px] mx-auto border-2 border-[#002182] -mt-12">
             <h2 className="text-[1.5rem] font-bold text-center mb-6">Đăng Kí</h2>
             <form onSubmit={handleSubmit}>
                 <div className="mb-4 relative">

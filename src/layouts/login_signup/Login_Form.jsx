@@ -47,7 +47,11 @@ const LoginForm = () => {
           navigate('/parent/main-page')
         }
       } else {
-        setError(data.message || "Đăng nhập thất bại!");
+        if (data.message === 'Invalid email or password') {
+          setError("Vui lòng nhập đúng thông tin đăng nhập")
+        } else {
+          setError("Vui lòng xác minh tài khoản");
+        }
       }
     } catch (error) {
       console.log(error)
