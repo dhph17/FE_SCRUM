@@ -53,7 +53,7 @@ const ItemPostVu = ({ user, children, tag }) => {
                         alt="avatar"
                     />
                     <div>
-                        <strong>{user.parentname || user.username}</strong>
+                        <strong>{user.parent_name || user.username}</strong>
                         {
                             role === 'admin' && tag === "Đã phê duyệt" ?
                                 (

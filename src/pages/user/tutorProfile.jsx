@@ -55,7 +55,7 @@ const TutorProfile = () => {
                     bio_link: data.bio_link !== "Not recorded" ? data.bio_link : '',
                     phone_number: data.phone_number !== "Not recorded" ? data.phone_number : '',
                     gender: data.gender !== "Not recorded" ? data.gender : '',
-                    educational_background: data.educational_background !== "Not recorded" ? data.educational_background: '',
+                    educational_background: data.educational_background !== "Not recorded" ? data.educational_background : '',
                 });
 
                 if (data.profile_image) {
@@ -95,7 +95,7 @@ const TutorProfile = () => {
         const day = (`0${d.getDate()}`).slice(-2);
         return `${year}-${month}-${day}`;
     };
-    
+
     const handleSave = async () => {
         setLoading(true);
         try {
@@ -103,19 +103,19 @@ const TutorProfile = () => {
             formDataToSend.append('tutorname', formData.tutorname);
             formDataToSend.append('address', formData.address);
             formDataToSend.append('gender', formData.gender);
-            
+
             const formattedBirthdate = formData.birthdate ? formatDate(formData.birthdate) : null;
             formDataToSend.append('birthdate', formattedBirthdate);
-    
+
             formDataToSend.append('username', formData.username);
             formDataToSend.append('bio_link', formData.bio_link);
             formDataToSend.append('phone_number', formData.phone_number);
             formDataToSend.append('educational_background', formData.educational_background);
-    
+
             if (profileImage) {
                 formDataToSend.append('profile_image', profileImage);
             }
-    
+
             const response = await axios.put(
                 `http://127.0.0.1:8000/api/tutors/${tutorId}/`,
                 formDataToSend,
@@ -126,7 +126,7 @@ const TutorProfile = () => {
                     },
                 }
             );
-    
+
             console.log("Profile updated successfully:", response.data);
             alert("Profile updated successfully!");
         } catch (error) {
