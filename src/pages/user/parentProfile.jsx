@@ -152,7 +152,7 @@ const ParentProfile = () => {
                             <h2 className="text-2xl font-bold mb-6 text-center">Tạo hồ sơ phụ huynh</h2>
                             <form className="grid grid-cols-2 gap-4">
                                 <div>
-                                    <label className="block mb-1 font-medium">Họ tên</label>
+                                    <label className="block mb-1 font-medium">Họ tên *</label>
                                     <input
                                         type="text"
                                         name="parentname"
@@ -162,20 +162,17 @@ const ParentProfile = () => {
                                     />
                                 </div>
                                 <div>
-                                    <label className="block mb-1 font-medium">Giới tính</label>
-                                    <select
+                                    <label className="block mb-1 font-medium">Giới tính *</label>
+                                    <input
+                                        type="text"
                                         name="gender"
                                         value={formData.gender}
                                         onChange={handleChange}
                                         className="w-full border border-gray-300 p-2 rounded"
-                                    >
-                                        <option value="male">Nam</option>
-                                        <option value="female">Nữ</option>
-                                    </select>
-
+                                    />
                                 </div>
                                 <div>
-                                    <label className="block mb-1 font-medium">Ngày sinh</label>
+                                    <label className="block mb-1 font-medium">Ngày sinh *</label>
                                     <input
                                         type="date"
                                         name="birthdate"
@@ -185,7 +182,7 @@ const ParentProfile = () => {
                                     />
                                 </div>
                                 <div>
-                                    <label className="block mb-1 font-medium">Địa chỉ hiện tại</label>
+                                    <label className="block mb-1 font-medium">Địa chỉ hiện tại *</label>
                                     <input
                                         type="text"
                                         name="address"
@@ -195,7 +192,7 @@ const ParentProfile = () => {
                                     />
                                 </div>
                                 <div>
-                                    <label className="block mb-1 font-medium">Số điện thoại</label>
+                                    <label className="block mb-1 font-medium">Số điện thoại *</label>
                                     <input
                                         type="text"
                                         name="phone_number"
