@@ -21,7 +21,7 @@ const TutorProfile = () => {
     const [profileImage, setProfileImage] = useState(null);
     const [loading, setLoading] = useState(false);
 
-    let rawTutorId = localStorage.getItem("id") || "";
+    const rawTutorId = localStorage.getItem("id") || "";
     const token = localStorage.getItem("accessToken");
 
     const tutorId = rawTutorId.replace(/-/g, "");
@@ -55,7 +55,7 @@ const TutorProfile = () => {
                     bio_link: data.bio_link !== "Not recorded" ? data.bio_link : '',
                     phone_number: data.phone_number !== "Not recorded" ? data.phone_number : '',
                     gender: data.gender !== "Not recorded" ? data.gender : '',
-                    educational_background: data.educational_background !== "Not recorded" ? data.educational_background: '',
+                    educational_background: data.educational_background !== "Not recorded" ? data.educational_background : '',
                 });
 
                 if (data.profile_image) {
@@ -87,15 +87,6 @@ const TutorProfile = () => {
         }
     };
 
-    const formatDate = (date) => {
-        if (!date) return '';
-        const d = new Date(date);
-        const year = d.getFullYear();
-        const month = (`0${d.getMonth() + 1}`).slice(-2);
-        const day = (`0${d.getDate()}`).slice(-2);
-        return `${year}-${month}-${day}`;
-    };
-    
     const handleSave = async () => {
         setLoading(true);
         try {
@@ -103,19 +94,15 @@ const TutorProfile = () => {
             formDataToSend.append('tutorname', formData.tutorname);
             formDataToSend.append('address', formData.address);
             formDataToSend.append('gender', formData.gender);
-            
-            const formattedBirthdate = formData.birthdate ? formatDate(formData.birthdate) : null;
-            formDataToSend.append('birthdate', formattedBirthdate);
-    
             formDataToSend.append('username', formData.username);
             formDataToSend.append('bio_link', formData.bio_link);
             formDataToSend.append('phone_number', formData.phone_number);
             formDataToSend.append('educational_background', formData.educational_background);
-    
+
             if (profileImage) {
                 formDataToSend.append('profile_image', profileImage);
             }
-    
+
             const response = await axios.put(
                 `http://127.0.0.1:8000/api/tutors/${tutorId}/`,
                 formDataToSend,
@@ -126,7 +113,7 @@ const TutorProfile = () => {
                     },
                 }
             );
-    
+
             console.log("Profile updated successfully:", response.data);
             alert("Profile updated successfully!");
         } catch (error) {
@@ -143,7 +130,7 @@ const TutorProfile = () => {
 
     return (
         <Tutor>
-            <Panel activeItem={2}>
+            <Panel role="tutor" activeItem={2}>
                 <div className="relative h-full max-h-[600px] p-4">
                     <div className="w-full max-w-4xl mx-auto bg-gray-100 p-6 rounded-lg shadow-md flex gap-6">
                         <div className="flex flex-col items-center w-1/3">
@@ -167,7 +154,7 @@ const TutorProfile = () => {
                         </div>
 
                         <div className="w-2/3">
-                            <h2 className="text-2xl font-bold mb-6 text-center">Xem và chỉnh sửa hồ sơ</h2>
+                            <h2 className="text-2xl font-bold mb-6 text-center">Tạo hồ sơ gia sư</h2>
                             <form className="grid grid-cols-2 gap-4">
                                 <div>
                                     <label className="block mb-1 font-medium">Họ tên *</label>
@@ -180,11 +167,11 @@ const TutorProfile = () => {
                                     />
                                 </div>
                                 <div>
-                                    <label className="block mb-1 font-medium">Địa chỉ *</label>
+                                    <label className="block mb-1 font-medium">Giới tính *</label>
                                     <input
                                         type="text"
-                                        name="address"
-                                        value={formData.address}
+                                        name="gender"
+                                        value={formData.gender}
                                         onChange={handleChange}
                                         className="w-full border border-gray-300 p-2 rounded"
                                     />
@@ -195,6 +182,16 @@ const TutorProfile = () => {
                                         type="date"
                                         name="birthdate"
                                         value={formData.birthdate}
+                                        onChange={handleChange}
+                                        className="w-full border border-gray-300 p-2 rounded"
+                                    />
+                                </div>
+                                <div>
+                                    <label className="block mb-1 font-medium">Địa chỉ hiện tại *</label>
+                                    <input
+                                        type="text"
+                                        name="address"
+                                        value={formData.address}
                                         onChange={handleChange}
                                         className="w-full border border-gray-300 p-2 rounded"
                                     />
@@ -215,16 +212,6 @@ const TutorProfile = () => {
                                         type="text"
                                         name="bio_link"
                                         value={formData.bio_link}
-                                        onChange={handleChange}
-                                        className="w-full border border-gray-300 p-2 rounded"
-                                    />
-                                </div>
-                                <div>
-                                    <label className="block mb-1 font-medium">Giới tính *</label>
-                                    <input
-                                        type="text"
-                                        name="gender"
-                                        value={formData.gender}
                                         onChange={handleChange}
                                         className="w-full border border-gray-300 p-2 rounded"
                                     />
