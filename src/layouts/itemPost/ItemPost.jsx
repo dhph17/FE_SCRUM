@@ -5,11 +5,13 @@ import Img1 from "../../assets/image/quiz.png";
 import Img2 from "../../assets/image/assignment.png";
 import Img3 from "../../assets/image/medal.png";
 import ClassTimeDetail from "../../layouts/popup/classTime_Popup";
+import { useAppContext } from "../../AppProvider";
 
 const ItemPostVu = ({ user, children, tag }) => {
     const [tagPost, setTagPost] = useState()
-    const [userName, setUserName] = useState(null);
     const [selectedTime, setSelectedTime] = useState(null);
+
+    const { role } = useAppContext();
 
     const handleBuoiHocClick = (post) => {
         setSelectedTime(post);
@@ -28,30 +30,6 @@ const ItemPostVu = ({ user, children, tag }) => {
             setTagPost(Img1)
         }
     }, [])
-
-    useEffect(() => {
-        const fetchUser = async () => {
-            try {
-                const response = await fetch(`http://127.0.0.1:8000/api/parents/${user.parent_id}`, {
-                    method: "GET",
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                });
-                const data = await response.json();
-
-                if (response.ok) {
-                    setUserName(data.parentname || data.user.username);
-                } else {
-                    console.error("Failed to fetch user data");
-                }
-            } catch (error) {
-                console.error("Error fetching user data:", error);
-            }
-        };
-
-        fetchUser();
-    }, [user.parent_id]);
 
     const formatDate = (isoDate) => {
         const date = new Date(isoDate);
@@ -75,8 +53,17 @@ const ItemPostVu = ({ user, children, tag }) => {
                         alt="avatar"
                     />
                     <div>
-                        <strong>{userName}</strong>
-                        <p className="opacity-60">{formatDate(user.created_at)}</p>
+                        <strong>{user.parent_name || user.username}</strong>
+                        {
+                            role === 'admin' && tag === "Đã phê duyệt" ?
+                                (
+                                    <p className="opacity-60">{formatDate(user.created_at)}. Được duyệt lúc {formatDate(user.last_updated)}</p>
+                                )
+                                :
+                                (
+                                    <p className="opacity-60">{formatDate(user.created_at)}</p>
+                                )
+                        }
                     </div>
                 </div>
                 <div className="flex">
@@ -93,7 +80,7 @@ const ItemPostVu = ({ user, children, tag }) => {
                     </li>
                     <li className="flex gap-2">
                         <strong>Học phí:</strong>
-                        <p>{user.wage_per_session}</p>
+                        <p>{user.wage_per_session.toLocaleString('vi-VN')}&nbsp;VNĐ</p>
                     </li>
                     <li className="flex gap-2">
                         <strong>Lớp:</strong>

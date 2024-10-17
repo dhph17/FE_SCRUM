@@ -1,6 +1,8 @@
 import { Route, Routes } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { useState } from "react";
+
 
 import AppProvider from "./AppProvider";
 import Footer from "./layouts/footer/Footer";
@@ -12,7 +14,7 @@ import CreateNewPassword from "./pages/login/CreateNewPassword";
 import Login from "./pages/login/Login";
 import Start from "./pages/start/Start";
 import Panel from "./layouts/panel/Panel";
-// import PostApproval from "./pages/user/BaiDangDuocDuyet";
+import PostApproval from "./pages/user/BaiDangDuocDuyet";
 // import PostManagement from "./pages/user/SuatDayDaGiao";
 import DuyetBaiDang from "./pages/admin/DuyetBaiDang";
 import TutorAccount from "./pages/admin/tutorAccount";
@@ -27,11 +29,13 @@ import TutorProfile from "./pages/user/tutorProfile";
 import ParentProfile from "./pages/user/parentProfile";
 
 function App() {
+  const [searchTerm, setSearchTerm] = useState("");
+
   return (
     <AppProvider>
       <ToastContainer />
       <div className="overflow-hidden">
-        <Header />
+        <Header setSearch={setSearchTerm} />
         <Routes>
           <Route path="/" element={<Start />} />
           <Route path="/login" element={<Login />} />
@@ -46,14 +50,20 @@ function App() {
           <Route path="/admin/approved-posts" element={<ApprovedPost />} />
 
           {/* <Route path="/parent/assigned" element={<PostManagement />} /> */}
-          {/* <Route path="/parent/view-posts" element={<PostApproval />} /> */}
+          <Route path="/parent/view-posts" element={<PostApproval />} />
           <Route path="/parent/pending-posts" element={<BaiDangChoDuyet />} />
           <Route path="/parent/create-post" element={<CreatePost />} />
-          <Route path="/parent/update-post" element={<UpdatePost />} />
-          <Route path="/parent/main-page" element={<MainPageParent />} />
+          <Route path="/parent/update-post/:postId" element={<UpdatePost />} />
+          <Route
+            path="/parent/main-page"
+            element={<MainPageParent searchTerm={searchTerm} />}
+          />
           <Route path="/parent/profile" element={<ParentProfile />} />
 
-          <Route path="/tutor/main-page" element={<MainPageTutor />} />
+          <Route
+            path="/tutor/main-page"
+            element={<MainPageTutor searchTerm={searchTerm} />}
+          />
           <Route path="/tutor/profile" element={<TutorProfile />} />
         </Routes>
         <Footer />

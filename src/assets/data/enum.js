@@ -3,7 +3,7 @@ let enumData = null;
 export const fetchEnumData = async () => {
     if (!enumData) {
         try {
-            const response = await fetch("http://127.0.0.1:8000/api/enum/");
+            const response = await fetch(`${import.meta.env.VITE_API_ENDPOINT}/api/enum/`);
             if (response.ok) {
                 enumData = await response.json();
                 console.log("Dữ liệu lấy thành công", enumData);

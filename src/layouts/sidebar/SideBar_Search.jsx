@@ -1,21 +1,33 @@
 import { useState } from "react";
-import { useAppContext } from '../../AppProvider';
+import PropTypes from "prop-types";
+import { useAppContext } from "../../AppProvider";
 import { useNavigate } from "react-router-dom";
 
-const SideBarSearchParent = () => {
-  let navigate = useNavigate()
+const SideBarSearchParent = ({ setFilters }) => {
+
+  let navigate = useNavigate();
   const { role, dataEnum } = useAppContext();
   const [selectedDropdown, setSelectedDropdown] = useState(null);
   const [selectedSubject, setSelectedSubject] = useState("Môn học");
   const [selectedFee, setSelectedFee] = useState("Học phí (/h)");
-  // const [selectedClasses, setSelectedClasses] = useState([]);
+  const [selectedClasses, setSelectedClasses] = useState([]);
+  const [selectedSessions, setSelectedSessions] = useState([]);
 
   //Num_Student
   const [minStudents, setMinStudents] = useState(1);
-  const [maxStudents, setMaxStudents] = useState(1);
+  const [maxStudents, setMaxStudents] = useState(100);
   const [selectStudent, setSelectStudents] = useState("Số học viên");
 
-  // const [selectedSessions, setSelectedSessions] = useState([]);
+    const applyFilters = () => {
+      setFilters({
+        subject: selectedSubject,
+        fee: selectedFee,
+        minStudents: minStudents,
+        maxStudents: maxStudents,
+        grade: selectedClasses,
+        sessions: selectedSessions,
+      });
+    };
 
   // Hàm xử lý khi bấm vào từng mục
   const toggleDropdown = (dropdownName) => {
@@ -30,16 +42,6 @@ const SideBarSearchParent = () => {
     setSelectedSubject(subject);
     setSelectedDropdown(null);
   };
-
-  // const handleClassSelection = (classItem) => {
-  //   if (selectedClasses.includes(classItem)) {
-  //     // Nếu lớp đã được chọn, bỏ chọn
-  //     setSelectedClasses(selectedClasses.filter((item) => item !== classItem));
-  //   } else {
-  //     // Nếu lớp chưa được chọn, thêm vào danh sách lớp đã chọn
-  //     setSelectedClasses([...selectedClasses, classItem]);
-  //   }
-  // };
 
   const handleSelectFee = (fee) => {
     setSelectedFee(fee);
@@ -74,13 +76,29 @@ const SideBarSearchParent = () => {
     }
   };
 
-  // const handleSessionSelection = (sessionItem) => {
-  //   if (selectedSessions.includes(sessionItem)) {
-  //     setSelectedSessions(selectedSessions.filter((item) => item !== sessionItem));
-  //   } else {
-  //     setSelectedSessions([...selectedSessions, sessionItem]);
-  //   }
-  // };
+  const handleClassChange = (event) => {
+    const value = event.target.value;
+
+    setSelectedClasses((prevSelectedClasses) => {
+      if (event.target.checked) {
+        // Nếu checkbox được chọn, thêm lớp học vào danh sách
+        return [...prevSelectedClasses, value];
+      } else {
+        // Nếu checkbox bị bỏ chọn, xóa lớp học khỏi danh sách
+        return prevSelectedClasses.filter((classItem) => classItem !== value);
+      }
+    });
+  };
+
+  const handleSessionSelection = (sessionItem) => {
+    if (selectedSessions.includes(sessionItem)) {
+      setSelectedSessions(
+        selectedSessions.filter((item) => item !== sessionItem)
+      );
+    } else {
+      setSelectedSessions([...selectedSessions, sessionItem]);
+    }
+  };
 
   return (
     <div className="flex flex-col w-80 p-6 font-poppins">
@@ -100,8 +118,9 @@ const SideBarSearchParent = () => {
               <i className="fas fa-book mr-2"></i> {selectedSubject}
             </span>
             <i
-              className={`fas fa-chevron-down transition-transform duration-2000 ${selectedDropdown === "subjects" ? "transform rotate-180" : ""
-                }`}
+              className={`fas fa-chevron-down transition-transform duration-2000 ${
+                selectedDropdown === "subjects" ? "transform rotate-180" : ""
+              }`}
             ></i>
           </div>
           {selectedDropdown === "subjects" && (
@@ -130,7 +149,12 @@ const SideBarSearchParent = () => {
         <div className="grid grid-cols-2 ml-5 justify-self-center">
           {dataEnum.classes.map((classItem, index) => (
             <div key={index}>
-              <input type="checkbox" id={classItem} value={classItem} />
+              <input
+                type="checkbox"
+                id={classItem}
+                value={classItem}
+                onChange={handleClassChange} // Xử lý sự kiện thay đổi trạng thái checkbox
+              />
               <label htmlFor={classItem} className="ml-2">
                 Lớp {classItem}
               </label>
@@ -148,8 +172,9 @@ const SideBarSearchParent = () => {
               <i className="fas fa-dollar-sign mr-2"></i> {selectedFee}
             </span>
             <i
-              className={`fas fa-chevron-down transition-transform duration-2000 ${selectedDropdown === "fees" ? "transform rotate-180" : ""
-                }`}
+              className={`fas fa-chevron-down transition-transform duration-2000 ${
+                selectedDropdown === "fees" ? "transform rotate-180" : ""
+              }`}
             ></i>
           </div>
           {selectedDropdown === "fees" && (
@@ -178,8 +203,9 @@ const SideBarSearchParent = () => {
               {selectStudent}
             </span>
             <i
-              className={`fas fa-chevron-down transition-transform duration-2000 ${selectedDropdown === "students" ? "transform rotate-180" : ""
-                }`}
+              className={`fas fa-chevron-down transition-transform duration-2000 ${
+                selectedDropdown === "students" ? "transform rotate-180" : ""
+              }`}
             ></i>
           </div>
           {selectedDropdown === "students" && (
@@ -223,7 +249,13 @@ const SideBarSearchParent = () => {
         <div className="grid grid-cols-2 ml-5 justify-self-center">
           {dataEnum.sessions.map((classItem, index) => (
             <div key={index}>
-              <input type="checkbox" id={classItem} value={classItem} />
+              <input
+                type="checkbox"
+                id={classItem}
+                value={classItem}
+                onChange={() => handleSessionSelection(classItem)}
+                checked={selectedSessions.includes(classItem)}
+              />
               <label htmlFor={classItem} className="ml-2">
                 {classItem}
               </label>
@@ -233,25 +265,41 @@ const SideBarSearchParent = () => {
       </div>
 
       <div className="flex justify-between mt-4 space-x-4">
-        <button className="bg-[#002182] w-[10vw] text-white py-2 px-4 rounded-md">
+        <button
+          className="bg-[#002182] w-[10vw] text-white py-2 px-4 rounded-md"
+          onClick={() => {
+            if (
+              window.confirm(
+                "Bạn có chắc chắn muốn xóa tất cả dữ liệu lọc không ?"
+              )
+            ) {
+              window.location.reload();
+            }
+          }}
+        >
           Xóa tất cả
         </button>
-        <button className="bg-[#002182] w-[10vw] text-white py-2 px-4 rounded-md">
+        <button
+          className="bg-[#002182] w-[10vw] text-white py-2 px-4 rounded-md"
+          onClick={applyFilters}
+        >
           Áp dụng
         </button>
       </div>
-      {
-        role === 'parent' &&
-        (<button
+      {role === "parent" && (
+        <button
           className="bg-custom_yellow text-black mt-4 py-2 px-4 rounded-md w-full"
           onClick={() => navigate(`/parent/create-post`)}
         >
           Tạo bài đăng mới
-        </button>)
-      }
-
+        </button>
+      )}
     </div>
   );
+};
+
+SideBarSearchParent.propTypes = {
+  setFilters: PropTypes.func.isRequired,
 };
 
 export default SideBarSearchParent;
