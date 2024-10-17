@@ -5,11 +5,15 @@ import Parent from "../../layouts/PageAuthorization/parent/parent";
 
 const ParentProfile = () => {
     const [formData, setFormData] = useState({
-        parentname: '',
-        birthdate: '',
+        parent_id: '',
         username: '',
+        email: '',
+        role: '',
+        parentname: '',
         address: '',
+        birthdate: '',
         phone_number: '',
+        gender: '',
     });
 
     const [profileImage, setProfileImage] = useState(null);
@@ -39,15 +43,19 @@ const ParentProfile = () => {
                 const data = response.data;
 
                 setFormData({
+                    parent_id: data.parent_id,
+                    username: data.user.username || '',
+                    email: data.user.email || '',
+                    role: data.user.role || '',
                     parentname: data.parentname || '',
-                    birthdate: data.birthdate || '',
-                    username: data.username || '',
-                    address: data.address || '',
-                    phone_number: data.phone_number || '',
+                    address: data.address !== "Not recorded" ? data.address : '',
+                    birthdate: data.birthdate !== "Not recorded" ? data.birthdate : '',
+                    phone_number: data.phone_number !== "Not recorded" ? data.phone_number : '',
+                    gender: data.gender !== "Not recorded" ? data.gender : '',
                 });
 
                 if (data.profile_image) {
-                    setProfileImage(data.profile_image); // Set profile image if it exists
+                    setProfileImage(data.profile_image);
                 }
             } catch (error) {
                 console.error("Error fetching parent data:", error);
@@ -69,7 +77,7 @@ const ParentProfile = () => {
         if (file) {
             const reader = new FileReader();
             reader.onloadend = () => {
-                setProfileImage(reader.result); // Convert the image to a base64 string
+                setProfileImage(reader.result);
             };
             reader.readAsDataURL(file);
         }
@@ -80,9 +88,10 @@ const ParentProfile = () => {
         try {
             const formDataToSend = new FormData();
             formDataToSend.append('parentname', formData.parentname);
+            formDataToSend.append('address', formData.address);
+            formDataToSend.append('gender', formData.gender);
             formDataToSend.append('birthdate', formData.birthdate);
             formDataToSend.append('username', formData.username);
-            formDataToSend.append('address', formData.address);
             formDataToSend.append('phone_number', formData.phone_number);
 
             if (profileImage) {
@@ -112,7 +121,6 @@ const ParentProfile = () => {
 
     const handleDelete = () => {
         console.log("Profile deleted");
-        // Add logic to delete the profile if needed
     };
 
     return (
@@ -153,13 +161,13 @@ const ParentProfile = () => {
                                 />
                             </div>
                             <div>
-                                <label className="block mb-1 font-medium">Tên đăng nhập</label>
-                                <input
-                                    type="text"
-                                    name="username"
-                                    value={formData.username}
-                                    onChange={handleChange}
-                                    className="w-full border border-gray-300 p-2 rounded"
+                                    <label className="block mb-1 font-medium">Giới tính *</label>
+                                    <input
+                                        type="text"
+                                        name="gender"
+                                        value={formData.gender}
+                                        onChange={handleChange}
+                                        className="w-full border border-gray-300 p-2 rounded"
                                 />
                             </div>
                             <div>
