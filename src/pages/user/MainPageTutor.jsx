@@ -417,7 +417,9 @@ const MainPageTutor = ({ searchTerm }) => {
             </defs>
           </svg>
           <p className="font-semibold text-[1.2rem] text-shadow-sm">
-            BÀI ĐĂNG GẦN ĐÂY
+            {
+              searchTerm ? `Kết quả tìm kiếm: ${searchTerm}` : 'BÀI ĐĂNG GẦN ĐÂY'
+            }
           </p>
         </div>
         <div className="relative max-h-[38rem] overflow-y-auto grid grid-cols-1 gap-4">

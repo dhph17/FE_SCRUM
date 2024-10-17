@@ -85,12 +85,12 @@ const MainPageParent = ({ searchTerm }) => {
           }
 
           // Lọc học phí       "Dưới 20.000đ",
-      // "20.000đ - 70.000đ",
-      // "70.000đ - 120.000đ",
-      // "120.000đ - 170.000đ",
-      // "170.000đ - 220.000đ",
-      // "220.000đ - 250.000đ",
-      // "Trên 250.000đ"
+          // "20.000đ - 70.000đ",
+          // "70.000đ - 120.000đ",
+          // "120.000đ - 170.000đ",
+          // "170.000đ - 220.000đ",
+          // "220.000đ - 250.000đ",
+          // "Trên 250.000đ"
           if (filters.fee) {
             if (filters.fee === "Dưới 20.000đ") {
               filteredPosts = filteredPosts.filter(
@@ -434,7 +434,9 @@ const MainPageParent = ({ searchTerm }) => {
             </defs>
           </svg>
           <p className="font-semibold text-[1.2rem] text-shadow-sm">
-            BÀI ĐĂNG GẦN ĐÂY
+            {
+              searchTerm ? `Kết quả tìm kiếm: ${searchTerm}` : 'BÀI ĐĂNG GẦN ĐÂY'
+            }
           </p>
         </div>
         <div className="relative max-h-[38rem] overflow-y-auto grid grid-cols-1 gap-4">
