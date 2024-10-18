@@ -41,6 +41,8 @@ const ParentProfile = () => {
                     }
                 );
                 const data = response.data;
+                console.log(data);
+
 
                 setFormData({
                     parent_id: data.parent_id,
@@ -103,7 +105,7 @@ const ParentProfile = () => {
                 formDataToSend,
                 {
                     headers: {
-                        'Content-Type': 'multipart/form-data',
+                        'Content-Type': 'application/json',
                         Authorization: `Bearer ${token}`,
                     },
                 }
@@ -169,8 +171,8 @@ const ParentProfile = () => {
                                         onChange={handleChange}
                                         className="w-full border border-gray-300 p-2 rounded"
                                     >
-                                        <option value="male">Nam</option>
-                                        <option value="female">Nữ</option>
+                                        <option value="Nam">Nam</option>
+                                        <option value="Nữ">Nữ</option>
                                     </select>
                                 </div>
                                 <div>

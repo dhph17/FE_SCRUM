@@ -43,12 +43,12 @@ const TutorProfile = () => {
                     }
                 );
                 const data = response.data;
-
+                console.log(data)
                 setFormData({
-                    tutor_id: data.tutor_id,
-                    username: data.user.username || '',
-                    email: data.user.email || '',
-                    role: data.user.role || '',
+                    tutor_id: data.tutor_id || '',
+                    username: (data.user && data.user.username) || '',
+                    email: (data.user && data.user.email) || '',
+                    role: (data.user && data.user.role) || '',
                     tutorname: data.tutorname || '',
                     address: data.address !== "Not recorded" ? data.address : '',
                     birthdate: data.birthdate !== "Not recorded" ? data.birthdate : '',
@@ -57,6 +57,7 @@ const TutorProfile = () => {
                     gender: data.gender !== "Not recorded" ? data.gender : '',
                     educational_background: data.educational_background !== "Not recorded" ? data.educational_background : '',
                 });
+
 
                 if (data.profile_image) {
                     setProfileImage(data.profile_image);
@@ -95,6 +96,7 @@ const TutorProfile = () => {
             formDataToSend.append('address', formData.address);
             formDataToSend.append('gender', formData.gender);
             formDataToSend.append('username', formData.username);
+            formDataToSend.append('birthdate', formData.birthdate);
             formDataToSend.append('bio_link', formData.bio_link);
             formDataToSend.append('phone_number', formData.phone_number);
             formDataToSend.append('educational_background', formData.educational_background);
@@ -108,7 +110,7 @@ const TutorProfile = () => {
                 formDataToSend,
                 {
                     headers: {
-                        'Content-Type': 'multipart/form-data',
+                        'Content-Type': 'application/json',
                         Authorization: `Bearer ${token}`,
                     },
                 }
@@ -168,13 +170,15 @@ const TutorProfile = () => {
                                 </div>
                                 <div>
                                     <label className="block mb-1 font-medium">Giới tính *</label>
-                                    <input
-                                        type="text"
+                                    <select
                                         name="gender"
                                         value={formData.gender}
                                         onChange={handleChange}
                                         className="w-full border border-gray-300 p-2 rounded"
-                                    />
+                                    >
+                                        <option value="Nam">Nam</option>
+                                        <option value="Nữ">Nữ</option>
+                                    </select>
                                 </div>
                                 <div>
                                     <label className="block mb-1 font-medium">Ngày sinh *</label>
