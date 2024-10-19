@@ -8,7 +8,7 @@ const LoginForm = () => {
   const [error, setError] = useState(null);
   let navigate = useNavigate()
 
-  const { setSessionToken, setRole, setId } = useAppContext()
+  const { setSessionToken, setRole, setId, setName } = useAppContext()
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -33,6 +33,7 @@ const LoginForm = () => {
       if (response.ok) {
         setSessionToken(data.token.access);
         setRole(data.data.role || data.data.user.role);
+        setName(data.data.username || data.data.user.username)
         const role = data.data.role || data.data.user.role;
         localStorage.setItem('refreshToken', data.token.refresh);
         console.log("Đăng nhập thành công!");

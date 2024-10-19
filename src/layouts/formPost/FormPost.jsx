@@ -21,7 +21,7 @@ const FormPost = ({ func, postId }) => {
   const [feesView, setFeesView] = useState("");
   const [fees, setFees] = useState("");
   const [location, setLocation] = useState("");
-  const [days, setDays] = useState(0);
+  const [days, setDays] = useState("");
   const [classTimes, setClassTimes] = useState([]);
   const [note, setNote] = useState("");
 
@@ -58,7 +58,7 @@ const FormPost = ({ func, postId }) => {
             setStudentNumber(data.student_number || 0);
             setFees(data.wage_per_session || 0);
             setLocation(data.address || "");
-            setDays(data.session_per_week || 0);
+            setDays(data.session_per_week || "");
             setClassTimes(data.class_times || []);
             setNote(data.description || "");
             setFeesView(
@@ -568,6 +568,7 @@ const FormPost = ({ func, postId }) => {
               id="days"
               min="0"
               max="7"
+              placeholder="Số buổi học trong tuần không quá 7"
               required
               value={days}
               onChange={(e) => {
@@ -623,7 +624,9 @@ const FormPost = ({ func, postId }) => {
                       </option>
                     ))}
                   </select>
+
                   <div className="bg-black w-5"></div>
+
                   <div className="flex items-center space-x-2">
                     Từ &nbsp;
                     <input
@@ -633,8 +636,22 @@ const FormPost = ({ func, postId }) => {
                       className="w-[8rem] py-1 px-3 bg-gray-200 border border-gray-300 rounded-md shadow-md focus:outline-none transition-all duration-150 ease-in-out"
                       onChange={(e) => {
                         const updatedClassTimes = [...classTimes];
-                        updatedClassTimes[index].time_start = e.target.value;
-                        setClassTimes(updatedClassTimes);
+                        const newTimeStart = e.target.value;
+
+                        const conflictingTime = updatedClassTimes.some((time, idx) => {
+                          return (
+                            idx !== index &&
+                            time.weekday === updatedClassTimes[index].weekday &&
+                            newTimeStart < time.time_end && newTimeStart >= time.time_start
+                          );
+                        });
+
+                        if (conflictingTime) {
+                          alert("Khung giờ không được trùng lặp trong cùng một ngày.");
+                        } else {
+                          updatedClassTimes[index].time_start = newTimeStart;
+                          setClassTimes(updatedClassTimes);
+                        }
                       }}
                     />
                     &nbsp;đến&nbsp;
@@ -645,18 +662,34 @@ const FormPost = ({ func, postId }) => {
                       className="w-[8rem] py-1 px-3 bg-gray-200 border border-gray-300 rounded-md shadow-md focus:outline-none transition-all duration-150 ease-in-out"
                       onChange={(e) => {
                         const updatedClassTimes = [...classTimes];
-                        if (e.target.value > updatedClassTimes[index].time_start) {
-                          updatedClassTimes[index].time_end = e.target.value;
-                        } else {
+                        const newTimeEnd = e.target.value;
+
+                        if (newTimeEnd <= updatedClassTimes[index].time_start) {
                           alert("Thời gian kết thúc phải lớn hơn thời gian bắt đầu.");
+                          return;
                         }
-                        setClassTimes(updatedClassTimes);
+
+                        const conflictingTime = updatedClassTimes.some((time, idx) => {
+                          return (
+                            idx !== index &&
+                            time.weekday === updatedClassTimes[index].weekday &&
+                            newTimeEnd > time.time_start && newTimeEnd <= time.time_end
+                          );
+                        });
+
+                        if (conflictingTime) {
+                          alert("Khung giờ không được trùng lặp trong cùng một ngày.");
+                        } else {
+                          updatedClassTimes[index].time_end = newTimeEnd;
+                          setClassTimes(updatedClassTimes);
+                        }
                       }}
                     />
                   </div>
                 </div>
               ))}
             </div>
+
           </div>
 
           <div className="form__row flex mb-5">
