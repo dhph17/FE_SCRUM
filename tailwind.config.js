@@ -1,5 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 import tailwindcssTextshadow from 'tailwindcss-textshadow';
+import tailwindScrollbar from 'tailwind-scrollbar'
 
 export default {
   content: [
@@ -23,11 +24,12 @@ export default {
       textShadow: {
         sm: '1px 1px 2px rgba(0, 0, 0, 0.5)',
         lg: '2px 2px 4px rgba(0, 0, 0, 0.5)',
-      }
+      },
     },
   },
   plugins: [
-    tailwindcssTextshadow
+    tailwindcssTextshadow,
+    tailwindScrollbar,
   ],
 }
 
