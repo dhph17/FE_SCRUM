@@ -5,6 +5,7 @@ import Tutor from "../../layouts/PageAuthorization/tutor/tutor"; // Assuming thi
 
 const TutorPassword = () => {
     const [formData, setFormData] = useState({
+        tutorname: '',
         email: '',
         username: '',
         currentPassword: '',
@@ -33,6 +34,7 @@ const TutorPassword = () => {
                 const data = response.data;
                 setFormData({
                     ...formData,
+                    tutorname: data.tutorname || '',
                     email: data.user.email || '',
                     username: data.user.username || '',
                 });
@@ -40,10 +42,10 @@ const TutorPassword = () => {
                 console.error("Error fetching tutor data:", error);
             }
         };
-
+    
         fetchTutorData();
     }, [tutorId, token]);
-
+    
     const handleInputChange = (e) => {
         const { name, value } = e.target;
         setFormData({
@@ -57,13 +59,11 @@ const TutorPassword = () => {
     };
 
     const validatePasswordFormat = (password) => {
-        // Check if password has at least 8 characters, 1 letter, and 1 number
         const regex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
         return regex.test(password);
     };
-
+    
     const handleSavePassword = () => {
-        // Basic validation
         if (formData.newPassword !== formData.confirmPassword) {
             alert("Mật khẩu mới và xác nhận mật khẩu không khớp.");
             return;
@@ -90,6 +90,10 @@ const TutorPassword = () => {
                 <div className="relative p-4 overflow-y-auto">
                     <div className="w-full max-w-4xl mx-auto bg-gray-100 p-6 rounded-lg shadow-md">
                         <h2 className="text-2xl font-bold mb-6">Thông tin tài khoản</h2>
+                        <div className="mb-4">
+                            <label className="block mb-1 font-medium">Tên người dùng</label>
+                            <p>{formData.tutorname}</p>
+                        </div>
                         <div className="mb-4">
                             <label className="block mb-1 font-medium">Email đăng nhập</label>
                             <p>{formData.email}</p>

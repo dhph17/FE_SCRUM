@@ -5,6 +5,7 @@ import Parent from "../../layouts/PageAuthorization/parent/parent";
 
 const ParentPassword = () => {
     const [formData, setFormData] = useState({
+        parentname: '',
         email: '',
         username: '',
         currentPassword: '',
@@ -33,6 +34,7 @@ const ParentPassword = () => {
                 const data = response.data;
                 setFormData({
                     ...formData,
+                    parentname: data.parentname || '',
                     email: data.user.email || '',
                     username: data.user.username || '',
                 });
@@ -57,13 +59,11 @@ const ParentPassword = () => {
     };
 
     const validatePasswordFormat = (password) => {
-        // Check if password has at least 8 characters, 1 letter, and 1 number
         const regex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
         return regex.test(password);
     };
 
     const handleSavePassword = () => {
-        // Basic validation
         if (formData.newPassword !== formData.confirmPassword) {
             alert("Mật khẩu mới và xác nhận mật khẩu không khớp.");
             return;
@@ -74,7 +74,6 @@ const ParentPassword = () => {
             return;
         }
 
-        // Dummy logic to simulate password change success
         setLoading(true);
         setTimeout(() => {
             alert("Mật khẩu đã được thay đổi thành công (giả lập).");
@@ -90,6 +89,10 @@ const ParentPassword = () => {
                 <div className="relative p-4 overflow-y-auto">
                     <div className="w-full max-w-4xl mx-auto bg-gray-100 p-6 rounded-lg shadow-md">
                         <h2 className="text-2xl font-bold mb-6">Thông tin tài khoản</h2>
+                        <div className="mb-4">
+                            <label className="block mb-1 font-medium">Tên người dùng</label>
+                            <p>{formData.parentname}</p>
+                        </div>
                         <div className="mb-4">
                             <label className="block mb-1 font-medium">Email đăng nhập</label>
                             <p>{formData.email}</p>
