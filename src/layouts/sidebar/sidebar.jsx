@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
+import axios from 'axios';
 
 import Image1 from "../../assets/image/User.png";
 import Image2 from "../../assets/image/Nav.png";
@@ -8,7 +9,39 @@ import { useAppContext } from '../../AppProvider';
 
 const Sidebar = ({ activeItem }) => {
     const { role } = useAppContext();
+    const [avatar, setAvatar] = useState(null);
     const [showDropdown, setShowDropdown] = useState(activeItem >= 3 && activeItem <= 5);
+
+    const token = localStorage.getItem("accessToken");
+    const userId = localStorage.getItem("id")?.replace(/-/g, "");
+    const storedRole = localStorage.getItem("role");
+
+    // useEffect(() => {
+    //     if (!userId) {
+    //         console.error("No user ID or role found in local storage.");
+    //         return;
+    //     }
+
+    //     const fetchAvatar = async () => {
+    //         try {
+    //             const response = await axios.get(
+    //                 `http://127.0.0.1:8000/api/${storedRole === "tutor" ? "tutors" : "parents"}/${userId}/`,
+    //                 {
+    //                     headers: {
+    //                         Authorization: `Bearer ${token}`,
+    //                     },
+    //                 }
+    //             );
+
+    //             const avatarUrl = response.data.avatar;
+    //             setAvatar(avatarUrl ? `http://127.0.0.1:8000${avatarUrl}` : null);
+    //         } catch (error) {
+    //             console.error("Error fetching avatar:", error);
+    //         }
+    //     };
+
+    //     fetchAvatar();
+    // }, [userId, storedRole, token]);
 
     const handleMouseEnter = () => {
         setShowDropdown(true);
@@ -157,7 +190,11 @@ const Sidebar = ({ activeItem }) => {
         <div className="w-80 flex flex-col ml-4 mt-6">
             <div className="bg-custom_darkblue text-white p-4 flex items-center justify-between rounded-t-lg">
                 <div className="flex items-center">
-                    <img src={Image1} alt="Profile" className="w-14 h-14 rounded-full mr-3" />
+                    {avatar ? (
+                        <img src={avatar} alt="Profile" className="w-14 h-14 rounded-full mr-3" />
+                    ) : (
+                        <img src={Image1} alt="Profile" className="w-14 h-14 rounded-full mr-3" />
+                    )}
                     <p className="capitalize">{role}</p>
                 </div>
                 <img src={Image2} alt="nav" className="w-10 h-8"></img>
