@@ -29,7 +29,7 @@ const TutorProfile = ({ tutor_id, onClose }) => {
     const fetchTutorProfile = async () => {
       try {
         const response = await fetch(
-          `http://127.0.0.1:8000/api/tutors/${tutor_id}`
+          `${import.meta.env.VITE_API_ENDPOINT}/api/tutors/${tutor_id}`
         );
         const data = await response.json();
         setTutorProfile(data);
@@ -56,8 +56,7 @@ const TutorProfile = ({ tutor_id, onClose }) => {
             <div className="md:mb-0 md:w-1/2 flex flex-col justify-between">
               <img
                 src={
-                  // tutorProfile.avatar ||
-                  "https://www.thedogandfriends.com/assets/img/index/img-hero_dog.png"
+                  `${import.meta.env.VITE_API_ENDPOINT}/${tutorProfile.avatar}`
                 }
                 alt="Tutor Avatar"
                 className="rounded-full w-[7rem] h-[7rem] object-cover shadow-lg border-[3px] border-[#002182] self-center"

@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 
@@ -16,32 +16,32 @@ const Sidebar = ({ activeItem }) => {
     const userId = localStorage.getItem("id")?.replace(/-/g, "");
     const storedRole = localStorage.getItem("role");
 
-    // useEffect(() => {
-    //     if (!userId) {
-    //         console.error("No user ID or role found in local storage.");
-    //         return;
-    //     }
+    useEffect(() => {
+        if (!userId) {
+            console.error("No user ID or role found in local storage.");
+            return;
+        }
 
-    //     const fetchAvatar = async () => {
-    //         try {
-    //             const response = await axios.get(
-    //                 `http://127.0.0.1:8000/api/${storedRole === "tutor" ? "tutors" : "parents"}/${userId}/`,
-    //                 {
-    //                     headers: {
-    //                         Authorization: `Bearer ${token}`,
-    //                     },
-    //                 }
-    //             );
+        const fetchAvatar = async () => {
+            try {
+                const response = await axios.get(
+                    `http://127.0.0.1:8000/api/${storedRole === "tutor" ? "tutors" : "parents"}/${userId}/`,
+                    {
+                        headers: {
+                            Authorization: `Bearer ${token}`,
+                        },
+                    }
+                );
 
-    //             const avatarUrl = response.data.avatar;
-    //             setAvatar(avatarUrl ? `http://127.0.0.1:8000${avatarUrl}` : null);
-    //         } catch (error) {
-    //             console.error("Error fetching avatar:", error);
-    //         }
-    //     };
+                const avatarUrl = response.data.avatar;
+                setAvatar(avatarUrl ? `http://127.0.0.1:8000${avatarUrl}` : null);
+            } catch (error) {
+                console.error("Error fetching avatar:", error);
+            }
+        };
 
-    //     fetchAvatar();
-    // }, [userId, storedRole, token]);
+        fetchAvatar();
+    }, []);
 
     const handleMouseEnter = () => {
         setShowDropdown(true);
@@ -172,10 +172,10 @@ const Sidebar = ({ activeItem }) => {
                                         <i className="fas fa-clock mr-2"></i>
                                         Bài đăng chờ duyệt
                                     </Link>
-                                    <p className={`flex items-center cursor-pointer p-2 rounded-lg ${activeItem === 5 ? 'bg-custom_darkblue text-white' : 'hover:text-custom_darkblue'}`}>
+                                    <Link to='/parent/assigned' className={`flex items-center cursor-pointer p-2 rounded-lg ${activeItem === 5 ? 'bg-custom_darkblue text-white' : 'hover:text-custom_darkblue'}`}>
                                         <i className="fas fa-star mr-2"></i>
                                         Suất dạy đã giao
-                                    </p>
+                                    </Link>
                                 </div>
                             )}
                         </div>

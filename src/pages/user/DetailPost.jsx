@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 
 import { useAppContext } from "../../AppProvider";
 import Popup from "reactjs-popup";
@@ -9,12 +9,16 @@ import Panel from "../../layouts/panel/Panel";
 import Img3 from "../../assets/image/medal.png";
 import ClassTimeDetail from "../../layouts/popup/classTime_Popup";
 import TutorProfile from "../../layouts/popup/TutorProfile";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 
 const DetailPost = () => {
+    let navigate = useNavigate()
     const [dataPost, setDataPost] = useState({})
     const { sessionToken } = useAppContext();
     const { idPost } = useParams();
+    const [getIdTutor, setIdTutor] = useState('')
     const [tagPost, setTagPost] = useState(Img3);
     const [showPopup, setShowPopup] = useState(false);
     const [selectedTime, setSelectedTime] = useState(null);
@@ -37,13 +41,7 @@ const DetailPost = () => {
                 const data = await response.json();
 
                 if (response.ok) {
-                    console.log("Lấy thành công");
-                    // const filteredPosts = data.filter(
-                    //     (post) => post.status === "Đã phê duyệt"
-                    // );
-                    // const sortedPosts = filteredPosts.sort(
-                    //     (a, b) => new Date(b.created_at) - new Date(a.created_at)
-                    // );
+                    // console.log("Lấy thành công");
                     setDataPost(data);
                 } else {
                     console.error("Lấy thất bại!");
@@ -54,6 +52,49 @@ const DetailPost = () => {
         };
         fetchData();
     }, []);
+
+    const confirmSubmission = async () => {
+        try {
+            const url = `${import.meta.env.VITE_API_ENDPOINT}/api/class/appoint/`
+
+            const response = await fetch(url, {
+                method: 'POST',
+                headers: {
+                    Authorization: `Bearer ${sessionToken}`,
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    post_id: idPost,
+                    tutor_id: getIdTutor
+                }),
+            });
+
+            if (response.ok) {
+                toast.success("Nhận gia sư thành công", {
+                    position: "bottom-right",
+                    autoClose: 5000,
+                    hideProgressBar: true,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                });
+                navigate("/parent/assigned");
+            } else {
+                toast.error("Thao tác thất bại", {
+                    position: "bottom-right",
+                    autoClose: 5000,
+                    hideProgressBar: true,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                });
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    };
 
     const handleBuoiHocClick = (post) => {
         setSelectedTime(post);
@@ -167,11 +208,13 @@ const DetailPost = () => {
                                     className="flex justify-between items-center px-5 py-1 cursor-pointer mb-1 hover:bg-slate-200 rounded-xl"
                                 >
                                     <div className="flex items-center gap-3">
-                                        {/* <img
-                                            src={song.poster}
+                                        <img
+                                            src={
+                                                `${import.meta.env.VITE_API_ENDPOINT}/${tutor.avatar}`
+                                            }
                                             alt=""
                                             className="w-[50px] h-[50px] rounded-full object-cover"
-                                        /> */}
+                                        />
                                         <p className="font-semibold text-[1.1rem]">{tutor.tutor_name}</p>
                                     </div>
                                     <div className="flex gap-6">
@@ -183,7 +226,7 @@ const DetailPost = () => {
                                         </button>
                                         <button
                                             className="font-semibold text-[0.9rem] h-[2rem] w-[8rem] bg-custom_darkblue text-white rounded-md"
-                                            onClick={() => setShowPopup(true)}
+                                            onClick={() => { setShowPopup(true); setIdTutor(tutor.tutor_id) }}
                                         >
                                             Nhận gia sư
                                         </button>
@@ -224,7 +267,7 @@ const DetailPost = () => {
                                     </button>
                                     <button
                                         className="bg-custom_darkblue text-white py-1 rounded w-[90px] ml-2"
-                                    // onClick={confirmSubmission}
+                                        onClick={() => confirmSubmission()}
                                     >
                                         <i className="fa-solid fa-check mr-2"></i>
                                         OK
