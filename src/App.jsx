@@ -30,6 +30,7 @@ import ParentProfile from "./pages/user/parentProfile";
 import DetailPost from "./pages/user/DetailPost";
 import TutorPassword from "./pages/user/tutorPassword";
 import ParentPassword from "./pages/user/parentPassword";
+import SuatDayDaDangKy from "./pages/tutorA/SuatDayDaDangKy"
 
 function App() {
   const [searchTerm, setSearchTerm] = useState("");
@@ -72,6 +73,7 @@ function App() {
           />
           <Route path="/tutor/profile" element={<TutorProfile />} />
           <Route path="/tutor/information" element={<TutorPassword />} />
+          <Route path="/tutor/registered" element={<SuatDayDaDangKy />} />
         </Routes>
         <Footer />
       </div>
