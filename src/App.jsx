@@ -62,7 +62,7 @@ function App() {
             element={<MainPageParent searchTerm={searchTerm} />}
           />
           <Route path="/parent/profile" element={<ParentProfile />} />
-          <Route path="/parent/password" element={<ParentPassword />} />
+          <Route path="/parent/information" element={<ParentPassword />} />
           <Route path="/parent/detailPost" element={<DetailPost />} />
 
           <Route

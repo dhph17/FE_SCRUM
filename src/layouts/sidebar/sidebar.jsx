@@ -71,12 +71,10 @@ const Sidebar = ({ activeItem }) => {
                                     <Link to="/admin/approved-posts" className={`flex items-center cursor-pointer p-2 rounded-lg ${activeItem === 4 ? 'bg-custom_darkblue text-white' : 'hover:text-custom_darkblue'}`}>
                                         <i className="fas fa-check mr-2"></i>
                                         Bài đăng đã duyệt
-
                                     </Link>
-                                    <Link to='/admin/pending-posts' className={`flex items-center cursor-pointer p-2 rounded-lg ${activeItem === 5 ? 'bg-custom_darkblue text-white' : 'hover:text-custom_darkblue'}`}>
+                                    <Link to="/admin/pending-posts" className={`flex items-center cursor-pointer p-2 rounded-lg ${activeItem === 5 ? 'bg-custom_darkblue text-white' : 'hover:text-custom_darkblue'}`}>
                                         <i className="fas fa-clock mr-2"></i>
                                         Bài đăng chờ duyệt
-
                                     </Link>
                                 </div>
                             )}
@@ -95,92 +93,94 @@ const Sidebar = ({ activeItem }) => {
                             <i className="fas fa-pencil-alt mr-3"></i>
                             Quản lý tài khoản phụ huynh
                         </Link>
-
                     </div>
                 );
-            case 'tutor':
-                return (
-                    <div className="space-y-4 w-full">
-                        <p className={`flex items-center cursor-pointer p-2 rounded-lg ${activeItem === 1 ? 'bg-custom_darkblue text-white' : 'hover:bg-custom_darkblue hover:text-white'}`}>
-                            <i className="fas fa-pencil-alt mr-3"></i>
-                            Thông tin tài khoản
-                        </p>
-                        <p className={`flex items-center cursor-pointer p-2 rounded-lg ${activeItem === 2 ? 'bg-custom_darkblue text-white' : 'hover:bg-custom_darkblue hover:text-white'}`}>
-                            <i className="fas fa-pencil-alt mr-3"></i>
-                            Quản lý hồ sơ
-                        </p>
-
-                        <div className="space-y-2" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
-                            <p
-                                className={`flex items-center cursor-pointer p-2 rounded-lg ${showDropdown || (activeItem >= 3 && activeItem <= 5) ? 'bg-custom_darkblue text-white' : 'hover:bg-custom_darkblue hover:text-white'}`}
+                case 'tutor':
+                    return (
+                        <div className="space-y-4 w-full">
+                            <Link to="/tutor/information"
+                                className={`flex items-center cursor-pointer p-2 rounded-lg ${activeItem === 1 ? 'bg-custom_darkblue text-white' : 'hover:bg-custom_darkblue hover:text-white'}`}
                             >
                                 <i className="fas fa-pencil-alt mr-3"></i>
-                                Quản lý suất dạy
-                                <i className={`fas ml-auto ${showDropdown || (activeItem >= 3 && activeItem <= 5) ? 'fa-chevron-up' : 'fa-chevron-down'}`}></i>
-                            </p>
-
-                            {showDropdown && (
-                                <div className="bg-gray-300 p-2 rounded-lg space-y-2">
-                                    <p className={`flex items-center cursor-pointer p-2 rounded-lg ${activeItem === 3 ? 'bg-custom_darkblue text-white' : 'hover:text-custom_darkblue'}`}>
-                                        <i className="fas fa-book mr-2"></i>
-                                        Suất dạy đã đăng kí
-                                    </p>
-                                    <p className={`flex items-center cursor-pointer p-2 rounded-lg ${activeItem === 4 ? 'bg-custom_darkblue text-white' : 'hover:text-custom_darkblue'}`}>
-                                        <i className="fas fa-check mr-2"></i>
-                                        Suất dạy được nhận
-                                    </p>
-                                    <p className={`flex items-center cursor-pointer p-2 rounded-lg ${activeItem === 5 ? 'bg-custom_darkblue text-white' : 'hover:text-custom_darkblue'}`}>
-                                        <i className="fas fa-star mr-2"></i>
-                                        Đánh giá của tôi
-                                    </p>
-                                </div>
-                            )}
-                        </div>
-                    </div>
-                );
-            case 'parent':
-                return (
-                    <div className="space-y-4 w-full">
-                        <p
-                            className={`flex items-center cursor-pointer p-2 rounded-lg ${activeItem === 1 ? 'bg-custom_darkblue text-white' : 'hover:bg-custom_darkblue hover:text-white'}`}
-                        >
-                            <i className="fas fa-pencil-alt mr-3"></i>
-                            Thông tin tài khoản
-                        </p>
-                        <p
-                            className={`flex items-center cursor-pointer p-2 rounded-lg ${activeItem === 2 ? 'bg-custom_darkblue text-white' : 'hover:bg-custom_darkblue hover:text-white'}`}
-                        >
-                            <i className="fas fa-pencil-alt mr-3"></i>
-                            Quản lý hồ sơ
-                        </p>
-                        <div className="space-y-2" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
-                            <p
-                                className={`flex items-center cursor-pointer p-2 rounded-lg ${showDropdown || (activeItem >= 3 && activeItem <= 5) ? 'bg-custom_darkblue text-white' : 'hover:bg-custom_darkblue hover:text-white'}`}
+                                Thông tin tài khoản
+                            </Link>
+                            <Link to="/tutor/profile"
+                                className={`flex items-center cursor-pointer p-2 rounded-lg ${activeItem === 2 ? 'bg-custom_darkblue text-white' : 'hover:bg-custom_darkblue hover:text-white'}`}
                             >
                                 <i className="fas fa-pencil-alt mr-3"></i>
-                                Quản lý bài đăng
-                                <i className={`fas ml-auto ${showDropdown || (activeItem >= 3 && activeItem <= 5) ? 'fa-chevron-up' : 'fa-chevron-down'}`}></i>
-                            </p>
-
-                            {showDropdown && (
-                                <div className="bg-gray-300 p-2 rounded-lg space-y-2">
-                                    <Link to='/parent/view-posts' className={`flex items-center cursor-pointer p-2 rounded-lg ${activeItem === 3 ? 'bg-custom_darkblue text-white' : 'hover:text-custom_darkblue'}`}>
-                                        <i className="fas fa-check mr-2"></i>
-                                        Bài đăng được duyệt
-                                    </Link>
-                                    <Link to='/parent/pending-posts' className={`flex items-center cursor-pointer p-2 rounded-lg ${activeItem === 4 ? 'bg-custom_darkblue text-white' : 'hover:text-custom_darkblue '}`}>
-                                        <i className="fas fa-clock mr-2"></i>
-                                        Bài đăng chờ duyệt
-                                    </Link>
-                                    <p className={`flex items-center cursor-pointer p-2 rounded-lg ${activeItem === 5 ? 'bg-custom_darkblue text-white' : 'hover:text-custom_darkblue'}`}>
-                                        <i className="fas fa-star mr-2"></i>
-                                        Suất dạy đã giao
-                                    </p>
-                                </div>
-                            )}
+                                Quản lý hồ sơ
+                            </Link>
+                
+                            <div className="space-y-2" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
+                                <p
+                                    className={`flex items-center cursor-pointer p-2 rounded-lg ${showDropdown || (activeItem >= 3 && activeItem <= 5) ? 'bg-custom_darkblue text-white' : 'hover:bg-custom_darkblue hover:text-white'}`}
+                                >
+                                    <i className="fas fa-pencil-alt mr-3"></i>
+                                    Quản lý suất dạy
+                                    <i className={`fas ml-auto ${showDropdown || (activeItem >= 3 && activeItem <= 5) ? 'fa-chevron-up' : 'fa-chevron-down'}`}></i>
+                                </p>
+                
+                                {showDropdown && (
+                                    <div className="bg-gray-300 p-2 rounded-lg space-y-2">
+                                        <Link to="/tutor/registered-classes" className={`flex items-center cursor-pointer p-2 rounded-lg ${activeItem === 3 ? 'bg-custom_darkblue text-white' : 'hover:text-custom_darkblue'}`}>
+                                            <i className="fas fa-book mr-2"></i>
+                                            Suất dạy đã đăng kí
+                                        </Link>
+                                        <Link to="/tutor/received-classes" className={`flex items-center cursor-pointer p-2 rounded-lg ${activeItem === 4 ? 'bg-custom_darkblue text-white' : 'hover:text-custom_darkblue'}`}>
+                                            <i className="fas fa-check mr-2"></i>
+                                            Suất dạy được nhận
+                                        </Link>
+                                        <Link to="/tutor/my-reviews" className={`flex items-center cursor-pointer p-2 rounded-lg ${activeItem === 5 ? 'bg-custom_darkblue text-white' : 'hover:text-custom_darkblue'}`}>
+                                            <i className="fas fa-star mr-2"></i>
+                                            Đánh giá của tôi
+                                        </Link>
+                                    </div>
+                                )}
+                            </div>
                         </div>
-                    </div>
-                );
+                    );                
+                    case 'parent':
+                        return (
+                            <div className="space-y-4 w-full">
+                                <Link to="/parent/information"
+                                    className={`flex items-center cursor-pointer p-2 rounded-lg ${activeItem === 1 ? 'bg-custom_darkblue text-white' : 'hover:bg-custom_darkblue hover:text-white'}`}
+                                >
+                                    <i className="fas fa-pencil-alt mr-3"></i>
+                                    Thông tin tài khoản
+                                </Link>
+                                <Link to="/parent/profile"
+                                    className={`flex items-center cursor-pointer p-2 rounded-lg ${activeItem === 2 ? 'bg-custom_darkblue text-white' : 'hover:bg-custom_darkblue hover:text-white'}`}
+                                >
+                                    <i className="fas fa-pencil-alt mr-3"></i>
+                                    Quản lý hồ sơ
+                                </Link>
+                                <div className="space-y-2" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
+                                    <p
+                                        className={`flex items-center cursor-pointer p-2 rounded-lg ${showDropdown || (activeItem >= 3 && activeItem <= 5) ? 'bg-custom_darkblue text-white' : 'hover:bg-custom_darkblue hover:text-white'}`}
+                                    >
+                                        <i className="fas fa-pencil-alt mr-3"></i>
+                                        Quản lý bài đăng
+                                        <i className={`fas ml-auto ${showDropdown || (activeItem >= 3 && activeItem <= 5) ? 'fa-chevron-up' : 'fa-chevron-down'}`}></i>
+                                    </p>
+                                    {showDropdown && (
+                                        <div className="bg-gray-300 p-2 rounded-lg space-y-2">
+                                            <Link to="/parent/view-posts" className={`flex items-center cursor-pointer p-2 rounded-lg ${activeItem === 3 ? 'bg-custom_darkblue text-white' : 'hover:text-custom_darkblue'}`}>
+                                                <i className="fas fa-check mr-2"></i>
+                                                Bài đăng được duyệt
+                                            </Link>
+                                            <Link to="/parent/pending-posts" className={`flex items-center cursor-pointer p-2 rounded-lg ${activeItem === 4 ? 'bg-custom_darkblue text-white' : 'hover:text-custom_darkblue '}`}>
+                                                <i className="fas fa-clock mr-2"></i>
+                                                Bài đăng chờ duyệt
+                                            </Link>
+                                            <Link to="/parent/assigned" className={`flex items-center cursor-pointer p-2 rounded-lg ${activeItem === 5 ? 'bg-custom_darkblue text-white' : 'hover:text-custom_darkblue'}`}>
+                                                <i className="fas fa-star mr-2"></i>
+                                                Suất dạy đã giao
+                                            </Link>
+                                        </div>
+                                    )}
+                                </div>
+                            </div>
+                        );
             default:
                 return <p>No menu available for this role.</p>;
         }
