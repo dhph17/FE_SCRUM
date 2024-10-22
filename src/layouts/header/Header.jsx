@@ -1,7 +1,7 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useAppContext } from "../../AppProvider";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useCallback } from "react";
+import { useCallback, useState } from "react";
 
 import {
   faMagnifyingGlass,
@@ -14,9 +14,9 @@ import Notify from "../notify/Notify";
 
 const Header = ({ setSearch }) => {
   let navigate = useNavigate();
+  const [showDropdown, setShowDropdown] = useState(false);
 
-  const { sessionToken, setSessionToken, setRole, role } = useAppContext();
-
+  const { sessionToken, setSessionToken, setRole, role, name } = useAppContext();
 
   const handleLogout = async () => {
     try {
@@ -35,6 +35,7 @@ const Header = ({ setSearch }) => {
         setSessionToken("");
         setRole("");
         setSearch('')
+        setShowDropdown(false)
         localStorage.removeItem("refreshToken");
         navigate("/");
       } else {
@@ -131,13 +132,28 @@ const Header = ({ setSearch }) => {
             />
           </div>
           {role === "parent" && <Notify />}
-          <div
-            className="flex text-white items-center cursor-pointer text-[1.1rem]"
-            onClick={handleLogout}
-          >
-            <FontAwesomeIcon icon={faArrowRightFromBracket} />
-            <p className="ml-2">Đăng xuất</p>
+          <div className="flex text-white items-center cursor-pointer text-[1.1rem]">
+            <div className="relative flex items-center gap-2">
+              {/* <img src="https://i.scdn.co/image/ab67616d00001e025a6bc1ecf16bbac5734f23da" alt="" className="w-[40px] h-[40px] rounded-full" /> */}
+              <p className="font-semibold">{name}</p>
+              <i
+                className={`fas ${showDropdown ? 'fa-chevron-up' : 'fa-chevron-down'} text-[0.8rem] ml-1`}
+                onClick={() => setShowDropdown(!showDropdown)}
+              ></i>
+              {
+                showDropdown && (
+                  <div
+                    className="bg-white text-black text-[0.9rem] absolute flex items-center p-2 rounded-md -right-12 top-10 shadow-md border border-slate-200 hover:bg-slate-100"
+                    onClick={handleLogout}
+                  >
+                    <FontAwesomeIcon icon={faArrowRightFromBracket} />
+                    <p className="ml-2">Đăng xuất</p>
+                  </div>
+                )
+              }
+            </div>
           </div>
+
         </div>
       ) : (
         <div className="h-[15vh] w-screen px-28 flex items-center justify-between">
