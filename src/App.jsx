@@ -22,15 +22,15 @@ import ParentAccount from "./pages/admin/parentAccount";
 import CreatePost from "./pages/user/CreatePost";
 import UpdatePost from "./pages/user/UpdatePost";
 import MainPageParent from "./pages/user/MainPageParent";
-import MainPageTutor from "./pages/user/MainPageTutor";
+import MainPageTutor from "./pages/tutor/MainPageTutor";
 import BaiDangChoDuyet from "./pages/user/BaiDangChoDuyet";
 import ApprovedPost from "./pages/admin/ApprovedPost";
-import TutorProfile from "./pages/user/tutorProfile";
+import TutorProfile from "./pages/tutor/tutorProfile";
 import ParentProfile from "./pages/user/parentProfile";
 import DetailPost from "./pages/user/DetailPost";
-import TutorPassword from "./pages/user/tutorPassword";
+import TutorPassword from "./pages/tutor/tutorPassword";
 import ParentPassword from "./pages/user/parentPassword";
-import SuatDayDaDangKy from "./pages/tutorA/SuatDayDaDangKy"
+import SuatDayDaDangKy from "./pages/tutor/SuatDayDaDangKy"
 
 function App() {
   const [searchTerm, setSearchTerm] = useState("");
