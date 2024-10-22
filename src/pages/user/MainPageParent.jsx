@@ -449,13 +449,17 @@ const MainPageParent = ({ searchTerm }) => {
           ))}
         </div>
         {/* Pagination */}
-        <div className="mt-8">
-          <Pagination
-            currentPage={currentPage}
-            totalPages={totalPages}
-            onPageChange={handlePageChange}
-          />
-        </div>
+        {posts.length > 0 ? (
+          <div className="mt-8">
+            <Pagination
+              currentPage={currentPage}
+              totalPages={totalPages}
+              onPageChange={handlePageChange}
+            />
+          </div>
+        ) : (
+          <div className="text-center font-bold">Không có bài đăng nào</div>
+        )}
       </Panel_Search>
     </Parent>
   );

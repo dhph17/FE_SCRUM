@@ -7,7 +7,8 @@ import ItemPost from "../../layouts/itemPost/ItemPost";
 import Tutor from "../../layouts/PageAuthorization/tutor/tutor";
 
 const MainPageTutor = ({ searchTerm }) => {
-  const { sessionToken } = useAppContext();
+  const { sessionToken, id } = useAppContext();
+  
   const [posts, setPost] = useState([]);
 
   const [currentPage, setCurrentPage] = useState(1);
@@ -142,6 +143,38 @@ const MainPageTutor = ({ searchTerm }) => {
 
     fetchData();
   }, [filters, searchTerm]);
+
+  const handleRegister = async (postId) => {
+    try {
+      const response = await fetch(
+        `${import.meta.env.VITE_API_ENDPOINT}/api/tutor/posts/`,
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${sessionToken}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            post_id: postId,
+            tutor_id: id,
+          }),
+        }
+      );
+
+      const data = await response.json();
+
+      if (response.ok) {
+        console.log("Đăng ký suất dạy thành công:", data);
+        alert("Đăng ký suất dạy thành công !");
+      } else {
+        console.error("Đăng ký suất dạy thất bại:", data);
+        alert("Đăng ký suất dạy thất bại !");
+      }
+    } catch (error) {
+      console.error("Có lỗi xảy ra:", error);
+    }
+  }
+
 
   return (
     <Tutor>
@@ -417,9 +450,9 @@ const MainPageTutor = ({ searchTerm }) => {
             </defs>
           </svg>
           <p className="font-semibold text-[1.2rem] text-shadow-sm">
-            {
-              searchTerm ? `Kết quả tìm kiếm "${searchTerm}": ` : 'BÀI ĐĂNG GẦN ĐÂY'
-            }
+            {searchTerm
+              ? `Kết quả tìm kiếm "${searchTerm}": `
+              : "BÀI ĐĂNG GẦN ĐÂY"}
           </p>
         </div>
         <div className="relative max-h-[38rem] overflow-y-auto grid grid-cols-1 gap-4">
@@ -429,7 +462,12 @@ const MainPageTutor = ({ searchTerm }) => {
               className="border-[3px] rounded-[1rem] border-[#002182] shadow-md bg-white"
             >
               <ItemPost user={tutor}>
-                <button className="bg-yellow-500 w-[14vw] p-2 rounded-2xl font-semibold mx-8">
+                <button className="bg-yellow-500 w-[14vw] p-2 rounded-2xl font-semibold mx-8"
+                onClick={() => {
+                  handleRegister(tutor.post_id);
+                }
+                }
+                >
                   Đăng kí dạy
                 </button>
               </ItemPost>
@@ -438,13 +476,17 @@ const MainPageTutor = ({ searchTerm }) => {
         </div>
 
         {/* Pagination */}
-        <div className="mt-8">
-          <Pagination
-            currentPage={currentPage}
-            totalPages={totalPages}
-            onPageChange={handlePageChange}
-          />
-        </div>
+        {posts.length > 0 ? (
+          <div className="mt-8">
+            <Pagination
+              currentPage={currentPage}
+              totalPages={totalPages}
+              onPageChange={handlePageChange}
+            />
+          </div>
+        ) : (
+          <div className="text-center font-bold">Không có bài đăng nào</div>
+        )}
       </Panel_Search>
     </Tutor>
   );
