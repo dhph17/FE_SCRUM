@@ -15,19 +15,22 @@ import Login from "./pages/login/Login";
 import Start from "./pages/start/Start";
 import Panel from "./layouts/panel/Panel";
 import PostApproval from "./pages/user/BaiDangDuocDuyet";
-// import PostManagement from "./pages/user/SuatDayDaGiao";
+import PostManagement from "./pages/user/SuatDayDaGiao";
 import DuyetBaiDang from "./pages/admin/DuyetBaiDang";
 import TutorAccount from "./pages/admin/tutorAccount";
 import ParentAccount from "./pages/admin/parentAccount";
 import CreatePost from "./pages/user/CreatePost";
 import UpdatePost from "./pages/user/UpdatePost";
 import MainPageParent from "./pages/user/MainPageParent";
-import MainPageTutor from "./pages/user/MainPageTutor";
+import MainPageTutor from "./pages/tutor/MainPageTutor";
 import BaiDangChoDuyet from "./pages/user/BaiDangChoDuyet";
 import ApprovedPost from "./pages/admin/ApprovedPost";
-import TutorProfile from "./pages/user/tutorProfile";
+import TutorProfile from "./pages/tutor/tutorProfile";
 import ParentProfile from "./pages/user/parentProfile";
 import DetailPost from "./pages/user/DetailPost";
+import TutorPassword from "./pages/tutor/tutorPassword";
+import ParentPassword from "./pages/user/parentPassword";
+import SuatDayDaDangKy from "./pages/tutor/SuatDayDaDangKy"
 
 function App() {
   const [searchTerm, setSearchTerm] = useState("");
@@ -50,7 +53,7 @@ function App() {
           <Route path="/admin/pending-posts" element={<DuyetBaiDang />} />
           <Route path="/admin/approved-posts" element={<ApprovedPost />} />
 
-          {/* <Route path="/parent/assigned" element={<PostManagement />} /> */}
+          <Route path="/parent/assigned" element={<PostManagement />} />
           <Route path="/parent/view-posts" element={<PostApproval />} />
           <Route path="/parent/pending-posts" element={<BaiDangChoDuyet />} />
           <Route path="/parent/create-post" element={<CreatePost />} />
@@ -60,6 +63,8 @@ function App() {
             element={<MainPageParent searchTerm={searchTerm} />}
           />
           <Route path="/parent/profile" element={<ParentProfile />} />
+          <Route path="/parent/detailPost/:idPost" element={<DetailPost />} />
+          <Route path="/parent/information" element={<ParentPassword />} />
           <Route path="/parent/detailPost" element={<DetailPost />} />
 
           <Route
@@ -67,6 +72,8 @@ function App() {
             element={<MainPageTutor searchTerm={searchTerm} />}
           />
           <Route path="/tutor/profile" element={<TutorProfile />} />
+          <Route path="/tutor/information" element={<TutorPassword />} />
+          <Route path="/tutor/registered" element={<SuatDayDaDangKy />} />
         </Routes>
         <Footer />
       </div>

@@ -2,15 +2,16 @@ import PropTypes from "prop-types";
 import { useEffect, useState } from "react";
 import { useAppContext } from "../../AppProvider";
 import { useNavigate } from "react-router-dom";
-import { Link } from "react-router-dom";
+
 
 import Popup from "reactjs-popup";
 import Page from "../../layouts/panel/Panel";
-import Parent from "../../layouts/PageAuthorization/parent/parent";
+
 import ItemPost from "../../layouts/itemPost/ItemPost";
 import Pagination from "../../layouts/pagination/pagination";
 import { toast } from "react-toastify";
-const BaiDangDuocDuyet = () => {
+import Tutor from "../../layouts/PageAuthorization/tutor/tutor";
+const SuatDayDaDangKy = () => {
   let navigate = useNavigate();
   const { sessionToken, id } = useAppContext();
   const [posts, setPost] = useState([]);
@@ -32,7 +33,7 @@ const BaiDangDuocDuyet = () => {
     const fetchData = async () => {
       try {
         const response = await fetch(
-          `${import.meta.env.VITE_API_ENDPOINT}/api/posts/${id}/`,
+          `${import.meta.env.VITE_API_ENDPOINT}/api/tutor/posts/?status=registered`,
           {
             method: "GET",
             headers: {
@@ -46,13 +47,21 @@ const BaiDangDuocDuyet = () => {
 
         if (response.ok) {
           console.log("Lấy thành công");
-          const filteredPosts = data.filter(
-            (post) => post.status === "Đã phê duyệt"
-          );
-          const sortedPosts = filteredPosts.sort(
-            (a, b) => new Date(b.created_at) - new Date(a.created_at)
-          );
-          setPost(sortedPosts);
+          console.log("Token:", sessionToken);
+          console.log("Data:", data);
+          console.log("Data:", id);
+
+          if (Array.isArray(data.results)) {
+            const filteredPosts = data.results.filter(
+              (post) => post.status === "Đã phê duyệt"
+            );
+            const sortedPosts = filteredPosts.sort(
+              (a, b) => new Date(b.created_at) - new Date(a.created_at)
+            );
+            setPost(sortedPosts);
+          } else {
+            console.error("Data.results không phải là mảng:", data.results);
+          }
         } else {
           console.error("Lấy thất bại!");
         }
@@ -63,12 +72,14 @@ const BaiDangDuocDuyet = () => {
     fetchData();
   }, []);
 
+
+
   const confirmSubmission = async (postId) => {
     setShowPopup(false);
 
     try {
       const response = await fetch(
-        `${import.meta.env.VITE_API_ENDPOINT}/api/posts/${postId}/`,
+        `${import.meta.env.VITE_API_ENDPOINT}/api/tutor/posts/${postId}/`,
         {
           method: "DELETE",
           headers: {
@@ -101,36 +112,24 @@ const BaiDangDuocDuyet = () => {
   };
 
   return (
-    <Parent>
-      <Page role="parent" activeItem={3}>
+    <Tutor>
+      <Page role="tutor" activeItem={3}>
         <div className="relative max-h-[38rem] overflow-y-auto grid grid-cols-1 gap-4">
-          {currentPosts.map((parent, index) => (
+          {currentPosts.map((tutor, index) => (
             <div
               key={index}
               className="border-[3px] rounded-[1rem] border-[#002182] shadow-md bg-white"
             >
-              <ItemPost user={parent} tag="Đã phê duyệt">
-                <Link to={`/parent/update-post/${parent.post_id}`}>
-                  <button className="bg-yellow-500 w-[14vw] p-2 rounded-2xl font-semibold mx-8">
-                    Sửa bài đăng
-                  </button>
-                </Link>
+              <ItemPost user={tutor} tag="Chờ duyệt">
                 <button
                   onClick={() => {
                     setShowPopup(true);
-                    setSelectedPostId(parent.post_id);
+                    setSelectedPostId(tutor.post_id);
                   }}
                   className="bg-yellow-500 w-[14vw] p-2 rounded-2xl font-semibold mx-8"
                 >
-                  Xóa bài đăng
+                  Hủy đăng ký
                 </button>
-                <Link to={`/parent/detailPost/${parent.post_id}`}
-                  onClick={() => {
-                  }}
-                  className="bg-yellow-500 w-[14vw] p-2 text-center rounded-2xl font-semibold mx-8"
-                >
-                  Danh sách gia sư đăng kí
-                </Link>
               </ItemPost>
             </div>
           ))}
@@ -161,7 +160,7 @@ const BaiDangDuocDuyet = () => {
               <p className="font-bold text-[1.1rem]">Xác nhận</p>
             </div>
             <hr className="my-2" />
-            <p>Bạn chắc chắn muốn xóa bài đăng này?</p>
+            <p>Bạn chắc chắn muốn hủy đăng ký?</p>
 
             <div className="flex justify-end mt-4">
               <button
@@ -182,12 +181,12 @@ const BaiDangDuocDuyet = () => {
           </div>
         </Popup>
       )}
-    </Parent>
+    </Tutor>
   );
 };
 
-BaiDangDuocDuyet.propTypes = {
+SuatDayDaDangKy.propTypes = {
   postId: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
 };
 
-export default BaiDangDuocDuyet;
+export default SuatDayDaDangKy;

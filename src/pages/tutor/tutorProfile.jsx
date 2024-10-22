@@ -32,7 +32,7 @@ const TutorProfile = () => {
                 console.error("No tutor ID found in local storage.");
                 return;
             }
-
+    
             try {
                 const response = await axios.get(
                     `http://127.0.0.1:8000/api/tutors/${tutorId}/`,
@@ -43,7 +43,7 @@ const TutorProfile = () => {
                     }
                 );
                 const data = response.data;
-                console.log(data)
+                console.log(data);
                 setFormData({
                     tutor_id: data.tutor_id || '',
                     username: (data.user && data.user.username) || '',
@@ -57,19 +57,18 @@ const TutorProfile = () => {
                     gender: data.gender !== "Not recorded" ? data.gender : '',
                     educational_background: data.educational_background !== "Not recorded" ? data.educational_background : '',
                 });
-
-
-                if (data.profile_image) {
-                    setProfileImage(data.profile_image);
+    
+                if (data.avatar) {
+                    setProfileImage(`http://127.0.0.1:8000${data.avatar}`);
                 }
             } catch (error) {
                 console.error("Error fetching tutor data:", error);
             }
         };
-
+        
         fetchTutorData();
     }, [tutorId, token]);
-
+    
     const handleChange = (e) => {
         setFormData({
             ...formData,
@@ -85,6 +84,31 @@ const TutorProfile = () => {
                 setProfileImage(reader.result);
             };
             reader.readAsDataURL(file);
+            updateAvatar(file);
+        }
+    };
+
+    const updateAvatar = async (file) => {
+        const formData = new FormData();
+        formData.append("avatar", file);
+
+        try {
+            const response = await axios.post(
+                `http://127.0.0.1:8000/api/profile/avatar/`,
+                formData,
+                {
+                    headers: {
+                        "Content-Type": "multipart/form-data",
+                        Authorization: `Bearer ${token}`,
+                    },
+                }
+            );
+
+            console.log("Avatar updated successfully:", response.data);
+            alert("Avatar updated successfully!");
+        } catch (error) {
+            console.error("Error updating avatar:", error);
+            alert("Failed to update avatar.");
         }
     };
 
@@ -100,10 +124,6 @@ const TutorProfile = () => {
             formDataToSend.append('bio_link', formData.bio_link);
             formDataToSend.append('phone_number', formData.phone_number);
             formDataToSend.append('educational_background', formData.educational_background);
-
-            if (profileImage) {
-                formDataToSend.append('profile_image', profileImage);
-            }
 
             const response = await axios.put(
                 `http://127.0.0.1:8000/api/tutors/${tutorId}/`,
@@ -135,8 +155,8 @@ const TutorProfile = () => {
             <Panel role="tutor" activeItem={2}>
                 <div className="relative h-full max-h-[600px] p-4">
                     <div className="w-full max-w-4xl mx-auto bg-gray-100 p-6 rounded-lg shadow-md flex gap-6">
-                        <div className="flex flex-col items-center w-1/3">
-                            <div className="w-32 h-32 rounded-full bg-gray-300 flex items-center justify-center overflow-hidden">
+                    <div className="flex flex-col items-center w-1/3">
+                        <div className="w-32 h-32 rounded-full bg-gray-300 flex items-center justify-center overflow-hidden">
                                 {profileImage ? (
                                     <img
                                         src={profileImage}

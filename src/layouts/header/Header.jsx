@@ -96,9 +96,12 @@ const Header = ({ setSearch }) => {
                 >
                   Trang chủ
                 </Link>
-                <li className="font-semibold mx-6 cursor-pointer">
+                <Link
+                  to="parent/information"
+                  className="font-semibold mx-6 cursor-pointer"
+                >
                   Hồ sơ cá nhân
-                </li>
+                </Link>
               </ul>
             ) : (
               <ul className="flex text-white text-[1.1rem]">
@@ -108,9 +111,12 @@ const Header = ({ setSearch }) => {
                 >
                   Trang chủ
                 </Link>
-                <li className="font-semibold mx-6 cursor-pointer">
+                <Link
+                  to="tutor/information"
+                  className="font-semibold mx-6 cursor-pointer"
+                >
                   Hồ sơ cá nhân
-                </li>
+                </Link>
               </ul>
             )}
           </div>

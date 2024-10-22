@@ -43,7 +43,6 @@ const ParentProfile = () => {
                 const data = response.data;
                 console.log(data);
 
-
                 setFormData({
                     parent_id: data.parent_id,
                     username: data.user.username || '',
@@ -56,8 +55,8 @@ const ParentProfile = () => {
                     gender: data.gender !== "Not recorded" ? data.gender : '',
                 });
 
-                if (data.profile_image) {
-                    setProfileImage(data.profile_image);
+                if (data.avatar) {
+                    setProfileImage(`http://127.0.0.1:8000${data.avatar}`);
                 }
             } catch (error) {
                 console.error("Error fetching parent data:", error);
@@ -82,6 +81,31 @@ const ParentProfile = () => {
                 setProfileImage(reader.result);
             };
             reader.readAsDataURL(file);
+            updateAvatar(file);
+        }
+    };
+
+    const updateAvatar = async (file) => {
+        const formData = new FormData();
+        formData.append("avatar", file);
+
+        try {
+            const response = await axios.post(
+                `http://127.0.0.1:8000/api/profile/avatar/`,
+                formData,
+                {
+                    headers: {
+                        "Content-Type": "multipart/form-data",
+                        Authorization: `Bearer ${token}`,
+                    },
+                }
+            );
+
+            console.log("Avatar updated successfully:", response.data);
+            alert("Avatar updated successfully!");
+        } catch (error) {
+            console.error("Error updating avatar:", error);
+            alert("Failed to update avatar.");
         }
     };
 
@@ -205,16 +229,6 @@ const ParentProfile = () => {
                                         className="w-full border border-gray-300 p-2 rounded"
                                     />
                                 </div>
-                                {/* <div>
-                                <label className="block mb-1 font-medium">Số CCCD *</label>
-                                <input
-                                    type="text"
-                                    name="soCCCD"
-                                    value={formData.soCCCD}
-                                    onChange={handleChange}
-                                    className="w-full border border-gray-300 p-2 rounded"
-                                />
-                            </div> */}
                             </form>
                             <div className="flex justify-center gap-4 mt-6">
                                 <button
@@ -238,7 +252,6 @@ const ParentProfile = () => {
                 </div>
             </Panel>
         </Parent>
-
     );
 };
 

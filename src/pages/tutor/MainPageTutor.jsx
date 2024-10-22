@@ -1,19 +1,26 @@
 import { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import { useAppContext } from "../../AppProvider";
+
 import Pagination from "../../layouts/pagination/pagination";
 import Panel_Search from "../../layouts/panel/Panel_Search";
 import ItemPost from "../../layouts/itemPost/ItemPost";
 import Tutor from "../../layouts/PageAuthorization/tutor/tutor";
+import Popup from "reactjs-popup";
+import { toast } from "react-toastify";
+
+
 
 const MainPageTutor = ({ searchTerm }) => {
-  const { sessionToken, id } = useAppContext();
-  
+
+  const { sessionToken ,id} = useAppContext();
   const [posts, setPost] = useState([]);
+  const [showPopup, setShowPopup] = useState(false);
 
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
   const totalPages = Math.ceil(posts.length / itemsPerPage);
+  const [selectedPostId, setSelectedPostId] = useState(null);
 
   const currentPosts = posts.slice(
     (currentPage - 1) * itemsPerPage,
@@ -36,22 +43,10 @@ const MainPageTutor = ({ searchTerm }) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        // const response = await fetch(
-        //   `${import.meta.env.VITE_API_ENDPOINT}/api/posts/`,
-        //   {
-        //     method: "GET",
-        //     headers: {
-        //       Authorization: `Bearer ${sessionToken}`,
-        //       "Content-Type": "application/json",
-        //     },
-        //   }
-        // );
         let url = `${import.meta.env.VITE_API_ENDPOINT}/api/posts/`;
         if (searchTerm && searchTerm.trim() !== "") {
           url = `http://127.0.0.1:8000/api/search/?text=${searchTerm}`;
         }
-
-        // await new Promise((resolve) => setTimeout(resolve, 1000));
 
         const response = await fetch(url, {
           method: "GET",
@@ -62,8 +57,10 @@ const MainPageTutor = ({ searchTerm }) => {
         });
 
         const data = await response.json();
-
+        console.log(data);
+        console.log(id);
         if (response.ok) {
+
           let filteredPosts = data.filter(
             (post) => post.status === "Đã phê duyệt"
           );
@@ -144,36 +141,47 @@ const MainPageTutor = ({ searchTerm }) => {
     fetchData();
   }, [filters, searchTerm]);
 
-  const handleRegister = async (postId) => {
+  const confirmSubmission = async (postId) => {
+    setShowPopup(false);
+  
+    const requestData = {
+      post_id: postId,
+      tutor_id: id,
+    };
+    
     try {
-      const response = await fetch(
-        `${import.meta.env.VITE_API_ENDPOINT}/api/tutor/posts/`,
-        {
-          method: "POST",
-          headers: {
-            Authorization: `Bearer ${sessionToken}`,
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            post_id: postId,
-            tutor_id: id,
-          }),
-        }
-      );
-
-      const data = await response.json();
-
+      const response = await fetch("http://127.0.0.1:8000/api/tutor/posts/", {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${sessionToken}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(requestData),
+      });
+      
+      const data = await response.json(); 
+      console.log("Response data:", data);
       if (response.ok) {
-        console.log("Đăng ký suất dạy thành công:", data);
-        alert("Đăng ký suất dạy thành công !");
+        toast.success("Đăng ký thành công!", {
+          position: "bottom-right",
+          autoClose: 3000,
+        });
+        window.location.reload();
       } else {
-        console.error("Đăng ký suất dạy thất bại:", data);
-        alert("Đăng ký suất dạy thất bại !");
+        toast.error("Đăng ký thất bại!", {
+          position: "bottom-right",
+          autoClose: 3000,
+        });
       }
     } catch (error) {
-      console.error("Có lỗi xảy ra:", error);
+      console.error("Lỗi khi đăng ký dạy:", error);
+      toast.error("Có lỗi xảy ra!", {
+        position: "bottom-right",
+        autoClose: 3000,
+      });
     }
-  }
+  };
+  
 
 
   return (
@@ -462,11 +470,12 @@ const MainPageTutor = ({ searchTerm }) => {
               className="border-[3px] rounded-[1rem] border-[#002182] shadow-md bg-white"
             >
               <ItemPost user={tutor}>
-                <button className="bg-yellow-500 w-[14vw] p-2 rounded-2xl font-semibold mx-8"
-                onClick={() => {
-                  handleRegister(tutor.post_id);
-                }
-                }
+                <button
+                  onClick={() => {
+                    setShowPopup(true);
+                    setSelectedPostId(tutor.post_id);
+                  }}
+                  className="bg-yellow-500 w-[14vw] p-2 rounded-2xl font-semibold mx-8"
                 >
                   Đăng kí dạy
                 </button>
@@ -488,6 +497,41 @@ const MainPageTutor = ({ searchTerm }) => {
           <div className="text-center font-bold">Không có bài đăng nào</div>
         )}
       </Panel_Search>
+
+      {showPopup && (
+        <Popup
+          open={showPopup}
+          closeOnDocumentClick={false}
+          onClose={() => setShowPopup(false)}
+          position="right center"
+          contentStyle={{ width: "400px", borderRadius: "10px", padding: "1%" }}
+        >
+          <div>
+            <div>
+              <p className="font-bold text-[1.1rem]">Xác nhận</p>
+            </div>
+            <hr className="my-2" />
+            <p>Bạn chắc chắn muốn đăng ký</p>
+
+            <div className="flex justify-end mt-4">
+              <button
+                className="bg-red-500 text-white py-1 rounded w-[90px]"
+                onClick={() => setShowPopup(false)}
+              >
+                <i className="fa-solid fa-ban mr-2"></i>
+                Đóng
+              </button>
+              <button
+                className="bg-custom_darkblue text-white py-1 rounded w-[90px] ml-2"
+                onClick={() => confirmSubmission(selectedPostId)}
+              >
+                <i className="fa-solid fa-check mr-2"></i>
+                OK
+              </button>
+            </div>
+          </div>
+        </Popup>
+      )}
     </Tutor>
   );
 };
