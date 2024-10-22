@@ -124,7 +124,7 @@ const BaiDangDuocDuyet = () => {
                 >
                   Xóa bài đăng
                 </button>
-                <Link to={'/parent/detailPost'}
+                <Link to={`/parent/detailPost/${parent.post_id}`}
                   onClick={() => {
                   }}
                   className="bg-yellow-500 w-[14vw] p-2 text-center rounded-2xl font-semibold mx-8"
