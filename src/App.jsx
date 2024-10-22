@@ -28,6 +28,7 @@ import ApprovedPost from "./pages/admin/ApprovedPost";
 import TutorProfile from "./pages/user/tutorProfile";
 import ParentProfile from "./pages/user/parentProfile";
 import DetailPost from "./pages/user/DetailPost";
+import SuatDayDaDangKy from "./pages/tutorA/SuatDayDaDangKy"
 
 function App() {
   const [searchTerm, setSearchTerm] = useState("");
@@ -67,6 +68,8 @@ function App() {
             element={<MainPageTutor searchTerm={searchTerm} />}
           />
           <Route path="/tutor/profile" element={<TutorProfile />} />
+          <Route path="/tutor/registered" element={<SuatDayDaDangKy/>}/>
+
         </Routes>
         <Footer />
       </div>
