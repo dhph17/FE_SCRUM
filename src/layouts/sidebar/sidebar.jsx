@@ -122,7 +122,7 @@ const Sidebar = ({ activeItem }) => {
 
                             {showDropdown && (
                                 <div className="bg-gray-300 p-2 rounded-lg space-y-2">
-                                    <Link to="/tutor/registered-classes" className={`flex items-center cursor-pointer p-2 rounded-lg ${activeItem === 3 ? 'bg-custom_darkblue text-white' : 'hover:text-custom_darkblue'}`}>
+                                    <Link to="/tutor/registered" className={`flex items-center cursor-pointer p-2 rounded-lg ${activeItem === 3 ? 'bg-custom_darkblue text-white' : 'hover:text-custom_darkblue'}`}>
                                         <i className="fas fa-book mr-2"></i>
                                         Suất dạy đã đăng kí
                                     </Link>

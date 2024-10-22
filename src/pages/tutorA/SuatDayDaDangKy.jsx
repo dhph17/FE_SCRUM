@@ -42,14 +42,14 @@ const SuatDayDaDangKy = () => {
             },
           }
         );
-  
+
         const data = await response.json();
-  
+
         if (response.ok) {
           console.log("Lấy thành công");
           console.log("Token:", sessionToken);
-          console.log("Data:", data);  
-          console.log("Data:", id);  
+          console.log("Data:", data);
+          console.log("Data:", id);
 
           if (Array.isArray(data.results)) {
             const filteredPosts = data.results.filter(
@@ -71,8 +71,8 @@ const SuatDayDaDangKy = () => {
     };
     fetchData();
   }, []);
-  
-  
+
+
 
   const confirmSubmission = async (postId) => {
     setShowPopup(false);
@@ -113,7 +113,7 @@ const SuatDayDaDangKy = () => {
 
   return (
     <Tutor>
-      <Page role="tutor" activeItem={4}>
+      <Page role="tutor" activeItem={3}>
         <div className="relative max-h-[38rem] overflow-y-auto grid grid-cols-1 gap-4">
           {currentPosts.map((tutor, index) => (
             <div
