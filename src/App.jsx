@@ -28,6 +28,8 @@ import ApprovedPost from "./pages/admin/ApprovedPost";
 import TutorProfile from "./pages/user/tutorProfile";
 import ParentProfile from "./pages/user/parentProfile";
 import DetailPost from "./pages/user/DetailPost";
+import TutorPassword from "./pages/user/tutorPassword";
+import ParentPassword from "./pages/user/parentPassword";
 
 function App() {
   const [searchTerm, setSearchTerm] = useState("");
@@ -61,12 +63,15 @@ function App() {
           />
           <Route path="/parent/profile" element={<ParentProfile />} />
           <Route path="/parent/detailPost/:idPost" element={<DetailPost />} />
+          <Route path="/parent/password" element={<ParentPassword />} />
+          <Route path="/parent/detailPost" element={<DetailPost />} />
 
           <Route
             path="/tutor/main-page"
             element={<MainPageTutor searchTerm={searchTerm} />}
           />
           <Route path="/tutor/profile" element={<TutorProfile />} />
+          <Route path="/tutor/information" element={<TutorPassword />} />
         </Routes>
         <Footer />
       </div>
