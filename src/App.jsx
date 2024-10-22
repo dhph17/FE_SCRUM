@@ -70,7 +70,7 @@ function App() {
             element={<MainPageTutor searchTerm={searchTerm} />}
           />
           <Route path="/tutor/profile" element={<TutorProfile />} />
-          <Route path="/tutor/password" element={<TutorPassword />} />
+          <Route path="/tutor/information" element={<TutorPassword />} />
         </Routes>
         <Footer />
       </div>
