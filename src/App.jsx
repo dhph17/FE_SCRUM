@@ -64,7 +64,7 @@ function App() {
           />
           <Route path="/parent/profile" element={<ParentProfile />} />
           <Route path="/parent/detailPost/:idPost" element={<DetailPost />} />
-          <Route path="/parent/password" element={<ParentPassword />} />
+          <Route path="/parent/information" element={<ParentPassword />} />
           <Route path="/parent/detailPost" element={<DetailPost />} />
 
           <Route

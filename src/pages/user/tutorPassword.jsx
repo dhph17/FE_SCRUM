@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import Panel from "../../layouts/panel/Panel";
-import Tutor from "../../layouts/PageAuthorization/tutor/tutor"; // Assuming this is the correct layout
+import Tutor from "../../layouts/PageAuthorization/tutor/tutor";
 
 const TutorPassword = () => {
     const [formData, setFormData] = useState({
@@ -13,6 +13,7 @@ const TutorPassword = () => {
         confirmPassword: ''
     });
 
+    const [profileImage, setProfileImage] = useState(null);
     const [showChangePassword, setShowChangePassword] = useState(false);
     const [loading, setLoading] = useState(false);
 
@@ -38,14 +39,18 @@ const TutorPassword = () => {
                     email: data.user.email || '',
                     username: data.user.username || '',
                 });
+
+                if (data.avatar) {
+                    setProfileImage(`http://127.0.0.1:8000${data.avatar}`);
+                }
             } catch (error) {
                 console.error("Error fetching tutor data:", error);
             }
         };
-    
+
         fetchTutorData();
     }, [tutorId, token]);
-    
+
     const handleInputChange = (e) => {
         const { name, value } = e.target;
         setFormData({
@@ -59,11 +64,11 @@ const TutorPassword = () => {
     };
 
     const validatePasswordFormat = (password) => {
-        const regex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
+        const regex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d@$!%*?&]{8,}$/;
         return regex.test(password);
     };
-    
-    const handleSavePassword = () => {
+
+    const handleSavePassword = async () => {
         if (formData.newPassword !== formData.confirmPassword) {
             alert("Mật khẩu mới và xác nhận mật khẩu không khớp.");
             return;
@@ -74,33 +79,67 @@ const TutorPassword = () => {
             return;
         }
 
-        // Dummy logic to simulate password change success
         setLoading(true);
-        setTimeout(() => {
-            alert("Mật khẩu đã được thay đổi thành công (giả lập).");
-            setShowChangePassword(false);
-            setFormData({ ...formData, currentPassword: '', newPassword: '', confirmPassword: '' });
+        try {
+            const response = await axios.post(
+                "http://127.0.0.1:8000/api/change-password/",
+                {
+                    old_password: formData.currentPassword,
+                    new_password: formData.newPassword,
+                },
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                        "Content-Type": "application/json",
+                    },
+                }
+            );
+
+            if (response.status === 200) {
+                alert("Mật khẩu đã được thay đổi thành công.");
+                setShowChangePassword(false);
+                setFormData({ ...formData, currentPassword: '', newPassword: '', confirmPassword: '' });
+            } else {
+                alert("Đã xảy ra lỗi khi thay đổi mật khẩu.");
+            }
+        } catch (error) {
+            console.error("Error changing password:", error);
+            alert("Đã xảy ra lỗi khi thay đổi mật khẩu.");
+        } finally {
             setLoading(false);
-        }, 1000);
+        }
     };
 
     return (
         <Tutor>
-            <Panel role="tutor" activeItem={1}>
+            <Panel activeItem={1}>
                 <div className="relative p-4 overflow-y-auto">
                     <div className="w-full max-w-4xl mx-auto bg-gray-100 p-6 rounded-lg shadow-md">
                         <h2 className="text-2xl font-bold mb-6">Thông tin tài khoản</h2>
-                        <div className="mb-4">
-                            <label className="block mb-1 font-medium">Tên người dùng</label>
-                            <p>{formData.tutorname}</p>
-                        </div>
-                        <div className="mb-4">
-                            <label className="block mb-1 font-medium">Email đăng nhập</label>
-                            <p>{formData.email}</p>
-                        </div>
-                        <div className="mb-4">
-                            <label className="block mb-1 font-medium">Tên đăng nhập</label>
-                            <p>{formData.username}</p>
+                        <div className="flex items-center mb-6">
+                            <div className="flex-grow">
+                                <div className="mb-4">
+                                    <label className="block mb-1 font-medium">Tên người dùng</label>
+                                    <p>{formData.tutorname}</p>
+                                </div>
+                                <div className="mb-4">
+                                    <label className="block mb-1 font-medium">Email đăng nhập</label>
+                                    <p>{formData.email}</p>
+                                </div>
+                                <div className="mb-4">
+                                    <label className="block mb-1 font-medium">Tên đăng nhập</label>
+                                    <p>{formData.username}</p>
+                                </div>
+                            </div>
+                            {profileImage && (
+                                <div className="mr-44 ">
+                                    <img
+                                        src={profileImage}
+                                        alt="Tutor Avatar"
+                                        className="w-48 h-48 rounded-full object-cover"
+                                    />
+                                </div>
+                            )}
                         </div>
                         <div className="mb-4">
                             <button
