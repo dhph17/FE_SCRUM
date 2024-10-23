@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import Panel from "../../layouts/panel/Panel";
 import Tutor from "../../layouts/PageAuthorization/tutor/tutor";
+import User from '../../assets/image/User.png'
 
 const TutorPassword = () => {
     const [formData, setFormData] = useState({
@@ -134,7 +135,7 @@ const TutorPassword = () => {
                             {profileImage && (
                                 <div className="mr-44 ">
                                     <img
-                                        src={profileImage}
+                                        src={profileImage || User}
                                         alt="Tutor Avatar"
                                         className="w-48 h-48 rounded-full object-cover"
                                     />

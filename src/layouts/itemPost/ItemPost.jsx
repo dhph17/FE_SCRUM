@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import Img1 from "../../assets/image/quiz.png";
 import Img2 from "../../assets/image/assignment.png";
 import Img3 from "../../assets/image/medal.png";
+import User from '../../assets/image/User.png'
 import ClassTimeDetail from "../../layouts/popup/classTime_Popup";
 import { useAppContext } from "../../AppProvider";
 
@@ -49,7 +50,7 @@ const ItemPostVu = ({ user, children, tag }) => {
                 <div className="flex gap-5 ">
                     <img
                         className="w-[50px] h-[50px] rounded-full"
-                        src="https://th.bing.com/th/id/OIP.0xm7fJtBKdm3hIVhXfmpQQHaJ4?&w=160&h=240&c=7&dpr=1.3&pid=ImgDet"
+                        src={user.avatar ? `${import.meta.env.VITE_API_ENDPOINT}/${user.avatar}` : User}
                         alt="avatar"
                     />
                     <div>

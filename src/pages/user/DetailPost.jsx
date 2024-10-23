@@ -19,7 +19,7 @@ const DetailPost = () => {
     const { sessionToken } = useAppContext();
     const { idPost } = useParams();
     const [getIdTutor, setIdTutor] = useState('')
-    const [tagPost, setTagPost] = useState(Img3);
+    const [tagPost] = useState(Img3);
     const [showPopup, setShowPopup] = useState(false);
     const [selectedTime, setSelectedTime] = useState(null);
     const [tutor_id, setTutor_id] = useState(null);
@@ -96,13 +96,13 @@ const DetailPost = () => {
         }
     };
 
-  const handleBuoiHocClick = (post) => {
-    setSelectedTime(post);
-  };
+    const handleBuoiHocClick = (post) => {
+        setSelectedTime(post);
+    };
 
-  const handleClosePopup = () => {
-    setSelectedTime(null);
-  };
+    const handleClosePopup = () => {
+        setSelectedTime(null);
+    };
 
     const handleTutorProfileClick = (tutor_id) => {
         setTutor_id(tutor_id);

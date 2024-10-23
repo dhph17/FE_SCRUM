@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import Panel from "../../layouts/panel/Panel";
 import Parent from "../../layouts/PageAuthorization/parent/parent";
+import User from '../../assets/image/User.png'
 
 const ParentPassword = () => {
     const [formData, setFormData] = useState({
@@ -47,7 +48,7 @@ const ParentPassword = () => {
                 console.error("Error fetching parent data:", error);
             }
         };
-    
+
         fetchParentData();
     }, [parentId, token]);
 
@@ -73,12 +74,12 @@ const ParentPassword = () => {
             alert("Mật khẩu mới và xác nhận mật khẩu không khớp.");
             return;
         }
-    
+
         if (!validatePasswordFormat(formData.newPassword)) {
             alert("Mật khẩu phải có tối thiểu 8 kí tự, trong đó có ít nhất 1 kí tự chữ và 1 kí tự số.");
             return;
         }
-    
+
         setLoading(true);
         try {
             const response = await axios.post(
@@ -94,7 +95,7 @@ const ParentPassword = () => {
                     },
                 }
             );
-    
+
             if (response.status === 200) {
                 alert("Mật khẩu đã được thay đổi thành công.");
                 setShowChangePassword(false);
@@ -132,11 +133,11 @@ const ParentPassword = () => {
                                 </div>
                             </div>
                             {profileImage && (
-                                <div className="-ml-6">
+                                <div className="mr-44 ">
                                     <img
-                                        src={profileImage}
-                                        alt="parent Avatar"
-                                        className="w-32 h-32 rounded-full object-cover"
+                                        src={profileImage || User}
+                                        alt="Tutor Avatar"
+                                        className="w-48 h-48 rounded-full object-cover"
                                     />
                                 </div>
                             )}
@@ -152,48 +153,48 @@ const ParentPassword = () => {
                         </div>
                         {showChangePassword && (
                             <div className="mt-4">
-                            <div className="mb-4">
-                                <label className="block mb-1 font-medium">Mật khẩu hiện tại</label>
-                                <input
-                                    type="password"
-                                    name="currentPassword"
-                                    value={formData.currentPassword}
-                                    onChange={handleInputChange}
-                                    className="w-full border border-gray-300 p-2 rounded"
-                                />
+                                <div className="mb-4">
+                                    <label className="block mb-1 font-medium">Mật khẩu hiện tại</label>
+                                    <input
+                                        type="password"
+                                        name="currentPassword"
+                                        value={formData.currentPassword}
+                                        onChange={handleInputChange}
+                                        className="w-full border border-gray-300 p-2 rounded"
+                                    />
+                                </div>
+                                <div className="mb-4">
+                                    <label className="block mb-1 font-medium">Nhập mật khẩu mới</label>
+                                    <input
+                                        type="password"
+                                        name="newPassword"
+                                        value={formData.newPassword}
+                                        onChange={handleInputChange}
+                                        className="w-full border border-gray-300 p-2 rounded"
+                                    />
+                                </div>
+                                <p className="text-sm text-gray-500 mb-4">
+                                    *Lưu ý: Mật khẩu phải có tối thiểu 8 kí tự, trong đó có ít nhất 1 kí tự chữ và 1 kí tự số.
+                                </p>
+                                <div className="mb-2">
+                                    <label className="block mb-1 font-medium">Xác nhận mật khẩu</label>
+                                    <input
+                                        type="password"
+                                        name="confirmPassword"
+                                        value={formData.confirmPassword}
+                                        onChange={handleInputChange}
+                                        className="w-full border border-gray-300 p-2 rounded"
+                                    />
+                                </div>
+                                <button
+                                    type="button"
+                                    onClick={handleSavePassword}
+                                    className="bg-green-600 text-white px-6 py-2 rounded"
+                                    disabled={loading}
+                                >
+                                    {loading ? "Đang lưu..." : "Lưu"}
+                                </button>
                             </div>
-                            <div className="mb-4">
-                                <label className="block mb-1 font-medium">Nhập mật khẩu mới</label>
-                                <input
-                                    type="password"
-                                    name="newPassword"
-                                    value={formData.newPassword}
-                                    onChange={handleInputChange}
-                                    className="w-full border border-gray-300 p-2 rounded"
-                                />
-                            </div>
-                            <p className="text-sm text-gray-500 mb-4">
-                                *Lưu ý: Mật khẩu phải có tối thiểu 8 kí tự, trong đó có ít nhất 1 kí tự chữ và 1 kí tự số.
-                            </p>
-                            <div className="mb-2">
-                                <label className="block mb-1 font-medium">Xác nhận mật khẩu</label>
-                                <input
-                                    type="password"
-                                    name="confirmPassword"
-                                    value={formData.confirmPassword}
-                                    onChange={handleInputChange}
-                                    className="w-full border border-gray-300 p-2 rounded"
-                                />
-                            </div>
-                            <button
-                                type="button"
-                                onClick={handleSavePassword}
-                                className="bg-green-600 text-white px-6 py-2 rounded"
-                                disabled={loading}
-                            >
-                                {loading ? "Đang lưu..." : "Lưu"}
-                            </button>
-                        </div>
                         )}
                     </div>
                 </div>
