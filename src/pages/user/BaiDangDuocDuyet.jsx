@@ -103,6 +103,9 @@ const BaiDangDuocDuyet = () => {
   return (
     <Parent>
       <Page role="parent" activeItem={3}>
+        <p className="font-semibold text-[1.2rem] text-shadow-sm mb-4">
+          Các bài đăng đã được phê duyệt
+        </p>
         <div className="relative max-h-[38rem] overflow-y-auto grid grid-cols-1 gap-4">
           {currentPosts.map((parent, index) => (
             <div
@@ -124,9 +127,9 @@ const BaiDangDuocDuyet = () => {
                 >
                   Xóa bài đăng
                 </button>
-                <Link to={`/parent/detailPost/${parent.post_id}`}
-                  onClick={() => {
-                  }}
+                <Link
+                  to={`/parent/detailPost/${parent.post_id}`}
+                  onClick={() => {}}
                   className="bg-yellow-500 w-[14vw] p-2 text-center rounded-2xl font-semibold mx-8"
                 >
                   Danh sách gia sư đăng kí
