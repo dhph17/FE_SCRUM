@@ -94,8 +94,12 @@ const SuatDayDaDangKy = () => {
           position: "bottom-right",
           autoClose: 3000,
         });
-        window.location.reload();
-        navigate("/parent/pending-posts");
+        
+        setTimeout(() => {
+          window.location.reload();
+          navigate("/tutor/registered");
+      }, 2000);
+        navigate("/tutor/registered");
       } else {
         toast.error("Xóa bài đăng thất bại!", {
           position: "bottom-right",
