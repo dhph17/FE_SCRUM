@@ -28,8 +28,7 @@ const SuatDayDaDuocNhan = () => {
     const fetchData = async () => {
       try {
         const response = await fetch(
-          `${
-            import.meta.env.VITE_API_ENDPOINT
+          `${import.meta.env.VITE_API_ENDPOINT
           }/api/tutor/class/?status=appointed`,
           {
             method: "GET",

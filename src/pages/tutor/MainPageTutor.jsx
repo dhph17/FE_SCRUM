@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import PropTypes from "prop-types";
 import { useAppContext } from "../../AppProvider";
 
@@ -11,9 +12,10 @@ import { toast } from "react-toastify";
 
 
 
-const MainPageTutor = ({ searchTerm }) => {
 
-  const { sessionToken ,id} = useAppContext();
+const MainPageTutor = ({ searchTerm }) => {
+  let navigate = useNavigate()
+  const { sessionToken, id } = useAppContext();
   const [posts, setPost] = useState([]);
   const [showPopup, setShowPopup] = useState(false);
 
@@ -143,12 +145,12 @@ const MainPageTutor = ({ searchTerm }) => {
 
   const confirmSubmission = async (postId) => {
     setShowPopup(false);
-  
+
     const requestData = {
       post_id: postId,
       tutor_id: id,
     };
-    
+
     try {
       const response = await fetch("http://127.0.0.1:8000/api/tutor/posts/", {
         method: "POST",
@@ -158,15 +160,15 @@ const MainPageTutor = ({ searchTerm }) => {
         },
         body: JSON.stringify(requestData),
       });
-      
-      const data = await response.json(); 
+
+      const data = await response.json();
       console.log("Response data:", data);
       if (response.ok) {
-        toast.success("Đăng ký thành công!", {
+        toast.success("Đăng ký suất dạy thành công!", {
           position: "bottom-right",
           autoClose: 3000,
         });
-        window.location.reload();
+        navigate("/tutor/registered")
       } else {
         toast.error("Đăng ký thất bại!", {
           position: "bottom-right",
@@ -181,7 +183,7 @@ const MainPageTutor = ({ searchTerm }) => {
       });
     }
   };
-  
+
 
 
   return (

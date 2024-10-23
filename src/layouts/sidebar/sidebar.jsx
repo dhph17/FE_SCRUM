@@ -195,7 +195,7 @@ const Sidebar = ({ activeItem }) => {
                     ) : (
                         <img src={Image1} alt="Profile" className="w-14 h-14 rounded-full mr-3" />
                     )}
-                    <p className="capitalize">{role}</p>
+                    <p className="capitalize">{role === 'tutor' ? 'Gia Sư' : role === 'admin' ? 'Admin' : 'Phụ Huynh'}</p>
                 </div>
                 <img src={Image2} alt="nav" className="w-10 h-8"></img>
             </div>

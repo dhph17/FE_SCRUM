@@ -1,7 +1,8 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useAppContext } from "../../AppProvider";
+import User from '../../assets/image/User.png'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 import {
   faMagnifyingGlass,
@@ -16,7 +17,26 @@ const Header = ({ setSearch }) => {
   let navigate = useNavigate();
   const [showDropdown, setShowDropdown] = useState(false);
 
-  const { sessionToken, setSessionToken, setRole, role, name } = useAppContext();
+  const { sessionToken, setSessionToken, setRole, setId, role, id, name } = useAppContext();
+
+  const [avatar, setAvatar] = useState('');
+
+  useEffect(() => {
+    if (role !== 'admin') {
+      const fetchData = async () => {
+        try {
+          const url = `${import.meta.env.VITE_API_ENDPOINT}/api/${role === 'tutor' ? 'tutors' : 'parents'}/${id}`
+          const response = await fetch(url);
+          const data = await response.json();
+          setAvatar(data.avatar);
+        } catch (error) {
+          console.error('Error fetching data:', error);
+        }
+      };
+
+      fetchData();
+    }
+  }, [id]);
 
   const handleLogout = async () => {
     try {
@@ -34,6 +54,7 @@ const Header = ({ setSearch }) => {
       if (response.ok) {
         setSessionToken("");
         setRole("");
+        setId('')
         setSearch('')
         setShowDropdown(false)
         localStorage.removeItem("refreshToken");
@@ -140,7 +161,7 @@ const Header = ({ setSearch }) => {
           {role === "parent" && <Notify />}
           <div className="flex text-white items-center cursor-pointer text-[1.1rem]">
             <div className="relative flex items-center gap-2">
-              {/* <img src="https://i.scdn.co/image/ab67616d00001e025a6bc1ecf16bbac5734f23da" alt="" className="w-[40px] h-[40px] rounded-full" /> */}
+              <img src={avatar ? `${import.meta.env.VITE_API_ENDPOINT}/${avatar}` : User} alt="" className="w-[40px] h-[40px] rounded-full" />
               <p className="font-semibold">{name}</p>
               <i
                 className={`fas ${showDropdown ? 'fa-chevron-up' : 'fa-chevron-down'} text-[0.8rem] ml-1`}

@@ -1,10 +1,14 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useAppContext } from "../../AppProvider";
 import axios from "axios";
 import Panel from "../../layouts/panel/Panel";
 import Tutor from "../../layouts/PageAuthorization/tutor/tutor";
 import User from '../../assets/image/User.png'
 
 const TutorPassword = () => {
+    const { setSessionToken, setRole, setId } = useAppContext()
+    let navigate = useNavigate()
     const [formData, setFormData] = useState({
         tutorname: '',
         email: '',
@@ -99,7 +103,10 @@ const TutorPassword = () => {
             if (response.status === 200) {
                 alert("Mật khẩu đã được thay đổi thành công.");
                 setShowChangePassword(false);
-                setFormData({ ...formData, currentPassword: '', newPassword: '', confirmPassword: '' });
+                setSessionToken('')
+                setRole('')
+                setId('')
+                navigate('/login')
             } else {
                 alert("Đã xảy ra lỗi khi thay đổi mật khẩu.");
             }
