@@ -118,6 +118,9 @@ const SuatDayDaDangKy = () => {
   return (
     <Tutor>
       <Page role="tutor" activeItem={3}>
+        <p className="font-semibold text-[1.2rem] text-shadow-sm mb-4">
+          Các suất dạy đã đăng ký
+        </p>
         <div className="relative max-h-[38rem] overflow-y-auto grid grid-cols-1 gap-4">
           {currentPosts.map((tutor, index) => (
             <div

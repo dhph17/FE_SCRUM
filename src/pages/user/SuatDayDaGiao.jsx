@@ -61,6 +61,9 @@ const SuatDayDaGiao = () => {
   return (
     <Parent>
       <Page role="parent" activeItem={5}>
+        <p className="font-semibold text-[1.2rem] text-shadow-sm mb-4">
+          Các suất dạy đã giao
+        </p>
         <div className="relative max-h-[38rem] overflow-y-auto grid grid-cols-1 gap-4">
           {currentPosts.map((parent, index) => (
             <div
