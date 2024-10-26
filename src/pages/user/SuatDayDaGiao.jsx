@@ -1,8 +1,8 @@
 import PropTypes from "prop-types";
 import { useEffect, useState } from "react";
 import { useAppContext } from "../../AppProvider";
-import { Link } from "react-router-dom";
-
+// import { Link } from "react-router-dom";
+import RatingPopup from "./RatingPopup";
 import Page from "../../layouts/panel/Panel";
 import Parent from "../../layouts/PageAuthorization/parent/parent";
 import ItemPost from "../../layouts/itemPost/ItemPost";
@@ -18,7 +18,10 @@ const SuatDayDaGiao = () => {
     (currentPage - 1) * itemsPerPage,
     currentPage * itemsPerPage
   );
+  const [showRatingPopup, setShowRatingPopup] = useState(false);
 
+  const openRatingPopup = () => setShowRatingPopup(true);
+  const closeRatingPopup = () => setShowRatingPopup(false);
   const handlePageChange = (page) => {
     setCurrentPage(page);
   };
@@ -71,11 +74,12 @@ const SuatDayDaGiao = () => {
               className="border-[3px] rounded-[1rem] border-[#002182] shadow-md bg-white"
             >
               <ItemPost user={parent} tag="Đã phê duyệt">
-                <Link to={`/parent/update-post/${parent.post_id}`}>
-                  <button className="bg-yellow-500 w-[14vw] p-2 rounded-2xl font-semibold mx-8">
-                    Đánh giá gia sư
-                  </button>
-                </Link>
+              <button
+          onClick={openRatingPopup}
+          className="bg-yellow-500 w-[14vw] p-2 rounded-2xl font-semibold mx-8"
+        >
+          Đánh giá gia sư
+        </button>
               </ItemPost>
             </div>
           ))}
@@ -92,6 +96,7 @@ const SuatDayDaGiao = () => {
         ) : (
           <div className="text-center font-bold">Không có bài đăng nào</div>
         )}
+         {showRatingPopup && <RatingPopup onClose={closeRatingPopup} />}
       </Page>
     </Parent>
   );
