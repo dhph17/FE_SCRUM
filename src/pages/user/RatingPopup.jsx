@@ -11,7 +11,7 @@ const RatingPopup = ({ onClose }) => {
       <div className="bg-white p-8 rounded-lg shadow-lg w-80">
         <h2 className="text-xl font-semibold mb-4">Đánh giá gia sư</h2>
         
-        {/* Hiệu ứng hover và lựa chọn sao */}
+        
         <div className="flex space-x-1 mb-4 justify-center">
           {[...Array(5)].map((_, index) => {
             const starValue = index + 1;
@@ -50,7 +50,6 @@ const RatingPopup = ({ onClose }) => {
           </button>
           <button
             onClick={() => {
-              // Gửi đánh giá lên server hoặc xử lý đánh giá
               onClose();
             }}
             className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
