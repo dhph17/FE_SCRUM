@@ -32,6 +32,7 @@ import TutorPassword from "./pages/tutor/tutorPassword";
 import ParentPassword from "./pages/user/parentPassword";
 import SuatDayDaDangKy from "./pages/tutor/SuatDayDaDangKy"
 import SuatDayDaDuocNhan from "./pages/tutor/SuatDayDaDuocNhan";
+import MyReviews from "./pages/tutor/MyReviews";
 
 function App() {
   const [searchTerm, setSearchTerm] = useState("");
@@ -77,6 +78,7 @@ function App() {
           <Route path="/tutor/registered" element={<SuatDayDaDangKy />} />
           {/* /tutor/received-classes */}
           <Route path="/tutor/received-classes" element={<SuatDayDaDuocNhan />} />
+          <Route path="/tutor/my-reviews" element={<MyReviews />} />
         </Routes>
         <Footer />
       </div>

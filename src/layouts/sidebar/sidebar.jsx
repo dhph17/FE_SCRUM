@@ -110,7 +110,6 @@ const Sidebar = ({ activeItem }) => {
                             <i className="fas fa-pencil-alt mr-3"></i>
                             Quản lý hồ sơ
                         </Link>
-
                         <div className="space-y-2" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
                             <p
                                 className={`flex items-center cursor-pointer p-2 rounded-lg ${showDropdown || (activeItem >= 3 && activeItem <= 5) ? 'bg-custom_darkblue text-white' : 'hover:bg-custom_darkblue hover:text-white'}`}
