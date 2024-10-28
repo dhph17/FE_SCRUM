@@ -150,7 +150,9 @@ const Header = ({ setSearch }) => {
               placeholder="Tìm kiếm"
               className="w-full text-white bg-transparent border-none outline-none placeholder:text-white"
               id="search_input"
+              name="search" 
               onChange={handleInputChange}
+              autoComplete="off"
             />
             <FontAwesomeIcon
               id="search-but"
