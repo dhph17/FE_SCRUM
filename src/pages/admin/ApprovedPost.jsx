@@ -1,9 +1,11 @@
 import { useEffect, useState } from "react";
+import PropTypes from "prop-types";
 import Page from "../../layouts/panel/Panel";
 import ItemPost from "../../layouts/itemPost/ItemPost";
 import Pagination from "../../layouts/pagination/pagination";
 import Admin from "../../layouts/PageAuthorization/admin/admin";
 import { useAppContext } from "../../AppProvider";
+import { useParams } from "react-router-dom";
 
 const ApprovedPost = () => {
   const [postList, setPostList] = useState([]);
@@ -11,22 +13,30 @@ const ApprovedPost = () => {
   const { sessionToken } = useAppContext();
   const itemsPerPage = 10;
 
+  const { postId } = useParams();
+
   useEffect(() => {
     const fetchApprovedPosts = async () => {
       try {
         const response = await fetch(
-          `${import.meta.env.VITE_API_ENDPOINT}/api/admin/posts/?status=approved`,
+          `${
+            import.meta.env.VITE_API_ENDPOINT
+          }/api/admin/posts/?status=approved`,
           {
             method: "GET",
             headers: {
-              "Authorization": `Bearer ${sessionToken}`,
+              Authorization: `Bearer ${sessionToken}`,
               "Content-Type": "application/json",
             },
           }
         );
         const data = await response.json();
         if (response.ok) {
-          setPostList(data.results);
+          if (postId) {
+            setPostList(data.results.filter((post) => post.post_id === postId));
+          } else {
+            setPostList(data.results);
+          }
         } else {
           console.error("Failed to fetch posts");
         }
@@ -37,8 +47,6 @@ const ApprovedPost = () => {
 
     fetchApprovedPosts();
   }, []);
-
-
 
   const totalPages = Math.ceil(postList.length / itemsPerPage);
 
@@ -64,10 +72,21 @@ const ApprovedPost = () => {
                 <button className="bg-yellow-500 w-[14vw] p-2 rounded-2xl font-semibold mx-8">
                   Xóa bài đăng
                 </button>
+                {postId && (
+                  <button
+                    className="bg-yellow-500 w-[14vw] p-2 rounded-2xl font-semibold mx-8"
+                    onClick={() => {
+                      window.history.back();
+                    }}
+                  >
+                    Xem lại báo cáo
+                  </button>
+                )}
               </ItemPost>
             </div>
           ))}
         </div>
+        {!postId && (
         <div className="mt-8">
           <Pagination
             currentPage={currentPage}
@@ -75,9 +94,13 @@ const ApprovedPost = () => {
             onPageChange={handlePageChange}
           />
         </div>
+        )}
       </Page>
     </Admin>
   );
+};
+ApprovedPost.propTypes = {
+  postID: PropTypes.string,
 };
 
 export default ApprovedPost;
