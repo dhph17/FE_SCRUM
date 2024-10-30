@@ -63,16 +63,18 @@ console.log("id post",idPost);
            
             onClose(); 
         } catch (error) {
-            console.log("dữ liêu truyền",idPost,idParent,tutor_id,rating,feedback);
-            console.log("id post : ",idPost);
-            console.log("id parent : ",idParent);
-            console.log("rate : ",rating);
-            console.log("description : ",feedback);
 
             console.error("Đã xảy ra lỗi khi gửi đánh giá:", error);
         }
     };
 console.log(tutorProfile);
+console.log("dữ liêu truyền",idPost,idParent,tutorProfile.tutor_id,rating,feedback);
+            console.log("id post : ",idPost);
+            console.log("id parent : ",idParent);
+            console.log("id tutor : ",tutorProfile.tutor_id);
+
+            console.log("rate : ",rating);
+            console.log("description : ",feedback);
     return (
         <div
             className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 shadow-md"
