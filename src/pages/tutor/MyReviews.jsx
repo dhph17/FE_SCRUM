@@ -62,7 +62,7 @@ const MyReviews = () => {
   return (
     <Tutor>
       <Page role="tutor" activeItem={5}>
-        <div className="grid grid-cols-2 gap-5 max-h-[600px] overflow-y-scroll p-4">
+        <div className="grid grid-cols-2 gap-5 max-h-[600px] overflow-y-scroll scrollbar scrollbar-thumb-white/30 p-4">
           {[0, 1].map((col) => (
             <div key={col} className="flex flex-col space-y-5">
               {dummyReviews
@@ -76,7 +76,7 @@ const MyReviews = () => {
                       </div>
                       <StarRating rating={review.rating} />
                     </div>
-                    <p className="mt-2 text-gray-600 font-semibold">{review.comment}</p>
+                    <p className="mt-2 text-[1.05rem] text-gray-600 font-semibold">{review.comment}</p>
                     <p className="mt-3 text-[0.75rem] text-custom_gray">2/10/2024</p>
                   </div>
                 ))}
