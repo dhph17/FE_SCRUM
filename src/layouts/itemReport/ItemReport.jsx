@@ -1,40 +1,39 @@
 import PropTypes from "prop-types";
 import { useAppContext } from "../../AppProvider";
 import { useNavigate } from "react-router-dom";
+import User from "../../assets/image/User.png";
 
 const ItemReport = ({ report }) => {
   const { sessionToken } = useAppContext();
+  const navigate = useNavigate();
 
-  let navigate = useNavigate();
+  const handleDeleteReport = async (report_id) => {
+    try {
+      const response = await fetch(
+        `${import.meta.env.VITE_API_ENDPOINT}/api/report/`,
+        {
+          method: "PUT",
+          headers: {
+            Authorization: `Bearer ${sessionToken}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            report_id: report_id,
+            resolved: true,
+          }),
+        }
+      );
 
-const handleDeleteReport = async (report_id) => {
-  try {
-    const response = await fetch(
-      `${import.meta.env.VITE_API_ENDPOINT}/api/report/`,
-      {
-        method: "PUT",
-        headers: {
-          Authorization: `Bearer ${sessionToken}`,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          report_id: report_id,
-          resolved: true,
-        }),
+      if (response.ok) {
+        console.log("Report resolved successfully");
+        window.location.reload();
+      } else {
+        console.error("Failed to resolve report");
       }
-    );
-
-    if (response.ok) {
-      console.log("Report resolved successfully");
-      window.location.reload();
-    } else {
-      console.error("Failed to resolve report");
+    } catch (error) {
+      console.error("Error resolving report:", error);
     }
-  } catch (error) {
-    console.error("Error resolving report:", error);
-  }
-};
-
+  };
 
   const handleViewPost = (post_id) => {
     navigate(`/admin/approved-posts/${post_id}`);
@@ -54,60 +53,92 @@ const handleDeleteReport = async (report_id) => {
   };
 
   return (
-    <div className="border border-gray-300 rounded-lg p-6 shadow-sm mb-6 bg-white">
-      <div className="flex justify-between items-center border-b pb-4 mb-4">
+    <div className="border border-gray-300 rounded-lg p-6 shadow-sm mb-6 bg-white w-[55rem] mx-auto">
+      <div className="flex justify-between items-center border-b pb-4 mb-4 bg-yellow-100 p-2 rounded-lg shadow-md">
         <div className="text-gray-700 font-semibold text-lg">
-          Mã báo cáo:{" "}
-          <span className="text-gray-900">{report.report_id || "N/A"}</span>
-        </div>
-        <div className="text-gray-500 text-sm flex ">
-          <div className="font-bold mr-5">Báo cáo lúc: </div>
-          <div>{formatDate(report.created_at)}</div>
+          Mã báo cáo:
+          <span className="text-blue-700 underline"> {report.report_id || "N/A"}</span>
         </div>
       </div>
 
-      <div className="space-y-3">
-        <div className="flex items-center justify-between">
-          <p className="text-gray-600 font-medium">Người báo cáo:</p>
-          <p className="text-gray-900">{report.reporter_id || "N/A"}</p>
+      <div className=" flex justify-end">
+        <div className="text-gray-500 text-sm">
+          <span className="font-bold">Báo cáo lúc:</span>
+          <span> {formatDate(report.created_at)}</span>
         </div>
-        <div className="flex items-center justify-between">
-          <p className="text-gray-600 font-medium">Bên bị báo cáo:</p>
-          <p className="text-gray-900">{report.reported_party_id || "N/A"}</p>
+      </div>
+
+      <div className="space-y-4">
+        {/* Reporter Information */}
+        <div className="flex items-center">
+          <img
+            src={report.reporter_avt ? `${import.meta.env.VITE_API_ENDPOINT}/${report.reporter_avt}` : User}
+            alt="Reporter Avatar"
+            className="w-12 h-12 rounded-full mr-3"
+          />
+          <div className="flex-1">
+            <p className="text-gray-900 font-medium">
+              {report.reporter_name || "N/A"}
+            </p>
+            <p className="text-gray-500 text-sm">Người báo cáo</p>
+          </div>
         </div>
-        <div className="flex items-center justify-between">
-          <p className="text-gray-600 font-medium">Loại báo cáo:</p>
-          <p className="text-gray-900">{report.type || "N/A"}</p>
+
+        {/* Reported Party Information */}
+        <div className="flex items-center">
+          <img
+            src={report.reported_party_avt ? `${import.meta.env.VITE_API_ENDPOINT}/${report.reported_party_avt}` : User}
+            alt="Reported Party Avatar"
+            className="w-12 h-12 rounded-full mr-3"
+          />
+          <div className="flex-1">
+            <p className="text-gray-900 font-medium">
+              {report.reported_party_name || "N/A"}
+            </p>
+            <p className="text-gray-500 text-sm">Bên bị báo cáo</p>
+          </div>
         </div>
-        <div className="flex items-center justify-between">
-          <p className="text-gray-600 font-medium">Mã bài viết:</p>
-          <p className="text-gray-900">{report.post_id || "N/A"}</p>
+
+        {/* Report Details */}
+        <div className="grid grid-cols-2 gap-4 text-gray-700">
+          <div>
+            <p className="font-semibold">Loại báo cáo:</p>
+            <p className="text-gray-900">{report.type || "N/A"}</p>
+          </div>
+          <div>
+            <p className="font-semibold">Mã bài viết:</p>
+            <p className="text-gray-900">{report.post_id || "N/A"}</p>
+          </div>
+          <div>
+            <p className="font-semibold">Mã phản hồi:</p>
+            <p className="text-gray-900">{report.feedback_id || "N/A"}</p>
+          </div>
+          <div>
+            <p className="font-semibold">Trạng thái:</p>
+            <span
+              className={`px-3 py-1 rounded-full text-sm font-medium ${
+                report.resolved
+                  ? "bg-green-100 text-green-600"
+                  : "bg-red-100 text-red-600"
+              }`}
+            >
+              {report.resolved ? "Đã giải quyết" : "Chưa giải quyết"}
+            </span>
+          </div>
         </div>
-        <div className="flex items-center justify-between">
-          <p className="text-gray-600 font-medium">Mã phản hồi:</p>
-          <p className="text-gray-900">{report.feedback_id || "N/A"}</p>
-        </div>
-        <div className="flex items-center justify-between">
-          <p className="text-gray-600 font-medium">Mô tả:</p>
+
+        {/* Description */}
+        <div className="mt-4">
+          <p className="font-semibold text-gray-700">Mô tả:</p>
           <p className="text-gray-900">
             {report.description || "Không có mô tả"}
           </p>
         </div>
-        <div className="flex items-center justify-between mt-4">
-          <p className="text-gray-600 font-medium">Trạng thái:</p>
-          <p
-            className={`px-3 py-1 rounded-full text-sm font-medium ${
-              report.resolved
-                ? "bg-green-100 text-green-600"
-                : "bg-red-100 text-red-600"
-            }`}
-          >
-            {report.resolved ? "Đã giải quyết" : "Chưa giải quyết"}
-          </p>
-        </div>
-        <div className="flex flex-row justify-center">
+
+        {/* Actions */}
+        <div className="flex justify-center gap-10 pt-5 space-x-3">
           <button
-            className="text-white font-semibold shadow-sm bg-red-500 p-2 rounded-lg hover:shadow-lg hover:bg-red-400"
+            className="text-white font-semibold bg-red-500 py-2 px-4 rounded-lg hover:bg-red-400"
             onClick={() => {
               if (
                 window.confirm("Bạn có chắc chắn muốn xóa báo cáo này không?")
@@ -119,10 +150,8 @@ const handleDeleteReport = async (report_id) => {
             Xóa báo cáo
           </button>
           <button
-            className="text-white font-semibold shadow-sm bg-blue-700 p-2 rounded-lg hover:shadow-lg hover:bg-blue-400 ml-4"
-            onClick={() => {
-              handleViewPost(report.post_id);
-            }}
+            className="text-white font-semibold bg-blue-700 py-2 px-4 rounded-lg hover:bg-blue-600"
+            onClick={() => handleViewPost(report.post_id)}
           >
             Xem bài đăng
           </button>
@@ -138,8 +167,12 @@ ItemReport.propTypes = {
     description: PropTypes.string,
     created_at: PropTypes.string,
     resolved: PropTypes.bool,
+    reporter_name: PropTypes.string,
     reporter_id: PropTypes.string,
     reported_party_id: PropTypes.string,
+    reported_party_name: PropTypes.string,
+    reporter_avt: PropTypes.string,
+    reported_party_avt: PropTypes.string,
     type: PropTypes.string,
     post_id: PropTypes.string,
     feedback_id: PropTypes.string,
