@@ -20,16 +20,13 @@ const StarRating = ({ rating }) => {
     );
 };
 
-const Review = ({ height }) => {
+const Review = ({ height, tutor_id }) => {
     const [reviews, setReviews] = useState([]);
 
     useEffect(() => {
         const fetchReviews = async () => {
             try {
-                const rawTutorId = localStorage.getItem("id") || "";
-                const tutorId = rawTutorId.replace(/-/g, "");
-
-                const response = await fetch(`http://127.0.0.1:8000/api/class/feedback/${tutorId}`);
+                const response = await fetch(`http://127.0.0.1:8000/api/class/feedback/${tutor_id}`);
                 const data = await response.json();
 
                 const formattedReviews = data.map((review) => ({
@@ -40,6 +37,7 @@ const Review = ({ height }) => {
                 }));
 
                 setReviews(formattedReviews);
+            } catch (error) {
                 console.error("Failed to fetch reviews:", error);
             }
         };
@@ -78,6 +76,7 @@ StarRating.propTypes = {
 
 Review.propTypes = {
     height: PropTypes.string.isRequired,
+    tutor_id: PropTypes.string.isRequired
 };
 
 export default Review;

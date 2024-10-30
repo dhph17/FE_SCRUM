@@ -2,7 +2,7 @@ import PropTypes from "prop-types";
 import Review from "../review/Review"
 import Image from "../../assets/image/User.png";
 
-const ReviewTutor = ({ onClose }) => {
+const ReviewTutor = ({ onClose, tutor_id }) => {
     const handleBackgroundClick = (event) => {
         if (event.target === event.currentTarget) {
             onClose();
@@ -26,7 +26,7 @@ const ReviewTutor = ({ onClose }) => {
                         className="font-semibold text-[1.1rem] hover:underline"
                     >Phi Hùng</p>
                 </div>
-                <Review height='max-h-[450px]' />
+                <Review height='max-h-[450px]' tutor_id={tutor_id} />
                 <div className="mt-3 flex w-full justify-end">
                     <button
                         className=" bg-red-500 mr-8 w-[100px] text-white py-2 rounded-lg shadow hover:bg-red-600 transition duration-300"
@@ -42,6 +42,7 @@ const ReviewTutor = ({ onClose }) => {
 
 ReviewTutor.propTypes = {
     onClose: PropTypes.func,
+    tutor_id: PropTypes.string
 };
 
 export default ReviewTutor
