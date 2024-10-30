@@ -54,10 +54,10 @@ const ItemReport = ({ report }) => {
 
   return (
     <div className="border border-gray-300 rounded-lg p-6 shadow-sm mb-6 bg-white w-[55rem] mx-auto">
-      <div className="flex justify-between items-center border-b pb-4 mb-4 bg-yellow-100 p-2 rounded-lg shadow-md">
+      <div className="flex justify-between items-center border-b py-3 mb-4 bg-yellow-100 p-2 rounded-lg shadow-md">
         <div className="text-gray-700 font-semibold text-lg">
           Mã báo cáo:
-          <span className="text-blue-700 underline"> {report.report_id || "N/A"}</span>
+          <span className="text-blue-700 underline ml-1">{report.report_id || "N/A"}</span>
         </div>
       </div>
 
@@ -80,7 +80,7 @@ const ItemReport = ({ report }) => {
             <p className="text-gray-900 font-medium">
               {report.reporter_name || "N/A"}
             </p>
-            <p className="text-gray-500 text-sm">Người báo cáo</p>
+            <p className="text-gray-500 text-sm font-bold">Người báo cáo</p>
           </div>
         </div>
 
@@ -95,7 +95,7 @@ const ItemReport = ({ report }) => {
             <p className="text-gray-900 font-medium">
               {report.reported_party_name || "N/A"}
             </p>
-            <p className="text-gray-500 text-sm">Bên bị báo cáo</p>
+            <p className="text-gray-500 text-sm font-bold">Bên bị báo cáo</p>
           </div>
         </div>
 
@@ -116,11 +116,10 @@ const ItemReport = ({ report }) => {
           <div>
             <p className="font-semibold">Trạng thái:</p>
             <span
-              className={`px-3 py-1 rounded-full text-sm font-medium ${
-                report.resolved
-                  ? "bg-green-100 text-green-600"
-                  : "bg-red-100 text-red-600"
-              }`}
+              className={`px-3 py-1 rounded-full text-sm font-medium ${report.resolved
+                ? "bg-green-100 text-green-600"
+                : "bg-red-100 text-red-600"
+                }`}
             >
               {report.resolved ? "Đã giải quyết" : "Chưa giải quyết"}
             </span>

@@ -19,9 +19,8 @@ const ApprovedPost = () => {
     const fetchApprovedPosts = async () => {
       try {
         const response = await fetch(
-          `${
-            import.meta.env.VITE_API_ENDPOINT
-          }/api/admin/posts/?status=approved`,
+          `${import.meta.env.VITE_API_ENDPOINT
+          }/api/admin/posts/?status=approved&status=closed`,
           {
             method: "GET",
             headers: {
@@ -87,13 +86,13 @@ const ApprovedPost = () => {
           ))}
         </div>
         {!postId && (
-        <div className="mt-8">
-          <Pagination
-            currentPage={currentPage}
-            totalPages={totalPages}
-            onPageChange={handlePageChange}
-          />
-        </div>
+          <div className="mt-8">
+            <Pagination
+              currentPage={currentPage}
+              totalPages={totalPages}
+              onPageChange={handlePageChange}
+            />
+          </div>
         )}
       </Page>
     </Admin>
