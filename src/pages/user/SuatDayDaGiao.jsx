@@ -1,15 +1,16 @@
 import PropTypes from "prop-types";
 import { useEffect, useState } from "react";
 import { useAppContext } from "../../AppProvider";
-import { Link } from "react-router-dom";
-
+// import { Link } from "react-router-dom";
 import Page from "../../layouts/panel/Panel";
 import Parent from "../../layouts/PageAuthorization/parent/parent";
 import ItemPost from "../../layouts/itemPost/ItemPost";
 import Pagination from "../../layouts/pagination/pagination";
+import TutorProfileToReview from "../../layouts/popup/TutorProfileToReview";
 
 const SuatDayDaGiao = () => {
   const { sessionToken, id } = useAppContext();
+  const [tutor_id, setTutor_id] = useState(null);
   const [posts, setPost] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
@@ -18,6 +19,7 @@ const SuatDayDaGiao = () => {
     (currentPage - 1) * itemsPerPage,
     currentPage * itemsPerPage
   );
+  const [showRatingPopup, setShowRatingPopup] = useState(false);
 
   const handlePageChange = (page) => {
     setCurrentPage(page);
@@ -71,11 +73,12 @@ const SuatDayDaGiao = () => {
               className="border-[3px] rounded-[1rem] border-[#002182] shadow-md bg-white"
             >
               <ItemPost user={parent} tag="Đã phê duyệt">
-                <Link to={`/parent/update-post/${parent.post_id}`}>
-                  <button className="bg-yellow-500 w-[14vw] p-2 rounded-2xl font-semibold mx-8">
-                    Đánh giá gia sư
-                  </button>
-                </Link>
+                <button
+                  onClick={() => { setShowRatingPopup(true); setTutor_id(parent.class_times[0].tutor_id) }}
+                  className="bg-yellow-500 w-[14vw] p-2 rounded-2xl font-semibold mx-8"
+                >
+                  Đánh giá gia sư
+                </button>
               </ItemPost>
             </div>
           ))}
@@ -92,6 +95,7 @@ const SuatDayDaGiao = () => {
         ) : (
           <div className="text-center font-bold">Không có bài đăng nào</div>
         )}
+        {showRatingPopup && <TutorProfileToReview tutor_id={tutor_id} onClose={() => { setShowRatingPopup(false); setTutor_id(null) }} />}
       </Page>
     </Parent>
   );

@@ -63,7 +63,7 @@ const TutorProfile = ({ tutor_id, onClose }) => {
               />
               <div className="flex flex-col space-y-3">
                 <p className="text-lg font-medium flex flex-row">
-                  <strong>Số điện thoại:</strong>{" "}
+                  <strong className="text-nowrap">Số điện thoại:</strong>{" "}
                   <div className="text-[#002182] ml-5 font-normal">
                     {tutorProfile.phone_number}
                   </div>

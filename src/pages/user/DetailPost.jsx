@@ -9,6 +9,7 @@ import Panel from "../../layouts/panel/Panel";
 import Img3 from "../../assets/image/medal.png";
 import ClassTimeDetail from "../../layouts/popup/classTime_Popup";
 import TutorProfile from "../../layouts/popup/TutorProfile";
+import ReviewTutor from "../../layouts/popup/reviewTutor";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -23,6 +24,9 @@ const DetailPost = () => {
     const [showPopup, setShowPopup] = useState(false);
     const [selectedTime, setSelectedTime] = useState(null);
     const [tutor_id, setTutor_id] = useState(null);
+    const [showFeedback, setShowFeedback] = useState(false)
+    const [showProfile, setShowProfile] = useState(false)
+
 
     useEffect(() => {
         const fetchData = async () => {
@@ -100,12 +104,18 @@ const DetailPost = () => {
         setSelectedTime(post);
     };
 
+    const handleTutorFeedbackClick = (tutor_id) => {
+        setTutor_id(tutor_id);
+        setShowFeedback(true)
+    }
+
     const handleClosePopup = () => {
         setSelectedTime(null);
     };
 
     const handleTutorProfileClick = (tutor_id) => {
         setTutor_id(tutor_id);
+        setShowProfile(true)
     };
 
     const formatDate = (isoDate) => {
@@ -215,14 +225,17 @@ const DetailPost = () => {
                                             alt=""
                                             className="w-[50px] h-[50px] rounded-full object-cover"
                                         />
-                                        <p className="font-semibold text-[1.1rem]">{tutor.tutor_name}</p>
+                                        <p
+                                            className="font-semibold text-[1.1rem] hover:underline"
+                                            onClick={() => handleTutorProfileClick(tutor.tutor_id)}
+                                        >{tutor.tutor_name}</p>
                                     </div>
                                     <div className="flex gap-6">
                                         <button
                                             className="font-semibold text-[0.9rem] h-[2rem] w-[8rem] bg-custom_yellow rounded-md"
-                                            onClick={() => handleTutorProfileClick(tutor.tutor_id)}
+                                            onClick={() => handleTutorFeedbackClick(tutor.tutor_id)}
                                         >
-                                            Xem thông tin
+                                            Xem đánh giá
                                         </button>
                                         <button
                                             className="font-semibold text-[0.9rem] h-[2rem] w-[8rem] bg-custom_darkblue text-white rounded-md"
@@ -236,10 +249,16 @@ const DetailPost = () => {
                         </div>
                     </div>
 
-                    {tutor_id && (
+                    {showProfile && (
                         <TutorProfile
                             tutor_id={tutor_id}
-                            onClose={() => setTutor_id(null)}
+                            onClose={() => { setTutor_id(null); setShowProfile(false) }}
+                        />
+                    )}
+                    {showFeedback && (
+                        <ReviewTutor
+                            tutor_id={tutor_id}
+                            onClose={() => { setTutor_id(null); setShowFeedback(false) }}
                         />
                     )}
                     {showPopup && (

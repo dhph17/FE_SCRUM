@@ -123,19 +123,19 @@ const ParentPassword = () => {
             <Panel activeItem={1}>
                 <div className="relative p-4 overflow-y-auto">
                     <div className="w-full max-w-4xl mx-auto bg-gray-100 p-6 rounded-lg shadow-md">
-                        <h2 className="text-2xl font-bold mb-6">Thông tin tài khoản</h2>
+                        <h2 className="text-2xl font-bold mb-6 text-shadow-md">Thông tin tài khoản</h2>
                         <div className="flex items-center mb-6">
                             <div className="flex-grow">
                                 <div className="mb-4">
-                                    <label className="block mb-1 font-medium">Tên người dùng</label>
+                                    <label className="block mb-1 font-bold">Tên người dùng</label>
                                     <p>{formData.parentname}</p>
                                 </div>
                                 <div className="mb-4">
-                                    <label className="block mb-1 font-medium">Email đăng nhập</label>
+                                    <label className="block mb-1 font-bold">Email đăng nhập</label>
                                     <p>{formData.email}</p>
                                 </div>
                                 <div className="mb-4">
-                                    <label className="block mb-1 font-medium">Tên đăng nhập</label>
+                                    <label className="block mb-1 font-bold">Tên đăng nhập</label>
                                     <p>{formData.username}</p>
                                 </div>
                             </div>

@@ -16,9 +16,9 @@ import Notify from "../notify/Notify";
 const Header = ({ setSearch }) => {
   let navigate = useNavigate();
   const [showDropdown, setShowDropdown] = useState(false);
-
+  const [activeLink, setActiveLink] = useState('');
   const { sessionToken, setSessionToken, setRole, setId, role, id, name } = useAppContext();
-
+  const rolePath = role === 'parent' ? 'parent' : 'tutor';
   const [avatar, setAvatar] = useState('');
 
   useEffect(() => {
@@ -109,37 +109,18 @@ const Header = ({ setSearch }) => {
             />
           </div>
           <div className="">
-            {role === "parent" ? (
-              <ul className="flex text-white text-[1.1rem]">
+            <ul className="flex text-white text-[1.1rem]">
+              {['main-page', 'information'].map((path) => (
                 <Link
-                  to="parent/main-page"
-                  className="font-semibold mx-6 cursor-pointer"
+                  key={path}
+                  to={`${rolePath}/${path}`}
+                  className={`font-semibold mx-6 cursor-pointer ${activeLink === path ? 'underline' : ''}`}
+                  onClick={() => setActiveLink(path)}
                 >
-                  Trang chủ
+                  {path === 'main-page' ? 'Trang chủ' : 'Hồ sơ cá nhân'}
                 </Link>
-                <Link
-                  to="parent/information"
-                  className="font-semibold mx-6 cursor-pointer"
-                >
-                  Hồ sơ cá nhân
-                </Link>
-              </ul>
-            ) : (
-              <ul className="flex text-white text-[1.1rem]">
-                <Link
-                  to="tutor/main-page"
-                  className="font-semibold mx-6 cursor-pointer"
-                >
-                  Trang chủ
-                </Link>
-                <Link
-                  to="tutor/information"
-                  className="font-semibold mx-6 cursor-pointer"
-                >
-                  Hồ sơ cá nhân
-                </Link>
-              </ul>
-            )}
+              ))}
+            </ul>
           </div>
           <div
             id="search-header"
