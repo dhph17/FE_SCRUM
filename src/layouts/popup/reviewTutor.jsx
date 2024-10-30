@@ -1,5 +1,6 @@
 import PropTypes from "prop-types";
 import Review from "../review/Review"
+import Image from "../../assets/image/User.png";
 
 const ReviewTutor = ({ onClose }) => {
     const handleBackgroundClick = (event) => {
@@ -13,6 +14,18 @@ const ReviewTutor = ({ onClose }) => {
             onClick={handleBackgroundClick}
         >
             <div className="bg-gray-200 w-[70%] px-2 py-3">
+                <div className="flex items-center gap-3 mb-3 ml-3">
+                    <img
+                        src={
+                            Image
+                        }
+                        alt=""
+                        className="w-[50px] h-[50px] rounded-full object-cover"
+                    />
+                    <p
+                        className="font-semibold text-[1.1rem] hover:underline"
+                    >Phi Hùng</p>
+                </div>
                 <Review height='max-h-[450px]' />
                 <div className="mt-3 flex w-full justify-end">
                     <button
