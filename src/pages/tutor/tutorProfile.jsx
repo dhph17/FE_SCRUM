@@ -70,15 +70,36 @@ const TutorProfile = () => {
     }, [tutorId, token]);
     
     const handleChange = (e) => {
+        const { name, value } = e.target;
+    
+        if (name === "phone_number") {
+            const phoneNumberPattern = /^[0-9]{0,11}$/; 
+            if (!phoneNumberPattern.test(value)) {
+                return;
+            }
+        }
+    
         setFormData({
             ...formData,
-            [e.target.name]: e.target.value
+            [name]: value
         });
     };
 
     const handleImageUpload = (e) => {
         const file = e.target.files[0];
         if (file) {
+            const fileType = file.type;
+            if (fileType !== "image/png" && fileType !== "image/jpeg") {
+                alert("Please upload a .png or .jpg image.");
+                return;
+            }
+    
+            const fileSizeLimit = 25 * 1024 * 1024;
+            if (file.size > fileSizeLimit) {
+                alert("File size should not exceed 25 MB.");
+                return;
+            }
+    
             const reader = new FileReader();
             reader.onloadend = () => {
                 setProfileImage(reader.result);
@@ -113,6 +134,11 @@ const TutorProfile = () => {
     };
 
     const handleSave = async () => {
+        if (formData.phone_number.length < 10 || formData.phone_number.length > 11) {
+        alert("Phone number must be 10 or 11 digits long.");
+        return;
+    }
+
         setLoading(true);
         try {
             const formDataToSend = new FormData();
