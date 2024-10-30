@@ -69,7 +69,6 @@ const ReportContent = ({ reportedPartyId, postId, onClose }) => {
     return (
         <div
             className='bg-slate-100 rounded-lg p-5 shadow-md border-2 border-slate-100'
-
         >
             <h2 className="font-bold text-center mb-5 text-2xl text-custom_darkblue">NỘI DUNG BÁO CÁO</h2>
             <div className='grid grid-cols-2 gap-5 gap-x-16 mb-5'>

@@ -11,7 +11,7 @@ const SuatDayDaGiao = () => {
   const { sessionToken, id } = useAppContext();
   const [tutor_id, setTutor_id] = useState(null);
   const [posts, setPost] = useState([]);
-  const [postIdt, setPostId] = useState(null); 
+  const [postId, setPostId] = useState([]);
 
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
@@ -25,7 +25,15 @@ const SuatDayDaGiao = () => {
   const handlePageChange = (page) => {
     setCurrentPage(page);
   };
-
+  //   const [dataPop, setDataPop] = useState({
+  //     position: "bottom-right",
+  //     autoClose: 5000,
+  //     hideProgressBar: true,
+  //     closeOnClick: true,
+  //     pauseOnHover: true,
+  //     draggable: true,
+  //     progress: undefined,
+  // });
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -42,6 +50,8 @@ const SuatDayDaGiao = () => {
 
         const data = await response.json();
         if (response.ok) {
+          console.log("Lấy thành công");
+
           const filteredPosts = data.filter(
             (post) => post.status === "Đã đóng"
           );
@@ -57,8 +67,8 @@ const SuatDayDaGiao = () => {
       }
     };
     fetchData();
-  }, [sessionToken, id]); 
-
+  }, []);
+  console.log("id tutor", tutor_id);
   return (
     <Parent>
       <Page role="parent" activeItem={5}>
@@ -73,10 +83,10 @@ const SuatDayDaGiao = () => {
             >
               <ItemPost user={parent} tag="Đã phê duyệt">
                 <button
-                  onClick={() => { 
-                    setShowRatingPopup(true); 
-                    setTutor_id(parent.class_times[0].tutor_id); 
-                    setPostId(parent.post_id); // Gán post_id vào state
+                  onClick={() => {
+                    setShowRatingPopup(true);
+                    setTutor_id(parent.class_times[0].tutor_id)
+                    setPostId(parent.class_times[0].class_id)
                   }}
                   className="bg-yellow-500 w-[14vw] p-2 rounded-2xl font-semibold mx-8"
                 >
@@ -98,18 +108,7 @@ const SuatDayDaGiao = () => {
         ) : (
           <div className="text-center font-bold">Không có bài đăng nào</div>
         )}
-        {showRatingPopup && (
-          <TutorProfileToReview 
-            tutor_id={tutor_id} 
-            idPost={postIdt} // Truyền postId vào popup
-            idParent={id} 
-            onClose={() => { 
-              setShowRatingPopup(false); 
-              setTutor_id(null); 
-              setPostId(null); // Đặt lại postId về null khi popup đóng
-            }} 
-          />
-        )}
+        {showRatingPopup && <TutorProfileToReview tutor_id={tutor_id} idPost={postId} idParent={id} onClose={() => { setShowRatingPopup(false); setTutor_id(null); setPostId(null) }} />}
       </Page>
     </Parent>
   );

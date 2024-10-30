@@ -2,13 +2,14 @@ import { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import axios from "axios";
 import { useAppContext } from "../../AppProvider";
+import { toast } from "react-toastify";
 
-
+import "react-toastify/dist/ReactToastify.css";
 const TutorProfileToReview = ({ tutor_id,idPost,idParent, onClose, }) => {
     const [rating, setRating] = useState(0);
     const [hover, setHover] = useState(0);
-  const { sessionToken } = useAppContext();
-console.log("id post",idPost);
+    const { sessionToken } = useAppContext();
+    console.log("id post",idPost);
     const [feedback, setFeedback] = useState("");
     const [tutorProfile, setTutorProfile] = useState({
         tutor_id: "",
@@ -60,7 +61,16 @@ console.log("id post",idPost);
                     },
                 }
             );
-           
+            console.log("OK");
+            toast.success("Đánh giá thành công", {
+                position: "bottom-right",
+                autoClose: 5000,
+                hideProgressBar: true,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+            });
             onClose(); 
         } catch (error) {
 
@@ -71,7 +81,7 @@ console.log(tutorProfile);
 console.log("dữ liêu truyền",idPost,idParent,tutorProfile.tutor_id,rating,feedback);
             console.log("id post : ",idPost);
             console.log("id parent : ",idParent);
-            console.log("id tutor : ",tutorProfile.tutor_id);
+            console.log("id parent : ",tutorProfile.tutor_id);
 
             console.log("rate : ",rating);
             console.log("description : ",feedback);
