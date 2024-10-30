@@ -55,15 +55,15 @@ const StarRating = ({ rating }) => {
 //   return formattedComment;
 // };
 
-const Review = () => {
+const Review = ({ height }) => {
     return (
-        <div className="grid grid-cols-2 gap-5 max-h-[600px] overflow-y-scroll scrollbar scrollbar-thumb-white/30 p-4">
+        <div className={`grid grid-cols-2 gap-5 ${height} overflow-y-scroll scrollbar scrollbar-thumb-white/30 px-4`}>
             {[0, 1].map((col) => (
                 <div key={col} className="flex flex-col space-y-5">
                     {dummyReviews
                         .filter((_, index) => index % 2 === col)
                         .map((review, index) => (
-                            <div key={index} className="flex flex-col bg-white border-b border-gray-200 rounded-lg px-6 py-4">
+                            <div key={index} className="flex flex-col bg-white border-b border-gray-200 rounded-lg px-6 py-4 shadow-xl">
                                 <div className="flex items-center justify-between w-full">
                                     <div className="flex items-center">
                                         <img src={review.avatar} alt={review.username} className="w-12 h-12 rounded-full" />
@@ -83,6 +83,10 @@ const Review = () => {
 
 StarRating.propTypes = {
     rating: PropTypes.number.isRequired
+};
+
+Review.propTypes = {
+    height: PropTypes.string.isRequired
 };
 
 export default Review

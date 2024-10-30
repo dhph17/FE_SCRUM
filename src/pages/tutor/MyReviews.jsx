@@ -6,7 +6,7 @@ const MyReviews = () => {
   return (
     <Tutor>
       <Page role="tutor" activeItem={5}>
-        <Review />
+        <Review height='max-h-[600px]' />
       </Page>
     </Tutor>
   );
