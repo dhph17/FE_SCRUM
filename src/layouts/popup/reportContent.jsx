@@ -33,11 +33,11 @@ const ReportContent = ({ reportedPartyId, postId, onClose, type }) => {
                     "Content-Type": "application/json",
                 },
                 body: JSON.stringify({
-                    post_id: postId,
                     reporter_id: id,
                     reported_party_id: reportedPartyId,
                     description: finalReportContents.join(', '),
-                    type: type
+                    type: type,
+                    ...(type === "Đánh giá" ? { feedback_id: postId } : { post_id: postId })
                 }),
             });
             if (response.ok) {
