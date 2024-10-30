@@ -1,7 +1,4 @@
 import PropTypes from "prop-types";
-import { useEffect, useState } from "react";
-import { useAppContext } from "../../AppProvider";
-import { useNavigate } from "react-router-dom";
 
 import Page from "../../layouts/panel/Panel";
 import Tutor from "../../layouts/PageAuthorization/tutor/tutor";
@@ -27,53 +24,62 @@ const StarRating = ({ rating }) => {
   const fullStars = Math.floor(rating);
   const halfStar = rating % 1 !== 0;
   const emptyStars = 5 - fullStars - (halfStar ? 1 : 0);
-  
+
   return (
     <div className="flex items-center">
       {Array(fullStars).fill().map((_, i) => (
-        <i key={`full-${i}`} className="fas fa-star text-yellow-500"></i>
+        <i key={`full-${i}`} className="fas fa-star text-[#FFAC34]"></i>
       ))}
-      {halfStar && <i className="fas fa-star-half-alt text-yellow-500"></i>}
+      {halfStar && <i className="fas fa-star-half-stroke text-[#FFAC34]"></i>}
       {Array(emptyStars).fill().map((_, i) => (
-        <i key={`empty-${i}`} className="far fa-star text-yellow-500"></i>
+        <i key={`empty-${i}`} className="fas fa-star text-gray-300"></i>
       ))}
     </div>
   );
 };
 
-const formatComment = (comment) => {
-  const words = comment.split(" ");
-  let formattedComment = "";
-  let currentLine = "";
+// const formatComment = (comment) => {
+//   const words = comment.split(" ");
+//   let formattedComment = "";
+//   let currentLine = "";
 
-  words.forEach((word) => {
-    if ((currentLine + word).length > 50 || currentLine.split(" ").length >= 10) {
-      formattedComment += currentLine.trim() + "\n";
-      currentLine = "";
-    }
-    currentLine += word + " ";
-  });
+//   words.forEach((word) => {
+//     if ((currentLine + word).length > 50 || currentLine.split(" ").length >= 10) {
+//       formattedComment += currentLine.trim() + "\n";
+//       currentLine = "";
+//     }
+//     currentLine += word + " ";
+//   });
 
-  if (currentLine) {
-    formattedComment += currentLine.trim();
-  }
+//   if (currentLine) {
+//     formattedComment += currentLine.trim();
+//   }
 
-  return formattedComment;
-};
+//   return formattedComment;
+// };
 
 const MyReviews = () => {
   return (
     <Tutor>
       <Page role="tutor" activeItem={5}>
-        <div className="max-h-[600px] overflow-y-scroll p-4 bg-gray-50 rounded-lg shadow-lg">
-          {dummyReviews.map((review, index) => (
-            <div key={index} className="flex items-start space-x-6 border-b border-gray-200 pb-6 mb-6">
-              <img src={review.avatar} alt={review.username} className="w-12 h-12 rounded-full" />
-              <div>
-                <strong className="text-lg font-semibold">{review.username}</strong>
-                <StarRating rating={review.rating} />
-                <p className="text-lg text-gray-600 mt-1 whitespace-pre-line">{formatComment(review.comment)}</p>
-              </div>
+        <div className="grid grid-cols-2 gap-5 max-h-[600px] overflow-y-scroll p-4">
+          {[0, 1].map((col) => (
+            <div key={col} className="flex flex-col space-y-5">
+              {dummyReviews
+                .filter((_, index) => index % 2 === col)
+                .map((review, index) => (
+                  <div key={index} className="flex flex-col bg-white border-b border-gray-200 rounded-lg px-6 py-4">
+                    <div className="flex items-center justify-between w-full">
+                      <div className="flex items-center">
+                        <img src={review.avatar} alt={review.username} className="w-12 h-12 rounded-full" />
+                        <strong className="text-lg font-semibold ml-1">{review.username}</strong>
+                      </div>
+                      <StarRating rating={review.rating} />
+                    </div>
+                    <p className="mt-2 text-gray-600 font-semibold">{review.comment}</p>
+                    <p className="mt-3 text-[0.75rem] text-custom_gray">2/10/2024</p>
+                  </div>
+                ))}
             </div>
           ))}
         </div>

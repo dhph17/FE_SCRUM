@@ -50,6 +50,7 @@ const ReportContent = ({ reportedPartyId, postId, onClose }) => {
                     draggable: true,
                     progress: undefined,
                 });
+                onClose()
             } else {
                 toast.error('Báo cáo thất bại', {
                     position: "bottom-right",

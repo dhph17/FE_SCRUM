@@ -215,14 +215,17 @@ const DetailPost = () => {
                                             alt=""
                                             className="w-[50px] h-[50px] rounded-full object-cover"
                                         />
-                                        <p className="font-semibold text-[1.1rem]">{tutor.tutor_name}</p>
+                                        <p
+                                            className="font-semibold text-[1.1rem] hover:underline"
+                                            onClick={() => handleTutorProfileClick(tutor.tutor_id)}
+                                        >{tutor.tutor_name}</p>
                                     </div>
                                     <div className="flex gap-6">
                                         <button
                                             className="font-semibold text-[0.9rem] h-[2rem] w-[8rem] bg-custom_yellow rounded-md"
                                             onClick={() => handleTutorProfileClick(tutor.tutor_id)}
                                         >
-                                            Xem thông tin
+                                            Xem đánh giá
                                         </button>
                                         <button
                                             className="font-semibold text-[0.9rem] h-[2rem] w-[8rem] bg-custom_darkblue text-white rounded-md"
