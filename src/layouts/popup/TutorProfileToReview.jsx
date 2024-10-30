@@ -1,16 +1,15 @@
 import { useState, useEffect } from "react";
 import PropTypes from "prop-types";
+import axios from "axios";
+import { useAppContext } from "../../AppProvider";
 
-const TutorProfileToReview = ({ tutor_id, onClose }) => {
+
+const TutorProfileToReview = ({ tutor_id,idPost,idParent, onClose, }) => {
     const [rating, setRating] = useState(0);
     const [hover, setHover] = useState(0);
+  const { sessionToken } = useAppContext();
+console.log("id post",idPost);
     const [feedback, setFeedback] = useState("");
-    const handleBackgroundClick = (event) => {
-        if (event.target === event.currentTarget) {
-            onClose();
-        }
-    };
-
     const [tutorProfile, setTutorProfile] = useState({
         tutor_id: "",
         user: {
@@ -31,11 +30,10 @@ const TutorProfileToReview = ({ tutor_id, onClose }) => {
     useEffect(() => {
         const fetchTutorProfile = async () => {
             try {
-                const response = await fetch(
+                const response = await axios.get(
                     `${import.meta.env.VITE_API_ENDPOINT}/api/tutors/${tutor_id}`
                 );
-                const data = await response.json();
-                setTutorProfile(data);
+                setTutorProfile(response.data);
             } catch (error) {
                 console.error(error);
             }
@@ -44,16 +42,53 @@ const TutorProfileToReview = ({ tutor_id, onClose }) => {
         fetchTutorProfile();
     }, [tutor_id]);
 
+    const handleSubmit = async () => {
+        try {
+            await axios.post(
+                "http://127.0.0.1:8000/api/class/feedback/",
+                {
+                    class_id: idPost, 
+                    parent_id: idParent,
+                    tutor_id: tutorProfile.tutor_id,
+                    rating: rating,
+                    description: feedback,
+                },
+                {
+                    headers: {
+                        Authorization: `Bearer ${sessionToken}`,
+                        "Content-Type": "application/json",
+                    },
+                }
+            );
+           
+            onClose(); 
+        } catch (error) {
+            console.log("dữ liêu truyền",idPost,idParent,tutor_id,rating,feedback);
+            console.log("id post : ",idPost);
+            console.log("id parent : ",idParent);
+            console.log("rate : ",rating);
+            console.log("description : ",feedback);
+
+            console.error("Đã xảy ra lỗi khi gửi đánh giá:", error);
+        }
+    };
+console.log(tutorProfile);
     return (
         <div
             className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 shadow-md"
-            onClick={handleBackgroundClick}
+            onClick={(event) => {
+                if (event.target === event.currentTarget) {
+                    onClose();
+                }
+            }}
         >
             <div className="bg-gradient-to-r from-slate-100 to-slate-50 rounded-lg p-8 w-[50%] shadow-lg border-[5px] border-[#002182] border-double">
                 <h2 className="text-3xl font-bold mb-6 text-center text-[#002182]">
                     Đánh giá gia sư
                 </h2>
                 <div className="flex flex-col items-center">
+                    {/* Nội dung popup */}
+                    <div className="flex flex-col items-center">
                     <div className="flex gap-6">
                         {/* Avar */}
                         <div className="md:mb-0 md:w-1/2 flex flex-col justify-between">
@@ -150,7 +185,6 @@ const TutorProfileToReview = ({ tutor_id, onClose }) => {
                             })}
                         </div>
 
-                        {/* Textarea để nhập đánh giá */}
                         <textarea
                             placeholder="Nhập đánh giá của bạn..."
                             value={feedback}
@@ -158,7 +192,6 @@ const TutorProfileToReview = ({ tutor_id, onClose }) => {
                             className="w-full p-2 border border-gray-300 rounded mb-4"
                         />
 
-                        {/* Nút xác nhận và đóng */}
                         <div className="flex justify-end space-x-2">
                             <button
                                 onClick={onClose}
@@ -167,9 +200,7 @@ const TutorProfileToReview = ({ tutor_id, onClose }) => {
                                 Hủy
                             </button>
                             <button
-                                onClick={() => {
-                                    onClose();
-                                }}
+                                onClick={handleSubmit}
                                 className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
                             >
                                 Gửi
@@ -177,14 +208,16 @@ const TutorProfileToReview = ({ tutor_id, onClose }) => {
                         </div>
                     </div>
                 </div>
-
             </div>
+        </div>
         </div>
     );
 };
 
 TutorProfileToReview.propTypes = {
     tutor_id: PropTypes.string.isRequired,
+    idParent: PropTypes.string.isRequired,
+    idPost: PropTypes.string.isRequired,
     onClose: PropTypes.func.isRequired,
 };
 

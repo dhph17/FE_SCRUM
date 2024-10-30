@@ -12,6 +12,8 @@ const SuatDayDaGiao = () => {
   const { sessionToken, id } = useAppContext();
   const [tutor_id, setTutor_id] = useState(null);
   const [posts, setPost] = useState([]);
+  const [postIdt, setPostId] = useState([]);
+
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
   const totalPages = Math.ceil(posts.length / itemsPerPage);
@@ -24,7 +26,15 @@ const SuatDayDaGiao = () => {
   const handlePageChange = (page) => {
     setCurrentPage(page);
   };
-
+//   const [dataPop, setDataPop] = useState({
+//     position: "bottom-right",
+//     autoClose: 5000,
+//     hideProgressBar: true,
+//     closeOnClick: true,
+//     pauseOnHover: true,
+//     draggable: true,
+//     progress: undefined,
+// });
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -40,9 +50,15 @@ const SuatDayDaGiao = () => {
         );
 
         const data = await response.json();
+        posts.forEach((post) => {
+          console.log("Post ID1:", post.post_id);
+          setPostId(post.post_id);
+          console.log("Post ID2:", postIdt);
 
+        });
         if (response.ok) {
           console.log("Lấy thành công");
+         
           const filteredPosts = data.filter(
             (post) => post.status === "Đã đóng"
           );
@@ -59,7 +75,7 @@ const SuatDayDaGiao = () => {
     };
     fetchData();
   }, []);
-
+console.log("id tutor",tutor_id);
   return (
     <Parent>
       <Page role="parent" activeItem={5}>
@@ -95,7 +111,7 @@ const SuatDayDaGiao = () => {
         ) : (
           <div className="text-center font-bold">Không có bài đăng nào</div>
         )}
-        {showRatingPopup && <TutorProfileToReview tutor_id={tutor_id} onClose={() => { setShowRatingPopup(false); setTutor_id(null) }} />}
+        {showRatingPopup && <TutorProfileToReview tutor_id={tutor_id} idPost={postIdt} idParent={id} onClose={() => { setShowRatingPopup(false); setTutor_id(null) }} />}
       </Page>
     </Parent>
   );
