@@ -40,6 +40,7 @@ const Review = ({ height }) => {
                 }));
 
                 setReviews(formattedReviews);
+            } catch (error) {
                 console.error("Failed to fetch reviews:", error);
             }
         };
