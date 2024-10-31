@@ -106,14 +106,14 @@ const ItemReport = ({ report }) => {
             <p className="text-gray-900">{report.type || "N/A"}</p>
           </div>
           <div>
-            <p className="font-semibold">Mã bài viết:</p>
+            <p className="font-semibold">Mã bài đăng:</p>
             <p className="text-gray-900">{report.post_id || "N/A"}</p>
           </div>
           <div>
             <p className="font-semibold">Mã phản hồi:</p>
-            <p className="text-gray-900">{report.feedback_id || "N/A"}</p>
+            <p className="text-gray-900">{report.feedback_id || "Không có"}</p>
           </div>
-          <div>
+          <div className="flex flex-row gap-4 items-center">
             <p className="font-semibold">Trạng thái:</p>
             <span
               className={`px-3 py-1 rounded-full text-sm font-medium ${report.resolved
