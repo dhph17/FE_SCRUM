@@ -42,7 +42,9 @@ const DuyetBaiDang = () => {
 
       if (response.ok) {
         console.log("Cập nhật trạng thái thành công!");
-        setPostList((prevPosts) => prevPosts.filter(post => post.post_id !== selectedPost.post_id));
+        setPostList((prevPosts) =>
+          prevPosts.filter((post) => post.post_id !== selectedPost.post_id)
+        );
         toast.success("Đăng bài thành công", {
           position: "bottom-right",
           autoClose: 5000,
@@ -65,7 +67,9 @@ const DuyetBaiDang = () => {
     const fetchPosts = async () => {
       try {
         const response = await fetch(
-          `${import.meta.env.VITE_API_ENDPOINT}/api/admin/posts/?status=pending`,
+          `${
+            import.meta.env.VITE_API_ENDPOINT
+          }/api/admin/posts/?status=pending`,
           {
             method: "GET",
             headers: {
@@ -102,6 +106,33 @@ const DuyetBaiDang = () => {
     setCurrentPage(page);
   };
 
+  //Delete
+  const handleDeleteClick = (post_id) => async () => {
+    if (window.confirm("Bạn có chắc chắn muốn xóa bài đăng này không?")) {
+      try {
+        const response = await fetch(
+          `${import.meta.env.VITE_API_ENDPOINT}/api/admin/posts/${post_id}/`,
+          {
+            method: "DELETE",
+            headers: {
+              Authorization: `Bearer ${sessionToken}`,
+              "Content-Type": "application/json",
+            },
+          }
+        );
+        if (response.ok) {
+          setPostList((prevPosts) =>
+            prevPosts.filter((post) => post.post_id !== post_id)
+          );
+        } else {
+          console.error("Failed to delete post");
+        }
+      } catch (error) {
+        console.error("Error deleting post:", error);
+      }
+    }
+  };
+
   return (
     <Admin>
       <Page activeItem={5}>
@@ -118,7 +149,10 @@ const DuyetBaiDang = () => {
                 >
                   Duyệt bài đăng
                 </button>
-                <button className="bg-yellow-500 w-[14vw] p-2 rounded-2xl font-semibold mx-8">
+                <button
+                  className="bg-yellow-500 w-[14vw] p-2 rounded-2xl font-semibold mx-8"
+                  onClick={handleDeleteClick(post.post_id)}
+                >
                   Xóa bài đăng
                 </button>
               </ItemPost>
@@ -126,13 +160,17 @@ const DuyetBaiDang = () => {
           ))}
         </div>
 
-        <div className="mt-8">
-          <Pagination
-            currentPage={currentPage}
-            totalPages={totalPages}
-            onPageChange={handlePageChange}
-          />
-        </div>
+        {postList.length > 0 ? (
+          <div className="mt-8">
+            <Pagination
+              currentPage={currentPage}
+              totalPages={totalPages}
+              onPageChange={handlePageChange}
+            />
+          </div>
+        ) : (
+          <div className="text-center font-bold">Không có bài đăng nào</div>
+        )}
 
         {selectedPost && (
           <VerifyPost
