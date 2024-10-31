@@ -10,7 +10,7 @@ import ReportContent from "../popup/reportContent";
 
 const ItemPostVu = ({ user, children, tag }) => {
     const [tagIcon, setTagIcon] = useState(null);
-    const [selectedTime, setSelectedTime] = useState(null);
+    const [selectedTime, setSelectedTime] = useState();
     const [showReport, setShowReport] = useState(false);
     const [showReportContent, setShowReportContent] = useState(false);
 
@@ -25,7 +25,9 @@ const ItemPostVu = ({ user, children, tag }) => {
         setShowReport(false);
         setShowReportContent(true);
     };
-
+    const handleBuoiHocClick = (post) => {
+        setSelectedTime(post);
+    };
     const handleCloseReportContent = () => {
         setShowReportContent(false);
     };
@@ -140,7 +142,7 @@ const ItemPostVu = ({ user, children, tag }) => {
                         <strong className="text-shadow-md italic">Buổi học:</strong>
                         <button
                             className="bg-[#F1BB45] text-black font-semibold font-poppins py-1 px-3.5 ml-4 rounded-lg shadow hover:bg-yellow-400 transition duration-300"
-                            onClick={() => setSelectedTime(user)}
+                            onClick={() => handleBuoiHocClick(user)}
                         >
                             Chi tiết
                         </button>
@@ -150,7 +152,7 @@ const ItemPostVu = ({ user, children, tag }) => {
                         <p>{user.student_number}</p>
                     </li>
                 </ul>
-                <div className="px-4 pr-8 flex mt-3">
+                <div className="px-4 pr-8 flex mt-4">
                     <strong className="text-shadow-md italic text-nowrap mr-3">Ghi chú:</strong>
                     <p>{user.description}</p>
                 </div>
