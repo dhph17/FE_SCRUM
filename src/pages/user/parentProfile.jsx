@@ -34,7 +34,7 @@ const ParentProfile = () => {
 
             try {
                 const response = await axios.get(
-                    `http://127.0.0.1:8000/api/parents/${parentId}/`,
+                    `${import.meta.env.VITE_API_ENDPOINT}/api/parents/${parentId}/`,
                     {
                         headers: {
                             Authorization: `Bearer ${token}`,
@@ -57,7 +57,7 @@ const ParentProfile = () => {
                 });
 
                 if (data.avatar) {
-                    setProfileImage(`http://127.0.0.1:8000${data.avatar}`);
+                    setProfileImage(`${import.meta.env.VITE_API_ENDPOINT}${data.avatar}`);
                 }
             } catch (error) {
                 console.error("Error fetching parent data:", error);
@@ -126,7 +126,7 @@ const ParentProfile = () => {
 
         try {
             const response = await axios.post(
-                `http://127.0.0.1:8000/api/profile/avatar/`,
+                `${import.meta.env.VITE_API_ENDPOINT}/api/profile/avatar/`,
                 formData,
                 {
                     headers: {
@@ -165,7 +165,7 @@ const ParentProfile = () => {
             }
 
             const response = await axios.put(
-                `http://127.0.0.1:8000/api/parents/${parentId}/`,
+                `${import.meta.env.VITE_API_ENDPOINT}/api/parents/${parentId}/`,
                 formDataToSend,
                 {
                     headers: {
@@ -284,7 +284,7 @@ const ParentProfile = () => {
                                 <button
                                     type="button"
                                     onClick={handleSave}
-                                    className="bg-blue-600 text-white px-6 py-2 rounded"
+                                    className="bg-blue-600 text-white px-6 py-2 rounded w-[8rem]"
                                     disabled={loading}
                                 >
                                     {loading ? "Đang lưu..." : "Lưu"}
@@ -292,7 +292,7 @@ const ParentProfile = () => {
                                 <button
                                     type="button"
                                     onClick={handleDelete}
-                                    className="bg-red-600 text-white px-6 py-2 rounded"
+                                    className="bg-red-600 text-white px-6 py-2 rounded w-[8rem]"
                                 >
                                     Xóa hồ sơ
                                 </button>

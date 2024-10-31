@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import Image from "../../assets/image/User.png";
 import ReportContent from "../popup/reportContent";
-import { useAppContext } from "../../AppProvider";
 
 const StarRating = ({ rating }) => {
     const fullStars = Math.floor(rating);
@@ -23,7 +22,6 @@ const StarRating = ({ rating }) => {
 };
 
 const Review = ({ height, tutor_id }) => {
-    const { id } = useAppContext();
     const [reviews, setReviews] = useState([]);
     const [showReportIndex, setShowReportIndex] = useState(null);
     const [showReportContentIndex, setShowReportContentIndex] = useState(null);
@@ -55,7 +53,8 @@ const Review = ({ height, tutor_id }) => {
                     avatar: review.parent_avt ? `http://127.0.0.1:8000${review.parent_avt}` : Image,
                     tutor_id: review.tutor_id,
                     class_id: review.class_id,
-                    created_at: review.created_at
+                    created_at: review.created_at,
+                    parent_id: review.parent_id
                 }));
 
                 setReviews(formattedReviews);
@@ -120,7 +119,7 @@ const Review = ({ height, tutor_id }) => {
                                                 <ReportContent
                                                     onClose={() => setShowReportContentIndex(null)}
                                                     type='Đánh giá'
-                                                    reportedPartyId={id}
+                                                    reportedPartyId={review.parent_id}
                                                     postId={review.id}
                                                 />
                                             </div>

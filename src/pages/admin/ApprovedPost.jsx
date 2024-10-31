@@ -20,7 +20,7 @@ const ApprovedPost = () => {
       try {
         const response = await fetch(
           `${import.meta.env.VITE_API_ENDPOINT
-          }/api/admin/posts/?status=approved&status=closed`,
+          }/api/admin/posts/?status=approved`,
           {
             method: "GET",
             headers: {

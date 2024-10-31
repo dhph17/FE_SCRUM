@@ -115,7 +115,7 @@ const Header = ({ setSearch }) => {
                   key={path}
                   to={`${rolePath}/${path}`}
                   className={`font-semibold mx-6 cursor-pointer ${activeLink === path ? 'underline' : ''}`}
-                  onClick={() => setActiveLink(path)}
+                // onClick={() => setActiveLink(path)}
                 >
                   {path === 'main-page' ? 'Trang chủ' : 'Hồ sơ cá nhân'}
                 </Link>
@@ -131,7 +131,7 @@ const Header = ({ setSearch }) => {
               placeholder="Tìm kiếm"
               className="w-full text-white bg-transparent border-none outline-none placeholder:text-white"
               id="search_input"
-              name="search" 
+              name="search"
               onChange={handleInputChange}
               autoComplete="off"
             />
