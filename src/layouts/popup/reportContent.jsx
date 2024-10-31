@@ -37,7 +37,8 @@ const ReportContent = ({ reportedPartyId, postId, onClose, type }) => {
                     reported_party_id: reportedPartyId,
                     description: finalReportContents.join(', '),
                     type: type,
-                    ...(type === "Đánh giá" ? { feedback_id: postId } : { post_id: postId })
+                    ...(type === "Đánh giá" ? { feedback_id: postId } : { post_id: postId }),
+                    created_at: Date.now()
                 }),
             });
             if (response.ok) {

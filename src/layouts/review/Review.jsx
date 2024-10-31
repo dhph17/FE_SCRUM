@@ -28,6 +28,19 @@ const Review = ({ height, tutor_id }) => {
     const [showReportIndex, setShowReportIndex] = useState(null);
     const [showReportContentIndex, setShowReportContentIndex] = useState(null);
 
+    const formatDate = (isoDate) => {
+        if (!isoDate) return "N/A";
+        const date = new Date(isoDate);
+        return date.toLocaleString("vi-VN", {
+            day: "2-digit",
+            month: "2-digit",
+            year: "numeric",
+            hour: "2-digit",
+            minute: "2-digit",
+            hour12: false,
+        });
+    };
+
     useEffect(() => {
         const fetchReviews = async () => {
             try {
@@ -41,7 +54,8 @@ const Review = ({ height, tutor_id }) => {
                     username: review.parent_name,
                     avatar: review.parent_avt ? `http://127.0.0.1:8000${review.parent_avt}` : Image,
                     tutor_id: review.tutor_id,
-                    class_id: review.class_id
+                    class_id: review.class_id,
+                    created_at: review.created_at
                 }));
 
                 setReviews(formattedReviews);
@@ -80,41 +94,38 @@ const Review = ({ height, tutor_id }) => {
                                 </div>
                                 <p className="mt-2 text-[1.05rem] text-gray-600 font-semibold">{review.comment}</p>
                                 <div className="flex w-full justify-between relative">
-                                    <p className="mt-3 text-[0.75rem] text-custom_gray">2/10/2024</p>
-                                    {id !== review.tutor_id && (
-                                        <div>
-                                            <i
-                                                className={`fa-solid fa-ellipsis text-2xl cursor-pointer hover:text-black transition-all ${showReportIndex === review.id ? 'text-black' : 'text-slate-100'}`}
-                                                onClick={() => toggleReportMenu(review.id)}
-                                            ></i>
+                                    <p className="mt-3 text-[0.75rem] text-custom_gray">{formatDate(review.created_at)} </p>
+                                    <div>
+                                        <i
+                                            className={`fa-solid fa-ellipsis text-2xl cursor-pointer hover:text-black transition-all ${showReportIndex === review.id ? 'text-black' : 'text-slate-100'}`}
+                                            onClick={() => toggleReportMenu(review.id)}
+                                        ></i>
 
-                                            {showReportIndex === review.id && (
-                                                <div className="bg-slate-100 absolute -right-6 top-8 p-1 rounded-md cursor-pointer shadow-md">
-                                                    <div
-                                                        className="flex gap-1 items-center p-1 hover:bg-slate-200 rounded-md text-[0.9rem]"
-                                                        onClick={() => openReportContent(review.id)}
-                                                    >
-                                                        <i className="fa-solid fa-flag"></i>
-                                                        <span>Report</span>
-                                                    </div>
+                                        {showReportIndex === review.id && (
+                                            <div className="bg-slate-100 absolute -right-6 top-8 p-1 rounded-md cursor-pointer shadow-md">
+                                                <div
+                                                    className="flex gap-1 items-center p-1 hover:bg-slate-200 rounded-md text-[0.9rem]"
+                                                    onClick={() => openReportContent(review.id)}
+                                                >
+                                                    <i className="fa-solid fa-flag"></i>
+                                                    <span>Report</span>
                                                 </div>
-                                            )}
-                                            {showReportContentIndex === review.id && (
-                                                <div className="fixed inset-0 bg-black bg-opacity-30 z-40"></div>
-                                            )}
-                                            {showReportContentIndex === review.id && (
-                                                <div className="fixed inset-0 flex items-center justify-center z-40">
-                                                    <ReportContent
-                                                        onClose={() => setShowReportContentIndex(null)}
-                                                        type='Đánh giá'
-                                                        reportedPartyId={id}
-                                                        postId={review.id}
-                                                    />
-                                                </div>
-                                            )}
-                                        </div>
-
-                                    )}
+                                            </div>
+                                        )}
+                                        {showReportContentIndex === review.id && (
+                                            <div className="fixed inset-0 bg-black bg-opacity-30 z-40"></div>
+                                        )}
+                                        {showReportContentIndex === review.id && (
+                                            <div className="fixed inset-0 flex items-center justify-center z-40">
+                                                <ReportContent
+                                                    onClose={() => setShowReportContentIndex(null)}
+                                                    type='Đánh giá'
+                                                    reportedPartyId={id}
+                                                    postId={review.id}
+                                                />
+                                            </div>
+                                        )}
+                                    </div>
                                 </div>
                             </div>
                         ))}
