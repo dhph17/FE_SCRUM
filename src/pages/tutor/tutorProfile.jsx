@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import axios from "axios";
 import Panel from "../../layouts/panel/Panel";
 import Tutor from "../../layouts/PageAuthorization/tutor/tutor";
@@ -17,8 +17,9 @@ const TutorProfile = () => {
         gender: '',
         educational_background: ''
     });
-
+    const fileInputRef = useRef(null);
     const [profileImage, setProfileImage] = useState(null);
+    const [fileName, setFileName] = useState("Choose a file");
     const [loading, setLoading] = useState(false);
 
     const rawTutorId = localStorage.getItem("id") || "";
@@ -32,7 +33,7 @@ const TutorProfile = () => {
                 console.error("No tutor ID found in local storage.");
                 return;
             }
-    
+
             try {
                 const response = await axios.get(
                     `http://127.0.0.1:8000/api/tutors/${tutorId}/`,
@@ -57,7 +58,7 @@ const TutorProfile = () => {
                     gender: data.gender !== "Not recorded" ? data.gender : '',
                     educational_background: data.educational_background !== "Not recorded" ? data.educational_background : '',
                 });
-    
+
                 if (data.avatar) {
                     setProfileImage(`http://127.0.0.1:8000${data.avatar}`);
                 }
@@ -65,20 +66,20 @@ const TutorProfile = () => {
                 console.error("Error fetching tutor data:", error);
             }
         };
-        
+
         fetchTutorData();
     }, [tutorId, token]);
-    
+
     const handleChange = (e) => {
         const { name, value } = e.target;
-    
+
         if (name === "phone_number") {
-            const phoneNumberPattern = /^[0-9]{0,11}$/; 
+            const phoneNumberPattern = /^[0-9]{0,11}$/;
             if (!phoneNumberPattern.test(value)) {
                 return;
             }
         }
-    
+
         setFormData({
             ...formData,
             [name]: value
@@ -91,15 +92,20 @@ const TutorProfile = () => {
             const fileType = file.type;
             if (fileType !== "image/png" && fileType !== "image/jpeg") {
                 alert("Please upload a .png or .jpg image.");
+                fileInputRef.current.value = ""; // Reset file input
+                setFileName("Choose a file"); // Reset file name display
                 return;
             }
-    
+
             const fileSizeLimit = 25 * 1024 * 1024;
             if (file.size > fileSizeLimit) {
                 alert("File size should not exceed 25 MB.");
+                fileInputRef.current.value = "";
+                setFileName("Choose a file");
                 return;
             }
-    
+
+            setFileName(file.name);
             const reader = new FileReader();
             reader.onloadend = () => {
                 setProfileImage(reader.result);
@@ -107,6 +113,14 @@ const TutorProfile = () => {
             reader.readAsDataURL(file);
             updateAvatar(file);
         }
+    };
+
+    const formatFileName = (name) => {
+        const maxLength = 15;
+        const extension = name.slice(name.lastIndexOf("."));
+        return name.length > maxLength
+            ? `${name.slice(0, maxLength)}...${extension}`
+            : name;
     };
 
     const updateAvatar = async (file) => {
@@ -135,9 +149,9 @@ const TutorProfile = () => {
 
     const handleSave = async () => {
         if (formData.phone_number.length < 10 || formData.phone_number.length > 11) {
-        alert("Phone number must be 10 or 11 digits long.");
-        return;
-    }
+            alert("Phone number must be 10 or 11 digits long.");
+            return;
+        }
 
         setLoading(true);
         try {
@@ -181,24 +195,34 @@ const TutorProfile = () => {
             <Panel role="tutor" activeItem={2}>
                 <div className="relative h-full max-h-[600px] p-4">
                     <div className="w-full max-w-4xl mx-auto bg-gray-100 p-6 rounded-lg shadow-md flex gap-6">
-                    <div className="flex flex-col items-center w-1/3">
-                        <div className="w-32 h-32 rounded-full bg-gray-300 flex items-center justify-center overflow-hidden">
+                        <div className="flex flex-col items-center w-1/3 mt-16">
+                            <div className="w-32 h-32 rounded-full bg-gray-300 flex items-center justify-center overflow-hidden">
                                 {profileImage ? (
                                     <img
                                         src={profileImage}
                                         alt="Profile"
-                                        className="object-cover w-full h-full"
+                                        className="w-full h-full"
                                     />
                                 ) : (
                                     <span className="text-gray-500">No Image</span>
                                 )}
                             </div>
+
                             <input
                                 type="file"
                                 accept="image/*"
+                                ref={fileInputRef}
                                 onChange={handleImageUpload}
-                                className="mt-4"
+                                className="hidden"
                             />
+
+                            <label
+                                onClick={() => fileInputRef.current.click()}
+                                className="mt-4 bg-blue-500 text-white py-2 px-4 rounded cursor-pointer"
+                                title={fileName}
+                            >
+                                {formatFileName(fileName)}
+                            </label>
                         </div>
 
                         <div className="w-2/3">
