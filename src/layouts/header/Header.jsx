@@ -182,13 +182,7 @@ const Header = ({ setSearch }) => {
                 <Link to="/">GIỚI THIỆU</Link>
               </li>
               <li className="font-semibold mx-6 cursor-pointer">
-                <a href="">ĐĂNG KÍ PHỤ HUYNH</a>
-              </li>
-              <li className="font-semibold mx-6 cursor-pointer">
-                <a href="">ĐĂNG KÍ GIA SƯ</a>
-              </li>
-              <li className="font-semibold mx-6 cursor-pointer">
-                <a href="#footer">LIÊN HỆ</a>
+                <a href="#contact">LIÊN HỆ</a>
               </li>
             </ul>
           </div>

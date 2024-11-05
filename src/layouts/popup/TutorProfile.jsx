@@ -54,50 +54,40 @@ const TutorProfile = ({ tutor_id, onClose }) => {
           <div className="flex gap-6">
             {/* Avar */}
             <div className="md:mb-0 md:w-1/2 flex flex-col justify-between">
-              <img
-                src={
-                  `${import.meta.env.VITE_API_ENDPOINT}/${tutorProfile.avatar}`
-                }
-                alt="Tutor Avatar"
-                className="rounded-full w-[7rem] h-[7rem] object-cover shadow-lg border-[3px] border-[#002182] self-center"
-              />
+              <div className="flex flex-col items-center">
+                <img
+                  src={
+                    `${import.meta.env.VITE_API_ENDPOINT}/${tutorProfile.avatar}`
+                  }
+                  alt="Tutor Avatar"
+                  className="rounded-full w-[7rem] h-[7rem] object-cover shadow-lg border-[3px] border-[#002182] self-center"
+                />
+                <p className="text-lg font-medium flex flex-row mt-2">
+                  {tutorProfile.user.username}
+                </p>
+              </div>
               <div className="flex flex-col space-y-3">
+                <p className="text-lg font-medium flex">
+                  <strong>Họ và tên:</strong>
+                  <p className="text-[#002182] ml-5 font-normal">
+                    {tutorProfile.tutorname}
+                  </p>
+                </p>
                 <p className="text-lg font-medium flex flex-row">
                   <strong className="text-nowrap">Số điện thoại:</strong>{" "}
                   <div className="text-[#002182] ml-5 font-normal">
                     {tutorProfile.phone_number}
                   </div>
                 </p>
-                <p className="text-lg font-medium flex flex-row">
-                  <strong className="text-nowrap">Trình độ học vấn:</strong>{" "}
-                  <div className="text-[#002182] ml-5 font-normal text-nowrap">
-                    {tutorProfile.educational_background}
-                  </div>
-                </p>
-                <p className="text-lg font-medium flex flex-row">
-                  <strong>Liên kết:</strong>{" "}
-                  <a
-                    href={tutorProfile.bio_link}
-                    className="text-blue-500 hover:underline ml-5"
-                  >
-                    {tutorProfile.bio_link}
-                  </a>
-                </p>
               </div>
             </div>
 
             {/* Info 1 */}
             <div className="md:w-2/3 ml-8 space-y-3">
-              <p className="text-lg font-medium flex">
-                <strong>Họ và tên:</strong>
-                <p className="text-[#002182] ml-5 font-normal">
-                  {tutorProfile.tutorname}
-                </p>
-              </p>
               <p className="text-lg font-medium flex flex-row">
-                <strong>Username:</strong>{" "}
-                <div className="text-[#002182] ml-5 font-normal">
-                  {tutorProfile.user.username}
+                <strong className="text-nowrap">Trình độ học vấn:</strong>{" "}
+                <div className="text-[#002182] ml-5 font-normal text-nowrap">
+                  {tutorProfile.educational_background}
                 </div>
               </p>
               <p className="text-lg font-medium flex flex-row">
@@ -123,6 +113,15 @@ const TutorProfile = ({ tutor_id, onClose }) => {
                 <div className="text-[#002182] ml-5 font-normal">
                   {tutorProfile.user.email}
                 </div>
+              </p>
+              <p className="text-lg font-medium flex flex-row">
+                <strong>Liên kết:</strong>{" "}
+                <a
+                  href={tutorProfile.bio_link}
+                  className="text-blue-500 hover:underline ml-5"
+                >
+                  {tutorProfile.bio_link}
+                </a>
               </p>
             </div>
           </div>
