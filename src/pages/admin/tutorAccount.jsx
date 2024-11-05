@@ -114,7 +114,7 @@ const TutorAccount = () => {
                         className="bg-red-500 hover:bg-red-600 text-white font-bold py-1 px-2 rounded"
                         onClick={() => openDeleteModal(tutor.tutor_id)}
                       >
-                        Khóa tài khoản
+                        Xóa tài khoản
                       </button>
                     </td>
                   </tr>

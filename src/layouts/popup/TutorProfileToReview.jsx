@@ -46,7 +46,7 @@ const TutorProfileToReview = ({ tutor_id, idPost, idParent, onClose, }) => {
     const handleSubmit = async () => {
         try {
             await axios.post(
-                "http://127.0.0.1:8000/api/class/feedback/",
+                `${import.meta.env.VITE_API_ENDPOINT}/api/class/feedback/`,
                 {
                     class_id: idPost,
                     parent_id: idParent,

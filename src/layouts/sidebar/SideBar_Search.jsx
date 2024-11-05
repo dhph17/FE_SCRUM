@@ -18,16 +18,16 @@ const SideBarSearchParent = ({ setFilters }) => {
   const [maxStudents, setMaxStudents] = useState(100);
   const [selectStudent, setSelectStudents] = useState("Số học viên");
 
-    const applyFilters = () => {
-      setFilters({
-        subject: selectedSubject,
-        fee: selectedFee,
-        minStudents: minStudents,
-        maxStudents: maxStudents,
-        grade: selectedClasses,
-        sessions: selectedSessions,
-      });
-    };
+  const applyFilters = () => {
+    setFilters({
+      subject: selectedSubject,
+      fee: selectedFee,
+      minStudents: minStudents,
+      maxStudents: maxStudents,
+      grade: selectedClasses,
+      sessions: selectedSessions,
+    });
+  };
 
   // Hàm xử lý khi bấm vào từng mục
   const toggleDropdown = (dropdownName) => {
@@ -118,9 +118,8 @@ const SideBarSearchParent = ({ setFilters }) => {
               <i className="fas fa-book mr-2"></i> {selectedSubject}
             </span>
             <i
-              className={`fas fa-chevron-down transition-transform duration-2000 ${
-                selectedDropdown === "subjects" ? "transform rotate-180" : ""
-              }`}
+              className={`fas fa-chevron-down transition-transform duration-2000 ${selectedDropdown === "subjects" ? "transform rotate-180" : ""
+                }`}
             ></i>
           </div>
           {selectedDropdown === "subjects" && (
@@ -146,7 +145,7 @@ const SideBarSearchParent = ({ setFilters }) => {
             </span>
           </div>
         </div>
-        <div className="grid grid-cols-2 ml-5 justify-self-center">
+        <div className="grid grid-cols-2 gap-x-2 ml-2">
           {dataEnum.classes.map((classItem, index) => (
             <div key={index}>
               <input
@@ -172,9 +171,8 @@ const SideBarSearchParent = ({ setFilters }) => {
               <i className="fas fa-dollar-sign mr-2"></i> {selectedFee}
             </span>
             <i
-              className={`fas fa-chevron-down transition-transform duration-2000 ${
-                selectedDropdown === "fees" ? "transform rotate-180" : ""
-              }`}
+              className={`fas fa-chevron-down transition-transform duration-2000 ${selectedDropdown === "fees" ? "transform rotate-180" : ""
+                }`}
             ></i>
           </div>
           {selectedDropdown === "fees" && (
@@ -203,9 +201,8 @@ const SideBarSearchParent = ({ setFilters }) => {
               {selectStudent}
             </span>
             <i
-              className={`fas fa-chevron-down transition-transform duration-2000 ${
-                selectedDropdown === "students" ? "transform rotate-180" : ""
-              }`}
+              className={`fas fa-chevron-down transition-transform duration-2000 ${selectedDropdown === "students" ? "transform rotate-180" : ""
+                }`}
             ></i>
           </div>
           {selectedDropdown === "students" && (
@@ -246,7 +243,7 @@ const SideBarSearchParent = ({ setFilters }) => {
             </span>
           </div>
         </div>
-        <div className="grid grid-cols-2 ml-5 justify-self-center">
+        <div className="grid grid-cols-2 gap-x-2 ml-2">
           {dataEnum.sessions.map((classItem, index) => (
             <div key={index}>
               <input
