@@ -5,6 +5,7 @@ import Admin from "../../layouts/PageAuthorization/admin/admin";
 import axios from "axios";
 import { useAppContext } from "../../AppProvider";
 import DeleteAccount from "../../layouts/popup/DeleteAccount";
+import ParentInfoPopup from "../../layouts/popup/ParentInfoPopup"; 
 
 const ParentAccount = () => {
   const { sessionToken } = useAppContext();
@@ -14,7 +15,9 @@ const ParentAccount = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [showInfoModal, setShowInfoModal] = useState(false);
   const [selectedParentId, setSelectedParentId] = useState(null);
+  const [selectedParent, setSelectedParent] = useState(null);
 
   const itemsPerPage = 8;
   const totalPages = Math.ceil(parents.length / itemsPerPage);
@@ -29,7 +32,6 @@ const ParentAccount = () => {
   };
 
   useEffect(() => {
-    console.log(sessionToken);
     const fetchParents = async () => {
       setLoading(true);
       try {
@@ -86,6 +88,22 @@ const ParentAccount = () => {
     }
   };
 
+  const openInfoModal = async (id) => {
+    try {
+      const response = await axios.get(`http://127.0.0.1:8000/api/parents/${id}/`);
+      setSelectedParent(response.data);
+      setShowInfoModal(true);
+    } catch (error) {
+      console.error("Error fetching parent information", error);
+      alert("Không thể tải thông tin phụ huynh.");
+    }
+  };
+
+  const closeInfoModal = () => {
+    setSelectedParent(null);
+    setShowInfoModal(false);
+  };
+
   return (
     <Admin>
       <Panel activeItem={2}>
@@ -121,7 +139,10 @@ const ParentAccount = () => {
                         {parent.user.email}
                       </td>
                       <td className="border p-2 text-center">
-                        <button className="bg-yellow-400 hover:bg-yellow-500 text-white font-bold py-1 px-2 rounded mr-2">
+                        <button
+                          className="bg-yellow-400 hover:bg-yellow-500 text-white font-bold py-1 px-2 rounded mr-2"
+                          onClick={() => openInfoModal(parent.parent_id)}
+                        >
                           Xem thông tin
                         </button>
                         <button
@@ -147,14 +168,19 @@ const ParentAccount = () => {
           </div>
         </div>
 
-        {/* Popup delete */}
+        <ParentInfoPopup
+          isOpen={showInfoModal}
+          onClose={closeInfoModal}
+          parent={selectedParent}
+        />
+
         <DeleteAccount 
             isOpen={showDeleteModal} 
             onClose={closeDeleteModal} 
             onConfirm={handleDeleteParent}
         />
       </Panel>
-    </Admin>
+      </Admin>
   );
 };
 
