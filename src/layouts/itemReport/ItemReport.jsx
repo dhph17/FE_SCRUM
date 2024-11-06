@@ -2,10 +2,14 @@ import PropTypes from "prop-types";
 import { useAppContext } from "../../AppProvider";
 import { useNavigate } from "react-router-dom";
 import User from "../../assets/image/User.png";
+import { useState } from "react";
+import FeedbackPopup from "../popup/FeedbackPopup";
 
 const ItemReport = ({ report }) => {
   const { sessionToken } = useAppContext();
   const navigate = useNavigate();
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
+  const [feedbackDetails, setFeedbackDetails] = useState(null);
 
   const handleDeleteReport = async (report_id) => {
     try {
@@ -39,6 +43,30 @@ const ItemReport = ({ report }) => {
     navigate(`/admin/approved-posts/${post_id}`);
   };
 
+  const handleViewFeedBack = (feedback_id) => {
+    fetch(
+      `${import.meta.env.VITE_API_ENDPOINT}/api/class/feedback/${feedback_id}`,
+      {
+        headers: {
+          Authorization: `Bearer ${sessionToken}`,
+        },
+      }
+    )
+      .then((response) => response.json())
+      .then((data) => {
+        setFeedbackDetails(data);
+        setIsPopupOpen(true);
+      })
+      .catch((error) => {
+        console.error("Error fetching feedback details:", error);
+      });
+  };
+
+  const handleClosePopup = () => {
+    setIsPopupOpen(false);
+    setFeedbackDetails(null);
+  };
+
   const formatDate = (isoDate) => {
     if (!isoDate) return "N/A";
     const date = new Date(isoDate);
@@ -57,7 +85,9 @@ const ItemReport = ({ report }) => {
       <div className="flex justify-between items-center border-b py-3 mb-4 bg-yellow-100 p-2 rounded-lg shadow-md">
         <div className="text-gray-700 font-semibold text-lg">
           Mã báo cáo:
-          <span className="text-blue-700 underline ml-1">{report.report_id || "N/A"}</span>
+          <span className="text-blue-700 underline ml-1">
+            {report.report_id || "N/A"}
+          </span>
         </div>
       </div>
 
@@ -72,9 +102,13 @@ const ItemReport = ({ report }) => {
         {/* Reporter Information */}
         <div className="flex items-center">
           <img
-            src={report.reporter_avt ? `${import.meta.env.VITE_API_ENDPOINT}/${report.reporter_avt}` : User}
+            src={
+              report.reporter_avt
+                ? `${import.meta.env.VITE_API_ENDPOINT}/${report.reporter_avt}`
+                : User
+            }
             alt="Reporter Avatar"
-            className="w-12 h-12 rounded-full mr-3"
+            className="w-12 h-12 rounded-full mr-3 object-contain border border-gray-500"
           />
           <div className="flex-1">
             <p className="text-gray-900 font-medium">
@@ -87,9 +121,15 @@ const ItemReport = ({ report }) => {
         {/* Reported Party Information */}
         <div className="flex items-center">
           <img
-            src={report.reported_party_avt ? `${import.meta.env.VITE_API_ENDPOINT}/${report.reported_party_avt}` : User}
+            src={
+              report.reported_party_avt
+                ? `${import.meta.env.VITE_API_ENDPOINT}/${
+                    report.reported_party_avt
+                  }`
+                : User
+            }
             alt="Reported Party Avatar"
-            className="w-12 h-12 rounded-full mr-3"
+            className="w-12 h-12 rounded-full mr-3 object-contain border border-gray-500"
           />
           <div className="flex-1">
             <p className="text-gray-900 font-medium">
@@ -116,10 +156,11 @@ const ItemReport = ({ report }) => {
           <div className="flex flex-row gap-4 items-center">
             <p className="font-semibold">Trạng thái:</p>
             <span
-              className={`px-3 py-1 rounded-full text-sm font-medium ${report.resolved
-                ? "bg-green-100 text-green-600"
-                : "bg-red-100 text-red-600"
-                }`}
+              className={`px-3 py-1 rounded-full text-sm font-medium ${
+                report.resolved
+                  ? "bg-green-100 text-green-600"
+                  : "bg-red-100 text-red-600"
+              }`}
             >
               {report.resolved ? "Đã giải quyết" : "Chưa giải quyết"}
             </span>
@@ -148,14 +189,32 @@ const ItemReport = ({ report }) => {
           >
             Xóa báo cáo
           </button>
-          <button
-            className="text-white font-semibold bg-blue-700 py-2 px-4 rounded-lg hover:bg-blue-600"
-            onClick={() => handleViewPost(report.post_id)}
-          >
-            Xem bài đăng
-          </button>
+
+          {report.post_id && (
+            <button
+              className="text-white font-semibold bg-blue-700 py-2 px-4 rounded-lg hover:bg-blue-600"
+              onClick={() => handleViewPost(report.post_id)}
+            >
+              Xem bài đăng
+            </button>
+          )}
+
+          {report.feedback_id && (
+            <button
+              className="text-white font-semibold bg-blue-700 py-2 px-4 rounded-lg hover:bg-blue-600"
+              onClick={() => handleViewFeedBack(report.feedback_id)}
+            >
+              Xem phản hồi
+            </button>
+          )}
         </div>
       </div>
+      {isPopupOpen && (
+        <FeedbackPopup
+          feedbackDetails={feedbackDetails}
+          onClose={handleClosePopup}
+        />
+      )}
     </div>
   );
 };

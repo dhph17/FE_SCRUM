@@ -14,7 +14,7 @@ const TutorAccount = () => {
   const [showInfoModal, setShowInfoModal] = useState(false);
   const [selectedTutorId, setSelectedTutorId] = useState(null);
   const [selectedTutor, setSelectedTutor] = useState(null);
-  
+
   const [tutors, setTutors] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 8;
@@ -100,74 +100,74 @@ const TutorAccount = () => {
 
   return (
     <Admin>
-    <Panel activeItem={1}>
-      <div className="relative h-[550px]">
-        <div>
-          <h2 className="text-xl font-bold mb-4">Quản lý tài khoản gia sư</h2>
-          <table className="w-full border-collapse bg-white shadow-lg">
-            <thead>
-              <tr className="bg-custom_darkblue text-white">
-                <th className="border p-2">STT</th>
-                <th className="border p-2">Tên tài khoản</th>
-                <th className="border p-2">Email</th>
-                <th className="border p-2">Thao tác</th>
-              </tr>
-            </thead>
-            <tbody>
-              {currentTutors.map((tutor, index) => (
-                <tr key={tutor.tutor_id} className="hover:bg-gray-100">
-                  <td className="border p-2 text-center">
-                    {(currentPage - 1) * itemsPerPage + index + 1}
-                  </td>
-                  <td className="border p-2 text-center">
-                    {tutor.user.username}
-                  </td>
-                  <td className="border p-2 text-center">
-                    {tutor.user.email}
-                  </td>
-                  <td className="border p-2 text-center">
-                    <button
-                      className="bg-yellow-400 hover:bg-yellow-500 text-white font-bold py-1 px-2 rounded mr-2"
-                      onClick={() => openInfoModal(tutor.tutor_id)}
-                    >
-                      Xem thông tin
-                    </button>
-                    <button
-                      className="bg-red-500 hover:bg-red-600 text-white font-bold py-1 px-2 rounded"
-                      onClick={() => openDeleteModal(tutor.tutor_id)}
-                    >
-                      Khóa tài khoản
-                    </button>
-                  </td>
+      <Panel activeItem={1}>
+        <div className="relative h-[550px]">
+          <div>
+            <h2 className="text-xl font-bold mb-4">Quản lý tài khoản gia sư</h2>
+            <table className="w-full border-collapse bg-white shadow-lg">
+              <thead>
+                <tr className="bg-custom_darkblue text-white">
+                  <th className="border p-2">STT</th>
+                  <th className="border p-2">Tên tài khoản</th>
+                  <th className="border p-2">Email</th>
+                  <th className="border p-2">Thao tác</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {currentTutors.map((tutor, index) => (
+                  <tr key={tutor.tutor_id} className="hover:bg-gray-100">
+                    <td className="border p-2 text-center">
+                      {(currentPage - 1) * itemsPerPage + index + 1}
+                    </td>
+                    <td className="border p-2 text-center">
+                      {tutor.user.username}
+                    </td>
+                    <td className="border p-2 text-center">
+                      {tutor.user.email}
+                    </td>
+                    <td className="border p-2 text-center">
+                      <button
+                        className="bg-yellow-400 hover:bg-yellow-500 text-white font-bold py-1 px-2 rounded mr-2"
+                        onClick={() => openInfoModal(tutor.tutor_id)}
+                      >
+                        Xem thông tin
+                      </button>
+                      <button
+                        className="bg-red-500 hover:bg-red-600 text-white font-bold py-1 px-2 rounded"
+                        onClick={() => openDeleteModal(tutor.tutor_id)}
+                      >
+                        Khóa tài khoản
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+
+          <div className="absolute bottom-0 left-0 right-0">
+            <Pagination
+              currentPage={currentPage}
+              totalPages={totalPages}
+              onPageChange={handlePageChange}
+            />
+          </div>
         </div>
 
-        <div className="absolute bottom-0 left-0 right-0">
-          <Pagination
-            currentPage={currentPage}
-            totalPages={totalPages}
-            onPageChange={handlePageChange}
-          />
-        </div>
-      </div>
+        {/* Popup for viewing tutor info */}
+        <TutorInfoPopup
+          isOpen={showInfoModal}
+          onClose={closeInfoModal}
+          tutor={selectedTutor}
+        />
 
-      {/* Popup for viewing tutor info */}
-      <TutorInfoPopup
-        isOpen={showInfoModal}
-        onClose={closeInfoModal}
-        tutor={selectedTutor}
-      />
-
-      {/* Popup delete */}
-      <DeleteAccount
-        isOpen={showDeleteModal}
-        onClose={closeDeleteModal}
-        onConfirm={handleDeleteTutor}
-      />
-    </Panel>
+        {/* Popup delete */}
+        <DeleteAccount
+          isOpen={showDeleteModal}
+          onClose={closeDeleteModal}
+          onConfirm={handleDeleteTutor}
+        />
+      </Panel>
     </Admin>
   );
 };

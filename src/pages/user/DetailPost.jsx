@@ -142,7 +142,8 @@ const DetailPost = () => {
                             <div className="flex gap-5 ">
                                 <img
                                     className="w-[50px] h-[50px] rounded-full"
-                                    src="https://th.bing.com/th/id/OIP.0xm7fJtBKdm3hIVhXfmpQQHaJ4?&w=160&h=240&c=7&dpr=1.3&pid=ImgDet"
+                                    // src="https://th.bing.com/th/id/OIP.0xm7fJtBKdm3hIVhXfmpQQHaJ4?&w=160&h=240&c=7&dpr=1.3&pid=ImgDet"
+                                    src={`${import.meta.env.VITE_API_ENDPOINT}/${dataPost.avatar}`}
                                     alt="avatar"
                                 />
                                 <div>
