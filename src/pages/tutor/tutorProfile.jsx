@@ -4,6 +4,13 @@ import Panel from "../../layouts/panel/Panel";
 import Tutor from "../../layouts/PageAuthorization/tutor/tutor";
 
 const TutorProfile = () => {
+    const backgroundEnum = [
+        "Có bằng tốt nghiệp trung học phổ thông",
+        "Sinh viên",
+        "Tốt nghiệp đại học",
+        "Tốt nghiệp đại học sư phạm",
+        "Khác"
+    ];
     const [formData, setFormData] = useState({
         tutor_id: '',
         username: '',
@@ -15,17 +22,17 @@ const TutorProfile = () => {
         bio_link: '',
         phone_number: '',
         gender: '',
-        educational_background: ''
+        educational_background: backgroundEnum[0]
     });
     const fileInputRef = useRef(null);
     const [profileImage, setProfileImage] = useState(null);
     const [fileName, setFileName] = useState("Choose a file");
     const [loading, setLoading] = useState(false);
-
+    const [validationErrors, setValidationErrors] = useState({});
     const rawTutorId = localStorage.getItem("id") || "";
     const token = localStorage.getItem("accessToken");
-
     const tutorId = rawTutorId.replace(/-/g, "");
+    
 
     useEffect(() => {
         const fetchTutorData = async () => {
@@ -148,11 +155,30 @@ const TutorProfile = () => {
     };
 
     const handleSave = async () => {
-        if (formData.phone_number.length < 10 || formData.phone_number.length > 11) {
-            alert("Phone number must be 10 or 11 digits long.");
+        const requiredFields = [
+            'tutorname',
+            'gender',
+            'birthdate',
+            'address',
+            'phone_number',
+            'bio_link',
+            'educational_background'
+        ];
+    
+        const errors = {};
+        requiredFields.forEach((field) => {
+            if (!formData[field] || formData[field].trim() === '') {
+                errors[field] = 'This field is required';
+            }
+        });
+    
+        setValidationErrors(errors);
+    
+        if (Object.keys(errors).length > 0) {
+            alert('Please fill in all required fields.');
             return;
         }
-
+    
         setLoading(true);
         try {
             const formDataToSend = new FormData();
@@ -164,7 +190,7 @@ const TutorProfile = () => {
             formDataToSend.append('bio_link', formData.bio_link);
             formDataToSend.append('phone_number', formData.phone_number);
             formDataToSend.append('educational_background', formData.educational_background);
-
+    
             const response = await axios.put(
                 `http://127.0.0.1:8000/api/tutors/${tutorId}/`,
                 formDataToSend,
@@ -175,7 +201,7 @@ const TutorProfile = () => {
                     },
                 }
             );
-
+    
             console.log("Profile updated successfully:", response.data);
             alert("Profile updated successfully!");
         } catch (error) {
@@ -229,17 +255,18 @@ const TutorProfile = () => {
                             <h2 className="text-2xl font-bold mb-6 text-center">Tạo hồ sơ gia sư</h2>
                             <form className="grid grid-cols-2 gap-4">
                                 <div>
-                                    <label className="block mb-1 font-medium">Họ tên *</label>
+                                    <label className="block mb-1 font-medium">Họ tên <span className="text-red-500">*</span></label>
                                     <input
                                         type="text"
                                         name="tutorname"
                                         value={formData.tutorname}
                                         onChange={handleChange}
-                                        className="w-full border border-gray-300 p-2 rounded"
+                                        className={`w-full border ${validationErrors.tutorname ? "border-red-500" : "border-gray-300"} p-2 rounded`}
                                     />
+                                    {validationErrors.tutorname && <p className="text-red-500 text-sm">{validationErrors.tutorname}</p>}
                                 </div>
                                 <div>
-                                    <label className="block mb-1 font-medium">Giới tính *</label>
+                                    <label className="block mb-1 font-medium">Giới tính <span className="text-red-500">*</span></label>
                                     <select
                                         name="gender"
                                         value={formData.gender}
@@ -251,7 +278,7 @@ const TutorProfile = () => {
                                     </select>
                                 </div>
                                 <div>
-                                    <label className="block mb-1 font-medium">Ngày sinh *</label>
+                                    <label className="block mb-1 font-medium">Ngày sinh <span className="text-red-500">*</span></label>
                                     <input
                                         type="date"
                                         name="birthdate"
@@ -261,7 +288,7 @@ const TutorProfile = () => {
                                     />
                                 </div>
                                 <div>
-                                    <label className="block mb-1 font-medium">Địa chỉ hiện tại *</label>
+                                    <label className="block mb-1 font-medium">Địa chỉ hiện tại <span className="text-red-500">*</span></label>
                                     <input
                                         type="text"
                                         name="address"
@@ -271,7 +298,7 @@ const TutorProfile = () => {
                                     />
                                 </div>
                                 <div>
-                                    <label className="block mb-1 font-medium">Số điện thoại *</label>
+                                    <label className="block mb-1 font-medium">Số điện thoại <span className="text-red-500">*</span></label>
                                     <input
                                         type="text"
                                         name="phone_number"
@@ -281,7 +308,7 @@ const TutorProfile = () => {
                                     />
                                 </div>
                                 <div>
-                                    <label className="block mb-1 font-medium">Liên kết bio *</label>
+                                    <label className="block mb-1 font-medium">Liên kết bio <span className="text-red-500">*</span></label>
                                     <input
                                         type="text"
                                         name="bio_link"
@@ -291,14 +318,26 @@ const TutorProfile = () => {
                                     />
                                 </div>
                                 <div>
-                                    <label className="block mb-1 font-medium">Trình độ học vấn *</label>
-                                    <input
-                                        type="text"
+                                    <label className="block mb-1 font-medium">
+                                        Trình độ học vấn <span className="text-red-500">*</span>
+                                    </label>
+                                    <select
                                         name="educational_background"
                                         value={formData.educational_background}
                                         onChange={handleChange}
                                         className="w-full border border-gray-300 p-2 rounded"
-                                    />
+                                    >
+                                        {backgroundEnum.map((option, index) => (
+                                            <option key={index} value={option}>
+                                                {option}
+                                            </option>
+                                        ))}
+                                    </select>
+                                    {validationErrors.educational_background && (
+                                        <p className="text-red-500 text-sm">
+                                            {validationErrors.educational_background}
+                                        </p>
+                                    )}
                                 </div>
                             </form>
                             <div className="flex justify-center gap-4 mt-6">

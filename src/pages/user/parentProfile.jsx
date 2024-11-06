@@ -19,7 +19,7 @@ const ParentProfile = () => {
     const [profileImage, setProfileImage] = useState(null);
     const [fileName, setFileName] = useState("Choose a file");
     const [loading, setLoading] = useState(false);
-
+    const [validationErrors, setValidationErrors] = useState({});
     const rawParentId = localStorage.getItem("id") || "";
     const token = localStorage.getItem("accessToken");
 
@@ -145,6 +145,28 @@ const ParentProfile = () => {
     };
 
     const handleSave = async () => {
+        const requiredFields = [
+            'parentname',
+            'gender',
+            'birthdate',
+            'address',
+            'phone_number',
+        ];
+    
+        const errors = {};
+        requiredFields.forEach((field) => {
+            if (!formData[field] || formData[field].trim() === '') {
+                errors[field] = 'This field is required';
+            }
+        });
+    
+        setValidationErrors(errors);
+    
+        if (Object.keys(errors).length > 0) {
+            alert('Please fill in all required fields.');
+            return;
+        }
+
         if (formData.phone_number.length < 10 || formData.phone_number.length > 11) {
             alert("Phone number must be 10 or 11 digits long.");
             return;
@@ -228,7 +250,7 @@ const ParentProfile = () => {
                             <h2 className="text-2xl font-bold mb-6 text-center">Tạo hồ sơ phụ huynh</h2>
                             <form className="grid grid-cols-2 gap-4">
                                 <div>
-                                    <label className="block mb-1 font-medium">Họ tên *</label>
+                                    <label className="block mb-1 font-medium">Họ tên <span className="text-red-500">*</span></label>
                                     <input
                                         type="text"
                                         name="parentname"
@@ -238,7 +260,7 @@ const ParentProfile = () => {
                                     />
                                 </div>
                                 <div>
-                                    <label className="block mb-1 font-medium">Giới tính *</label>
+                                    <label className="block mb-1 font-medium">Giới tính <span className="text-red-500">*</span></label>
                                     <select
                                         name="gender"
                                         value={formData.gender}
@@ -250,7 +272,7 @@ const ParentProfile = () => {
                                     </select>
                                 </div>
                                 <div>
-                                    <label className="block mb-1 font-medium">Ngày sinh *</label>
+                                    <label className="block mb-1 font-medium">Ngày sinh <span className="text-red-500">*</span></label>
                                     <input
                                         type="date"
                                         name="birthdate"
@@ -260,7 +282,7 @@ const ParentProfile = () => {
                                     />
                                 </div>
                                 <div>
-                                    <label className="block mb-1 font-medium">Địa chỉ hiện tại *</label>
+                                    <label className="block mb-1 font-medium">Địa chỉ hiện tại <span className="text-red-500">*</span></label>
                                     <input
                                         type="text"
                                         name="address"
@@ -270,7 +292,7 @@ const ParentProfile = () => {
                                     />
                                 </div>
                                 <div>
-                                    <label className="block mb-1 font-medium">Số điện thoại *</label>
+                                    <label className="block mb-1 font-medium">Số điện thoại <span className="text-red-500">*</span></label>
                                     <input
                                         type="text"
                                         name="phone_number"

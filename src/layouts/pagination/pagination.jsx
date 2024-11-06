@@ -58,7 +58,7 @@ const Pagination = ({ currentPage, totalPages, onPageChange }) => {
           <button
             key={index}
             className={`w-12 h-10 flex items-center justify-center rounded-full ${currentPage === page
-              ? "bg-blue-600 text-white"
+              ? "bg-custom_darkblue text-white"
               : "bg-gray-300 text-gray-800"
               } ${page === "..." ? "cursor-default" : ""}`}
             onClick={() => page !== "..." && onPageChange(page)}
