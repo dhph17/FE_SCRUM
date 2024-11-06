@@ -1,14 +1,12 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useAppContext } from "../../AppProvider";
-import User from '../../assets/image/User.png'
+import User from '../../assets/image/User.png';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useCallback, useEffect, useState } from "react";
-
 import {
   faMagnifyingGlass,
   faArrowRightFromBracket,
 } from "@fortawesome/free-solid-svg-icons";
-
 import Logo from "../../assets/image/logo_.png";
 import PropTypes from "prop-types";
 import Notify from "../notify/Notify";
@@ -25,7 +23,7 @@ const Header = ({ setSearch }) => {
     if (role !== 'admin') {
       const fetchData = async () => {
         try {
-          const url = `${import.meta.env.VITE_API_ENDPOINT}/api/${role === 'tutor' ? 'tutors' : 'parents'}/${id}`
+          const url = `${import.meta.env.VITE_API_ENDPOINT}/api/${role === 'tutor' ? 'tutors' : 'parents'}/${id}`;
           const response = await fetch(url);
           const data = await response.json();
           setAvatar(data.avatar);
@@ -33,7 +31,6 @@ const Header = ({ setSearch }) => {
           console.error('Error fetching data:', error);
         }
       };
-
       fetchData();
     }
   }, [id]);
@@ -54,22 +51,18 @@ const Header = ({ setSearch }) => {
       if (response.ok) {
         setSessionToken("");
         setRole("");
-        setId('')
-        setSearch('')
-        setShowDropdown(false)
+        setId('');
+        setSearch('');
+        setShowDropdown(false);
         localStorage.removeItem("refreshToken");
         navigate("/");
       } else {
-        console.error("Đăng xuất thất bại!");
+        console.error("Logout failed!");
       }
     } catch (error) {
-      console.error("Có lỗi xảy ra khi đăng xuất:", error);
+      console.error("Error logging out:", error);
     }
   };
-
-  // const handleInputChange = (e) => {
-  //   setSearch(e.target.value);
-  // };
 
   const debounce = (func, delay) => {
     let timeoutId;
@@ -114,8 +107,9 @@ const Header = ({ setSearch }) => {
                 <Link
                   key={path}
                   to={`${rolePath}/${path}`}
-                  className={`font-semibold mx-6 cursor-pointer ${activeLink === path ? 'underline' : ''}`}
-                // onClick={() => setActiveLink(path)}
+                  className={`font-semibold mx-6 cursor-pointer transition duration-200 
+                    ${activeLink === path ? 'underline underline-offset-4 text-custom_yellow' : 'hover:text-custom_yellow'}`}
+                  onClick={() => setActiveLink(path)}
                 >
                   {path === 'main-page' ? 'Trang chủ' : 'Hồ sơ cá nhân'}
                 </Link>
@@ -175,16 +169,6 @@ const Header = ({ setSearch }) => {
                 className="w-20 h-20 bg-center rounded-full object-cover cursor-pointer"
               />
             </Link>
-          </div>
-          <div className="pb-4">
-            <ul className="flex">
-              <li className="font-semibold mx-6 cursor-pointer">
-                <Link to="/">GIỚI THIỆU</Link>
-              </li>
-              <li className="font-semibold mx-6 cursor-pointer">
-                <a href="#contact">LIÊN HỆ</a>
-              </li>
-            </ul>
           </div>
           <div className="pb-4">
             <button
