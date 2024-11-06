@@ -10,6 +10,7 @@ import Parent from "../../layouts/PageAuthorization/parent/parent";
 import ItemPost from "../../layouts/itemPost/ItemPost";
 import Pagination from "../../layouts/pagination/pagination";
 import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 const BaiDangChoDuyet = () => {
   let navigate = useNavigate();
   const { sessionToken, id } = useAppContext();

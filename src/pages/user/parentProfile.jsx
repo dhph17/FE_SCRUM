@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import axios from "axios";
 import Panel from "../../layouts/panel/Panel";
 import Parent from "../../layouts/PageAuthorization/parent/parent";
@@ -15,8 +15,9 @@ const ParentProfile = () => {
         phone_number: '',
         gender: '',
     });
-
+    const fileInputRef = useRef(null);
     const [profileImage, setProfileImage] = useState(null);
+    const [fileName, setFileName] = useState("Choose a file");
     const [loading, setLoading] = useState(false);
 
     const rawParentId = localStorage.getItem("id") || "";
@@ -33,7 +34,7 @@ const ParentProfile = () => {
 
             try {
                 const response = await axios.get(
-                    `http://127.0.0.1:8000/api/parents/${parentId}/`,
+                    `${import.meta.env.VITE_API_ENDPOINT}/api/parents/${parentId}/`,
                     {
                         headers: {
                             Authorization: `Bearer ${token}`,
@@ -56,7 +57,7 @@ const ParentProfile = () => {
                 });
 
                 if (data.avatar) {
-                    setProfileImage(`http://127.0.0.1:8000${data.avatar}`);
+                    setProfileImage(`${import.meta.env.VITE_API_ENDPOINT}${data.avatar}`);
                 }
             } catch (error) {
                 console.error("Error fetching parent data:", error);
@@ -68,14 +69,14 @@ const ParentProfile = () => {
 
     const handleChange = (e) => {
         const { name, value } = e.target;
-    
+
         if (name === "phone_number") {
-            const phoneNumberPattern = /^[0-9]{0,11}$/; 
+            const phoneNumberPattern = /^[0-9]{0,11}$/;
             if (!phoneNumberPattern.test(value)) {
                 return;
             }
         }
-    
+
         setFormData({
             ...formData,
             [name]: value
@@ -88,15 +89,20 @@ const ParentProfile = () => {
             const fileType = file.type;
             if (fileType !== "image/png" && fileType !== "image/jpeg") {
                 alert("Please upload a .png or .jpg image.");
+                fileInputRef.current.value = ""; // Reset file input
+                setFileName("Choose a file"); // Reset file name display
                 return;
             }
-    
+
             const fileSizeLimit = 25 * 1024 * 1024;
             if (file.size > fileSizeLimit) {
                 alert("File size should not exceed 25 MB.");
+                fileInputRef.current.value = "";
+                setFileName("Choose a file");
                 return;
             }
-    
+
+            setFileName(file.name);
             const reader = new FileReader();
             reader.onloadend = () => {
                 setProfileImage(reader.result);
@@ -106,13 +112,21 @@ const ParentProfile = () => {
         }
     };
 
+    const formatFileName = (name) => {
+        const maxLength = 15;
+        const extension = name.slice(name.lastIndexOf("."));
+        return name.length > maxLength
+            ? `${name.slice(0, maxLength)}...${extension}`
+            : name;
+    };
+
     const updateAvatar = async (file) => {
         const formData = new FormData();
         formData.append("avatar", file);
 
         try {
             const response = await axios.post(
-                `http://127.0.0.1:8000/api/profile/avatar/`,
+                `${import.meta.env.VITE_API_ENDPOINT}/api/profile/avatar/`,
                 formData,
                 {
                     headers: {
@@ -132,9 +146,9 @@ const ParentProfile = () => {
 
     const handleSave = async () => {
         if (formData.phone_number.length < 10 || formData.phone_number.length > 11) {
-        alert("Phone number must be 10 or 11 digits long.");
-        return;
-    }
+            alert("Phone number must be 10 or 11 digits long.");
+            return;
+        }
 
         setLoading(true);
         try {
@@ -151,7 +165,7 @@ const ParentProfile = () => {
             }
 
             const response = await axios.put(
-                `http://127.0.0.1:8000/api/parents/${parentId}/`,
+                `${import.meta.env.VITE_API_ENDPOINT}/api/parents/${parentId}/`,
                 formDataToSend,
                 {
                     headers: {
@@ -180,24 +194,34 @@ const ParentProfile = () => {
             <Panel role="parent" activeItem={2}>
                 <div className="relative h-full max-h-[600px] p-4">
                     <div className="w-full max-w-4xl mx-auto bg-gray-100 p-6 rounded-lg shadow-md flex gap-6">
-                        <div className="flex flex-col items-center w-1/3">
+                        <div className="flex flex-col items-center w-1/3 mt-16">
                             <div className="w-32 h-32 rounded-full bg-gray-300 flex items-center justify-center overflow-hidden">
                                 {profileImage ? (
                                     <img
                                         src={profileImage}
                                         alt="Profile"
-                                        className="object-cover w-full h-full"
+                                        className="w-full h-full"
                                     />
                                 ) : (
                                     <span className="text-gray-500">No Image</span>
                                 )}
                             </div>
+
                             <input
                                 type="file"
                                 accept="image/*"
+                                ref={fileInputRef}
                                 onChange={handleImageUpload}
-                                className="mt-4"
+                                className="hidden"
                             />
+
+                            <label
+                                onClick={() => fileInputRef.current.click()}
+                                className="mt-4 bg-blue-500 text-white py-2 px-4 rounded cursor-pointer"
+                                title={fileName}
+                            >
+                                {formatFileName(fileName)}
+                            </label>
                         </div>
 
                         <div className="w-2/3">
@@ -260,7 +284,7 @@ const ParentProfile = () => {
                                 <button
                                     type="button"
                                     onClick={handleSave}
-                                    className="bg-blue-600 text-white px-6 py-2 rounded"
+                                    className="bg-blue-600 text-white px-6 py-2 rounded w-[8rem]"
                                     disabled={loading}
                                 >
                                     {loading ? "Đang lưu..." : "Lưu"}
@@ -268,7 +292,7 @@ const ParentProfile = () => {
                                 <button
                                     type="button"
                                     onClick={handleDelete}
-                                    className="bg-red-600 text-white px-6 py-2 rounded"
+                                    className="bg-red-600 text-white px-6 py-2 rounded w-[8rem]"
                                 >
                                     Xóa hồ sơ
                                 </button>

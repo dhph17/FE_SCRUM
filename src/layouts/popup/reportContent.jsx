@@ -4,7 +4,7 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useAppContext } from "../../AppProvider";
 
-const ReportContent = ({ reportedPartyId, postId, onClose }) => {
+const ReportContent = ({ reportedPartyId, postId, onClose, type }) => {
     const { sessionToken, id } = useAppContext();
     const [selectedContents, setSelectedContents] = useState([]);
     const [textareaContent, setTextareaContent] = useState('');
@@ -33,11 +33,12 @@ const ReportContent = ({ reportedPartyId, postId, onClose }) => {
                     "Content-Type": "application/json",
                 },
                 body: JSON.stringify({
-                    post_id: postId,
                     reporter_id: id,
                     reported_party_id: reportedPartyId,
                     description: finalReportContents.join(', '),
-                    type: "Bài đăng"
+                    type: type,
+                    ...(type === "Đánh giá" ? { feedback_id: postId } : { post_id: postId }),
+                    created_at: Date.now()
                 }),
             });
             if (response.ok) {
@@ -69,7 +70,6 @@ const ReportContent = ({ reportedPartyId, postId, onClose }) => {
     return (
         <div
             className='bg-slate-100 rounded-lg p-5 shadow-md border-2 border-slate-100'
-
         >
             <h2 className="font-bold text-center mb-5 text-2xl text-custom_darkblue">NỘI DUNG BÁO CÁO</h2>
             <div className='grid grid-cols-2 gap-5 gap-x-16 mb-5'>
@@ -121,6 +121,7 @@ ReportContent.propTypes = {
     onClose: PropTypes.func,
     reportedPartyId: PropTypes.string,
     postId: PropTypes.string,
+    type: PropTypes.string.isRequired
 };
 
 

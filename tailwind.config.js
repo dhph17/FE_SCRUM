@@ -26,6 +26,11 @@ export default {
         lg: '2px 2px 4px rgba(0, 0, 0, 0.5)',
       },
     },
+    variants: {
+      extend: {
+        lineClamp: ['hover']
+      },
+    }
   },
   plugins: [
     tailwindcssTextshadow,
