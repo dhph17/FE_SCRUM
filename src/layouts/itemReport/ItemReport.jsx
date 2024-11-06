@@ -3,7 +3,7 @@ import { useAppContext } from "../../AppProvider";
 import { useNavigate } from "react-router-dom";
 import User from "../../assets/image/User.png";
 import { useState } from "react";
-import Review from "../review/Review";
+import FeedbackPopup from "../popup/FeedbackPopup";
 
 const ItemReport = ({ report }) => {
   const { sessionToken } = useAppContext();
@@ -43,21 +43,23 @@ const ItemReport = ({ report }) => {
     navigate(`/admin/approved-posts/${post_id}`);
   };
 
-  const handleViewFeedBack = async (feedback_id) => {
-    try {
-      const response = await fetch(
-        `http://127.0.0.1:8000/api/class/feedback/${feedback_id}`
-      );
-      if (response.ok) {
-        const data = await response.json();
+  const handleViewFeedBack = (feedback_id) => {
+    fetch(
+      `${import.meta.env.VITE_API_ENDPOINT}/api/class/feedback/${feedback_id}`,
+      {
+        headers: {
+          Authorization: `Bearer ${sessionToken}`,
+        },
+      }
+    )
+      .then((response) => response.json())
+      .then((data) => {
         setFeedbackDetails(data);
         setIsPopupOpen(true);
-      } else {
-        console.error("Failed to fetch feedback details");
-      }
-    } catch (error) {
-      console.error("Error fetching feedback details:", error);
-    }
+      })
+      .catch((error) => {
+        console.error("Error fetching feedback details:", error);
+      });
   };
 
   const handleClosePopup = () => {
@@ -200,26 +202,18 @@ const ItemReport = ({ report }) => {
           {report.feedback_id && (
             <button
               className="text-white font-semibold bg-blue-700 py-2 px-4 rounded-lg hover:bg-blue-600"
-              onClick={() => handleViewFeedBack(report.reporter_name)}
+              onClick={() => handleViewFeedBack(report.feedback_id)}
             >
               Xem phản hồi
             </button>
           )}
         </div>
       </div>
-
       {isPopupOpen && (
-        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-          <div className="bg-white rounded-lg p-8 w-full max-w-lg">
-            <button
-              onClick={handleClosePopup}
-              className="absolute top-0 right-0 mt-2 mr-2 text-gray-500 hover:text-gray-700"
-            >
-              &times;
-            </button>
-            <Review feedback={feedbackDetails} />
-          </div>
-        </div>
+        <FeedbackPopup
+          feedbackDetails={feedbackDetails}
+          onClose={handleClosePopup}
+        />
       )}
     </div>
   );

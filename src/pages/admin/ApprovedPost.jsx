@@ -127,7 +127,7 @@ const ApprovedPost = () => {
         {postList.length === 0 && (
           <div>
             <div className="text-center mt-4 text-lg font-semibold">
-              Không tồn tại bài đăng nào
+              Không tồn tại bài đăng nào hoặc bài đăng đã đóng
             </div>
             <div className="text-center mt-4">
               <button
