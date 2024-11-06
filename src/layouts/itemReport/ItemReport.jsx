@@ -2,10 +2,14 @@ import PropTypes from "prop-types";
 import { useAppContext } from "../../AppProvider";
 import { useNavigate } from "react-router-dom";
 import User from "../../assets/image/User.png";
+import { useState } from "react";
+import Review from "../review/Review";
 
 const ItemReport = ({ report }) => {
   const { sessionToken } = useAppContext();
   const navigate = useNavigate();
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
+  const [feedbackDetails, setFeedbackDetails] = useState(null);
 
   const handleDeleteReport = async (report_id) => {
     try {
@@ -37,6 +41,28 @@ const ItemReport = ({ report }) => {
 
   const handleViewPost = (post_id) => {
     navigate(`/admin/approved-posts/${post_id}`);
+  };
+
+  const handleViewFeedBack = async (feedback_id) => {
+    try {
+      const response = await fetch(
+        `http://127.0.0.1:8000/api/class/feedback/${feedback_id}`
+      );
+      if (response.ok) {
+        const data = await response.json();
+        setFeedbackDetails(data);
+        setIsPopupOpen(true);
+      } else {
+        console.error("Failed to fetch feedback details");
+      }
+    } catch (error) {
+      console.error("Error fetching feedback details:", error);
+    }
+  };
+
+  const handleClosePopup = () => {
+    setIsPopupOpen(false);
+    setFeedbackDetails(null);
   };
 
   const formatDate = (isoDate) => {
@@ -80,7 +106,7 @@ const ItemReport = ({ report }) => {
                 : User
             }
             alt="Reporter Avatar"
-            className="w-12 h-12 rounded-full mr-3"
+            className="w-12 h-12 rounded-full mr-3 object-contain border border-gray-500"
           />
           <div className="flex-1">
             <p className="text-gray-900 font-medium">
@@ -101,7 +127,7 @@ const ItemReport = ({ report }) => {
                 : User
             }
             alt="Reported Party Avatar"
-            className="w-12 h-12 rounded-full mr-3"
+            className="w-12 h-12 rounded-full mr-3 object-contain border border-gray-500"
           />
           <div className="flex-1">
             <p className="text-gray-900 font-medium">
@@ -174,13 +200,27 @@ const ItemReport = ({ report }) => {
           {report.feedback_id && (
             <button
               className="text-white font-semibold bg-blue-700 py-2 px-4 rounded-lg hover:bg-blue-600"
-              // onClick={() => handleViewPost(report.post_id)}
+              onClick={() => handleViewFeedBack(report.reporter_name)}
             >
               Xem phản hồi
             </button>
           )}
         </div>
       </div>
+
+      {isPopupOpen && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+          <div className="bg-white rounded-lg p-8 w-full max-w-lg">
+            <button
+              onClick={handleClosePopup}
+              className="absolute top-0 right-0 mt-2 mr-2 text-gray-500 hover:text-gray-700"
+            >
+              &times;
+            </button>
+            <Review feedback={feedbackDetails} />
+          </div>
+        </div>
+      )}
     </div>
   );
 };

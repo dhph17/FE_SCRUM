@@ -1,6 +1,8 @@
 import PropTypes from "prop-types";
 
 const ClassTimeDetail = ({ classTimes, onClose }) => {
+  console.log('classtime: ', classTimes);
+
   const weekdayOrder = {
     "Thứ hai": 1,
     "Thứ ba": 2,

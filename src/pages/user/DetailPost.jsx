@@ -157,32 +157,32 @@ const DetailPost = () => {
                             </div>
                         </div>
 
-                        <div className="">
+                        <div className="mt-3">
                             <ul className=" px-4 grid grid-cols-2 gap-3">
                                 <li className="flex gap-2">
-                                    <strong>Môn học:</strong>
+                                    <strong className="text-shadow-md italic ">Môn học:</strong>
                                     <p>{dataPost.subject}</p>
                                 </li>
                                 <li className="flex gap-2">
-                                    <strong>Học phí:</strong>
+                                    <strong className="text-shadow-md italic ">Học phí:</strong>
                                     <p>
                                         {dataPost.wage_per_session?.toLocaleString("vi-VN")}&nbsp;VNĐ
                                     </p>
                                 </li>
                                 <li className="flex gap-2">
-                                    <strong>Lớp:</strong>
+                                    <strong className="text-shadow-md italic ">Lớp:</strong>
                                     <p>{dataPost.grade}</p>
                                 </li>
                                 <li className="flex gap-2">
-                                    <strong>Địa chỉ:</strong>
+                                    <strong className="text-shadow-md italic ">Địa chỉ:</strong>
                                     <p>{dataPost.address}</p>
                                 </li>
                                 <li className="flex gap-2">
-                                    <strong>Trình độ:</strong>
+                                    <strong className="text-shadow-md italic ">Trình độ:</strong>
                                     <p>{dataPost.background_desired}</p>
                                 </li>
                                 <li className="flex items-center">
-                                    <strong>Buổi học:</strong>
+                                    <strong className="text-shadow-md italic ">Buổi học:</strong>
                                     <button
                                         className="bg-[#F1BB45] text-black font-semibold font-poppins py-1 px-3.5 ml-4 rounded-lg shadow hover:bg-yellow-400 transition duration-300"
                                         onClick={() => handleBuoiHocClick(dataPost)}
@@ -191,16 +191,15 @@ const DetailPost = () => {
                                     </button>
                                 </li>
                                 <li className="flex gap-2">
-                                    <strong>Số học viên:</strong>
+                                    <strong className="text-shadow-md italic ">Số học viên:</strong>
                                     <p>{dataPost.student_number}</p>
-                                </li>
-                                <li className="flex gap-2">
-                                    <strong>Ghi chú:</strong>
-                                    <p>{dataPost.description}</p>
                                 </li>
                             </ul>
                         </div>
-
+                        <div className="px-4 pr-8 flex mt-4">
+                            <strong className="text-shadow-md italic text-nowrap mr-3">Ghi chú:</strong>
+                            <p>{dataPost.description}</p>
+                        </div>
                         {selectedTime && (
                             <ClassTimeDetail
                                 classTimes={selectedTime.class_times}

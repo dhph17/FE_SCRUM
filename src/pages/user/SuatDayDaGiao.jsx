@@ -85,8 +85,8 @@ const SuatDayDaGiao = () => {
                 <button
                   onClick={() => {
                     setShowRatingPopup(true);
-                    setTutor_id(parent.class_times[0].tutor_id)
-                    setPostId(parent.class_times[0].class_id)
+                    setTutor_id(parent.class[0].tutor_id)
+                    setPostId(parent.class[0].class_id)
                   }}
                   className="bg-yellow-500 w-[14vw] p-2 rounded-2xl font-semibold mx-8"
                 >
