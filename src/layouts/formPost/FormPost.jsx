@@ -699,12 +699,16 @@ const FormPost = ({ func, postId }) => {
             >
               Ghi chú:
             </label>
-            <textarea
-              className="w-[20vw] h-[10vh] shadow-md border-2 border-custom_gray bg-gray-200 rounded-md py-1 px-2 text-[0.9rem] focus:outline-none"
-              id="note"
-              value={note}
-              onChange={(e) => setNote(e.target.value)}
-            />
+            <div className="flex flex-col">
+              <textarea
+                className="w-[20vw] h-[10vh] shadow-md border-2 border-custom_gray bg-gray-200 rounded-md py-1 px-2 text-[0.9rem] focus:outline-none resize-none"
+                id="note"
+                value={note}
+                maxLength={200}
+                onChange={(e) => setNote(e.target.value)}
+              />
+              <div className="remaining1 text-slate-500 text-sm self-end mt-2">{note.length}/200</div>
+            </div>
           </div>
           <div>
             <button className="flex bg-custom_darkblue p-2 rounded-lg ml-48">
