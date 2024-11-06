@@ -28,10 +28,10 @@ const Review = ({ height, tutor_id }) => {
     const [showReportIndex, setShowReportIndex] = useState(null);
     const [showReportContentIndex, setShowReportContentIndex] = useState(null);
     const [valueSort, setValueSort] = useState('Từ mới - cũ')
-    const [valueSortRating, setValueSortRating] = useState('Giảm dần')
+    const [valueSortRating, setValueSortRating] = useState('')
     const [isClickSort, setIsClickSort] = useState(false)
     const [isClickSortRating, setIsClickSortRating] = useState(false)
-
+    const [visibleReviews, setVisibleReviews] = useState(4);
 
     const handleClickSort = () => {
         setIsClickSort(!isClickSort)
@@ -50,7 +50,26 @@ const Review = ({ height, tutor_id }) => {
         setValueSortRating(sort)
         setIsClickSortRating(!isClickSortRating)
     }
+    const loadMoreReviews = () => setVisibleReviews(visibleReviews + 4);
+    const collapseReviews = () => setVisibleReviews(4);
 
+    const filterReviews = () => {
+        const sortedReviews = [...reviews];
+
+        if (valueSort === 'Từ mới - cũ') {
+            sortedReviews.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+        } else {
+            sortedReviews.sort((a, b) => new Date(a.created_at) - new Date(b.created_at));
+        }
+
+        if (valueSortRating === 'Giảm dần') {
+            sortedReviews.sort((a, b) => b.rating - a.rating);
+        } else {
+            sortedReviews.sort((a, b) => a.rating - b.rating);
+        }
+
+        return sortedReviews;
+    };
     const formatDate = (isoDate) => {
         if (!isoDate) return "N/A";
         const date = new Date(isoDate);
@@ -100,7 +119,7 @@ const Review = ({ height, tutor_id }) => {
         setShowReportIndex(null);
         setShowReportContentIndex(id);
     };
-
+    const displayedReviews = filterReviews();
     return (
         <div className="flex flex-col w-full px-4 pb-6">
             <div className="flex items-center mr-3">
@@ -181,7 +200,8 @@ const Review = ({ height, tutor_id }) => {
             <div className={`grid grid-cols-2 gap-5 ${height} overflow-y-scroll scrollbar scrollbar-thumb-white/30`}>
                 {[0, 1].map((col) => (
                     <div key={col} className="flex flex-col space-y-5">
-                        {reviews
+                        {displayedReviews
+                            .slice(0, visibleReviews)
                             .filter((_, index) => index % 2 === col)
                             .map((review) => (
                                 <div key={review.id} className="flex flex-col bg-white border-b border-gray-200 rounded-lg px-6 py-4 shadow-xl">
@@ -231,7 +251,27 @@ const Review = ({ height, tutor_id }) => {
                             ))}
                     </div>
                 ))}
+
             </div>
+            {visibleReviews < reviews.length ? (
+                <button
+                    className="flex gap-2 items-center mt-4 self-center px-4 py-2 bg-transparent text-custom_darkblue text-shadow-md font-semibold transition duration-300 transform hover:scale-105"
+                    onClick={loadMoreReviews}
+                >
+                    Xem thêm
+                    <i className="fa-solid fa-angle-down transition-transform transform duration-300 group-hover:rotate-180"></i>
+                </button>
+            ) : (
+                <button
+                    className="flex gap-2 items-center mt-4 self-center px-4 py-2 text-custom_darkblue text-shadow-md font-semibold transition-all duration-300 transform hover:scale-105"
+                    onClick={collapseReviews}
+                >
+                    Thu gọn
+                    <i className="fa-solid fa-angle-up transition-transform transform duration-300 group-hover:rotate-180"></i>
+                </button>
+            )}
+
+
         </div>
 
     );
