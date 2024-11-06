@@ -20,6 +20,12 @@ const Header = ({ setSearch }) => {
   const [avatar, setAvatar] = useState('');
 
   useEffect(() => {
+    if (sessionToken) {
+      setActiveLink('main-page');
+    }
+  }, [sessionToken]);
+
+  useEffect(() => {
     if (role !== 'admin') {
       const fetchData = async () => {
         try {
