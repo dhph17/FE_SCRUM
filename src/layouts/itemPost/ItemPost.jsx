@@ -34,7 +34,7 @@ const ItemPostVu = ({ user, children, tag }) => {
 
     useEffect(() => {
         if (tag === "Đã giao") setTagIcon(Img2);
-        else if (tag === "Đã phê duyệt") setTagIcon(Img3);
+        else if (tag === "Đã phê duyệt" || tag === "Đã đóng") setTagIcon(Img3);
         else if (tag === "Đang chờ phê duyệt" || tag === "Chờ duyệt") setTagIcon(Img1);
     }, [tag]);
 
@@ -71,7 +71,7 @@ const ItemPostVu = ({ user, children, tag }) => {
                             )}
                         </div>
                     </div>
-                    {id !== user.parent_id && role !== 'admin' && (
+                    {id !== user.parent_id && role !== 'admin' && tag !== "Đã đóng" && (
                         <div>
                             <i
                                 className={`fa-solid fa-ellipsis text-2xl cursor-pointer hover:text-black transition-all ${showReport || showReportContent ? 'text-black' : 'text-slate-100'
@@ -154,7 +154,7 @@ const ItemPostVu = ({ user, children, tag }) => {
                 </ul>
                 <div className="px-4 pr-8 flex mt-4">
                     <strong className="text-shadow-md italic text-nowrap mr-3">Ghi chú:</strong>
-                    <p>{user.description}</p>
+                    <p className="line-clamp-3 hover:line-clamp-none">{user.description}</p>
                 </div>
                 <div className="h-20 bg-[#002182] mt-5 rounded-b-[0.8rem] flex justify-center items-center">
                     {children}

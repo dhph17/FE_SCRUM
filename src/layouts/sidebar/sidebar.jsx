@@ -104,6 +104,16 @@ const Sidebar = ({ activeItem }) => {
               <i className="fas fa-pencil-alt mr-3"></i>
               Quản lý báo cáo
             </Link>
+            <Link
+              to="/admin/statistical"
+              className={`flex items-center cursor-pointer p-2 rounded-lg ${activeItem === 7
+                ? "bg-custom_darkblue text-white"
+                : "hover:bg-custom_darkblue hover:text-white"
+                }`}
+            >
+              <i className="fas fa-pencil-alt mr-3"></i>
+              Thống kê
+            </Link>
           </div>
         );
       case "tutor":

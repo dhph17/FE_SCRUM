@@ -20,6 +20,12 @@ const Header = ({ setSearch }) => {
   const [avatar, setAvatar] = useState('');
 
   useEffect(() => {
+    if (sessionToken) {
+      setActiveLink('main-page');
+    }
+  }, [sessionToken]);
+
+  useEffect(() => {
     if (role !== 'admin') {
       const fetchData = async () => {
         try {
@@ -108,7 +114,7 @@ const Header = ({ setSearch }) => {
                   key={path}
                   to={`${rolePath}/${path}`}
                   className={`font-semibold mx-6 cursor-pointer transition duration-200 
-                    ${activeLink === path ? 'underline underline-offset-4 text-custom_yellow' : 'hover:text-custom_yellow'}`}
+                    ${activeLink === path ? 'underline underline-offset-4' : 'hover:scale-110'}`}
                   onClick={() => setActiveLink(path)}
                 >
                   {path === 'main-page' ? 'Trang chủ' : 'Hồ sơ cá nhân'}
@@ -169,6 +175,16 @@ const Header = ({ setSearch }) => {
                 className="w-20 h-20 bg-center rounded-full object-cover cursor-pointer"
               />
             </Link>
+          </div>
+          <div className="pb-4">
+            <ul className="flex">
+              <li className="font-semibold mx-6 cursor-pointer">
+                <Link to="/">GIỚI THIỆU</Link>
+              </li>
+              <li className="font-semibold mx-6 cursor-pointer">
+                <a href="#contact">LIÊN HỆ</a>
+              </li>
+            </ul>
           </div>
           <div className="pb-4">
             <button
