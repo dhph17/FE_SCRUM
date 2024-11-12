@@ -53,7 +53,7 @@ const ParentProfile = () => {
                     address: data.address !== "Not recorded" ? data.address : '',
                     birthdate: data.birthdate !== "Not recorded" ? data.birthdate : '',
                     phone_number: data.phone_number !== "Not recorded" ? data.phone_number : '',
-                    gender: data.gender !== "Not recorded" ? data.gender : '',
+                    gender: data.gender !== "Not recorded" ? data.gender : 'Nam',
                 });
 
                 if (data.avatar) {
@@ -152,16 +152,16 @@ const ParentProfile = () => {
             'address',
             'phone_number',
         ];
-    
+
         const errors = {};
         requiredFields.forEach((field) => {
             if (!formData[field] || formData[field].trim() === '') {
                 errors[field] = 'This field is required';
             }
         });
-    
+
         setValidationErrors(errors);
-    
+
         if (Object.keys(errors).length > 0) {
             alert('Please fill in all required fields.');
             return;

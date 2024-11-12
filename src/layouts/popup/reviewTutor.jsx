@@ -16,7 +16,7 @@ const ReviewTutor = ({ onClose, tutor_id }) => {
         const fetchTutorData = async () => {
             try {
                 const response = await axios.get(
-                    `http://127.0.0.1:8000/api/tutors/aa575a62-c2a9-47b7-a161-7efd82ce2f31/`,
+                    `http://127.0.0.1:8000/api/tutors/${tutor_id}/`,
                     {
                         headers: {
                             // Authorization: `Bearer ${sessionToken}`,

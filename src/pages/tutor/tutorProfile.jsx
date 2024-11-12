@@ -32,7 +32,7 @@ const TutorProfile = () => {
     const rawTutorId = localStorage.getItem("id") || "";
     const token = localStorage.getItem("accessToken");
     const tutorId = rawTutorId.replace(/-/g, "");
-    
+
 
     useEffect(() => {
         const fetchTutorData = async () => {
@@ -62,7 +62,7 @@ const TutorProfile = () => {
                     birthdate: data.birthdate !== "Not recorded" ? data.birthdate : '',
                     bio_link: data.bio_link !== "Not recorded" ? data.bio_link : '',
                     phone_number: data.phone_number !== "Not recorded" ? data.phone_number : '',
-                    gender: data.gender !== "Not recorded" ? data.gender : '',
+                    gender: data.gender !== "Not recorded" ? data.gender : 'Nam',
                     educational_background: data.educational_background !== "Not recorded" ? data.educational_background : '',
                 });
 
@@ -161,24 +161,23 @@ const TutorProfile = () => {
             'birthdate',
             'address',
             'phone_number',
-            'bio_link',
             'educational_background'
         ];
-    
+
         const errors = {};
         requiredFields.forEach((field) => {
             if (!formData[field] || formData[field].trim() === '') {
                 errors[field] = 'This field is required';
             }
         });
-    
+
         setValidationErrors(errors);
-    
+
         if (Object.keys(errors).length > 0) {
             alert('Please fill in all required fields.');
             return;
         }
-    
+
         setLoading(true);
         try {
             const formDataToSend = new FormData();
@@ -190,7 +189,7 @@ const TutorProfile = () => {
             formDataToSend.append('bio_link', formData.bio_link);
             formDataToSend.append('phone_number', formData.phone_number);
             formDataToSend.append('educational_background', formData.educational_background);
-    
+
             const response = await axios.put(
                 `http://127.0.0.1:8000/api/tutors/${tutorId}/`,
                 formDataToSend,
@@ -201,7 +200,7 @@ const TutorProfile = () => {
                     },
                 }
             );
-    
+
             console.log("Profile updated successfully:", response.data);
             alert("Profile updated successfully!");
         } catch (error) {

@@ -95,7 +95,7 @@ const TutorProfileToReview = ({ tutor_id, idPost, idParent, onClose, }) => {
                 }
             }}
         >
-            <div className="bg-gradient-to-r from-slate-100 to-slate-50 rounded-lg p-8 w-[50%] shadow-lg border-[5px] border-[#002182] border-double">
+            <div className="bg-gradient-to-r from-slate-100 to-slate-50 rounded-lg p-8 min-w-[50%] shadow-lg border-[5px] border-[#002182] border-double">
                 <h2 className="text-3xl font-bold mb-6 text-center text-[#002182]">
                     Đánh giá gia sư
                 </h2>
@@ -119,8 +119,8 @@ const TutorProfileToReview = ({ tutor_id, idPost, idParent, onClose, }) => {
                                 </div>
                                 <div className="flex flex-col space-y-3">
                                     <p className="text-lg font-medium flex">
-                                        <strong>Họ và tên:</strong>
-                                        <p className="text-[#002182] ml-5 font-normal">
+                                        <strong className="text-nowrap">Họ và tên:</strong>
+                                        <p className="text-[#002182] ml-5 font-normal text-nowrap">
                                             {tutorProfile.tutorname}
                                         </p>
                                     </p>
@@ -154,7 +154,7 @@ const TutorProfileToReview = ({ tutor_id, idPost, idParent, onClose, }) => {
                                     </div>
                                 </p>
                                 <p className="text-lg font-medium flex flex-row">
-                                    <strong>Địa chỉ:</strong>{" "}
+                                    <strong className="text-nowrap">Địa chỉ:</strong>{" "}
                                     <div className="text-[#002182] ml-5 font-normal">
                                         {tutorProfile.address}
                                     </div>
