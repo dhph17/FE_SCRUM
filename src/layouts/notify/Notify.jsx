@@ -50,15 +50,15 @@ const Notify = () => {
     // Cập nhật trạng thái đã đọc ở client
     setNotifications((prev) =>
       prev.map((notification) =>
-        notification.id === notificationId
-          ? { ...notification, is_read: true }
+        notification.notification_id === notificationId
+          ? { ...notification, read: true }
           : notification
       )
     );
   };
 
   const unreadCount = notifications.filter(
-    (notification) => !notification.is_read
+    (notification) => !notification.read
   ).length;
 
   return (
@@ -81,21 +81,30 @@ const Notify = () => {
             <ul className="mt-2 max-h-64 overflow-y-auto bg-white rounded-lg">
               {notifications.map((notification) => (
                 <li
-                  key={notification.id}
+                  key={notification.notification_id}
                   className={`p-3 border-b flex items-center ${
-                    notification.is_read ? "bg-gray-200" : ""
+                    notification.read ? "bg-gray-200" : ""
                   }`}
                 >
+                  <img
+                    src={`${import.meta.env.VITE_API_ENDPOINT}${
+                      notification.additional_information.reporter_avatar
+                    }`}
+                    alt="Avatar"
+                    className="h-10 w-10 rounded-full mr-3"
+                  />
                   <div className="flex-1">
                     <p className="text-sm text-gray-800">
-                      {notification.content}
+                      {notification.message}
                     </p>
                     <p className="text-xs text-gray-500 mb-1">
-                      {new Date(notification.created_at).toLocaleString()}
+                      {notification.time}
                     </p>
-                    {!notification.is_read && (
+                    {!notification.read && (
                       <button
-                        onClick={() => handleMarkAsRead(notification.id)}
+                        onClick={() =>
+                          handleMarkAsRead(notification.notification_id)
+                        }
                         className="text-xs text-green-500 hover:text-green-600"
                       >
                         Đánh dấu đã xem
