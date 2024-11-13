@@ -232,7 +232,9 @@ const Review = ({ height, tutor_id }) => {
           <FontAwesomeIcon icon={faStar} className="text-yellow-600 mr-2" />
           <div className="text-lg font-semibold text-gray-700">
             Số sao trung bình:{" "}
-            <span className="text-yellow-600">{everageRating.toFixed(1)}</span>
+            <span className="text-yellow-600">
+              {everageRating ? everageRating.toFixed(1) : "N/A"}
+            </span>
           </div>
         </div>
       </div>
