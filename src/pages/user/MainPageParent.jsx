@@ -442,7 +442,7 @@ const MainPageParent = ({ searchTerm }) => {
           {currentPosts.map((parent, index) => (
             <div
               key={index}
-              className="border-[3px] rounded-[1rem] border-[#002182] shadow-md bg-white"
+              className="border-[3px] rounded-[1rem] border-[#002182] shadow-md bg-white mb-6"
             >
               <ItemPost user={parent} />
             </div>
@@ -450,7 +450,7 @@ const MainPageParent = ({ searchTerm }) => {
         </div>
         {/* Pagination */}
         {posts.length > 0 ? (
-          <div className="mt-8">
+          <div className="mt-6">
             <Pagination
               currentPage={currentPage}
               totalPages={totalPages}

@@ -7,12 +7,16 @@ import User from '../../assets/image/User.png';
 import ClassTimeDetail from "../../layouts/popup/classTime_Popup";
 import { useAppContext } from "../../AppProvider";
 import ReportContent from "../popup/reportContent";
+import { AiOutlineLike } from "react-icons/ai";
+import { FaRegComment } from "react-icons/fa";
+import CommentPost from "../popup/commentPost";
 
 const ItemPostVu = ({ user, children, tag }) => {
     const [tagIcon, setTagIcon] = useState(null);
     const [selectedTime, setSelectedTime] = useState();
     const [showReport, setShowReport] = useState(false);
     const [showReportContent, setShowReportContent] = useState(false);
+    const [showOpenCmt, setShowOpenCmt] = useState(false)
 
     const { role, id } = useAppContext();
 
@@ -156,10 +160,29 @@ const ItemPostVu = ({ user, children, tag }) => {
                     <strong className="text-shadow-md italic text-nowrap mr-3">Ghi chú:</strong>
                     <p className="line-clamp-3 hover:line-clamp-none">{user.description}</p>
                 </div>
-                <div className="h-20 bg-[#002182] mt-5 rounded-b-[0.8rem] flex justify-center items-center">
+                <div className="relative h-20 bg-[#002182] mt-5 rounded-b-[0.8rem] flex justify-center items-center">
                     {children}
+                    <div className="absolute flex gap-3 -bottom-[30%] left-5" >
+                        <div className="bg-white p-3 rounded-full cursor-pointer group">
+                            <AiOutlineLike className="w-6 h-6 group-hover:scale-110" />
+                        </div>
+                        <div
+                            className="bg-white p-3 rounded-full cursor-pointer group"
+                            onClick={() => {
+                                setShowOpenCmt(true);
+                            }}
+                        >
+                            <FaRegComment className="w-6 h-6 group-hover:scale-110" />
+                        </div>
+                    </div>
                 </div>
             </div>
+
+            {
+                showOpenCmt && (
+                    <CommentPost onClose={() => setShowOpenCmt(false)} />
+                )
+            }
 
             {selectedTime && (
                 <ClassTimeDetail
