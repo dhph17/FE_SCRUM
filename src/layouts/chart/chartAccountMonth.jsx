@@ -22,18 +22,17 @@ const MonthlyAccountChart = () => {
         return months.reverse();
     };
 
-
     const months = getMonths();
-    const [filter, setFilter] = useState('3-months'); // Default to 1 year
-    const [apiData, setApiData] = useState(null); // State to store API data
+    const [filter, setFilter] = useState('3-months');
+    const [apiData, setApiData] = useState(null);
+    const [showInsight, setShowInsight] = useState(false);
 
-    // Fetch the API data
     useEffect(() => {
         const fetchData = async () => {
             try {
                 const response = await fetch('http://127.0.0.1:8000/api/statistics/?category=users');
                 const result = await response.json();
-                setApiData(result.data.users_stat_by_roles); // Assuming the API returns data in this format
+                setApiData(result.data.users_stat_by_roles);
             } catch (error) {
                 console.error('Error fetching API data:', error);
             }
@@ -42,7 +41,6 @@ const MonthlyAccountChart = () => {
         fetchData();
     }, []);
 
-    // Function to filter data based on the selected filter (3-months, 6-months, 1-year)
     const getFilteredData = () => {
         let filterMonths = [];
         let filterParentAccounts = [];
@@ -50,24 +48,16 @@ const MonthlyAccountChart = () => {
 
         if (!apiData) return { filterMonths, filterParentAccounts, filterTutorAccounts };
 
-        if (filter === '3-months') {
-            filterMonths = months.slice(-3);
-            filterParentAccounts = filterMonths.map((month) => apiData[month]?.parent || 0);
-            filterTutorAccounts = filterMonths.map((month) => apiData[month]?.tutor || 0);
-        } else if (filter === '6-months') {
-            filterMonths = months.slice(-6);
-            filterParentAccounts = filterMonths.map((month) => apiData[month]?.parent || 0);
-            filterTutorAccounts = filterMonths.map((month) => apiData[month]?.tutor || 0);
-        } else {
-            filterMonths = months;
-            filterParentAccounts = filterMonths.map((month) => apiData[month]?.parent || 0);
-            filterTutorAccounts = filterMonths.map((month) => apiData[month]?.tutor || 0);
-        }
+        const monthCount = filter === '3-months' ? 3 : filter === '6-months' ? 6 : 12;
+        filterMonths = months.slice(-monthCount);
+        filterParentAccounts = filterMonths.map((month) => apiData[month]?.parent || 0);
+        filterTutorAccounts = filterMonths.map((month) => apiData[month]?.tutor || 0);
 
         return { filterMonths, filterParentAccounts, filterTutorAccounts };
     };
 
     const { filterMonths, filterParentAccounts, filterTutorAccounts } = getFilteredData();
+
     const totalAccounts = filterParentAccounts.reduce((acc, val) => acc + val, 0) + filterTutorAccounts.reduce((acc, val) => acc + val, 0);
 
     const chartData = {
@@ -100,7 +90,7 @@ const MonthlyAccountChart = () => {
                 display: true,
                 text: 'Số lượng tài khoản đăng ký theo tháng',
                 font: {
-                    size: 18, // Kích thước chữ trong title
+                    size: 18,
                     weight: 'bold',
                 },
             },
@@ -109,38 +99,45 @@ const MonthlyAccountChart = () => {
             x: {
                 title: {
                     display: true,
-                    text: 'Thời gian', // Nhãn cho trục X
+                    text: 'Thời gian',
                     font: {
                         weight: 'bold',
                     },
                 },
-
             },
             y: {
                 title: {
                     display: true,
-                    text: 'Số lượng tài khoản', // Nhãn cho trục Y
+                    text: 'Số lượng tài khoản',
                     font: {
                         weight: 'bold',
                     },
                 },
                 ticks: {
                     callback: function (value) {
-                        return value % 1 === 0 ? value : ''; // Hiển thị số nguyên cho trục Y
+                        return value % 1 === 0 ? value : '';
                     },
                 },
             },
         },
     };
 
-
+    // Calculate the most and least active months based on the selected time period
+    const totalAccountsByMonth = filterParentAccounts.map((count, i) => count + filterTutorAccounts[i]);
+    const maxAccounts = Math.max(...totalAccountsByMonth);
+    const minAccounts = Math.min(...totalAccountsByMonth);
+    const mostActiveMonth = filterMonths[totalAccountsByMonth.indexOf(maxAccounts)];
+    const leastActiveMonth = filterMonths[totalAccountsByMonth.indexOf(minAccounts)];
 
     return (
         <div>
             <div style={{ marginBottom: '20px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                 <select
                     value={filter}
-                    onChange={(e) => setFilter(e.target.value)}
+                    onChange={(e) => {
+                        setFilter(e.target.value);
+                        setShowInsight(false); // Reset insight visibility when the filter changes
+                    }}
                     style={{
                         padding: '8px 12px',
                         fontSize: '14px',
@@ -163,6 +160,12 @@ const MonthlyAccountChart = () => {
                 </div>
             </div>
             <Bar data={chartData} options={options} />
+                <p style={{ marginTop: '1rem' }}>
+                    Tháng có số lượng đăng ký nhiều nhất là <strong>{mostActiveMonth}</strong> với <strong>{maxAccounts}</strong> tài khoản đăng ký
+                    <br />
+                    Tháng có số lượng đăng ký ít nhất là <strong>{leastActiveMonth}</strong> với <strong>{minAccounts}</strong> tài khoản đăng ký.
+                </p>
+        
         </div>
     );
 };

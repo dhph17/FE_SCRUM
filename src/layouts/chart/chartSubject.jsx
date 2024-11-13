@@ -7,6 +7,8 @@ ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend)
 
 const SubjectPostsBarChart = () => {
     const [postCounts, setPostCounts] = useState([]);
+    const [showInsight, setShowInsight] = useState(false);
+
     const subjectEnum = [
         'Toán', 'Văn học', 'Vật lý', 'Hóa học', 'Sinh học',
         'Tiếng Anh', 'Lịch sử', 'Địa lý', 'Kinh tế', 'Khoa học máy tính', 'Khác'
@@ -27,7 +29,6 @@ const SubjectPostsBarChart = () => {
     };
 
     useEffect(() => {
-        // Fetch data from the API
         const fetchData = async () => {
             try {
                 const response = await fetch('http://127.0.0.1:8000/api/statistics/?category=posts');
@@ -47,15 +48,21 @@ const SubjectPostsBarChart = () => {
         fetchData();
     }, []);
 
+    // Calculate the subject with the most and least posts
+    const maxPosts = Math.max(...postCounts);
+    const minPosts = Math.min(...postCounts);
+    const mostPostedSubject = subjectEnum[postCounts.indexOf(maxPosts)];
+    const leastPostedSubject = subjectEnum[postCounts.indexOf(minPosts)];
+
     // Chart data
     const chartData = {
-        labels: subjectEnum, // Subjects as the labels for the X axis
+        labels: subjectEnum,
         datasets: [
             {
                 label: 'Số lượng bài đăng',
-                data: postCounts, // Number of posts for each subject
-                backgroundColor: 'rgba(75, 192, 192, 0.6)', // Color for bars
-                borderColor: 'rgba(75, 192, 192, 1)', // Border color for bars
+                data: postCounts,
+                backgroundColor: 'rgba(75, 192, 192, 0.6)',
+                borderColor: 'rgba(75, 192, 192, 1)',
                 borderWidth: 1,
             },
         ],
@@ -67,6 +74,14 @@ const SubjectPostsBarChart = () => {
         plugins: {
             legend: {
                 position: 'top',
+            },
+            tooltip: {
+                callbacks: {
+                    footer: () => [
+                        `Môn có nhiều bài đăng nhất: ${mostPostedSubject} với ${maxPosts} bài đăng`,
+                        `Môn có ít bài đăng nhất: ${leastPostedSubject} với ${minPosts} bài đăng`
+                    ],
+                },
             },
         },
         scales: {
@@ -99,12 +114,17 @@ const SubjectPostsBarChart = () => {
         <div style={{ width: '100%', margin: '0 auto' }}>
             <h3 className='font-bold mb-3'>Số lượng bài đăng theo môn học</h3>
             <Bar data={chartData} options={options} />
+                <p>
+                    Môn học có nhiều bài đăng nhất là <strong>{mostPostedSubject}</strong> với <strong>{maxPosts}</strong> bài đăng.
+                    <br />
+                    Môn học có ít bài đăng nhất là <strong>{leastPostedSubject}</strong> với <strong>{minPosts}</strong> bài đăng.
+                </p>
         </div>
     );
 };
 
 SubjectPostsBarChart.propTypes = {
-    postCounts: PropTypes.array.isRequired, // Array of post counts corresponding to each subject
+    postCounts: PropTypes.array.isRequired,
 };
 
 export default SubjectPostsBarChart;

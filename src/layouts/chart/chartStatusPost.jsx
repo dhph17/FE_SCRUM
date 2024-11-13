@@ -12,6 +12,7 @@ const PostStatusBarChart = () => {
         rejected: 0,
         closed: 0,
     });
+    const [showInsight, setShowInsight] = useState(false); // State to toggle insight visibility
 
     // Fetch dữ liệu API và ánh xạ
     useEffect(() => {
@@ -35,23 +36,33 @@ const PostStatusBarChart = () => {
         fetchData();
     }, []);
 
+    // Calculate the most and least frequent post statuses
+    const statusData = [
+        { label: 'Chờ duyệt', count: postData.created },
+        { label: 'Đã duyệt', count: postData.approved },
+        { label: 'Bị từ chối', count: postData.rejected },
+        { label: 'Đã đóng', count: postData.closed },
+    ];
+    const maxStatus = statusData.reduce((prev, current) => (current.count > prev.count ? current : prev));
+    const minStatus = statusData.reduce((prev, current) => (current.count < prev.count ? current : prev));
+
     // Dữ liệu cho biểu đồ
     const chartData = {
-        labels: ['Chờ duyệt', 'Đã duyệt', 'Bị từ chối', 'Đã đóng'], // Labels in Vietnamese
+        labels: ['Chờ duyệt', 'Đã duyệt', 'Bị từ chối', 'Đã đóng'],
         datasets: [
             {
                 label: 'Phân phối bài đăng',
                 data: [
-                    postData.created, // Số lượng bài đăng chờ duyệt
-                    postData.approved, // Số lượng bài đăng đã duyệt
-                    postData.rejected, // Số lượng bài đăng bị từ chối
-                    postData.closed, // Số lượng bài đăng đã đóng
+                    postData.created,
+                    postData.approved,
+                    postData.rejected,
+                    postData.closed,
                 ],
                 backgroundColor: [
-                    '#FF6384', // Màu cho bài đăng chờ duyệt
-                    '#36A2EB', // Màu cho bài đăng đã duyệt
-                    '#FFCE56', // Màu cho bài đăng bị từ chối
-                    '#4BC0C0', // Màu cho bài đăng đã đóng
+                    '#FF6384',
+                    '#36A2EB',
+                    '#FFCE56',
+                    '#4BC0C0',
                 ],
                 borderColor: [
                     '#FF6384',
@@ -107,6 +118,12 @@ const PostStatusBarChart = () => {
                 <p className="mb-3">Tổng số bài đăng: <strong>{totalPosts}</strong></p>
             </div>
             <Bar data={chartData} options={options} />
+                <div style={{ marginTop: '1rem' }}>
+                    <p>
+                        Trạng thái có nhiều bài đăng nhất là <strong>{maxStatus.label}</strong> với <strong>{maxStatus.count}</strong> bài đăng.<br />
+                        Trạng thái có ít bài đăng nhất là <strong>{minStatus.label}</strong> với <strong>{minStatus.count}</strong> bài đăng.
+                    </p>
+                </div>
         </div>
     );
 };
