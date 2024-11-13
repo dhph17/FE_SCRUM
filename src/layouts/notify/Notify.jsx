@@ -73,7 +73,7 @@ const Notify = () => {
     <div className="relative">
       <button
         onClick={toggleDropdown}
-        className="relative p-2 rounded-full text-white bg-blue-500 hover:bg-blue-600 transition duration-300"
+        className="relative p-2 rounded-full text-white transition duration-300"
       >
         <FontAwesomeIcon icon={faBell} className="w-5 h-5" />
         {unreadCount > 0 && (
@@ -90,14 +90,12 @@ const Notify = () => {
               {notifications.map((notification) => (
                 <li
                   key={notification.notification_id}
-                  className={`p-3 border-b flex items-start ${
-                    notification.read ? "bg-gray-200" : "bg-white"
-                  } hover:bg-gray-100 transition duration-300`}
+                  className={`p-3 border-b flex items-start ${notification.read ? "bg-gray-200" : "bg-white"
+                    } hover:bg-gray-100 transition duration-300`}
                 >
                   <img
-                    src={`${import.meta.env.VITE_API_ENDPOINT}${
-                      notification.additional_information.reporter_avatar
-                    }`}
+                    src={`${import.meta.env.VITE_API_ENDPOINT}${notification.additional_information.reporter_avatar
+                      }`}
                     alt="Avatar"
                     className="h-12 w-12 rounded-full mr-3 object-cover border-[1px] border-gray-400 border-solid"
                   />

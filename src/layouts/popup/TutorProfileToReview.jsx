@@ -108,7 +108,7 @@ const TutorProfileToReview = ({ tutor_id, idPost, idParent, onClose, }) => {
                                 <div className="flex flex-col items-center">
                                     <img
                                         src={
-                                            `${import.meta.env.VITE_API_ENDPOINT}/${tutorProfile.avatar}`
+                                            `${import.meta.env.VITE_API_ENDPOINT}${tutorProfile.avatar}`
                                         }
                                         alt="Tutor Avatar"
                                         className="rounded-full w-[7rem] h-[7rem] object-cover shadow-lg border-[3px] border-[#002182] self-center"
@@ -165,13 +165,15 @@ const TutorProfileToReview = ({ tutor_id, idPost, idParent, onClose, }) => {
                                         {tutorProfile.user.email}
                                     </div>
                                 </p>
-                                <p className="text-lg font-medium flex flex-row">
-                                    <strong>Liên kết:</strong>{" "}
+                                <p className="text-lg font-medium flex flex-row items-center">
+                                    <strong>Liên kết:</strong>
                                     <a
                                         href={tutorProfile.bio_link}
-                                        className="text-blue-500 hover:underline ml-5"
+                                        className="text-blue-500 hover:underline ml-2"
+                                        target="_blank"
+                                        rel="noopener noreferrer"
                                     >
-                                        {tutorProfile.bio_link}
+                                        Liên kết
                                     </a>
                                 </p>
                             </div>

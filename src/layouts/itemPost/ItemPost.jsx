@@ -163,7 +163,7 @@ const ItemPostVu = ({ user, children, tag }) => {
                 <div className="relative h-20 bg-[#002182] mt-5 rounded-b-[0.8rem] flex justify-center items-center">
                     {children}
                     {
-                        tag === undefined && (
+                        (tag === undefined || tag === "Chờ duyệt" || tag === "Đã phê duyệt") && (
                             <div className="absolute flex gap-3 -bottom-[30%] left-5" >
                                 <div className="bg-white p-3 rounded-full cursor-pointer group border border-slate-500">
                                     <AiOutlineLike className="w-6 h-6 group-hover:scale-110" />

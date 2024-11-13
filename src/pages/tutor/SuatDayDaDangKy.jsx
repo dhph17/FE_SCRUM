@@ -94,11 +94,11 @@ const SuatDayDaDangKy = () => {
           position: "bottom-right",
           autoClose: 3000,
         });
-        
+
         setTimeout(() => {
           window.location.reload();
           navigate("/tutor/registered");
-      }, 2000);
+        }, 2000);
         navigate("/tutor/registered");
       } else {
         toast.error("Xóa bài đăng thất bại!", {
@@ -125,7 +125,7 @@ const SuatDayDaDangKy = () => {
           {currentPosts.map((tutor, index) => (
             <div
               key={index}
-              className="border-[3px] rounded-[1rem] border-[#002182] shadow-md bg-white"
+              className="border-[3px] rounded-[1rem] border-[#002182] shadow-md bg-white mb-6"
             >
               <ItemPost user={tutor} tag="Chờ duyệt">
                 <button
@@ -143,7 +143,7 @@ const SuatDayDaDangKy = () => {
         </div>
         {/* Pagination */}
         {posts.length > 0 ? (
-          <div className="mt-8">
+          <div className="mt-6">
             <Pagination
               currentPage={currentPage}
               totalPages={totalPages}
