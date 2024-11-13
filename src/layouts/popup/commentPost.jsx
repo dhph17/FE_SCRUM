@@ -1,9 +1,10 @@
 import PropTypes from "prop-types";
+import { useAppContext } from "../../AppProvider";
 import { useEffect, useState } from 'react'
 import {
     FaCommentAlt,
-    FaCaretUp,
-    FaCaretDown
+    // FaCaretUp,
+    // FaCaretDown
 } from "react-icons/fa";
 import avatar from "../../assets/image/User.png";
 import {
@@ -14,69 +15,82 @@ import {
 import { CommentProvider } from '../provider/commentProvider';
 import CommentPart from '../comment/commentPart';
 
-const CommentSection = ({ id, onClose }) => {
-    const sorts = ['Mới nhất', 'Cũ nhất']
-    const [valueSort, setValueSort] = useState('Mới nhất')
-    const [isClickSort, setIsClickSort] = useState(false)
+const CommentSection = ({ idPost, onClose }) => {
+    const { id, sessionToken } = useAppContext()
+    // const sorts = ['Mới nhất', 'Cũ nhất']
+    // const [valueSort, setValueSort] = useState('Mới nhất')
+    // const [isClickSort, setIsClickSort] = useState(false)
     const [comments, setComments] = useState([]);
-    const [page, setPage] = useState(1);
-    const [loading, setLoading] = useState(false);
-    const [totalPage, setTotalPage] = useState(100)
     const [totalComment, setTotalCmt] = useState()
+    const [reply, setReplyStatus] = useState()
 
-    const handleClickSort = () => {
-        setIsClickSort(!isClickSort)
-    }
+    // const handleClickSort = () => {
+    //     setIsClickSort(!isClickSort)
+    // }
 
-    const handleValueSort = (sort) => {
-        setValueSort(sort)
-        setIsClickSort(!isClickSort)
-    }
+    // const handleValueSort = (sort) => {
+    //     setValueSort(sort)
+    //     setIsClickSort(!isClickSort)
+    // }
 
     const fetchComments = async () => {
-        setLoading(true);
-        const response = await fetchApiData(`/api/songs/comment/${id}`, 'GET', null, null, { page: page })
-        if (response.success) {
-            const data = await response.data;
-            setComments(prevComments => [...prevComments, ...data.comments]);
-            setPage(prevPage => prevPage + 1);
-            setTotalPage(data.totalPage)
-            setTotalCmt(data.totalComment)
+        try {
+            const response = await fetch(
+                `${import.meta.env.VITE_API_ENDPOINT}/api/postcomments/${idPost}/`
+            );
+            const data = await response.json();
+            setComments(data.comments);
+            setTotalCmt(data.total_comments)
+        } catch (error) {
+            console.error(error);
         }
-        setLoading(false);
     };
 
     useEffect(() => {
-        setComments([])
-        setPage(1)
         fetchComments(); // Fetch first page data
     }, [id]);
 
-    // const handleScroll = (event) => {
-    //     const { scrollTop, scrollHeight, clientHeight } = event.currentTarget;
-    //     if (scrollHeight - scrollTop <= clientHeight + 50 && !loading) {
-    //         if (page <= totalPage) {
-    //             fetchComments()
-    //         }
-    //     }
-    // };
+    const handPostCmt = async () => {
+        try {
+            const response = await fetch(`${import.meta.env.VITE_API_ENDPOINT}/api/postcomments/`, {
+                method: "POST",
+                headers: {
+                    Authorization: `Bearer ${sessionToken}`,
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    post_id: idPost,
+                    user_id: id,
+                    comment_parent_id: '',
+                    comment: reply
+                }),
+            });
+
+            const data = await response.json();
+            if (response.ok) {
+                setComments((prevCmt) => [data, ...prevCmt])
+            }
+        } catch (error) {
+            console.log(error)
+        }
+    }
 
     return (
         <div
-            className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 shadow-md"
+            className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 shadow-md z-20"
             onClick={(event) => {
                 if (event.target === event.currentTarget) {
                     onClose();
                 }
             }}
         >
-            <div className='w-[40%] p-3 bg-white'>
-                <div className='flex justify-between mb-2 items-end'>
+            <div className='w-[40%] h-[75%] p-6 bg-white'>
+                <div className='flex justify-between items-end'>
                     <div className='flex items-center text-primaryColorGray'>
                         <FaCommentAlt />
                         <p className='ml-2'>{totalComment} Comment</p>
                     </div>
-                    <div className='relative'>
+                    {/* <div className='relative'>
                         <button
                             className='cursor-pointer w-[12rem] text-[0.9rem] flex justify-end items-center border-2 border-black p-2 transition duration-300 rounded-md'
                             onClick={handleClickSort}
@@ -109,12 +123,12 @@ const CommentSection = ({ id, onClose }) => {
                                 </div>
                             )
                         }
-                    </div>
+                    </div> */}
                 </div>
-                <div className="w-full h-[0.125rem] bg-gray-500 my-5">
+                <div className="w-full h-[0.125rem] bg-gray-500 mt-2 mb-5">
 
                 </div>
-                <div className="min-h-[120px] max-h-[600px] overflow-auto pr-4 scrollbar-thin scrollbar-thumb-transparent/30 scrollbar-track-transparent" onScroll={handleScroll}>
+                <div className="min-h-[120px] h-[77%] overflow-auto pr-4 scrollbar-thin scrollbar-thumb-transparent/30 scrollbar-track-transparent">
                     {comments?.map((comment, index) => (
                         <div key={index}>
                             <CommentProvider>
@@ -122,7 +136,6 @@ const CommentSection = ({ id, onClose }) => {
                             </CommentProvider>
                         </div>
                     ))}
-                    {loading && <p>Loading more comments...</p>}
                 </div>
                 <div className='flex justify-between items-center mt-5'>
                     <div className='w-[100%] mr-2 flex'>
@@ -139,14 +152,20 @@ const CommentSection = ({ id, onClose }) => {
                                 type="text"
                                 className='w-full py-2 bg-transparent border-2 border-custom_gray text-[0.9rem] rounded-3xl pl-3 pr-10 focus:border-black'
                                 placeholder='Write a comment'
+                                value={reply}
+                                onChange={(e) => setReplyStatus(e.target.value)}
                             />
                             <IoMdClose
                                 className='w-6 h-6 absolute right-3 top-2 cursor-pointer'
+                                onClick={() => setReplyStatus('')}
                             />
                         </div>
                     </div>
 
-                    <div className='border-2 p-2 rounded-full bg-white text-custom_gray hover:text-black hover:border-black transition-all duration-300 cursor-pointer'>
+                    <div
+                        className='border-2 p-2 rounded-full bg-white text-custom_gray hover:text-black hover:border-black transition-all duration-300 cursor-pointer'
+                        onClick={handPostCmt}
+                    >
                         <IoIosSend />
                     </div>
                 </div>
@@ -157,7 +176,7 @@ const CommentSection = ({ id, onClose }) => {
 }
 
 CommentSection.propTypes = {
-    id: PropTypes.string,
+    idPost: PropTypes.string,
     onClose: PropTypes.func
 };
 

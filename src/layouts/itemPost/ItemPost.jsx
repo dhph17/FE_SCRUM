@@ -185,7 +185,7 @@ const ItemPostVu = ({ user, children, tag }) => {
 
             {
                 showOpenCmt && (
-                    <CommentPost onClose={() => setShowOpenCmt(false)} />
+                    <CommentPost idPost={user.post_id} onClose={() => setShowOpenCmt(false)} />
                 )
             }
 
