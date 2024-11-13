@@ -229,7 +229,7 @@ const Review = ({ height, tutor_id }) => {
           )}
         </div>
         <div className="flex items-center gap-2 ml-auto">
-          <p className="">Số sao trung bình:&nbsp;</p>
+          <p>Số sao trung bình:&nbsp;</p>
           <span className="font-bold">
             {everageRating ? everageRating.toFixed(1) : "N/A"}
           </span>
