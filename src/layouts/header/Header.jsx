@@ -144,7 +144,7 @@ const Header = ({ setSearch }) => {
           <Notify />
           <div className="flex text-white items-center cursor-pointer text-[1.1rem]">
             <div className="relative flex items-center gap-2">
-              <img src={avatar ? `${import.meta.env.VITE_API_ENDPOINT}/${avatar}` : User} alt="" className="w-[40px] h-[40px] rounded-full" />
+              <img src={avatar ? `${import.meta.env.VITE_API_ENDPOINT}${avatar}` : User} alt="" className="w-[40px] h-[40px] rounded-full" />
               <p className="font-semibold">{name}</p>
               <i
                 className={`fas ${showDropdown ? 'fa-chevron-up' : 'fa-chevron-down'} text-[0.8rem] ml-1`}

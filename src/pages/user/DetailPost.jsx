@@ -10,6 +10,7 @@ import Img3 from "../../assets/image/medal.png";
 import ClassTimeDetail from "../../layouts/popup/classTime_Popup";
 import TutorProfile from "../../layouts/popup/TutorProfile";
 import ReviewTutor from "../../layouts/popup/reviewTutor";
+import { FaStar } from "react-icons/fa";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -17,6 +18,7 @@ import "react-toastify/dist/ReactToastify.css";
 const DetailPost = () => {
     let navigate = useNavigate()
     const [dataPost, setDataPost] = useState({})
+    const [sortedRegistrations, setSortedRegistrations] = useState([]);
     const { sessionToken } = useAppContext();
     const { idPost } = useParams();
     const [getIdTutor, setIdTutor] = useState('')
@@ -26,7 +28,23 @@ const DetailPost = () => {
     const [tutor_id, setTutor_id] = useState(null);
     const [showFeedback, setShowFeedback] = useState(false)
     const [showProfile, setShowProfile] = useState(false)
+    const sortRating = ['Giảm dần', 'Tăng dần']
+    const [valueSortRating, setValueSortRating] = useState('Giảm dần')
+    const [isClickSortRating, setIsClickSortRating] = useState(false)
 
+    const handleClickSortRating = () => {
+        setIsClickSortRating(!isClickSortRating)
+    }
+
+    const handleValueSortRating = (sort) => {
+        setValueSortRating(sort);
+        setIsClickSortRating(false);
+
+        const sorted = [...sortedRegistrations].sort((a, b) =>
+            sort === 'Giảm dần' ? b.average_rating - a.average_rating : a.average_rating - b.average_rating
+        );
+        setSortedRegistrations(sorted);
+    };
 
     useEffect(() => {
         const fetchData = async () => {
@@ -45,7 +63,9 @@ const DetailPost = () => {
                 const data = await response.json();
 
                 if (response.ok) {
-                    // console.log("Lấy thành công");
+                    const sortedData = data.registration.sort((a, b) => b.average_rating - a.average_rating);
+                    console.log("Lấy thành công");
+                    setSortedRegistrations(sortedData)
                     setDataPost(data);
                 } else {
                     console.error("Lấy thất bại!");
@@ -143,7 +163,7 @@ const DetailPost = () => {
                                 <img
                                     className="w-[50px] h-[50px] rounded-full"
                                     // src="https://th.bing.com/th/id/OIP.0xm7fJtBKdm3hIVhXfmpQQHaJ4?&w=160&h=240&c=7&dpr=1.3&pid=ImgDet"
-                                    src={`${import.meta.env.VITE_API_ENDPOINT}/${dataPost.avatar}`}
+                                    src={`${import.meta.env.VITE_API_ENDPOINT}${dataPost.avatar}`}
                                     alt="avatar"
                                 />
                                 <div>
@@ -198,7 +218,7 @@ const DetailPost = () => {
                         </div>
                         <div className="px-4 pr-8 flex mt-4">
                             <strong className="text-shadow-md italic text-nowrap mr-3">Ghi chú:</strong>
-                            <p>{dataPost.description}</p>
+                            <p className=" line-clamp-3 hover:line-clamp-none">{dataPost.description}</p>
                         </div>
                         {selectedTime && (
                             <ClassTimeDetail
@@ -208,11 +228,49 @@ const DetailPost = () => {
                         )}
                     </div>
                     <div className="px-4 mt-3 flex flex-col self-center mb-3 w-[70%]">
-                        <p className="text-[1.2rem] font-bold text-custom_darkblue ">
-                            Danh sách gia sư đăng kí:{" "}
-                        </p>
-                        <div className="mt-4 max-h-[15rem] px-3 overflow-auto py-4 rounded-xl scrollbar scrollbar-thumb-white/85 shadow-md bg-slate-100 border border-slate-200 ">
-                            {dataPost.registration?.map((tutor, index) => (
+                        <div className="flex justify-between">
+                            <p className="text-[1.2rem] font-bold text-custom_darkblue ">
+                                Danh sách gia sư đăng kí:{" "}
+                            </p>
+                            <div className='relative flex items-center p-2 bg-white'>
+                                <label className="text-[0.9rem]" htmlFor="">Theo điểm đánh giá: </label>
+                                <button
+                                    className='cursor-pointer w-[6rem] text-[0.9rem] flex font-bold justify-end items-center transition duration-300 rounded-xl hover:bg-primaryColorPink'
+                                    onClick={handleClickSortRating}
+                                >
+                                    {valueSortRating}
+                                    {
+                                        isClickSortRating ? (
+                                            <i className="fa-solid fa-angle-up ml-2"></i>
+                                        ) : (
+                                            <i className="fa-solid fa-angle-down ml-2"></i>
+                                        )
+                                    }
+                                </button>
+                                {
+                                    isClickSortRating && (
+                                        <div className="absolute top-8 right-0 z-10 mt-1 w-24 origin-top-right rounded-md bg-white shadow-2xl ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" aria-orientation="vertical" aria-labelledby="menu-button">
+                                            <ul>
+                                                {sortRating.map((sort, index) => {
+                                                    return (
+                                                        <li
+                                                            key={index}
+                                                            onClick={() => handleValueSortRating(sort)}
+                                                            className='cursor-pointer text-[0.9rem] text-end p-2 hover:text-primaryColorPink'
+                                                        >
+                                                            {sort}
+                                                        </li>
+                                                    )
+                                                })}
+                                            </ul>
+                                        </div>
+                                    )
+                                }
+                            </div>
+                        </div>
+
+                        <div className="mt-1 max-h-[15rem] px-3 overflow-auto py-4 rounded-xl scrollbar scrollbar-thumb-white/85 shadow-md bg-slate-100 border border-slate-200 ">
+                            {sortedRegistrations.map((tutor, index) => (
                                 <div
                                     key={index}
                                     className="flex justify-between items-center px-5 py-1 cursor-pointer mb-1 hover:bg-slate-200 rounded-xl"
@@ -220,15 +278,19 @@ const DetailPost = () => {
                                     <div className="flex items-center gap-3">
                                         <img
                                             src={
-                                                `${import.meta.env.VITE_API_ENDPOINT}/${tutor.avatar}`
+                                                `${import.meta.env.VITE_API_ENDPOINT}${tutor.avatar}`
                                             }
                                             alt=""
                                             className="w-[50px] h-[50px] rounded-full object-cover"
                                         />
-                                        <p
-                                            className="font-semibold text-[1.1rem] hover:underline"
-                                            onClick={() => handleTutorProfileClick(tutor.tutor_id)}
-                                        >{tutor.tutor_name}</p>
+                                        <div>
+                                            <p
+                                                className="font-semibold text-[1.1rem] hover:underline"
+                                                onClick={() => handleTutorProfileClick(tutor.tutor_id)}
+                                            >{tutor.tutor_name}</p>
+                                            <p className="flex items-center gap-2">{tutor.average_rating} <FaStar className="w-5 h-5 text-yellow-400 " /></p>
+                                        </div>
+
                                     </div>
                                     <div className="flex gap-6">
                                         <button
@@ -297,7 +359,7 @@ const DetailPost = () => {
                     )}
                 </div>
             </Panel>
-        </Parent>
+        </Parent >
     );
 };
 

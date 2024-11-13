@@ -16,7 +16,7 @@ import CommentPart from '../comment/commentPart';
 
 const CommentSection = ({ id, onClose }) => {
     const sorts = ['Mới nhất', 'Cũ nhất']
-    const [valueSort, setValueSort] = useState('Newest')
+    const [valueSort, setValueSort] = useState('Mới nhất')
     const [isClickSort, setIsClickSort] = useState(false)
     const [comments, setComments] = useState([]);
     const [page, setPage] = useState(1);
@@ -52,14 +52,14 @@ const CommentSection = ({ id, onClose }) => {
         fetchComments(); // Fetch first page data
     }, [id]);
 
-    const handleScroll = (event) => {
-        const { scrollTop, scrollHeight, clientHeight } = event.currentTarget;
-        if (scrollHeight - scrollTop <= clientHeight + 50 && !loading) {
-            if (page <= totalPage) {
-                fetchComments()
-            }
-        }
-    };
+    // const handleScroll = (event) => {
+    //     const { scrollTop, scrollHeight, clientHeight } = event.currentTarget;
+    //     if (scrollHeight - scrollTop <= clientHeight + 50 && !loading) {
+    //         if (page <= totalPage) {
+    //             fetchComments()
+    //         }
+    //     }
+    // };
 
     return (
         <div

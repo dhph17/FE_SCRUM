@@ -57,7 +57,7 @@ const TutorProfile = ({ tutor_id, onClose }) => {
               <div className="flex flex-col items-center">
                 <img
                   src={
-                    `${import.meta.env.VITE_API_ENDPOINT}/${tutorProfile.avatar}`
+                    `${import.meta.env.VITE_API_ENDPOINT}${tutorProfile.avatar}`
                   }
                   alt="Tutor Avatar"
                   className="rounded-full w-[7rem] h-[7rem] object-cover shadow-lg border-[3px] border-[#002182] self-center"
