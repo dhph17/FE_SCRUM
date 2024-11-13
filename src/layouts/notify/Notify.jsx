@@ -1,13 +1,19 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faBell } from "@fortawesome/free-solid-svg-icons";
+import {
+  faBell,
+  faCheckCircle,
+  faExclamationCircle,
+} from "@fortawesome/free-solid-svg-icons";
 import { useState, useEffect } from "react";
 import { useAppContext } from "../../AppProvider";
+import { useNavigate } from "react-router-dom";
 
 const Notify = () => {
   const [notifications, setNotifications] = useState([]);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const { id } = useAppContext();
   const [ws, setWs] = useState(null);
+  let navigate = useNavigate();
 
   useEffect(() => {
     const websocket = new WebSocket(
@@ -38,7 +44,6 @@ const Notify = () => {
   const toggleDropdown = () => setIsDropdownOpen(!isDropdownOpen);
 
   const handleMarkAsRead = (notificationId) => {
-    // Gửi yêu cầu qua WebSocket
     if (ws) {
       const message = {
         action: "mark_as_read",
@@ -47,7 +52,6 @@ const Notify = () => {
       ws.send(JSON.stringify(message));
     }
 
-    // Cập nhật trạng thái đã đọc ở client
     setNotifications((prev) =>
       prev.map((notification) =>
         notification.notification_id === notificationId
@@ -55,6 +59,10 @@ const Notify = () => {
           : notification
       )
     );
+  };
+
+  const handleGoToReport = (reportId) => {
+    navigate(`/admin/manage-report/${reportId}`);
   };
 
   const unreadCount = notifications.filter(
@@ -65,7 +73,7 @@ const Notify = () => {
     <div className="relative">
       <button
         onClick={toggleDropdown}
-        className="relative p-2 rounded-full text-white"
+        className="relative p-2 rounded-full text-white bg-blue-500 hover:bg-blue-600 transition duration-300"
       >
         <FontAwesomeIcon icon={faBell} className="w-5 h-5" />
         {unreadCount > 0 && (
@@ -76,40 +84,66 @@ const Notify = () => {
       </button>
 
       {isDropdownOpen && (
-        <div className="absolute right-0 mt-2 w-80 bg-white rounded-lg shadow-lg z-10">
+        <div className="absolute right-0 mt-2 w-[30rem] bg-white rounded-xl shadow-lg z-10 border-[1px] border-gray-400 border-solid">
           <div className="p-4">
             <ul className="mt-2 max-h-64 overflow-y-auto bg-white rounded-lg">
               {notifications.map((notification) => (
                 <li
                   key={notification.notification_id}
-                  className={`p-3 border-b flex items-center ${
-                    notification.read ? "bg-gray-200" : ""
-                  }`}
+                  className={`p-3 border-b flex items-start ${
+                    notification.read ? "bg-gray-200" : "bg-white"
+                  } hover:bg-gray-100 transition duration-300`}
                 >
                   <img
                     src={`${import.meta.env.VITE_API_ENDPOINT}${
                       notification.additional_information.reporter_avatar
                     }`}
                     alt="Avatar"
-                    className="h-10 w-10 rounded-full mr-3"
+                    className="h-12 w-12 rounded-full mr-3 object-cover border-[1px] border-gray-400 border-solid"
                   />
                   <div className="flex-1">
-                    <p className="text-sm text-gray-800">
-                      {notification.message}
+                    <p className="text-md font-semibold text-blue-800">
+                      {notification.message.split("has reported user")[0]}{" "}
+                      <span className="text-gray-500">
+                        đã báo cáo người dùng{" "}
+                      </span>
+                      {notification.message.split("has reported user")[1]}{" "}
                     </p>
                     <p className="text-xs text-gray-500 mb-1">
                       {notification.time}
                     </p>
-                    {!notification.read && (
-                      <button
-                        onClick={() =>
-                          handleMarkAsRead(notification.notification_id)
-                        }
-                        className="text-xs text-green-500 hover:text-green-600"
-                      >
-                        Đánh dấu đã xem
-                      </button>
-                    )}
+                    <div className="flex justify-between">
+                      {!notification.read && (
+                        <button
+                          onClick={() =>
+                            handleMarkAsRead(notification.notification_id)
+                          }
+                          className="text-sm text-green-500 hover:text-green-600 flex items-center"
+                        >
+                          <FontAwesomeIcon
+                            icon={faCheckCircle}
+                            className="mr-1"
+                          />
+                          Đánh dấu đã xem
+                        </button>
+                      )}
+                      {notification.additional_information.report_id && (
+                        <button
+                          onClick={() =>
+                            handleGoToReport(
+                              notification.additional_information.report_id
+                            )
+                          }
+                          className="text-sm text-blue-500 hover:text-blue-600 flex items-center"
+                        >
+                          <FontAwesomeIcon
+                            icon={faExclamationCircle}
+                            className="mr-1"
+                          />
+                          Đi đến báo cáo
+                        </button>
+                      )}
+                    </div>
                   </div>
                 </li>
               ))}

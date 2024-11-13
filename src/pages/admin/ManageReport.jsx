@@ -4,12 +4,15 @@ import Pagination from "../../layouts/pagination/pagination";
 import Admin from "../../layouts/PageAuthorization/admin/admin";
 import { useAppContext } from "../../AppProvider";
 import ItemReport from "../../layouts/itemReport/ItemReport";
+import { useParams } from "react-router-dom";
 
 const ManageReport = () => {
   const [reportList, setReportList] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const { sessionToken } = useAppContext();
   const itemsPerPage = 10;
+
+  const { idReport } = useParams();
 
   useEffect(() => {
     const fetchReport = async () => {
@@ -27,7 +30,13 @@ const ManageReport = () => {
         const data = await response.json();
         console.log("Fetched data:", data);
         if (Array.isArray(data)) {
-          setReportList(data);
+          if (idReport) {
+            const report = data.find((report) => report.report_id === idReport);
+            setReportList([report]);
+            return;
+          } else {
+            setReportList(data);
+          }
         } else {
           console.error("Failed to fetch report");
         }
@@ -37,7 +46,7 @@ const ManageReport = () => {
     };
 
     fetchReport();
-  }, [sessionToken]);
+  }, [sessionToken, idReport]);
 
   const totalPages = Math.ceil(reportList.length / itemsPerPage);
 
