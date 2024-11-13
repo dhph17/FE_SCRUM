@@ -118,7 +118,8 @@
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBell } from "@fortawesome/free-solid-svg-icons";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useAppContext } from "../../AppProvider";
 
 const notificationsData = [
   {
@@ -148,7 +149,26 @@ const notificationsData = [
 const Notify = () => {
   const [notifications, setNotifications] = useState(notificationsData);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const [filter, setFilter] = useState({ type: "all", urgency: "all" });
+  const { id } = useAppContext();
+
+  useEffect(() => {
+    const ws = new WebSocket(
+      `ws://127.0.0.1:8000/ws/notifications/?user_id=${id}`
+    );
+
+    ws.onmessage = (event) => {
+      const newNotification = JSON.parse(event.data);
+      setNotifications((prev) => [newNotification, ...prev]);
+    };
+
+    ws.onclose = () => {
+      console.log("WebSocket connection closed");
+    };
+
+    return () => {
+      ws.close();
+    };
+  }, []);
 
   const toggleDropdown = () => setIsDropdownOpen(!isDropdownOpen);
 
@@ -161,14 +181,6 @@ const Notify = () => {
       )
     );
   };
-
-  const filteredNotifications = notifications.filter((notification) => {
-    if (filter.type !== "all" && notification.type !== filter.type)
-      return false;
-    if (filter.urgency !== "all" && notification.urgency !== filter.urgency)
-      return false;
-    return true;
-  });
 
   const unreadCount = notifications.filter(
     (notification) => !notification.reviewed
@@ -191,34 +203,12 @@ const Notify = () => {
       {isDropdownOpen && (
         <div className="absolute right-0 mt-2 w-80 bg-white rounded-lg shadow-lg z-10">
           <div className="p-4">
-            <div className="flex justify-between mt-2">
-              <select
-                className="p-1 border rounded text-sm"
-                value={filter.type}
-                onChange={(e) => setFilter({ ...filter, type: e.target.value })}
-              >
-                <option value="all">Tất cả loại</option>
-                <option value="flagged">Đã báo cáo</option>
-                <option value="reported">Được đánh dấu</option>
-              </select>
-              <select
-                className="p-1 border rounded text-sm"
-                value={filter.urgency}
-                onChange={(e) =>
-                  setFilter({ ...filter, urgency: e.target.value })
-                }
-              >
-                <option value="all">Tất cả mức độ</option>
-                <option value="high">Cao</option>
-                <option value="low">Thấp</option>
-              </select>
-            </div>
-            <ul className="mt-4 max-h-64 overflow-y-auto">
-              {filteredNotifications.map((notification) => (
+            <ul className="mt-2 max-h-64 overflow-y-auto bg-white rounded-lg">
+              {notifications.map((notification) => (
                 <li
                   key={notification.id}
                   className={`p-3 border-b flex items-center ${
-                    notification.reviewed ? "bg-gray-100" : ""
+                    notification.reviewed ? "bg-blue-300" : ""
                   }`}
                 >
                   <img
@@ -227,13 +217,15 @@ const Notify = () => {
                     className="w-10 h-10 rounded-full mr-4 object-cover"
                   />
                   <div className="flex-1">
-                    <p className="text-xs text-gray-500">
-                      Mã thông báo:{" "}
-                      <span className="text-blue-600 font-semibold">
-                        {notification.contentId}
-                      </span>
-                    </p>
-                    <p className="text-xs text-gray-400">
+                    <div className="flex items-center mb-1">
+                      <p className="text-xs font-medium text-gray-500 mr-2">
+                        Parent1 ({id})
+                      </p>
+                      <p className="text-xs text-gray-400">
+                        đã báo cáo một bài viết
+                      </p>
+                    </div>
+                    <p className="text-xs text-gray-400 mb-1">
                       {notification.timestamp}
                     </p>
                     <a
