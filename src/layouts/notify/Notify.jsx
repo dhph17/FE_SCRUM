@@ -1,184 +1,79 @@
-// import { useEffect, useState } from "react"
-// import { useAppContext } from '../../AppProvider';
-
-// const Notify = () => {
-//     const [showNotify, setShowNotify] = useState(false)
-//     const [notifications, setNotifications] = useState([]);
-//     const [stateSeen, setStateSeen] = useState(true)
-
-//     const { id } = useAppContext();
-
-//     const increaseDateByOne = (dateStr) => {
-//         const [day, month, year] = dateStr.split("/").map(Number);
-//         const date = new Date(year, month - 1, day);
-//         date.setDate(date.getDate() + 1);
-//         const newDay = String(date.getDate()).padStart(2, '0');
-//         const newMonth = String(date.getMonth() + 1).padStart(2, '0');
-//         const newYear = date.getFullYear();
-//         return `${newDay}/${newMonth}/${newYear}`;
-//     };
-
-//     useEffect(() => {
-//         const eventSource = new EventSource(`http://127.0.0.1:8000/api/notifications/${id}`);
-//         // const eventSource = new EventSource(`http://127.0.0.1:8080/api/sse/`);
-
-//         eventSource.onopen = function () {
-//             console.log("SSE connection opened.");
-//         };
-
-//         eventSource.onerror = function (event) {
-//             console.error('Error with SSE, trying to reconnect...', event);
-//         };
-
-//         eventSource.onmessage = function (event) {
-//             try {
-//                 const dataArray = JSON.parse(event.data);
-//                 console.log(dataArray);
-
-//                 if (Array.isArray(dataArray)) {
-//                     const newNotifications = dataArray.map(dataString => {
-//                         const data = JSON.parse(dataString);
-
-//                         const [datePart, timePart] = data.time.split(", ");
-
-//                         if (datePart && timePart) {
-//                             const [hours, minutes, seconds] = timePart.split(":").map(Number);
-
-//                             let newHours = hours + 7;
-//                             let newDay = datePart;
-
-//                             if (newHours >= 24) {
-//                                 newHours = newHours - 24;
-//                                 newDay = increaseDateByOne(datePart);
-//                             }
-
-//                             const formattedTime = `${newDay}, ${String(newHours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
-
-//                             return { message: data.message, time: formattedTime };
-//                         } else {
-//                             console.error("Invalid time format:", data.time);
-//                             return null;
-//                         }
-//                     }).filter(notification => notification !== null);
-//                     setNotifications(prevNotifications => [...prevNotifications, ...newNotifications]);
-
-//                     // setShowNotify(false)
-//                 } else {
-//                     console.error("Invalid data received:", dataArray);
-//                 }
-//             } catch (error) {
-//                 console.error("Error parsing notification:", error);
-//             }
-//             console.log(event);
-
-//         };
-
-//         return () => {
-//             eventSource.close();
-//         };
-//     }, []);
-
-//     return (
-//         <div className="relative">
-//             <i
-//                 className="fa-solid fa-bell text-white cursor-pointer"
-//                 onClick={() => { setShowNotify(!showNotify), setStateSeen(true) }}
-//             ></i>
-//             {
-//                 showNotify && (
-//                     <div className="w-[25vw] max-h-[65vh] overflow-auto bg-white absolute top-[40px] -left-[12vw] z-10 rounded-md shadow-lg shadow-slate-800">
-//                         {notifications.length > 0 ? (
-//                             <ul>
-//                                 {notifications.map((notification, index) => (
-//                                     <li key={index} className="p-2 border-b border-gray-200">
-//                                         <p className="font-semibold">{notification.message}</p>
-//                                         <p className="text-xs text-[#1B6CF2]">{notification.time}</p>
-//                                     </li>
-//                                 ))}
-//                             </ul>
-//                         ) : (
-//                             <p className="p-4 text-center text-gray-500">No new notifications</p>
-//                         )}
-//                     </div>
-//                 )
-//             }
-//             {
-//                 !stateSeen && (
-//                     <div className="w-[8px] h-[8px] overflow-auto bg-red-500 absolute -top-[0.1px] left-2 z-10 rounded-md shadow-lg shadow-slate-800">
-
-//                     </div>
-//                 )
-//             }
-
-//         </div>
-//     )
-// }
-
-// export default Notify
-
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faBell } from "@fortawesome/free-solid-svg-icons";
-import { useState } from "react";
-
-const notificationsData = [
-  {
-    id: 1,
-    contentId: "58c5886e-4aed-4b00-8eef-549a00c4424f",
-    link: "/content/123",
-    type: "flagged",
-    urgency: "high",
-    reviewed: false,
-    avatar:
-      "https://th.bing.com/th/id/R.fb5e7ff6ba759d1745042a8b82976d4e?rik=h1uRyv%2ff3gBCgA&pid=ImgRaw&r=0",
-    timestamp: "2024-11-10 12:30 PM",
-  },
-  {
-    id: 2,
-    contentId: "58c5886e-4aed-4b00-8eef-549a00c4424f",
-    link: "/content/456",
-    type: "reported",
-    urgency: "low",
-    reviewed: false,
-    avatar:
-      "https://www.hdwallpaperspulse.com/wp-content/uploads/2013/02/Beautiful-Animal-010.jpg",
-    timestamp: "2024-11-09 9:15 AM",
-  },
-];
+import {
+  faBell,
+  faCheckCircle,
+  faExclamationCircle,
+} from "@fortawesome/free-solid-svg-icons";
+import { useState, useEffect } from "react";
+import { useAppContext } from "../../AppProvider";
+import { useNavigate } from "react-router-dom";
 
 const Notify = () => {
-  const [notifications, setNotifications] = useState(notificationsData);
+  const [notifications, setNotifications] = useState([]);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const [filter, setFilter] = useState({ type: "all", urgency: "all" });
+  const { id } = useAppContext();
+  const [ws, setWs] = useState(null);
+  let navigate = useNavigate();
+
+  useEffect(() => {
+    const websocket = new WebSocket(
+      `ws://127.0.0.1:8000/ws/notifications/?user_id=${id}`
+    );
+
+    websocket.onopen = () => {
+      console.log("WebSocket connection established");
+      setWs(websocket);
+    };
+
+    websocket.onmessage = (event) => {
+      const response = JSON.parse(event.data);
+      if (response.type === "unread notifications") {
+        setNotifications(response.notifications);
+      }
+    };
+
+    websocket.onclose = () => {
+      console.log("WebSocket connection closed");
+    };
+
+    return () => {
+      websocket.close();
+    };
+  }, [id]);
 
   const toggleDropdown = () => setIsDropdownOpen(!isDropdownOpen);
 
-  const handleMarkAsReviewed = (id) => {
+  const handleMarkAsRead = (notificationId) => {
+    if (ws) {
+      const message = {
+        action: "mark_as_read",
+        notification_ids: [notificationId],
+      };
+      ws.send(JSON.stringify(message));
+    }
+
     setNotifications((prev) =>
       prev.map((notification) =>
-        notification.id === id
-          ? { ...notification, reviewed: true }
+        notification.notification_id === notificationId
+          ? { ...notification, read: true }
           : notification
       )
     );
   };
 
-  const filteredNotifications = notifications.filter((notification) => {
-    if (filter.type !== "all" && notification.type !== filter.type)
-      return false;
-    if (filter.urgency !== "all" && notification.urgency !== filter.urgency)
-      return false;
-    return true;
-  });
+  const handleGoToReport = (reportId) => {
+    navigate(`/admin/manage-report/${reportId}`);
+  };
 
   const unreadCount = notifications.filter(
-    (notification) => !notification.reviewed
+    (notification) => !notification.read
   ).length;
 
   return (
     <div className="relative">
       <button
         onClick={toggleDropdown}
-        className="relative p-2 rounded-full text-white"
+        className="relative p-2 rounded-full text-white bg-blue-500 hover:bg-blue-600 transition duration-300"
       >
         <FontAwesomeIcon icon={faBell} className="w-5 h-5" />
         {unreadCount > 0 && (
@@ -189,67 +84,66 @@ const Notify = () => {
       </button>
 
       {isDropdownOpen && (
-        <div className="absolute right-0 mt-2 w-80 bg-white rounded-lg shadow-lg z-10">
+        <div className="absolute right-0 mt-2 w-[30rem] bg-white rounded-xl shadow-lg z-10 border-[1px] border-gray-400 border-solid">
           <div className="p-4">
-            <div className="flex justify-between mt-2">
-              <select
-                className="p-1 border rounded text-sm"
-                value={filter.type}
-                onChange={(e) => setFilter({ ...filter, type: e.target.value })}
-              >
-                <option value="all">Tất cả loại</option>
-                <option value="flagged">Đã báo cáo</option>
-                <option value="reported">Được đánh dấu</option>
-              </select>
-              <select
-                className="p-1 border rounded text-sm"
-                value={filter.urgency}
-                onChange={(e) =>
-                  setFilter({ ...filter, urgency: e.target.value })
-                }
-              >
-                <option value="all">Tất cả mức độ</option>
-                <option value="high">Cao</option>
-                <option value="low">Thấp</option>
-              </select>
-            </div>
-            <ul className="mt-4 max-h-64 overflow-y-auto">
-              {filteredNotifications.map((notification) => (
+            <ul className="mt-2 max-h-64 overflow-y-auto bg-white rounded-lg">
+              {notifications.map((notification) => (
                 <li
-                  key={notification.id}
-                  className={`p-3 border-b flex items-center ${
-                    notification.reviewed ? "bg-gray-100" : ""
-                  }`}
+                  key={notification.notification_id}
+                  className={`p-3 border-b flex items-start ${
+                    notification.read ? "bg-gray-200" : "bg-white"
+                  } hover:bg-gray-100 transition duration-300`}
                 >
                   <img
-                    src={notification.avatar}
+                    src={`${import.meta.env.VITE_API_ENDPOINT}${
+                      notification.additional_information.reporter_avatar
+                    }`}
                     alt="Avatar"
-                    className="w-10 h-10 rounded-full mr-4 object-cover"
+                    className="h-12 w-12 rounded-full mr-3 object-cover border-[1px] border-gray-400 border-solid"
                   />
                   <div className="flex-1">
-                    <p className="text-xs text-gray-500">
-                      Mã thông báo:{" "}
-                      <span className="text-blue-600 font-semibold">
-                        {notification.contentId}
+                    <p className="text-md font-semibold text-blue-800">
+                      {notification.message.split("has reported user")[0]}{" "}
+                      <span className="text-gray-500">
+                        đã báo cáo người dùng{" "}
                       </span>
+                      {notification.message.split("has reported user")[1]}{" "}
                     </p>
-                    <p className="text-xs text-gray-400">
-                      {notification.timestamp}
+                    <p className="text-xs text-gray-500 mb-1">
+                      {notification.time}
                     </p>
-                    <a
-                      href={notification.link}
-                      className="text-blue-500 text-sm hover:underline"
-                    >
-                      Xem nội dung
-                    </a>
-                    {!notification.reviewed && (
-                      <button
-                        onClick={() => handleMarkAsReviewed(notification.id)}
-                        className="text-xs text-green-500 hover:text-green-600 ml-3"
-                      >
-                        Đánh dấu đã xem
-                      </button>
-                    )}
+                    <div className="flex justify-between">
+                      {!notification.read && (
+                        <button
+                          onClick={() =>
+                            handleMarkAsRead(notification.notification_id)
+                          }
+                          className="text-sm text-green-500 hover:text-green-600 flex items-center"
+                        >
+                          <FontAwesomeIcon
+                            icon={faCheckCircle}
+                            className="mr-1"
+                          />
+                          Đánh dấu đã xem
+                        </button>
+                      )}
+                      {notification.additional_information.report_id && (
+                        <button
+                          onClick={() =>
+                            handleGoToReport(
+                              notification.additional_information.report_id
+                            )
+                          }
+                          className="text-sm text-blue-500 hover:text-blue-600 flex items-center"
+                        >
+                          <FontAwesomeIcon
+                            icon={faExclamationCircle}
+                            className="mr-1"
+                          />
+                          Đi đến báo cáo
+                        </button>
+                      )}
+                    </div>
                   </div>
                 </li>
               ))}

@@ -1,14 +1,14 @@
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom"
-import { useAppContext } from '../../AppProvider'
+import { Link, useNavigate } from "react-router-dom";
+import { useAppContext } from "../../AppProvider";
 
 const LoginForm = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
-  let navigate = useNavigate()
+  let navigate = useNavigate();
 
-  const { setSessionToken, setRole, setId, setName } = useAppContext()
+  const { setSessionToken, setRole, setId, setName } = useAppContext();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -16,46 +16,49 @@ const LoginForm = () => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     const isEmail = emailRegex.test(username);
     try {
-      const response = await fetch(`${import.meta.env.VITE_API_ENDPOINT}/api/login/`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          [isEmail ? 'email' : 'username']: username,
-          password
-        }),
-      });
+      const response = await fetch(
+        `${import.meta.env.VITE_API_ENDPOINT}/api/login/`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            [isEmail ? "email" : "username"]: username,
+            password,
+          }),
+        }
+      );
 
       const data = await response.json();
-
 
       if (response.ok) {
         setSessionToken(data.token.access);
         setRole(data.data.role || data.data.user.role);
-        setName(data.data.username || data.data.user.username)
+        setName(data.data.username || data.data.user.username);
         const role = data.data.role || data.data.user.role;
-        localStorage.setItem('refreshToken', data.token.refresh);
+        localStorage.setItem("refreshToken", data.token.refresh);
         console.log("Đăng nhập thành công!");
-        console.log("Role: ", role)
-        if (role === 'admin') {
-          navigate('/admin/approved-posts')
-        } else if (role === 'tutor') {
-          setId(data.data.tutor_id)
-          navigate('/tutor/main-page')
-        } else if (role === 'parent') {
-          setId(data.data.parent_id)
-          navigate('/parent/main-page')
+        console.log("Role: ", role);
+        if (role === "admin") {
+          setId(data.data.admin_id);
+          navigate("/admin/approved-posts");
+        } else if (role === "tutor") {
+          setId(data.data.tutor_id);
+          navigate("/tutor/main-page");
+        } else if (role === "parent") {
+          setId(data.data.parent_id);
+          navigate("/parent/main-page");
         }
       } else {
-        if (data.message === 'Invalid email or password') {
-          setError("Vui lòng nhập đúng thông tin đăng nhập")
+        if (data.message === "Invalid email or password") {
+          setError("Vui lòng nhập đúng thông tin đăng nhập");
         } else {
           setError("Vui lòng xác minh tài khoản");
         }
       }
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
   };
 
@@ -74,7 +77,7 @@ const LoginForm = () => {
           id="username"
           placeholder="Username or email"
           value={username}
-          onChange={(e) => (setUsername(e.target.value), setError(''))}
+          onChange={(e) => (setUsername(e.target.value), setError(""))}
           required
           className="w-[90%] text-[1.2 rem] px-5 py-3 bg-[#F1BB45] bg-opacity-50 rounded-[15px] border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder:text-[1.2 rem] placeholder:font-medium placeholder:font-poppins"
           style={{
@@ -88,7 +91,7 @@ const LoginForm = () => {
           id="password"
           placeholder="Password*"
           value={password}
-          onChange={(e) => (setPassword(e.target.value), setError(''))}
+          onChange={(e) => (setPassword(e.target.value), setError(""))}
           required
           className="w-[90%] text-[1.2 rem] px-5 py-3 bg-[#F1BB45] bg-opacity-50 rounded-[15px] border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder:text-[1.2 rem] placeholder:font-medium placeholder:font-poppins"
           style={{

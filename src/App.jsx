@@ -57,7 +57,8 @@ function App() {
           <Route path="/admin/pending-posts" element={<DuyetBaiDang />} />
           <Route path="/admin/approved-posts/:postId" element={<ApprovedPost />} />
           <Route path="/admin/approved-posts" element={<ApprovedPost />} />
-          <Route path="/admin/manage-report" element={<ManageReport />} />
+          <Route path="/admin/manage-report/" element={<ManageReport />} />
+          <Route path="/admin/manage-report/:idReport" element={<ManageReport />} />
           <Route path="/admin/statistical" element={<StatisticalApp />} />
 
           <Route path="/parent/assigned" element={<PostManagement />} />
