@@ -212,7 +212,7 @@ const Review = ({ height, tutor_id }) => {
                                         </div>
                                         <StarRating rating={review.rating} />
                                     </div>
-                                    <p className="mt-2 text-[1.05rem] text-gray-600 font-semibold line-clamp-3 hover:line-clamp-none">{review.comment}</p>
+                                    <p className="mt-2 text-[1.05rem] text-gray-600 font-semibold line-clamp-1 hover:line-clamp-none">{review.comment}</p>
                                     <div className="flex w-full justify-between relative">
                                         <p className="mt-3 text-[0.75rem] text-custom_gray">{formatDate(review.created_at)} </p>
                                         <div>

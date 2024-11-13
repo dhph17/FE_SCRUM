@@ -1,4 +1,4 @@
-import React from "react";
+import PropTypes from "prop-types";
 
 const ParentInfoPopup = ({ isOpen, onClose, parent }) => {
   if (!isOpen || !parent) return null;
@@ -19,12 +19,12 @@ const ParentInfoPopup = ({ isOpen, onClose, parent }) => {
             />
           </div>
           <div className="grid grid-cols-2 gap-4 mb-4 text-1xl">
-            <div>
+            <div className="flex flex-col gap-y-3">
               <p><strong>Họ tên:</strong> {parent.parentname}</p>
               <p><strong>Giới tính:</strong> {parent.gender}</p>
               <p><strong>Ngày sinh:</strong> {parent.birthdate}</p>
             </div>
-            <div>
+            <div className="flex flex-col gap-y-3">
               <p><strong>Số điện thoại:</strong> {parent.phone_number}</p>
               <p><strong>Email:</strong> {parent.user.email}</p>
               <p><strong>Địa chỉ:</strong> {parent.address}</p>
@@ -42,6 +42,21 @@ const ParentInfoPopup = ({ isOpen, onClose, parent }) => {
       </div>
     </div>
   );
+};
+ParentInfoPopup.propTypes = {
+  isOpen: PropTypes.bool.isRequired,
+  onClose: PropTypes.func.isRequired,
+  parent: PropTypes.shape({
+    avatar: PropTypes.string,
+    parentname: PropTypes.string,
+    gender: PropTypes.string,
+    birthdate: PropTypes.string,
+    phone_number: PropTypes.string,
+    user: PropTypes.shape({
+      email: PropTypes.string,
+    }),
+    address: PropTypes.string,
+  }).isRequired,
 };
 
 export default ParentInfoPopup;

@@ -9,7 +9,7 @@ const VerifyPost = ({ onApprove, onClose }) => {
 
         <div className="flex justify-end mt-6">
           <button
-            className="bg-green-600 w-[100px] text-white py-2 rounded-lg shadow hover:bg-green-700 transition duration-300"
+            className="bg-custom_darkblue w-[100px] text-white py-2 rounded-lg shadow hover:bg-custom_darkblue transition duration-300"
             onClick={onApprove}
           >
             Xác nhận

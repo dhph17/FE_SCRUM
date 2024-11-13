@@ -34,6 +34,7 @@ import SuatDayDaDangKy from "./pages/tutor/SuatDayDaDangKy"
 import SuatDayDaDuocNhan from "./pages/tutor/SuatDayDaDuocNhan";
 import MyReviews from "./pages/tutor/MyReviews";
 import ManageReport from "./pages/admin/ManageReport";
+import StatisticalApp from "./pages/admin/statisticalApp";
 
 function App() {
   const [searchTerm, setSearchTerm] = useState("");
@@ -57,6 +58,7 @@ function App() {
           <Route path="/admin/approved-posts/:postId" element={<ApprovedPost />} />
           <Route path="/admin/approved-posts" element={<ApprovedPost />} />
           <Route path="/admin/manage-report" element={<ManageReport />} />
+          <Route path="/admin/statistical" element={<StatisticalApp />} />
 
           <Route path="/parent/assigned" element={<PostManagement />} />
           <Route path="/parent/view-posts" element={<PostApproval />} />

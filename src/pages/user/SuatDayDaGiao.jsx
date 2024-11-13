@@ -81,7 +81,7 @@ const SuatDayDaGiao = () => {
               key={parent.post_id} // Sử dụng post_id làm key
               className="border-[3px] rounded-[1rem] border-[#002182] shadow-md bg-white"
             >
-              <ItemPost user={parent} tag="Đã phê duyệt">
+              <ItemPost user={parent} tag="Đã đóng">
                 <button
                   onClick={() => {
                     setShowRatingPopup(true);

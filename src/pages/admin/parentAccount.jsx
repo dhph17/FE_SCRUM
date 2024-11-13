@@ -19,7 +19,7 @@ const ParentAccount = () => {
   const [selectedParentId, setSelectedParentId] = useState(null);
   const [selectedParent, setSelectedParent] = useState(null);
 
-  const itemsPerPage = 8;
+  const itemsPerPage = 10;
   const totalPages = Math.ceil(parents.length / itemsPerPage);
 
   const currentParents = parents.slice(
