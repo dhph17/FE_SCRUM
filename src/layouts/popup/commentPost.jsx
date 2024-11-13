@@ -6,7 +6,7 @@ import {
     // FaCaretUp,
     // FaCaretDown
 } from "react-icons/fa";
-import avatar from "../../assets/image/User.png";
+import ImgAvatar from "../../assets/image/User.png";
 import {
     IoIosSend,
     IoMdClose
@@ -16,13 +16,15 @@ import { CommentProvider } from '../provider/commentProvider';
 import CommentPart from '../comment/commentPart';
 
 const CommentSection = ({ idPost, onClose }) => {
-    const { id, sessionToken } = useAppContext()
+    const { id, sessionToken, role } = useAppContext()
     // const sorts = ['Mới nhất', 'Cũ nhất']
     // const [valueSort, setValueSort] = useState('Mới nhất')
     // const [isClickSort, setIsClickSort] = useState(false)
     const [comments, setComments] = useState([]);
     const [totalComment, setTotalCmt] = useState()
     const [reply, setReplyStatus] = useState()
+    const [avatar, setAvatar] = useState('');
+
 
     // const handleClickSort = () => {
     //     setIsClickSort(!isClickSort)
@@ -32,6 +34,22 @@ const CommentSection = ({ idPost, onClose }) => {
     //     setValueSort(sort)
     //     setIsClickSort(!isClickSort)
     // }
+
+    useEffect(() => {
+        if (role !== 'admin') {
+            const fetchData = async () => {
+                try {
+                    const url = `${import.meta.env.VITE_API_ENDPOINT}/api/${role === 'tutor' ? 'tutors' : 'parents'}/${id}`;
+                    const response = await fetch(url);
+                    const data = await response.json();
+                    setAvatar(data.avatar);
+                } catch (error) {
+                    console.error('Error fetching data:', error);
+                }
+            };
+            fetchData();
+        }
+    }, [id]);
 
     const fetchComments = async () => {
         try {
@@ -132,7 +150,7 @@ const CommentSection = ({ idPost, onClose }) => {
                     {comments?.map((comment, index) => (
                         <div key={index}>
                             <CommentProvider>
-                                <CommentPart data={comment} />
+                                <CommentPart data={comment} avatar={avatar} />
                             </CommentProvider>
                         </div>
                     ))}
@@ -141,7 +159,7 @@ const CommentSection = ({ idPost, onClose }) => {
                     <div className='w-[100%] mr-2 flex'>
                         <div className='w-[50px] mr-2 flex'>
                             <img
-                                src={avatar}
+                                src={`${import.meta.env.VITE_API_ENDPOINT}${avatar}` || ImgAvatar}
                                 alt="avatar"
                                 className="rounded-full w-[40px] h-[40px] mr-3"
                             />

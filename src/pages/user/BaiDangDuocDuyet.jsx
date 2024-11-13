@@ -110,7 +110,7 @@ const BaiDangDuocDuyet = () => {
           {currentPosts.map((parent, index) => (
             <div
               key={index}
-              className="border-[3px] rounded-[1rem] border-[#002182] shadow-md bg-white"
+              className="border-[3px] rounded-[1rem] border-[#002182] shadow-md bg-white mb-6"
             >
               <ItemPost user={parent} tag="Đã phê duyệt">
                 <Link to={`/parent/update-post/${parent.post_id}`}>
@@ -129,7 +129,7 @@ const BaiDangDuocDuyet = () => {
                 </button>
                 <Link
                   to={`/parent/detailPost/${parent.post_id}`}
-                  onClick={() => {}}
+                  onClick={() => { }}
                   className="bg-yellow-500 w-[14vw] p-2 text-center rounded-2xl font-semibold mx-8"
                 >
                   Danh sách gia sư đăng kí
@@ -140,7 +140,7 @@ const BaiDangDuocDuyet = () => {
         </div>
         {/* Pagination */}
         {posts.length > 0 ? (
-          <div className="mt-8">
+          <div className="mt-6">
             <Pagination
               currentPage={currentPage}
               totalPages={totalPages}

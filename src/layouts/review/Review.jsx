@@ -147,8 +147,8 @@ const Review = ({ height, tutor_id }) => {
   const displayedReviews = filterReviews();
   return (
     <div className="flex flex-col w-full px-4 pb-6">
-      <div className="flex items-center mr-3">
-        <label htmlFor="" className="   font-bold">
+      <div className="flex items-center w-full">
+        <label htmlFor="" className="font-bold">
           Sắp xếp theo
         </label>
         <div className="ml-4 relative flex items-center shadow-lg p-2 bg-white">
@@ -228,14 +228,12 @@ const Review = ({ height, tutor_id }) => {
             </div>
           )}
         </div>
-        <div className="flex justify-center items-center p-4 w-[40%]">
-          <FontAwesomeIcon icon={faStar} className="text-yellow-600 mr-2" />
-          <div className="text-lg font-semibold text-gray-700">
-            Số sao trung bình:{" "}
-            <span className="text-yellow-600">
-              {everageRating ? everageRating.toFixed(1) : "N/A"}
-            </span>
-          </div>
+        <div className="flex items-center gap-2 ml-auto">
+          <p className="">Số sao trung bình:&nbsp;</p>
+          <span className="font-bold">
+            {everageRating ? everageRating.toFixed(1) : "N/A"}
+          </span>
+          <FontAwesomeIcon icon={faStar} className="text-[#F1C232]  w-6 h-6" />
         </div>
       </div>
       <div className="w-full border-t-2 border-gray-600 my-3"></div>
@@ -274,11 +272,10 @@ const Review = ({ height, tutor_id }) => {
                     </p>
                     <div>
                       <i
-                        className={`fa-solid fa-ellipsis text-2xl cursor-pointer hover:text-black transition-all ${
-                          showReportIndex === review.id
-                            ? "text-black"
-                            : "text-slate-100"
-                        }`}
+                        className={`fa-solid fa-ellipsis text-2xl cursor-pointer hover:text-black transition-all ${showReportIndex === review.id
+                          ? "text-black"
+                          : "text-slate-100"
+                          }`}
                         onClick={() => toggleReportMenu(review.id)}
                       ></i>
 
@@ -313,7 +310,7 @@ const Review = ({ height, tutor_id }) => {
           </div>
         ))}
       </div>
-      {visibleReviews < reviews.length ? (
+      {reviews.length > 0 && (visibleReviews < reviews.length ? (
         <button
           className="flex gap-2 items-center mt-4 self-center px-4 py-2 bg-transparent text-custom_darkblue text-shadow-md font-semibold transition duration-300 transform hover:scale-105"
           onClick={loadMoreReviews}
@@ -329,7 +326,7 @@ const Review = ({ height, tutor_id }) => {
           Thu gọn
           <i className="fa-solid fa-angle-up transition-transform transform duration-300 group-hover:rotate-180"></i>
         </button>
-      )}
+      ))}
     </div>
   );
 };

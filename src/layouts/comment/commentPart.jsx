@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { useAppContext } from '../../AppProvider';
 import PropTypes from "prop-types";
-import avatar from "../../assets/image/User.png";
+import ImgAvatar from "../../assets/image/User.png";
 import {
     IoIosSend,
     IoMdClose
@@ -13,7 +13,7 @@ import {
     FaChevronUp
 } from "react-icons/fa";
 
-const CommentPart = ({ data }) => {
+const CommentPart = ({ data, avatar }) => {
     const { id, sessionToken } = useAppContext()
     const { replyStatus, setReplyStatus } = useCommentContext()
     const [childrenCmt, setChildrenCmt] = useState([])
@@ -123,7 +123,7 @@ const CommentPart = ({ data }) => {
                         <div className='w-[100%] mr-2 flex'>
                             <div className='w-[50px] mr-2 flex'>
                                 <img
-                                    src={avatar}
+                                    src={`${import.meta.env.VITE_API_ENDPOINT}${avatar}` || ImgAvatar}
                                     alt="avatar"
                                     className="rounded-full w-[40px] h-[40px] mr-3"
                                 />
@@ -159,6 +159,7 @@ const CommentPart = ({ data }) => {
 
 CommentPart.propTypes = {
     data: PropTypes.object,
+    avatar: PropTypes.string
 };
 
 export default CommentPart
