@@ -78,7 +78,7 @@ const SuatDayDaDuocNhan = () => {
               key={index}
               className="border-[3px] rounded-[1rem] border-[#002182] shadow-md bg-white"
             >
-              <ItemPost user={tutor}></ItemPost>
+              <ItemPost user={tutor} tag="Đã đóng"></ItemPost>
             </div>
           ))}
         </div>
