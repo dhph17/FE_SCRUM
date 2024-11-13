@@ -1,10 +1,13 @@
 import PropTypes from 'prop-types';
+import { useState } from 'react';
 import { Pie } from 'react-chartjs-2';
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
 const TutorRatingsPieChart = ({ data }) => {
+    const [showInsight, setShowInsight] = useState(false);
+
     // Prepare data for the chart
     const chartData = {
         labels: ['0-1 Sao', '1-2 Sao', '2-3 Sao', '3-4 Sao', '4-5 Sao'],
@@ -33,15 +36,36 @@ const TutorRatingsPieChart = ({ data }) => {
                 ],
             },
         ],
-    }
+    };
+
+    // Calculate the most and least rated star range
+    const ratingsArray = [
+        data['0-1'],
+        data['1-2'],
+        data['2-3'],
+        data['3-4'],
+        data['4-5'],
+    ];
+    const labels = ['0-1 Sao', '1-2 Sao', '2-3 Sao', '3-4 Sao', '4-5 Sao'];
+    const maxRating = Math.max(...ratingsArray);
+    const minRating = Math.min(...ratingsArray);
+    const mostRated = labels[ratingsArray.indexOf(maxRating)];
+    const leastRated = labels[ratingsArray.indexOf(minRating)];
 
     return (
-        <div style={{ width: '90%', margin: '0 auto' }} >
+        <div style={{ width: '90%', margin: '0 auto' }}>
             <h3 className='font-bold mb-3'>Thống kê sao trung bình gia sư</h3>
             <Pie data={chartData} />
-        </div >
+                <p style={{ marginTop: '1rem' }}>
+                    Khoảng sao được đánh giá nhiều nhất là <strong>{mostRated}</strong> với <strong>{maxRating}</strong> đánh giá.
+                    <br />
+                    Khoảng sao được đánh giá ít nhất là <strong>{leastRated}</strong> với <strong>{minRating}</strong> đánh giá.
+                </p>
+
+        </div>
     );
 };
+
 TutorRatingsPieChart.propTypes = {
     data: PropTypes.object.isRequired,
 };
