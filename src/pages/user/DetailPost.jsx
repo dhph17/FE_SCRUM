@@ -284,47 +284,47 @@ const DetailPost = () => {
               </div>
             </div>
 
-                        <div className="mt-1 max-h-[15rem] px-3 overflow-auto py-4 rounded-xl scrollbar scrollbar-thumb-white/85 shadow-md bg-slate-100 border border-slate-200 ">
-                            {sortedRegistrations.map((tutor, index) => (
-                                <div
-                                    key={index}
-                                    className="flex justify-between items-center px-5 py-1 cursor-pointer mb-1 hover:bg-slate-200 rounded-xl"
-                                >
-                                    <div className="flex items-center gap-3">
-                                        <img
-                                            src={
-                                                `${import.meta.env.VITE_API_ENDPOINT}${tutor.avatar}`
-                                            }
-                                            alt=""
-                                            className="w-[50px] h-[50px] rounded-full object-cover"
-                                        />
-                                        <div>
-                                            <p
-                                                className="font-semibold text-[1.1rem] hover:underline"
-                                                onClick={() => handleTutorProfileClick(tutor.tutor_id)}
-                                            >{tutor.tutor_name || tutor.username}</p>
-                                            <p className="flex items-center gap-2">{tutor.average_rating} <FaStar className="w-5 h-5 text-yellow-400 " /></p>
-                                        </div>
-
-                                    </div>
-                                    <div className="flex gap-6">
-                                        <button
-                                            className="font-semibold text-[0.9rem] h-[2rem] w-[8rem] bg-custom_yellow rounded-md"
-                                            onClick={() => handleTutorFeedbackClick(tutor.tutor_id)}
-                                        >
-                                            Xem đánh giá
-                                        </button>
-                                        <button
-                                            className="font-semibold text-[0.9rem] h-[2rem] w-[8rem] bg-custom_darkblue text-white rounded-md"
-                                            onClick={() => { setShowPopup(true); setIdTutor(tutor.tutor_id) }}
-                                        >
-                                            Nhận gia sư
-                                        </button>
-                                    </div>
-                                </div>
-                            ))}
-                        </div>
+            <div className="mt-1 max-h-[15rem] px-3 overflow-auto py-4 rounded-xl scrollbar scrollbar-thumb-white/85 shadow-md bg-slate-100 border border-slate-200 ">
+              {sortedRegistrations.map((tutor, index) => (
+                <div
+                  key={index}
+                  className="flex justify-between items-center px-5 py-1 cursor-pointer mb-1 hover:bg-slate-200 rounded-xl"
+                >
+                  <div className="flex items-center gap-3">
+                    <img
+                      src={
+                        `${import.meta.env.VITE_API_ENDPOINT}${tutor.avatar}`
+                      }
+                      alt=""
+                      className="w-[50px] h-[50px] rounded-full object-cover"
+                    />
+                    <div>
+                      <p
+                        className="font-semibold text-[1.1rem] hover:underline"
+                        onClick={() => handleTutorProfileClick(tutor.tutor_id)}
+                      >{tutor.tutor_name || tutor.username}</p>
+                      <p className="flex items-center gap-2">{(tutor.average_rating).toFixed(1)} <FaStar className="w-5 h-5 text-yellow-400 " /></p>
                     </div>
+
+                  </div>
+                  <div className="flex gap-6">
+                    <button
+                      className="font-semibold text-[0.9rem] h-[2rem] w-[8rem] bg-custom_yellow rounded-md"
+                      onClick={() => handleTutorFeedbackClick(tutor.tutor_id)}
+                    >
+                      Xem đánh giá
+                    </button>
+                    <button
+                      className="font-semibold text-[0.9rem] h-[2rem] w-[8rem] bg-custom_darkblue text-white rounded-md"
+                      onClick={() => { setShowPopup(true); setIdTutor(tutor.tutor_id) }}
+                    >
+                      Nhận gia sư
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
 
           {showProfile && (
             <TutorProfile
