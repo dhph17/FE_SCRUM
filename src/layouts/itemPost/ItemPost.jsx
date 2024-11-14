@@ -206,7 +206,7 @@ const ItemPostVu = ({ user, children, tag }) => {
                                     <p>{totalLike}</p>
                                 </div>
                                 <div
-                                    className="bg-white p-3 rounded-full cursor-pointer group border border-slate-500.,  "
+                                    className="bg-white p-3 rounded-full cursor-pointer group border border-slate-500"
                                     onClick={() => {
                                         setShowOpenCmt(true);
                                     }}
