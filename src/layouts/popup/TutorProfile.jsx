@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import PropTypes from "prop-types";
+import { FaLink } from "react-icons/fa6";
 
 const TutorProfile = ({ tutor_id, onClose }) => {
   const handleBackgroundClick = (event) => {
@@ -120,7 +121,7 @@ const TutorProfile = ({ tutor_id, onClose }) => {
                   href={tutorProfile.bio_link}
                   className="text-blue-500 hover:underline ml-5"
                 >
-                  {tutorProfile.bio_link}
+                  <FaLink className="w-5 h-5" />
                 </a>
               </p>
             </div>

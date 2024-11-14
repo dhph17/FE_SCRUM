@@ -42,7 +42,7 @@ const ReviewTutor = ({ onClose, tutor_id }) => {
             <div className="bg-gray-200 w-[70%] px-2 py-5">
                 <div className="flex items-center gap-3 mb-5 ml-4">
                     <img
-                        src={profile?.avatar ? `${import.meta.env.VITE_API_ENDPOINT}/${profile.avatar}` : Image}
+                        src={profile?.avatar ? `${import.meta.env.VITE_API_ENDPOINT}${profile.avatar}` : Image}
                         alt=""
                         className="w-[50px] h-[50px] rounded-full object-cover"
                     />

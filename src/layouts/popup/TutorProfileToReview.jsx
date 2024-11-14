@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import PropTypes from "prop-types";
+import { FaLink } from "react-icons/fa6";
 import axios from "axios";
 import { useAppContext } from "../../AppProvider";
 import { toast } from "react-toastify";
@@ -173,7 +174,7 @@ const TutorProfileToReview = ({ tutor_id, idPost, idParent, onClose, }) => {
                                         target="_blank"
                                         rel="noopener noreferrer"
                                     >
-                                        Liên kết
+                                        <FaLink className="w-5 h-5" />
                                     </a>
                                 </p>
                             </div>
