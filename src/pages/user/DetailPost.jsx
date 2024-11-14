@@ -287,7 +287,7 @@ const DetailPost = () => {
                                             <p
                                                 className="font-semibold text-[1.1rem] hover:underline"
                                                 onClick={() => handleTutorProfileClick(tutor.tutor_id)}
-                                            >{tutor.tutor_name}</p>
+                                            >{tutor.tutor_name || tutor.username}</p>
                                             <p className="flex items-center gap-2">{tutor.average_rating} <FaStar className="w-5 h-5 text-yellow-400 " /></p>
                                         </div>
 

@@ -27,21 +27,26 @@ const TutorProfile = ({ tutor_id, onClose }) => {
   });
 
   useEffect(() => {
-    const fetchTutorProfile = async () => {
-      try {
-        const response = await fetch(
-          `${import.meta.env.VITE_API_ENDPOINT}/api/tutors/${tutor_id}`
-        );
-        const data = await response.json();
-        setTutorProfile(data);
-      } catch (error) {
-        console.error(error);
-      }
-    };
+    if (tutor_id) {
+      const fetchTutorProfile = async () => {
+        try {
+          const response = await fetch(
+            `${import.meta.env.VITE_API_ENDPOINT}/api/tutors/${tutor_id}`
+          );
+          const data = await response.json();
+          setTutorProfile(data);
+        } catch (error) {
+          console.error(error);
+        }
+      };
+      fetchTutorProfile();
+    }
 
-    fetchTutorProfile();
   }, [tutor_id]);
 
+  if (tutor_id === null) return (
+    alert('Tài khoản gia sư đã bị khóa hoặc không hoạt động')
+  );
   return (
     <div
       className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 shadow-md"
@@ -88,7 +93,9 @@ const TutorProfile = ({ tutor_id, onClose }) => {
               <p className="text-lg font-medium flex flex-row">
                 <strong className="text-nowrap">Trình độ học vấn:</strong>{" "}
                 <div className="text-[#002182] ml-5 font-normal text-nowrap">
-                  {tutorProfile.educational_background}
+                  {tutorProfile.educational_background !== "Not recorded"
+                    ? tutorProfile.educational_background
+                    : ""}
                 </div>
               </p>
               <p className="text-lg font-medium flex flex-row">
