@@ -7,18 +7,27 @@ import User from '../../assets/image/User.png';
 import ClassTimeDetail from "../../layouts/popup/classTime_Popup";
 import { useAppContext } from "../../AppProvider";
 import ReportContent from "../popup/reportContent";
-import { AiOutlineLike } from "react-icons/ai";
 import { FaRegComment } from "react-icons/fa";
 import CommentPost from "../popup/commentPost";
 
 const ItemPostVu = ({ user, children, tag }) => {
     const [tagIcon, setTagIcon] = useState(null);
     const [selectedTime, setSelectedTime] = useState();
+    const [totalLike, setTotalLike] = useState(user.total_reacts)
     const [showReport, setShowReport] = useState(false);
     const [showReportContent, setShowReportContent] = useState(false);
     const [showOpenCmt, setShowOpenCmt] = useState(false)
+    const [isLike, setIsLike] = useState('fa-regular fa-thumbs-up')
 
-    const { role, id } = useAppContext();
+    useEffect(() => {
+        if (user?.is_reacted) {
+            setIsLike('fa-solid fa-thumbs-up')
+        } else {
+            setIsLike('fa-regular fa-thumbs-up')
+        }
+    }, [])
+
+    const { role, id, sessionToken } = useAppContext();
 
     const toggleReport = () => {
         setShowReport(!showReport);
@@ -41,6 +50,30 @@ const ItemPostVu = ({ user, children, tag }) => {
         else if (tag === "Đã phê duyệt" || tag === "Đã đóng") setTagIcon(Img3);
         else if (tag === "Đang chờ phê duyệt" || tag === "Chờ duyệt") setTagIcon(Img1);
     }, [tag]);
+
+    const handleLike = async (idPost) => {
+        try {
+            const response = await fetch(`${import.meta.env.VITE_API_ENDPOINT}/api/postlike/${idPost}/`, {
+                method: "POST",
+                headers: {
+                    Authorization: `Bearer ${sessionToken}`,
+                },
+            });
+
+            if (response.ok) {
+                // Check for the specific status codes
+                if (response.status === 201) { // Liked
+                    setIsLike('fa-solid fa-thumbs-up');
+                    setTotalLike((prev) => prev + 1);
+                } else if (response.status === 204) { // Unliked
+                    setIsLike('fa-regular fa-thumbs-up');
+                    setTotalLike((prev) => prev - 1);
+                }
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    }
 
     const formatDate = (isoDate) => {
         const date = new Date(isoDate);
@@ -165,16 +198,20 @@ const ItemPostVu = ({ user, children, tag }) => {
                     {
                         (tag === undefined || tag === "Chờ duyệt" || tag === "Đã phê duyệt") && (
                             <div className="absolute flex gap-3 -bottom-[30%] left-5" >
-                                <div className="bg-white p-3 rounded-full cursor-pointer group border border-slate-500">
-                                    <AiOutlineLike className="w-6 h-6 group-hover:scale-110" />
+                                <div className="flex items-center gap-2 bg-white p-3 rounded-full cursor-pointer group border border-slate-500">
+                                    <i
+                                        className={`${isLike} text-[1.1rem] group-hover:scale-110`}
+                                        onClick={() => handleLike(user.post_id)}
+                                    ></i>
+                                    <p>{totalLike}</p>
                                 </div>
                                 <div
-                                    className="bg-white p-3 rounded-full cursor-pointer group border border-slate-500.,  "
+                                    className="bg-white p-3 rounded-full cursor-pointer group border border-slate-500"
                                     onClick={() => {
                                         setShowOpenCmt(true);
                                     }}
                                 >
-                                    <FaRegComment className="w-6 h-6 group-hover:scale-110" />
+                                    <FaRegComment className="w-5 h-5 group-hover:scale-110" />
                                 </div>
                             </div>
                         )
