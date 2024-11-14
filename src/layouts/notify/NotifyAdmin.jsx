@@ -3,6 +3,7 @@ import {
   faBell,
   faCheckCircle,
   faExclamationCircle,
+  faArrowRight,
 } from "@fortawesome/free-solid-svg-icons";
 import { useState, useEffect, useRef } from "react";
 import { useAppContext } from "../../AppProvider";
@@ -85,6 +86,11 @@ const NotifyAdmin = () => {
     setIsDropdownOpen(false);
   };
 
+  const handleGoToPost = (postId) => {
+    navigate(`/admin/pending-posts/${postId}`);
+    setIsDropdownOpen(false);
+  };
+
   const unreadCount = notifications.filter(
     (notification) => !notification.read
   ).length;
@@ -122,54 +128,99 @@ const NotifyAdmin = () => {
                   >
                     <img
                       src={`${import.meta.env.VITE_API_ENDPOINT}${
-                        notification.additional_information.reporter_avatar
+                        notification.additional_information?.reporter_avatar ||
+                        notification.additional_information?.parent_avatar
                       }`}
                       alt="Avatar"
                       className="h-12 w-12 rounded-full mr-3 object-cover border-[1px] border-gray-400 border-solid"
                     />
                     <div className="flex-1">
-                      <p className="text-md font-semibold text-blue-800">
-                        {notification.message.split("has reported user")[0]}{" "}
-                        <span className="text-gray-500">
-                          đã báo cáo người dùng{" "}
-                        </span>
-                        {notification.message.split("has reported user")[1]}{" "}
-                      </p>
-                      <p className="text-xs text-gray-500 mb-1">
-                        {notification.time}
-                      </p>
-                      <div className="flex justify-between">
-                        {!notification.read && (
-                          <button
-                            onClick={() =>
-                              handleMarkAsRead(notification.notification_id)
-                            }
-                            className="text-sm text-green-500 hover:text-green-600 flex items-center"
-                          >
-                            <FontAwesomeIcon
-                              icon={faCheckCircle}
-                              className="mr-1"
-                            />
-                            Đánh dấu đã xem
-                          </button>
-                        )}
-                        {notification.additional_information.report_id && (
-                          <button
-                            onClick={() =>
-                              handleGoToReport(
-                                notification.additional_information.report_id
-                              )
-                            }
-                            className="text-sm text-blue-500 hover:text-blue-600 flex items-center"
-                          >
-                            <FontAwesomeIcon
-                              icon={faExclamationCircle}
-                              className="mr-1"
-                            />
-                            Đi đến báo cáo
-                          </button>
-                        )}
-                      </div>
+                      {notification.additional_information?.report_id ? (
+                        <>
+                          <p className="text-md font-semibold text-blue-800">
+                            {notification.message.split("has reported user")[0]}{" "}
+                            <span className="text-gray-500">
+                              đã báo cáo người dùng{" "}
+                            </span>
+                            {notification.message.split("has reported user")[1]}{" "}
+                          </p>
+                          <p className="text-xs text-gray-500 mb-1">
+                            {notification.time}
+                          </p>
+                          <div className="flex justify-between mt-2">
+                            <button
+                              onClick={() =>
+                                handleGoToReport(
+                                  notification.additional_information.report_id
+                                )
+                              }
+                              className="text-sm text-blue-500 hover:text-blue-600 flex items-center"
+                            >
+                              <FontAwesomeIcon
+                                icon={faExclamationCircle}
+                                className="mr-1"
+                              />
+                              Đi đến báo cáo
+                            </button>
+                            {!notification.read && (
+                              <button
+                                onClick={() =>
+                                  handleMarkAsRead(notification.notification_id)
+                                }
+                                className="text-sm text-green-500 hover:text-green-600 flex items-center"
+                              >
+                                <FontAwesomeIcon
+                                  icon={faCheckCircle}
+                                  className="mr-1"
+                                />
+                                Đánh dấu đã xem
+                              </button>
+                            )}
+                          </div>
+                        </>
+                      ) : (
+                        <>
+                          <p className="text-md font-semibold text-blue-800">
+                            {notification.message.split("has created a new")[0]}{" "}
+                            <span className="text-gray-500">
+                              đã tạo bài viết mới
+                            </span>
+                          </p>
+                          <p className="text-xs text-gray-500 mb-1">
+                            {notification.time}
+                          </p>
+                          <div className="flex justify-between mt-2">
+                            <button
+                              onClick={() =>
+                                handleGoToPost(
+                                  notification.additional_information.post_id
+                                )
+                              }
+                              className="text-sm text-blue-500 hover:text-blue-600 flex items-center"
+                            >
+                              <FontAwesomeIcon
+                                icon={faArrowRight}
+                                className="mr-1"
+                              />
+                              Đi đến bài viết
+                            </button>
+                            {!notification.read && (
+                              <button
+                                onClick={() =>
+                                  handleMarkAsRead(notification.notification_id)
+                                }
+                                className="text-sm text-green-500 hover:text-green-600 flex items-center"
+                              >
+                                <FontAwesomeIcon
+                                  icon={faCheckCircle}
+                                  className="mr-1"
+                                />
+                                Đánh dấu đã xem
+                              </button>
+                            )}
+                          </div>
+                        </>
+                      )}
                     </div>
                   </li>
                 ))}

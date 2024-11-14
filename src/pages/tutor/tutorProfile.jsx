@@ -62,8 +62,8 @@ const TutorProfile = () => {
                     birthdate: data.birthdate !== "Not recorded" ? data.birthdate : '',
                     bio_link: data.bio_link !== "Not recorded" ? data.bio_link : '',
                     phone_number: data.phone_number !== "Not recorded" ? data.phone_number : '',
-                    gender: data.gender !== "Not recorded" ? data.gender : 'Nam',
-                    educational_background: data.educational_background !== "Not recorded" ? data.educational_background : '',
+                    gender: data.gender !== null ? data.gender : 'Nam',
+                    educational_background: data.educational_background !== "Not recorded" ? data.educational_background : 'Có bằng tốt nghiệp trung học phổ thông',
                 });
 
                 if (data.avatar) {
@@ -307,7 +307,7 @@ const TutorProfile = () => {
                                     />
                                 </div>
                                 <div>
-                                    <label className="block mb-1 font-medium">Liên kết bio <span className="text-red-500">*</span></label>
+                                    <label className="block mb-1 font-medium">Liên kết bio</label>
                                     <input
                                         type="text"
                                         name="bio_link"

@@ -30,18 +30,20 @@ const TutorProfileToReview = ({ tutor_id, idPost, idParent, onClose, }) => {
     });
 
     useEffect(() => {
-        const fetchTutorProfile = async () => {
-            try {
-                const response = await axios.get(
-                    `${import.meta.env.VITE_API_ENDPOINT}/api/tutors/${tutor_id}`
-                );
-                setTutorProfile(response.data);
-            } catch (error) {
-                console.error(error);
-            }
-        };
+        if (tutor_id) {
+            const fetchTutorProfile = async () => {
+                try {
+                    const response = await axios.get(
+                        `${import.meta.env.VITE_API_ENDPOINT}/api/tutors/${tutor_id}`
+                    );
+                    setTutorProfile(response.data);
+                } catch (error) {
+                    console.error(error);
+                }
+            };
 
-        fetchTutorProfile();
+            fetchTutorProfile();
+        }
     }, [tutor_id]);
 
     const handleSubmit = async () => {
@@ -79,14 +81,9 @@ const TutorProfileToReview = ({ tutor_id, idPost, idParent, onClose, }) => {
             console.error("Đã xảy ra lỗi khi gửi đánh giá:", error);
         }
     };
-    console.log(tutorProfile);
-    console.log("dữ liêu truyền", idPost, idParent, tutorProfile.tutor_id, rating, feedback);
-    console.log("id post : ", idPost);
-    console.log("id parent : ", idParent);
-    console.log("id parent : ", tutorProfile.tutor_id);
-
-    console.log("rate : ", rating);
-    console.log("description : ", feedback);
+    if (tutor_id === null) return (
+        alert('Tài khoản gia sư đã bị khóa hoặc không hoạt động')
+    );
     return (
         <div
             className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 shadow-md"
@@ -139,7 +136,9 @@ const TutorProfileToReview = ({ tutor_id, idPost, idParent, onClose, }) => {
                                 <p className="text-lg font-medium flex flex-row">
                                     <strong className="text-nowrap">Trình độ học vấn:</strong>{" "}
                                     <div className="text-[#002182] ml-5 font-normal text-nowrap">
-                                        {tutorProfile.educational_background}
+                                        {tutorProfile.educational_background !== "Not recorded"
+                                            ? tutorProfile.educational_background
+                                            : ""}
                                     </div>
                                 </p>
                                 <p className="text-lg font-medium flex flex-row">

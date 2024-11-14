@@ -95,55 +95,58 @@ const NotifyParent = () => {
         <div className="absolute right-0 mt-2 w-80 bg-white rounded-lg shadow-lg z-10 border border-gray-300">
           <div className="p-4">
             <ul className="mt-2 max-h-64 overflow-y-auto bg-white rounded-lg">
-              {notifications.map((notification) => (
-                <li
-                  key={notification.notification_id}
-                  className={`p-3 border-b flex items-start ${
-                    notification.read ? "bg-gray-200" : "bg-white"
-                  } hover:bg-gray-100 transition duration-300`}
-                >
-                  <img
-                    src={
-                      notification.additional_information.avatar ||
-                      "https://thumbs.dreamstime.com/b/account-vector-icon-user-illustration-sign-man-symbol-logo-account-vector-icon-user-illustration-sign-man-symbol-logo-can-be-228346109.jpg"
-                    }
-                    alt="Avatar"
-                    className="h-12 w-12 rounded-full mr-3 object-cover border border-gray-300"
-                  />
-                  <div className="flex-1">
-                    <p className="text-sm text-gray-800">
-                      {translateMessage(notification.message)}
-                    </p>
-                    <p className="text-xs text-gray-500 mb-1">
-                      {notification.time}
-                    </p>
-                    <div className="flex gap-2">
-                      {!notification.read && (
-                        <button
-                          onClick={() =>
-                            handleMarkAsRead(notification.notification_id)
-                          }
-                          className="text-xs text-green-500 hover:text-green-600"
-                        >
-                          Đánh dấu đã xem
-                        </button>
-                      )}
-                      {notification.additional_information.post_id && (
-                        <button
-                          onClick={() =>
-                            handleGoToPost(
-                              notification.additional_information.post_id
-                            )
-                          }
-                          className="text-xs text-blue-500 hover:text-blue-600"
-                        >
-                          Đi đến bài đăng
-                        </button>
-                      )}
+              {notifications
+                .slice()
+                .reverse()
+                .map((notification) => (
+                  <li
+                    key={notification.notification_id}
+                    className={`p-3 border-b flex items-start ${
+                      notification.read ? "bg-gray-200" : "bg-white"
+                    } hover:bg-gray-100 transition duration-300`}
+                  >
+                    <img
+                      src={
+                        notification.additional_information.avatar ||
+                        "https://thumbs.dreamstime.com/b/account-vector-icon-user-illustration-sign-man-symbol-logo-account-vector-icon-user-illustration-sign-man-symbol-logo-can-be-228346109.jpg"
+                      }
+                      alt="Avatar"
+                      className="h-12 w-12 rounded-full mr-3 object-cover border border-gray-300"
+                    />
+                    <div className="flex-1">
+                      <p className="text-sm text-gray-800">
+                        {translateMessage(notification.message)}
+                      </p>
+                      <p className="text-xs text-gray-500 mb-1">
+                        {notification.time}
+                      </p>
+                      <div className="flex gap-2">
+                        {!notification.read && (
+                          <button
+                            onClick={() =>
+                              handleMarkAsRead(notification.notification_id)
+                            }
+                            className="text-xs text-green-500 hover:text-green-600"
+                          >
+                            Đánh dấu đã xem
+                          </button>
+                        )}
+                        {notification.additional_information.post_id && (
+                          <button
+                            onClick={() =>
+                              handleGoToPost(
+                                notification.additional_information.post_id
+                              )
+                            }
+                            className="text-xs text-blue-500 hover:text-blue-600"
+                          >
+                            Đi đến bài đăng
+                          </button>
+                        )}
+                      </div>
                     </div>
-                  </div>
-                </li>
-              ))}
+                  </li>
+                ))}
             </ul>
           </div>
         </div>

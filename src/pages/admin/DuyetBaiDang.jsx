@@ -7,11 +7,13 @@ import Admin from "../../layouts/PageAuthorization/admin/admin";
 import VerifyPost from "../../layouts/popup/Verify_Post";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { useParams } from "react-router-dom";
 
 const DuyetBaiDang = () => {
   const [postList, setPostList] = useState([]);
   const { sessionToken } = useAppContext();
   const [selectedPost, setSelectedPost] = useState(null); // Chọn bài đăng hiện tại để duyệt
+  const { postId } = useParams();
 
   const handleApproveClick = (post) => {
     setSelectedPost(post);
@@ -81,7 +83,13 @@ const DuyetBaiDang = () => {
         const data = await response.json();
 
         if (response.ok) {
-          setPostList(data.results);
+          if (postId) {
+            const post = data.results.find((post) => post.post_id === postId);
+            setPostList([post]);
+            return;
+          } else {
+            setPostList(data.results);
+          }
         } else {
           console.error("Failed to fetch posts");
         }
@@ -91,7 +99,7 @@ const DuyetBaiDang = () => {
     };
 
     fetchPosts();
-  }, []);
+  }, [postId, sessionToken]);
 
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;

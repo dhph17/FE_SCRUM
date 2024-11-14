@@ -19,7 +19,6 @@ const ParentProfile = () => {
     const [profileImage, setProfileImage] = useState(null);
     const [fileName, setFileName] = useState("Choose a file");
     const [loading, setLoading] = useState(false);
-    const [validationErrors, setValidationErrors] = useState({});
     const rawParentId = localStorage.getItem("id") || "";
     const token = localStorage.getItem("accessToken");
 
@@ -53,7 +52,7 @@ const ParentProfile = () => {
                     address: data.address !== "Not recorded" ? data.address : '',
                     birthdate: data.birthdate !== "Not recorded" ? data.birthdate : '',
                     phone_number: data.phone_number !== "Not recorded" ? data.phone_number : '',
-                    gender: data.gender !== "Not recorded" ? data.gender : 'Nam',
+                    gender: data.gender !== null ? data.gender : 'Nam',
                 });
 
                 if (data.avatar) {
@@ -159,8 +158,6 @@ const ParentProfile = () => {
                 errors[field] = 'This field is required';
             }
         });
-
-        setValidationErrors(errors);
 
         if (Object.keys(errors).length > 0) {
             alert('Please fill in all required fields.');

@@ -87,6 +87,7 @@ const CommentSection = ({ idPost, onClose }) => {
             const data = await response.json();
             if (response.ok) {
                 setComments((prevCmt) => [data, ...prevCmt])
+                setReplyStatus('')
             }
         } catch (error) {
             console.log(error)
