@@ -10,6 +10,8 @@ import {
 import Logo from "../../assets/image/logo_.png";
 import PropTypes from "prop-types";
 import NotifyAdmin from "../notify/NotifyAdmin";
+import NotifyParent from "../notify/NotifyParent";
+import NotifyTutor from "../notify/NotifyTutor";
 
 const Header = ({ setSearch }) => {
   let navigate = useNavigate();
@@ -146,6 +148,8 @@ const Header = ({ setSearch }) => {
             />
           </div>
           {role === "admin" && <NotifyAdmin />}
+          {role === "parent" && <NotifyParent />}
+          {role === "tutor" && <NotifyTutor />}
 
           <div className="flex text-white items-center cursor-pointer text-[1.1rem]">
             <div className="relative flex items-center gap-2">
