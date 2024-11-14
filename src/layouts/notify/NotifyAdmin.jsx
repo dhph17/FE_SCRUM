@@ -8,7 +8,7 @@ import { useState, useEffect, useRef } from "react";
 import { useAppContext } from "../../AppProvider";
 import { useNavigate } from "react-router-dom";
 
-const Notify = () => {
+const NotifyAdmin = () => {
   const [notifications, setNotifications] = useState([]);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const { id } = useAppContext();
@@ -159,7 +159,6 @@ const Notify = () => {
                               handleGoToReport(
                                 notification.additional_information.report_id
                               )
-                              
                             }
                             className="text-sm text-blue-500 hover:text-blue-600 flex items-center"
                           >
@@ -182,4 +181,4 @@ const Notify = () => {
   );
 };
 
-export default Notify;
+export default NotifyAdmin;

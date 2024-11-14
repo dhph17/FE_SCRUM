@@ -1,6 +1,6 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useAppContext } from "../../AppProvider";
-import User from '../../assets/image/User.png';
+import User from "../../assets/image/User.png";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useCallback, useEffect, useState } from "react";
 import {
@@ -9,32 +9,35 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import Logo from "../../assets/image/logo_.png";
 import PropTypes from "prop-types";
-import Notify from "../notify/Notify";
+import NotifyAdmin from "../notify/NotifyAdmin";
 
 const Header = ({ setSearch }) => {
   let navigate = useNavigate();
   const [showDropdown, setShowDropdown] = useState(false);
-  const [activeLink, setActiveLink] = useState('');
-  const { sessionToken, setSessionToken, setRole, setId, role, id, name } = useAppContext();
-  const rolePath = role === 'parent' ? 'parent' : 'tutor';
-  const [avatar, setAvatar] = useState('');
+  const [activeLink, setActiveLink] = useState("");
+  const { sessionToken, setSessionToken, setRole, setId, role, id, name } =
+    useAppContext();
+  const rolePath = role === "parent" ? "parent" : "tutor";
+  const [avatar, setAvatar] = useState("");
 
   useEffect(() => {
     if (sessionToken) {
-      setActiveLink('main-page');
+      setActiveLink("main-page");
     }
   }, [sessionToken]);
 
   useEffect(() => {
-    if (role !== 'admin') {
+    if (role !== "admin") {
       const fetchData = async () => {
         try {
-          const url = `${import.meta.env.VITE_API_ENDPOINT}/api/${role === 'tutor' ? 'tutors' : 'parents'}/${id}`;
+          const url = `${import.meta.env.VITE_API_ENDPOINT}/api/${
+            role === "tutor" ? "tutors" : "parents"
+          }/${id}`;
           const response = await fetch(url);
           const data = await response.json();
           setAvatar(data.avatar);
         } catch (error) {
-          console.error('Error fetching data:', error);
+          console.error("Error fetching data:", error);
         }
       };
       fetchData();
@@ -57,8 +60,8 @@ const Header = ({ setSearch }) => {
       if (response.ok) {
         setSessionToken("");
         setRole("");
-        setId('');
-        setSearch('');
+        setId("");
+        setSearch("");
         setShowDropdown(false);
         localStorage.removeItem("refreshToken");
         navigate("/");
@@ -97,10 +100,7 @@ const Header = ({ setSearch }) => {
     <>
       {sessionToken ? (
         <div className="h-[15vh] w-screen px-28 flex items-center justify-between bg-custom_darkblue">
-          <div
-            id="logo-header"
-            onClick={() => navigate('/')}
-          >
+          <div id="logo-header" onClick={() => navigate("/")}>
             <img
               src={Logo}
               alt="Logo"
@@ -109,15 +109,19 @@ const Header = ({ setSearch }) => {
           </div>
           <div className="">
             <ul className="flex text-white text-[1.1rem]">
-              {['main-page', 'information'].map((path) => (
+              {["main-page", "information"].map((path) => (
                 <Link
                   key={path}
                   to={`${rolePath}/${path}`}
                   className={`font-semibold mx-6 cursor-pointer transition duration-200 
-                    ${activeLink === path ? 'underline underline-offset-4' : 'hover:scale-110'}`}
+                    ${
+                      activeLink === path
+                        ? "underline underline-offset-4"
+                        : "hover:scale-110"
+                    }`}
                   onClick={() => setActiveLink(path)}
                 >
-                  {path === 'main-page' ? 'Trang chủ' : 'Hồ sơ cá nhân'}
+                  {path === "main-page" ? "Trang chủ" : "Hồ sơ cá nhân"}
                 </Link>
               ))}
             </ul>
@@ -141,29 +145,37 @@ const Header = ({ setSearch }) => {
               className="text-white absolute right-3 top-3"
             />
           </div>
-          <Notify />
+          {role === "admin" && <NotifyAdmin />}
+
           <div className="flex text-white items-center cursor-pointer text-[1.1rem]">
             <div className="relative flex items-center gap-2">
-              <img src={avatar ? `${import.meta.env.VITE_API_ENDPOINT}${avatar}` : User} alt="" className="w-[40px] h-[40px] rounded-full" />
+              <img
+                src={
+                  avatar
+                    ? `${import.meta.env.VITE_API_ENDPOINT}${avatar}`
+                    : User
+                }
+                alt=""
+                className="w-[40px] h-[40px] rounded-full"
+              />
               <p className="font-semibold">{name}</p>
               <i
-                className={`fas ${showDropdown ? 'fa-chevron-up' : 'fa-chevron-down'} text-[0.8rem] ml-1`}
+                className={`fas ${
+                  showDropdown ? "fa-chevron-up" : "fa-chevron-down"
+                } text-[0.8rem] ml-1`}
                 onClick={() => setShowDropdown(!showDropdown)}
               ></i>
-              {
-                showDropdown && (
-                  <div
-                    className="bg-white text-black text-[0.9rem] absolute flex items-center p-2 rounded-md -right-12 top-10 shadow-md border border-slate-200 hover:bg-slate-100"
-                    onClick={handleLogout}
-                  >
-                    <FontAwesomeIcon icon={faArrowRightFromBracket} />
-                    <p className="ml-2">Đăng xuất</p>
-                  </div>
-                )
-              }
+              {showDropdown && (
+                <div
+                  className="bg-white text-black text-[0.9rem] absolute flex items-center p-2 rounded-md -right-12 top-10 shadow-md border border-slate-200 hover:bg-slate-100"
+                  onClick={handleLogout}
+                >
+                  <FontAwesomeIcon icon={faArrowRightFromBracket} />
+                  <p className="ml-2">Đăng xuất</p>
+                </div>
+              )}
             </div>
           </div>
-
         </div>
       ) : (
         <div className="h-[15vh] w-screen px-28 flex items-center justify-between">
