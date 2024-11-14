@@ -104,7 +104,7 @@ const ItemReport = ({ report }) => {
           <img
             src={
               report.reporter_avt
-                ? `${import.meta.env.VITE_API_ENDPOINT}/${report.reporter_avt}`
+                ? `${import.meta.env.VITE_API_ENDPOINT}${report.reporter_avt}`
                 : User
             }
             alt="Reporter Avatar"
@@ -123,9 +123,8 @@ const ItemReport = ({ report }) => {
           <img
             src={
               report.reported_party_avt
-                ? `${import.meta.env.VITE_API_ENDPOINT}/${
-                    report.reported_party_avt
-                  }`
+                ? `${import.meta.env.VITE_API_ENDPOINT}${report.reported_party_avt
+                }`
                 : User
             }
             alt="Reported Party Avatar"
@@ -156,11 +155,10 @@ const ItemReport = ({ report }) => {
           <div className="flex flex-row gap-4 items-center">
             <p className="font-semibold">Trạng thái:</p>
             <span
-              className={`px-3 py-1 rounded-full text-sm font-medium ${
-                report.resolved
-                  ? "bg-green-100 text-green-600"
-                  : "bg-red-100 text-red-600"
-              }`}
+              className={`px-3 py-1 rounded-full text-sm font-medium ${report.resolved
+                ? "bg-green-100 text-green-600"
+                : "bg-red-100 text-red-600"
+                }`}
             >
               {report.resolved ? "Đã giải quyết" : "Chưa giải quyết"}
             </span>

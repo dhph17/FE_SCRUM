@@ -141,7 +141,7 @@ const Header = ({ setSearch }) => {
               className="text-white absolute right-3 top-3"
             />
           </div>
-          {/* <Notify /> */}
+          <Notify />
           <div className="flex text-white items-center cursor-pointer text-[1.1rem]">
             <div className="relative flex items-center gap-2">
               <img src={avatar ? `${import.meta.env.VITE_API_ENDPOINT}${avatar}` : User} alt="" className="w-[40px] h-[40px] rounded-full" />
