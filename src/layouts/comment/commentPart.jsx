@@ -117,6 +117,7 @@ const CommentPart = ({ data, avatar }) => {
                                 type="text"
                                 className='w-full py-2 bg-transparent border-2 border-custom_gray text-[0.9rem] rounded-3xl pl-3 pr-10 focus:border-black'
                                 placeholder='Thêm bình luận...'
+                                maxLength={500}
                                 value={reply}
                                 onChange={(e) => setReplyComment(e.target.value)}
                             />

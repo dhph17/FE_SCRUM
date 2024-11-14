@@ -73,7 +73,7 @@ const Comment = ({ dataUser, time, comment, role }) => {
                             <p
                                 className='inline-block font-semibold text-[0.9rem] hover:cursor-pointer'
                                 onClick={handleReply}
-                            >Reply</p>
+                            >Trả lời</p>
                             <FiMoreHorizontal
                                 className='ml-2 text-primaryColorGray cursor-pointer'
                                 onClick={() => setIsReport(!isReport)}
