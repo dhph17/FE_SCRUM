@@ -4,7 +4,7 @@ import {
   faCheckCircle,
   faExclamationCircle,
 } from "@fortawesome/free-solid-svg-icons";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useAppContext } from "../../AppProvider";
 import { useNavigate } from "react-router-dom";
 
@@ -14,6 +14,7 @@ const Notify = () => {
   const { id } = useAppContext();
   const [ws, setWs] = useState(null);
   let navigate = useNavigate();
+  const dropdownRef = useRef(null);
 
   useEffect(() => {
     const websocket = new WebSocket(
@@ -43,6 +44,24 @@ const Notify = () => {
 
   const toggleDropdown = () => setIsDropdownOpen(!isDropdownOpen);
 
+  const handleClickOutside = (event) => {
+    if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+      setIsDropdownOpen(false);
+    }
+  };
+
+  useEffect(() => {
+    if (isDropdownOpen) {
+      document.addEventListener("mousedown", handleClickOutside);
+    } else {
+      document.removeEventListener("mousedown", handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [isDropdownOpen]);
+
   const handleMarkAsRead = (notificationId) => {
     if (ws) {
       const message = {
@@ -63,6 +82,7 @@ const Notify = () => {
 
   const handleGoToReport = (reportId) => {
     navigate(`/admin/manage-report/${reportId}`);
+    setIsDropdownOpen(false);
   };
 
   const unreadCount = notifications.filter(
@@ -84,67 +104,76 @@ const Notify = () => {
       </button>
 
       {isDropdownOpen && (
-        <div className="absolute right-0 mt-2 w-[30rem] bg-white rounded-xl shadow-lg z-10 border-[1px] border-gray-400 border-solid">
+        <div
+          ref={dropdownRef}
+          className="absolute right-0 mt-2 w-[30rem] bg-white rounded-xl shadow-lg z-10 border-[1px] border-gray-400 border-solid"
+        >
           <div className="p-4">
             <ul className="mt-2 max-h-64 overflow-y-auto bg-white rounded-lg">
-              {notifications.map((notification) => (
-                <li
-                  key={notification.notification_id}
-                  className={`p-3 border-b flex items-start ${notification.read ? "bg-gray-200" : "bg-white"
+              {notifications
+                .slice()
+                .reverse()
+                .map((notification) => (
+                  <li
+                    key={notification.notification_id}
+                    className={`p-3 border-b flex items-start ${
+                      notification.read ? "bg-gray-200" : "bg-white"
                     } hover:bg-gray-100 transition duration-300`}
-                >
-                  <img
-                    src={`${import.meta.env.VITE_API_ENDPOINT}${notification.additional_information.reporter_avatar
+                  >
+                    <img
+                      src={`${import.meta.env.VITE_API_ENDPOINT}${
+                        notification.additional_information.reporter_avatar
                       }`}
-                    alt="Avatar"
-                    className="h-12 w-12 rounded-full mr-3 object-cover border-[1px] border-gray-400 border-solid"
-                  />
-                  <div className="flex-1">
-                    <p className="text-md font-semibold text-blue-800">
-                      {notification.message.split("has reported user")[0]}{" "}
-                      <span className="text-gray-500">
-                        đã báo cáo người dùng{" "}
-                      </span>
-                      {notification.message.split("has reported user")[1]}{" "}
-                    </p>
-                    <p className="text-xs text-gray-500 mb-1">
-                      {notification.time}
-                    </p>
-                    <div className="flex justify-between">
-                      {!notification.read && (
-                        <button
-                          onClick={() =>
-                            handleMarkAsRead(notification.notification_id)
-                          }
-                          className="text-sm text-green-500 hover:text-green-600 flex items-center"
-                        >
-                          <FontAwesomeIcon
-                            icon={faCheckCircle}
-                            className="mr-1"
-                          />
-                          Đánh dấu đã xem
-                        </button>
-                      )}
-                      {notification.additional_information.report_id && (
-                        <button
-                          onClick={() =>
-                            handleGoToReport(
-                              notification.additional_information.report_id
-                            )
-                          }
-                          className="text-sm text-blue-500 hover:text-blue-600 flex items-center"
-                        >
-                          <FontAwesomeIcon
-                            icon={faExclamationCircle}
-                            className="mr-1"
-                          />
-                          Đi đến báo cáo
-                        </button>
-                      )}
+                      alt="Avatar"
+                      className="h-12 w-12 rounded-full mr-3 object-cover border-[1px] border-gray-400 border-solid"
+                    />
+                    <div className="flex-1">
+                      <p className="text-md font-semibold text-blue-800">
+                        {notification.message.split("has reported user")[0]}{" "}
+                        <span className="text-gray-500">
+                          đã báo cáo người dùng{" "}
+                        </span>
+                        {notification.message.split("has reported user")[1]}{" "}
+                      </p>
+                      <p className="text-xs text-gray-500 mb-1">
+                        {notification.time}
+                      </p>
+                      <div className="flex justify-between">
+                        {!notification.read && (
+                          <button
+                            onClick={() =>
+                              handleMarkAsRead(notification.notification_id)
+                            }
+                            className="text-sm text-green-500 hover:text-green-600 flex items-center"
+                          >
+                            <FontAwesomeIcon
+                              icon={faCheckCircle}
+                              className="mr-1"
+                            />
+                            Đánh dấu đã xem
+                          </button>
+                        )}
+                        {notification.additional_information.report_id && (
+                          <button
+                            onClick={() =>
+                              handleGoToReport(
+                                notification.additional_information.report_id
+                              )
+                              
+                            }
+                            className="text-sm text-blue-500 hover:text-blue-600 flex items-center"
+                          >
+                            <FontAwesomeIcon
+                              icon={faExclamationCircle}
+                              className="mr-1"
+                            />
+                            Đi đến báo cáo
+                          </button>
+                        )}
+                      </div>
                     </div>
-                  </div>
-                </li>
-              ))}
+                  </li>
+                ))}
             </ul>
           </div>
         </div>

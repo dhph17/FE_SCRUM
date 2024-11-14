@@ -18,7 +18,7 @@ const FeedbackPopup = ({ feedbackDetails, onClose }) => {
           <div>
             <div className="flex items-center mb-4">
               <img
-                src={`${import.meta.env.VITE_API_ENDPOINT}${feedbackDetails.parent_avt}`}
+                src={"http://127.0.0.1:8000" + feedbackDetails.parent_avt}
                 alt="Parent Avatar"
                 className="w-16 h-16 rounded-full mr-4 shadow-md object-contain border border-gray-200"
               />
@@ -34,10 +34,11 @@ const FeedbackPopup = ({ feedbackDetails, onClose }) => {
                       return (
                         <svg
                           key={index}
-                          className={`w-5 h-5 ${ratingValue <= feedbackDetails.rating
-                            ? "text-yellow-500"
-                            : "text-gray-300"
-                            }`}
+                          className={`w-5 h-5 ${
+                            ratingValue <= feedbackDetails.rating
+                              ? "text-yellow-500"
+                              : "text-gray-300"
+                          }`}
                           fill="currentColor"
                           viewBox="0 0 20 20"
                           xmlns="http://www.w3.org/2000/svg"

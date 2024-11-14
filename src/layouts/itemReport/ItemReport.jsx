@@ -45,7 +45,7 @@ const ItemReport = ({ report }) => {
 
   const handleViewFeedBack = (feedback_id) => {
     fetch(
-      `${import.meta.env.VITE_API_ENDPOINT}/api/class/feedback/${feedback_id}`,
+      `${import.meta.env.VITE_API_ENDPOINT}/api/class/feedback/${feedback_id}/`,
       {
         headers: {
           Authorization: `Bearer ${sessionToken}`,
@@ -54,9 +54,11 @@ const ItemReport = ({ report }) => {
     )
       .then((response) => response.json())
       .then((data) => {
-        setFeedbackDetails(data);
+        setFeedbackDetails(data.feedbacks);
         setIsPopupOpen(true);
+        console.log("Fetched feedback details:", data.feedbacks);
       })
+      
       .catch((error) => {
         console.error("Error fetching feedback details:", error);
       });
