@@ -51,7 +51,7 @@ const Comment = ({ dataUser, time, comment, role }) => {
                 <div className='flex'>
                     <div className='w-[50px] mr-2'>
                         <img
-                            src={`${import.meta.env.VITE_API_ENDPOINT}${dataUser?.avatar}` || avatar}
+                            src={dataUser?.avatar ? `${import.meta.env.VITE_API_ENDPOINT}${dataUser.avatar}` : avatar}
                             width={40}
                             height={40}
                             alt="avatar"

@@ -160,7 +160,7 @@ const CommentSection = ({ idPost, onClose }) => {
                     <div className='w-[100%] mr-2 flex'>
                         <div className='w-[50px] mr-2 flex'>
                             <img
-                                src={`${import.meta.env.VITE_API_ENDPOINT}${avatar}` || ImgAvatar}
+                                src={avatar ? `${import.meta.env.VITE_API_ENDPOINT}${avatar}` : ImgAvatar}
                                 alt="avatar"
                                 className="rounded-full w-[40px] h-[40px] mr-3"
                             />

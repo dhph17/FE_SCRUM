@@ -91,7 +91,7 @@ const ApprovedPost = () => {
           {currentPosts.map((post, index) => (
             <div
               key={index}
-              className="border-[3px] rounded-[1rem] border-[#002182] shadow-md bg-white"
+              className="border-[3px] rounded-[1rem] border-[#002182] shadow-md bg-white mb-6"
             >
               <ItemPost user={post} tag="Đã phê duyệt">
                 <button
@@ -115,7 +115,7 @@ const ApprovedPost = () => {
           ))}
         </div>
         {!postId && (
-          <div className="mt-8">
+          <div className="mt-6">
             <Pagination
               currentPage={currentPage}
               totalPages={totalPages}
