@@ -101,12 +101,12 @@ const Header = ({ setSearch }) => {
   return (
     <>
       {sessionToken ? (
-        <div className="h-[15vh] w-screen px-28 flex items-center justify-between bg-custom_darkblue">
+        <div className="h-[10vh] w-screen px-28 flex items-center justify-between bg-custom_darkblue">
           <div id="logo-header" onClick={() => navigate("/")}>
             <img
               src={Logo}
               alt="Logo"
-              className="w-20 h-20 bg-center rounded-full object-cover cursor-pointer"
+              className="w-12 h-12 bg-center rounded-full object-cover cursor-pointer"
             />
           </div>
           <div className="">
