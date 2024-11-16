@@ -7,7 +7,7 @@ import {
   faMagnifyingGlass,
   faArrowRightFromBracket,
 } from "@fortawesome/free-solid-svg-icons";
-import Logo from "../../assets/image/logo_.png";
+import Logo from "../../assets/image/logo_.webp";
 import PropTypes from "prop-types";
 import NotifyAdmin from "../notify/NotifyAdmin";
 import NotifyParent from "../notify/NotifyParent";
