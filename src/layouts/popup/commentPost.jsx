@@ -107,7 +107,7 @@ const CommentSection = ({ idPost, onClose }) => {
                 <div className='flex justify-between items-end'>
                     <div className='flex items-center text-primaryColorGray'>
                         <FaCommentAlt />
-                        <p className='ml-2'>{totalComment} Comment</p>
+                        <p className='ml-2'>{totalComment} bình luận</p>
                     </div>
                     {/* <div className='relative'>
                         <button
@@ -151,7 +151,7 @@ const CommentSection = ({ idPost, onClose }) => {
                     {comments?.map((comment, index) => (
                         <div key={index}>
                             <CommentProvider>
-                                <CommentPart data={comment} avatar={avatar} />
+                                <CommentPart data={comment} avatar={avatar} role='parent' />
                             </CommentProvider>
                         </div>
                     ))}

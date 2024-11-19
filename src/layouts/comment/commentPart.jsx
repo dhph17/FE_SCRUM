@@ -4,10 +4,10 @@ import PropTypes from "prop-types";
 import ImgAvatar from "../../assets/image/User.png";
 import { IoIosSend, IoMdClose } from "react-icons/io";
 import Comment from './comment';
-import { useAppContext as useCommentContext } from '../provider/commentProvider'
+import { CommentProvider, useAppContext as useCommentContext } from '../provider/commentProvider'
 import { FaChevronDown, FaChevronUp } from "react-icons/fa";
 
-const CommentPart = ({ data, avatar }) => {
+const CommentPart = ({ data, avatar, role }) => {
     const { id, sessionToken } = useAppContext();
     const { replyStatus, setReplyStatus } = useCommentContext();
     const [reply, setReplyComment] = useState('');
@@ -60,23 +60,33 @@ const CommentPart = ({ data, avatar }) => {
 
     return (
         <div>
-            <Comment dataUser={data?.user} time={data?.created_at} comment={data?.comment || ''} role='parent' />
+            <Comment dataUser={data?.user} time={data?.created_at} comment={data?.comment || ''} role={role} />
 
             {showCmtChild && (
                 <div>
-                    {childrenCmt.map((childComment, index) => (
-                        <Comment
-                            key={childComment.id || index}
-                            dataUser={childComment.user}
-                            time={childComment.created_at}
-                            comment={childComment.comment}
-                            role="children"
-                        />
-                    ))}
+                    {childrenCmt.map((childComment, index) => {
+                        if (role === 'parent') {
+                            return (
+                                <CommentProvider key={index}>
+                                    <CommentPart data={childComment} avatar={avatar} role='children' />
+                                </CommentProvider>
+                            )
+                        } else {
+                            return (
+                                <Comment
+                                    key={childComment.id || index}
+                                    dataUser={childComment.user}
+                                    time={childComment.created_at}
+                                    comment={childComment.comment}
+                                    role="childrenChild"
+                                />
+                            )
+                        }
+                    })}
                 </div>
             )}
 
-            <div className='flex ml-14 mb-2'>
+            <div className={`flex mb-2 ${role === 'children' ? 'pl-28' : 'pl-14'}`}>
                 {!showCmtChild && data.comment_children_count > 0 && (
                     <div
                         className='flex items-center cursor-pointer group'
@@ -102,7 +112,7 @@ const CommentPart = ({ data, avatar }) => {
             </div>
 
             {replyStatus && (
-                <div className='flex justify-between pl-14 items-center mt-3 mb-7'>
+                <div className={`flex justify-between items-center mt-3 mb-7 ${role === 'children' ? 'pl-28' : 'pl-14'}`}>
                     <div className='w-[100%] mr-2 flex'>
                         <div className='w-[50px] mr-2 flex'>
                             <img
@@ -141,7 +151,8 @@ const CommentPart = ({ data, avatar }) => {
 
 CommentPart.propTypes = {
     data: PropTypes.object,
-    avatar: PropTypes.string
+    avatar: PropTypes.string,
+    role: PropTypes.string
 };
 
 export default CommentPart;

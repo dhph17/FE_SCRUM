@@ -81,7 +81,7 @@ const NotifyParent = () => {
     <div className="relative">
       <button
         onClick={toggleDropdown}
-        className="relative p-2 rounded-full text-white  transition duration-300"
+        className="relative p-2 rounded-full text-white transition duration-300"
       >
         <FontAwesomeIcon icon={faBell} className="w-5 h-5" />
         {unreadCount > 0 && (

@@ -47,7 +47,14 @@ const Comment = ({ dataUser, time, comment, role }) => {
 
     return (
         <div>
-            <div className={`flex w-full items-center mb-5 ${role === 'children' ? 'pl-14 mb-2' : 'mb-2'}`}>
+            <div
+                className={`flex w-full items-center mb-5 ${role === 'children'
+                    ? 'pl-14 mb-2'
+                    : role === 'childrenChild'
+                        ? 'pl-28 mb-2'
+                        : 'mb-2'
+                    }`}
+            >
                 <div className='flex'>
                     <div className='w-[50px] mr-2'>
                         <img
@@ -80,7 +87,7 @@ const Comment = ({ dataUser, time, comment, role }) => {
                             />
                             {
                                 isReport && (
-                                    <div className='absolute flex font-semibold items-center bg-colorPopover rounded-lg cursor-pointer z-10 shadow-lg px-2 py-2 top-5 left-10 hover:text-red-500'>
+                                    <div className='absolute flex font-semibold items-center bg-slate-100 rounded-lg cursor-pointer z-10 shadow-lg px-2 py-2 top-5 left-10 hover:text-red-500'>
                                         <GoReport />
                                         <p className='ml-2 text-[0.9rem]'>Report</p>
                                     </div>
