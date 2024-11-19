@@ -1,10 +1,10 @@
-import { useState } from 'react'
+import { useState } from 'react';
 import { useAppContext } from '../../AppProvider';
 import PropTypes from "prop-types";
 import ImgAvatar from "../../assets/image/User.png";
 import { IoIosSend, IoMdClose } from "react-icons/io";
 import Comment from './comment';
-import { CommentProvider, useAppContext as useCommentContext } from '../provider/commentProvider'
+import { CommentProvider, useAppContext as useCommentContext } from '../provider/commentProvider';
 import { FaChevronDown, FaChevronUp } from "react-icons/fa";
 
 const CommentPart = ({ data, avatar, role }) => {
@@ -13,9 +13,11 @@ const CommentPart = ({ data, avatar, role }) => {
     const [reply, setReplyComment] = useState('');
     const [childrenCmt, setChildrenCmt] = useState([]);
     const [showCmtChild, setShowCmtChild] = useState(false);
+    const [visibleCommentsCount, setVisibleCommentsCount] = useState(3); // New state for visible comments
+    const [commentCount, setCommentCount] = useState(data.comment_children_count); // Track the comment count
 
     const toggleViewComments = async (id_parent) => {
-        setShowCmtChild(true)
+        setShowCmtChild(true);
         try {
             const response = await fetch(`${import.meta.env.VITE_API_ENDPOINT}/api/postcomments/${id_parent}/`);
             const commentData = await response.json();
@@ -27,6 +29,7 @@ const CommentPart = ({ data, avatar, role }) => {
 
     const handleHideComments = () => {
         setShowCmtChild(false);
+        setVisibleCommentsCount(3); // Reset visible count when hiding
     };
 
     const handlePostComment = async (idPost, idCmt) => {
@@ -50,13 +53,21 @@ const CommentPart = ({ data, avatar, role }) => {
             const newComment = await response.json();
             if (response.ok) {
                 setChildrenCmt((prevCmt) => [newComment, ...prevCmt]);
-                setShowCmtChild(true)
-                setReplyComment('')
+                setShowCmtChild(true);
+                setReplyComment('');
+                // Update the comment count
+                setCommentCount((prevCount) => prevCount + 1);
             }
         } catch (error) {
             console.log(error);
         }
     };
+
+    const handleShowMoreComments = () => {
+        setVisibleCommentsCount((prevCount) => prevCount + 3); // Increase visible count by 3
+    };
+
+    const remainingComments = childrenCmt.length - visibleCommentsCount; // Calculate remaining comments
 
     return (
         <div>
@@ -64,50 +75,59 @@ const CommentPart = ({ data, avatar, role }) => {
 
             {showCmtChild && (
                 <div>
-                    {childrenCmt.map((childComment, index) => {
-                        if (role === 'parent') {
-                            return (
-                                <CommentProvider key={index}>
-                                    <CommentPart data={childComment} avatar={avatar} role='children' />
-                                </CommentProvider>
-                            )
-                        } else {
-                            return (
-                                <Comment
-                                    key={childComment.id || index}
-                                    dataUser={childComment.user}
-                                    time={childComment.created_at}
-                                    comment={childComment.comment}
-                                    role="childrenChild"
-                                />
-                            )
-                        }
-                    })}
+                    {childrenCmt.slice(0, visibleCommentsCount).map((childComment, index) => (
+                        role === 'parent' ? (
+                            <CommentProvider key={index}>
+                                <CommentPart data={childComment} avatar={avatar} role='children' />
+                            </CommentProvider>
+                        ) : (
+                            <Comment
+                                key={childComment.id || index}
+                                dataUser={childComment.user}
+                                time={childComment.created_at}
+                                comment={childComment.comment}
+                                role="childrenChild"
+                            />
+                        )
+                    ))}
                 </div>
             )}
 
             <div className={`flex mb-2 ${role === 'children' ? 'pl-28' : 'pl-14'}`}>
-                {!showCmtChild && data.comment_children_count > 0 && (
+                {!showCmtChild && commentCount > 0 && (
                     <div
                         className='flex items-center cursor-pointer group'
                         onClick={() => toggleViewComments(data.comment_id)}
                     >
                         <div className="w-[2rem] h-[0.1rem] bg-gray-400 font-bold mr-3"></div>
                         <p className='text-[0.85rem] text-gray-600 text-nowrap group-hover:underline'>
-                            Xem thêm {data.comment_children_count} câu trả lời
+                            Xem thêm {commentCount} câu trả lời
                         </p>
                         <FaChevronDown className='ml-2 w-3 h-3 text-gray-600 mr-5' />
                     </div>
                 )}
 
                 {showCmtChild && (
-                    <div
-                        className='flex items-center cursor-pointer group'
-                        onClick={handleHideComments}
-                    >
-                        <p className='group-hover:underline text-[0.85rem] text-gray-600'>Ẩn</p>
-                        <FaChevronUp className='ml-2 w-2 h-2 text-gray-600' />
-                    </div>
+                    <>
+                        {remainingComments > 0 && (
+                            <div
+                                className='flex items-center cursor-pointer group'
+                                onClick={handleShowMoreComments}
+                            >
+                                <p className='group-hover:underline text-[0.85rem] text-gray-600'>
+                                    Xem thêm {remainingComments} câu trả lời
+                                </p>
+                                <FaChevronDown className='ml-2 w-3 h-3 text-gray-600' />
+                            </div>
+                        )}
+                        <div
+                            className='flex items-center cursor-pointer group ml-3'
+                            onClick={handleHideComments}
+                        >
+                            <p className='group-hover:underline text-[0.85rem] text-gray-600'>Ẩn</p>
+                            <FaChevronUp className='ml-2 w-2 h-2 text-gray-600' />
+                        </div>
+                    </>
                 )}
             </div>
 
