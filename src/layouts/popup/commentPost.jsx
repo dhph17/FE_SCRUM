@@ -160,7 +160,7 @@ const CommentSection = ({ idPost, onClose }) => {
                     <div className='w-[100%] mr-2 flex'>
                         <div className='w-[50px] mr-2 flex'>
                             <img
-                                src={`${import.meta.env.VITE_API_ENDPOINT}${avatar}` || ImgAvatar}
+                                src={avatar ? `${import.meta.env.VITE_API_ENDPOINT}${avatar}` : ImgAvatar}
                                 alt="avatar"
                                 className="rounded-full w-[40px] h-[40px] mr-3"
                             />
@@ -170,7 +170,8 @@ const CommentSection = ({ idPost, onClose }) => {
                             <input
                                 type="text"
                                 className='w-full py-2 bg-transparent border-2 border-custom_gray text-[0.9rem] rounded-3xl pl-3 pr-10 focus:border-black'
-                                placeholder='Write a comment'
+                                placeholder='Thêm bình luận...'
+                                maxLength={500}
                                 value={reply}
                                 onChange={(e) => setReplyStatus(e.target.value)}
                             />
