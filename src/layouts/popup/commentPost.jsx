@@ -1,9 +1,9 @@
 import PropTypes from "prop-types";
-import { useEffect, useState } from 'react';
+import { useAppContext } from "../../AppProvider";
+import { useEffect, useState, useRef } from 'react';
 import { FaCommentAlt } from "react-icons/fa";
 import ImgAvatar from "../../assets/image/User.png";
 import { IoIosSend, IoMdClose } from "react-icons/io";
-import { useAppContext } from "../../AppProvider";
 import { CommentProvider } from '../provider/commentProvider';
 import CommentPart from '../comment/commentPart';
 
@@ -13,6 +13,7 @@ const CommentSection = ({ idPost, onClose }) => {
     const [totalComment, setTotalCmt] = useState(0);
     const [reply, setReplyStatus] = useState('');
     const [avatar, setAvatar] = useState('');
+    const lastCommentRef = useRef(null); // Ref để theo dõi comment cuối cùng
 
     useEffect(() => {
         if (role !== 'admin') {
@@ -72,9 +73,12 @@ const CommentSection = ({ idPost, onClose }) => {
 
             const data = await response.json();
             if (response.ok) {
-                setComments((prevCmt) => [data, ...prevCmt]); // Add new comment to the top
+                setComments((prevCmt) => [...prevCmt, data]); // Thêm comment mới vào cuối danh sách
                 setTotalCmt((prevTotal) => prevTotal + 1);
                 setReplyStatus('');
+                setTimeout(() => {
+                    lastCommentRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }, 100); // Cuộn đến comment cuối
             }
         } catch (error) {
             console.log(error);
@@ -100,7 +104,10 @@ const CommentSection = ({ idPost, onClose }) => {
                 <div className="w-full h-[0.125rem] bg-gray-500 mt-2 mb-5"></div>
                 <div className="min-h-[120px] h-[77%] overflow-auto pr-4 scrollbar-thin scrollbar-thumb-transparent/30 scrollbar-track-transparent">
                     {comments?.map((comment, index) => (
-                        <div key={index}>
+                        <div
+                            key={index}
+                            ref={index === comments.length - 1 ? lastCommentRef : null} // Gắn ref vào comment cuối
+                        >
                             <CommentProvider>
                                 <CommentPart data={comment} avatar={avatar} role='parent' />
                             </CommentProvider>

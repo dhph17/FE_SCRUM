@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { useAppContext } from '../../AppProvider';
 import PropTypes from "prop-types";
 import ImgAvatar from "../../assets/image/User.png";
@@ -15,6 +15,7 @@ const CommentPart = ({ data, avatar, role }) => {
     const [showCmtChild, setShowCmtChild] = useState(false);
     const [visibleCommentsCount, setVisibleCommentsCount] = useState(3);
     const [commentCount, setCommentCount] = useState(data.comment_children_count);
+    const lastChildRef = useRef(null); // Ref để cuộn đến comment cuối
 
     const toggleViewComments = async (id_parent) => {
         setShowCmtChild(true);
@@ -58,11 +59,14 @@ const CommentPart = ({ data, avatar, role }) => {
 
             const newComment = await response.json();
             if (response.ok) {
-                setChildrenCmt((prevCmt) => [newComment, ...prevCmt]);
+                setChildrenCmt((prevCmt) => [...prevCmt, newComment]); // Thêm comment mới vào cuối
                 setShowCmtChild(true);
                 setReplyComment('');
-                // Update the comment count
                 setCommentCount((prevCount) => prevCount + 1);
+
+                setTimeout(() => {
+                    lastChildRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }, 100); // Cuộn đến comment cuối
             }
         } catch (error) {
             console.log(error);
@@ -84,7 +88,11 @@ const CommentPart = ({ data, avatar, role }) => {
                     {childrenCmt.slice(0, visibleCommentsCount).map((childComment, index) => (
                         role === 'parent' ? (
                             <CommentProvider key={index}>
-                                <CommentPart data={childComment} avatar={avatar} role='children' />
+                                <CommentPart
+                                    data={childComment}
+                                    avatar={avatar}
+                                    role='children'
+                                />
                             </CommentProvider>
                         ) : (
                             <Comment
@@ -94,6 +102,7 @@ const CommentPart = ({ data, avatar, role }) => {
                                 comment={childComment.comment}
                                 isMyCmt={childComment.is_my_comment}
                                 role="childrenChild"
+                                ref={index === childrenCmt.length - 1 ? lastChildRef : null} // Gắn ref vào comment cuối
                             />
                         )
                     ))}
@@ -165,7 +174,8 @@ const CommentPart = ({ data, avatar, role }) => {
                         </div>
                     </div>
 
-                    <div className='border-2 p-2 rounded-full hover:bg-white hover:text-black transition-all duration-300 cursor-pointer'
+                    <div
+                        className='border-2 p-2 rounded-full hover:bg-white hover:text-black transition-all duration-300 cursor-pointer'
                         onClick={() => handlePostComment(data.post_id, data.comment_id)}
                     >
                         <IoIosSend />
