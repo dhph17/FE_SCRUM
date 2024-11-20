@@ -1,5 +1,23 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faBell } from "@fortawesome/free-solid-svg-icons";
+import {
+  faBell,
+  faCheckCircle,
+  faExclamationCircle,
+  faArrowRight,
+  faTimes,
+  faGraduationCap,
+  faCalendarAlt,
+  faHourglassHalf,
+  faMoneyBillWave,
+  faUsers,
+  faBook,
+  faBookOpen,
+  faFileAlt,
+  faMapMarkerAlt,
+  faUser,
+  faClock,
+  faSyncAlt,
+} from "@fortawesome/free-solid-svg-icons";
 import { useState, useEffect, useRef } from "react";
 import { useAppContext } from "../../AppProvider";
 import { useNavigate } from "react-router-dom";
@@ -7,6 +25,7 @@ import { useNavigate } from "react-router-dom";
 const NotifyParent = () => {
   const [notifications, setNotifications] = useState([]);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [selectedPost, setSelectedPost] = useState(null);
   const { id } = useAppContext();
   const [ws, setWs] = useState(null);
   let navigate = useNavigate();
@@ -45,24 +64,6 @@ const NotifyParent = () => {
 
   const toggleDropdown = () => setIsDropdownOpen(!isDropdownOpen);
 
-  const handleMarkAsRead = (notificationId) => {
-    if (ws) {
-      const message = {
-        action: "mark_as_read",
-        notification_ids: [notificationId],
-      };
-      ws.send(JSON.stringify(message));
-    }
-
-    setNotifications((prev) =>
-      prev.map((notification) =>
-        notification.notification_id === notificationId
-          ? { ...notification, read: true }
-          : notification
-      )
-    );
-  };
-
   const handleClickOutside = (event) => {
     if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
       setIsDropdownOpen(false);
@@ -81,31 +82,46 @@ const NotifyParent = () => {
     };
   }, [isDropdownOpen]);
 
+  const handleMarkAsRead = (notificationId) => {
+    if (ws) {
+      const message = {
+        action: "mark_as_read",
+        notification_ids: [notificationId],
+      };
+      ws.send(JSON.stringify(message));
+    }
+
+    setNotifications((prev) =>
+      prev.map((notification) =>
+        notification.notification_id === notificationId
+          ? { ...notification, read: true }
+          : notification
+      )
+    );
+  };
+
   const handleGoToPost = (postId) => {
-    navigate(`/parent/detailPost/${postId}`);
+    navigate(`/post/${postId}`);
     setIsDropdownOpen(false);
+  };
+
+  const handleViewPost = (post) => {
+    setSelectedPost(post);
+  };
+
+  const closePopup = () => {
+    setSelectedPost(null);
   };
 
   const unreadCount = notifications.filter(
     (notification) => !notification.read
   ).length;
 
-  const translateMessage = (message) => {
-    switch (message) {
-      case "Your post has been approved":
-        return "Bài đăng của bạn đã được phê duyệt";
-      case "Your post has been rejected":
-        return "Bài đăng của bạn đã bị từ chối";
-      default:
-        return message;
-    }
-  };
-
   return (
     <div className="relative">
       <button
         onClick={toggleDropdown}
-        className="relative p-2 rounded-full text-white  transition duration-300"
+        className="relative p-2 rounded-full text-white transition duration-300"
       >
         <FontAwesomeIcon icon={faBell} className="w-5 h-5" />
         {unreadCount > 0 && (
@@ -117,8 +133,8 @@ const NotifyParent = () => {
 
       {isDropdownOpen && (
         <div
-          className="absolute right-0 mt-2 w-[25rem] bg-white rounded-lg shadow-lg z-10 border border-gray-300"
           ref={dropdownRef}
+          className="absolute right-0 mt-2 w-[30rem] bg-white rounded-xl shadow-lg z-10 border-[1px] border-gray-400 border-solid"
         >
           <div className="p-4">
             <ul className="mt-2 max-h-64 overflow-y-auto bg-white rounded-lg">
@@ -138,11 +154,11 @@ const NotifyParent = () => {
                         "https://thumbs.dreamstime.com/b/account-vector-icon-user-illustration-sign-man-symbol-logo-account-vector-icon-user-illustration-sign-man-symbol-logo-can-be-228346109.jpg"
                       }
                       alt="Avatar"
-                      className="h-12 w-12 rounded-full mr-3 object-cover border border-gray-300"
+                      className="h-12 w-12 rounded-full mr-3 object-cover border-[1px] border-gray-400 border-solid"
                     />
                     <div className="flex-1">
                       <p className="text-sm text-gray-800">
-                        {translateMessage(notification.message)}
+                        {notification.message}
                       </p>
                       <p className="text-xs text-gray-500 mb-1">
                         {notification.time}
@@ -158,16 +174,30 @@ const NotifyParent = () => {
                             Đánh dấu đã xem
                           </button>
                         )}
-                        {notification.additional_information?.post_id && (
+                        {notification.additional_information?.post_id &&
+                          notification.message ===
+                            "Your post has been approved" && (
+                            <button
+                              onClick={() =>
+                                handleGoToPost(
+                                  notification.additional_information.post_id
+                                )
+                              }
+                              className="text-sm text-blue-500 hover:text-blue-600"
+                            >
+                              Đi đến bài đăng
+                            </button>
+                          )}
+                        {notification.additional_information?.post && (
                           <button
                             onClick={() =>
-                              handleGoToPost(
-                                notification.additional_information.post_id
+                              handleViewPost(
+                                notification.additional_information.post
                               )
                             }
                             className="text-sm text-blue-500 hover:text-blue-600"
                           >
-                            Đi đến bài đăng
+                            Xem lại bài đăng
                           </button>
                         )}
                       </div>
@@ -175,6 +205,152 @@ const NotifyParent = () => {
                   </li>
                 ))}
             </ul>
+          </div>
+        </div>
+      )}
+
+      {selectedPost && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+          <div className="bg-white p-8 rounded-lg shadow-2xl w-[70rem] h-[40rem] overflow-auto relative z-100 animate-fade-in">
+            {/* Close Button */}
+            <button
+              onClick={closePopup}
+              className="absolute top-2 right-2 text-red-500 hover:text-red-700"
+            >
+              <FontAwesomeIcon icon={faTimes} className="w-6 h-6" />
+            </button>
+
+            {/* Header */}
+            <h2 className="text-3xl font-extrabold text-center text-blue-700 mb-6">
+              <FontAwesomeIcon icon={faBook} className="mr-2 text-blue-500" />
+              Thông tin bài đăng
+            </h2>
+
+            {/* User Info */}
+            <div className="flex items-center gap-4 mb-6">
+              <img
+                src={`http://127.0.0.1:8000${selectedPost.avatar}`}
+                alt="Avatar"
+                className="w-16 h-16 rounded-full border-4 border-blue-500 shadow-md"
+              />
+              <p className="text-lg font-semibold text-gray-800">
+                Người đăng:{" "}
+                <span className="text-blue-600">
+                  {selectedPost.parent_name}
+                </span>
+              </p>
+            </div>
+
+            {/* Post Details */}
+            <div className="space-y-4">
+              <div className="flex items-center">
+                <FontAwesomeIcon
+                  icon={faBookOpen}
+                  className="text-gray-500 mr-3"
+                />
+                <p className="text-lg font-semibold text-gray-800">
+                  Môn học:{" "}
+                  <span className="text-blue-600">{selectedPost.subject}</span>
+                </p>
+              </div>
+              <div>
+                <FontAwesomeIcon
+                  icon={faFileAlt}
+                  className="text-gray-500 mr-3"
+                />
+                <p className="text-sm text-gray-600">
+                  {selectedPost.description}
+                </p>
+              </div>
+              <div className="flex items-center">
+                <FontAwesomeIcon
+                  icon={faMapMarkerAlt}
+                  className="text-gray-500 mr-3"
+                />
+                <p className="text-sm text-gray-600">
+                  Địa chỉ:{" "}
+                  <span className="font-semibold">{selectedPost.address}</span>
+                </p>
+              </div>
+              <div className="flex items-center">
+                <FontAwesomeIcon
+                  icon={faClock}
+                  className="text-gray-500 mr-3"
+                />
+                <p className="text-sm text-gray-600">
+                  Thời gian tạo:{" "}
+                  <span>
+                    {new Date(selectedPost.created_at).toLocaleString()}
+                  </span>
+                </p>
+              </div>
+              <div className="flex items-center">
+                <FontAwesomeIcon
+                  icon={faSyncAlt}
+                  className="text-gray-500 mr-3"
+                />
+                <p className="text-sm text-gray-600">
+                  Cập nhật lần cuối:{" "}
+                  <span>
+                    {new Date(selectedPost.last_updated).toLocaleString()}
+                  </span>
+                </p>
+              </div>
+            </div>
+
+            {/* Additional Information */}
+            <div className="space-y-3 text-sm text-gray-600 mt-4">
+              <p>
+                <FontAwesomeIcon
+                  icon={faGraduationCap}
+                  className="text-gray-500 mr-2"
+                />
+                Trình độ học sinh mong muốn:{" "}
+                <span className="font-semibold">
+                  {selectedPost.background_desired}
+                </span>
+              </p>
+              <p>
+                <FontAwesomeIcon
+                  icon={faCalendarAlt}
+                  className="text-gray-500 mr-2"
+                />
+                Số buổi học mỗi tuần:{" "}
+                <span className="font-semibold">
+                  {selectedPost.session_per_week}
+                </span>
+              </p>
+              <p>
+                <FontAwesomeIcon
+                  icon={faHourglassHalf}
+                  className="text-gray-500 mr-2"
+                />
+                Thời gian mỗi buổi học:{" "}
+                <span className="font-semibold">
+                  {selectedPost.duration} giờ
+                </span>
+              </p>
+              <p>
+                <FontAwesomeIcon
+                  icon={faMoneyBillWave}
+                  className="text-gray-500 mr-2"
+                />
+                Học phí mỗi buổi:{" "}
+                <span className="font-semibold">
+                  {selectedPost.wage_per_session.toLocaleString()} VNĐ
+                </span>
+              </p>
+              <p>
+                <FontAwesomeIcon
+                  icon={faUsers}
+                  className="text-gray-500 mr-2"
+                />
+                Số học sinh:{" "}
+                <span className="font-semibold">
+                  {selectedPost.student_number}
+                </span>
+              </p>
+            </div>
           </div>
         </div>
       )}
