@@ -2,30 +2,14 @@ const Footer = () => {
     return (
         <footer className="px-10 py-12 bg-custom_darkblue text-white">
             <div className="flex flex-wrap flex-row justify-between items-start">
-                <div className="w-full md:w-1/4">
+                <div className="w-full md:w-1/2">
                     <h1 className="font-ruslan_display font-semibold text-3xl mb-4">Noxa Tutor</h1>
-                    <p className="text-gray-300 text-sm leading-relaxed">
+                    <p className="text-gray-300 text-lg leading-relaxed">
                         Chúng tôi cung cấp nền tảng tìm gia sư trực tuyến với nhiều công cụ hỗ trợ hiện đại, giúp bạn có thể kết nối dễ dàng với phụ huynh và gia sư.
                     </p>
                 </div>
 
-                <div className="w-full md:w-1/5">
-                    <h3 className="text-lg font-semibold mb-4">Liên kết nhanh</h3>
-                    <ul className="space-y-2">
-                        <li>
-                            <a href="#about" className="hover:text-gray-400 transition">Giới thiệu trang web</a>
-                        </li>
-                        <li>
-                            <a href="#services" className="hover:text-gray-400 transition">Dịch vụ của chúng tôi</a>
-                        </li>
-                        <li>
-                            <a href="#contact" className="hover:text-gray-400 transition">Liên hệ</a>
-                        </li>
-                        <li>
-                            <a href="#policy" className="hover:text-gray-400 transition">Chính sách của chúng tôi</a>
-                        </li>
-                    </ul>
-                </div>
+
                 <div className="w-full md:w-1/5">
                     <h3 className="text-lg font-semibold mb-4">Liên hệ</h3>
                     <ul className="space-y-4">
@@ -41,15 +25,6 @@ const Footer = () => {
                         <svg width="20" height="20" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M164.9 24.6c-7.7-18.6-28-28.5-47.4-23.2l-88 24C12.1 30.2 0 46 0 64C0 311.4 200.6 512 448 512c18 0 33.8-12.1 38.6-29.5l24-88c5.3-19.4-4.6-39.7-23.2-47.4l-96-40c-16.3-6.8-35.2-2.1-46.3 11.6L304.7 368C234.3 334.7 177.3 277.7 144 207.3L193.3 167c13.7-11.2 18.4-30 11.6-46.3l-40-96z"/></svg>
                             <span className="ml-4">0833556747</span>
                         </li>
-                    </ul>
-                </div>
-                <div className="w-full md:w-1/5">
-                    <h3 className="text-lg font-semibold mb-4">Các dịch vụ khác</h3>
-                    <ul className="space-y-2">
-                        <li>
-                            <a href="#about" className="hover:text-gray-400 transition">Hướng dẫn nhanh</a>
-                        </li>
-
                     </ul>
                 </div>
             </div>
