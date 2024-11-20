@@ -13,13 +13,19 @@ const CommentPart = ({ data, avatar, role }) => {
     const [reply, setReplyComment] = useState('');
     const [childrenCmt, setChildrenCmt] = useState([]);
     const [showCmtChild, setShowCmtChild] = useState(false);
-    const [visibleCommentsCount, setVisibleCommentsCount] = useState(3); // New state for visible comments
-    const [commentCount, setCommentCount] = useState(data.comment_children_count); // Track the comment count
+    const [visibleCommentsCount, setVisibleCommentsCount] = useState(3);
+    const [commentCount, setCommentCount] = useState(data.comment_children_count);
 
     const toggleViewComments = async (id_parent) => {
         setShowCmtChild(true);
         try {
-            const response = await fetch(`${import.meta.env.VITE_API_ENDPOINT}/api/postcomments/${id_parent}/`);
+            const response = await fetch(`${import.meta.env.VITE_API_ENDPOINT}/api/postcomments/${id_parent}/`, {
+                method: "GET",
+                headers: {
+                    Authorization: `Bearer ${sessionToken}`,
+                    "Content-Type": "application/json",
+                }
+            });
             const commentData = await response.json();
             setChildrenCmt(commentData.comments);
         } catch (error) {
@@ -71,7 +77,7 @@ const CommentPart = ({ data, avatar, role }) => {
 
     return (
         <div>
-            <Comment dataUser={data?.user} time={data?.created_at} comment={data?.comment || ''} role={role} />
+            <Comment dataUser={data?.user} time={data?.created_at} isMyCmt={data.is_my_comment} comment={data?.comment || ''} role={role} />
 
             {showCmtChild && (
                 <div>
@@ -86,6 +92,7 @@ const CommentPart = ({ data, avatar, role }) => {
                                 dataUser={childComment.user}
                                 time={childComment.created_at}
                                 comment={childComment.comment}
+                                isMyCmt={childComment.is_my_comment}
                                 role="childrenChild"
                             />
                         )
@@ -172,7 +179,7 @@ const CommentPart = ({ data, avatar, role }) => {
 CommentPart.propTypes = {
     data: PropTypes.object,
     avatar: PropTypes.string,
-    role: PropTypes.string
+    role: PropTypes.string,
 };
 
 export default CommentPart;

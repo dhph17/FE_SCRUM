@@ -1,9 +1,9 @@
 import PropTypes from "prop-types";
-import { useAppContext } from "../../AppProvider";
 import { useEffect, useState } from 'react';
 import { FaCommentAlt } from "react-icons/fa";
 import ImgAvatar from "../../assets/image/User.png";
 import { IoIosSend, IoMdClose } from "react-icons/io";
+import { useAppContext } from "../../AppProvider";
 import { CommentProvider } from '../provider/commentProvider';
 import CommentPart from '../comment/commentPart';
 
@@ -32,7 +32,14 @@ const CommentSection = ({ idPost, onClose }) => {
 
     const fetchComments = async () => {
         try {
-            const response = await fetch(`${import.meta.env.VITE_API_ENDPOINT}/api/postcomments/${idPost}/`);
+            const response = await fetch(`${import.meta.env.VITE_API_ENDPOINT}/api/postcomments/${idPost}/`, {
+                method: "GET",
+                headers: {
+                    Authorization: `Bearer ${sessionToken}`,
+                    "Content-Type": "application/json",
+                },
+            });
+
             const data = await response.json();
             setComments(data.comments);
             setTotalCmt(data.total_comments);
@@ -65,7 +72,7 @@ const CommentSection = ({ idPost, onClose }) => {
 
             const data = await response.json();
             if (response.ok) {
-                setComments((prevCmt) => [data, ...prevCmt]);
+                setComments((prevCmt) => [data, ...prevCmt]); // Add new comment to the top
                 setTotalCmt((prevTotal) => prevTotal + 1);
                 setReplyStatus('');
             }
@@ -140,7 +147,7 @@ const CommentSection = ({ idPost, onClose }) => {
 
 CommentSection.propTypes = {
     idPost: PropTypes.string,
-    onClose: PropTypes.func
+    onClose: PropTypes.func,
 };
 
 export default CommentSection;
