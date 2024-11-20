@@ -1,6 +1,6 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBell } from "@fortawesome/free-solid-svg-icons";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useAppContext } from "../../AppProvider";
 import { useNavigate } from "react-router-dom";
 
@@ -10,6 +10,7 @@ const NotifyParent = () => {
   const { id } = useAppContext();
   const [ws, setWs] = useState(null);
   let navigate = useNavigate();
+  const dropdownRef = useRef(null);
 
   useEffect(() => {
     const websocket = new WebSocket(
@@ -57,6 +58,24 @@ const NotifyParent = () => {
     );
   };
 
+  const handleClickOutside = (event) => {
+    if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+      setIsDropdownOpen(false);
+    }
+  };
+
+  useEffect(() => {
+    if (isDropdownOpen) {
+      document.addEventListener("mousedown", handleClickOutside);
+    } else {
+      document.removeEventListener("mousedown", handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [isDropdownOpen]);
+
   const handleGoToPost = (postId) => {
     navigate(`/parent/detailPost/${postId}`);
     setIsDropdownOpen(false);
@@ -92,7 +111,9 @@ const NotifyParent = () => {
       </button>
 
       {isDropdownOpen && (
-        <div className="absolute right-0 mt-2 w-80 bg-white rounded-lg shadow-lg z-10 border border-gray-300">
+        <div className="absolute right-0 mt-2 w-[25rem] bg-white rounded-lg shadow-lg z-10 border border-gray-300"
+        ref={dropdownRef}
+        >
           <div className="p-4">
             <ul className="mt-2 max-h-64 overflow-y-auto bg-white rounded-lg">
               {notifications
@@ -101,12 +122,13 @@ const NotifyParent = () => {
                 .map((notification) => (
                   <li
                     key={notification.notification_id}
-                    className={`p-3 border-b flex items-start ${notification.read ? "bg-gray-200" : "bg-white"
-                      } hover:bg-gray-100 transition duration-300`}
+                    className={`p-3 border-b flex items-start ${
+                      notification.read ? "bg-gray-200" : "bg-white"
+                    } hover:bg-gray-100 transition duration-300`}
                   >
                     <img
                       src={
-                        notification.additional_information.avatar ||
+                        notification.additional_information?.avatar ||
                         "https://thumbs.dreamstime.com/b/account-vector-icon-user-illustration-sign-man-symbol-logo-account-vector-icon-user-illustration-sign-man-symbol-logo-can-be-228346109.jpg"
                       }
                       alt="Avatar"
@@ -125,19 +147,19 @@ const NotifyParent = () => {
                             onClick={() =>
                               handleMarkAsRead(notification.notification_id)
                             }
-                            className="text-xs text-green-500 hover:text-green-600"
+                            className="text-sm text-green-500 hover:text-green-600"
                           >
                             Đánh dấu đã xem
                           </button>
                         )}
-                        {notification.additional_information.post_id && (
+                        {notification.additional_information?.post_id && (
                           <button
                             onClick={() =>
                               handleGoToPost(
                                 notification.additional_information.post_id
                               )
                             }
-                            className="text-xs text-blue-500 hover:text-blue-600"
+                            className="text-sm text-blue-500 hover:text-blue-600"
                           >
                             Đi đến bài đăng
                           </button>
