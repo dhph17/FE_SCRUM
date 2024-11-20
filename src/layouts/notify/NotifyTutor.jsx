@@ -24,6 +24,11 @@ const NotifyTutor = () => {
       const response = JSON.parse(event.data);
       if (response.type === "unread notifications") {
         setNotifications(response.notifications);
+      } else if (response.type === "new_notification") {
+        setNotifications((prevNotifications) => [
+          ...prevNotifications,
+          response.notification,
+        ]);
       }
     };
 

@@ -26,6 +26,11 @@ const NotifyParent = () => {
       const response = JSON.parse(event.data);
       if (response.type === "unread notifications") {
         setNotifications(response.notifications);
+      } else if (response.type === "new_notification") {
+        setNotifications((prevNotifications) => [
+          ...prevNotifications,
+          response.notification,
+        ]);
       }
     };
 
@@ -111,8 +116,9 @@ const NotifyParent = () => {
       </button>
 
       {isDropdownOpen && (
-        <div className="absolute right-0 mt-2 w-[25rem] bg-white rounded-lg shadow-lg z-10 border border-gray-300"
-        ref={dropdownRef}
+        <div
+          className="absolute right-0 mt-2 w-[25rem] bg-white rounded-lg shadow-lg z-10 border border-gray-300"
+          ref={dropdownRef}
         >
           <div className="p-4">
             <ul className="mt-2 max-h-64 overflow-y-auto bg-white rounded-lg">
