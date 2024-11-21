@@ -1,39 +1,19 @@
 import PropTypes from "prop-types";
 import { useAppContext } from "../../AppProvider";
-import { useEffect, useState } from 'react'
-import {
-    FaCommentAlt,
-    // FaCaretUp,
-    // FaCaretDown
-} from "react-icons/fa";
+import { useEffect, useState, useRef } from 'react';
+import { FaCommentAlt } from "react-icons/fa";
 import ImgAvatar from "../../assets/image/User.png";
-import {
-    IoIosSend,
-    IoMdClose
-} from "react-icons/io";
-
+import { IoIosSend, IoMdClose } from "react-icons/io";
 import { CommentProvider } from '../provider/commentProvider';
 import CommentPart from '../comment/commentPart';
 
 const CommentSection = ({ idPost, onClose }) => {
-    const { id, sessionToken, role } = useAppContext()
-    // const sorts = ['Mới nhất', 'Cũ nhất']
-    // const [valueSort, setValueSort] = useState('Mới nhất')
-    // const [isClickSort, setIsClickSort] = useState(false)
+    const { id, sessionToken, role } = useAppContext();
     const [comments, setComments] = useState([]);
-    const [totalComment, setTotalCmt] = useState()
-    const [reply, setReplyStatus] = useState()
+    const [totalComment, setTotalCmt] = useState(0);
+    const [reply, setReplyStatus] = useState('');
     const [avatar, setAvatar] = useState('');
-
-
-    // const handleClickSort = () => {
-    //     setIsClickSort(!isClickSort)
-    // }
-
-    // const handleValueSort = (sort) => {
-    //     setValueSort(sort)
-    //     setIsClickSort(!isClickSort)
-    // }
+    const lastCommentRef = useRef(null); // Ref để theo dõi comment cuối cùng
 
     useEffect(() => {
         if (role !== 'admin') {
@@ -49,26 +29,33 @@ const CommentSection = ({ idPost, onClose }) => {
             };
             fetchData();
         }
-    }, [id]);
+    }, [id, role]);
 
     const fetchComments = async () => {
         try {
-            const response = await fetch(
-                `${import.meta.env.VITE_API_ENDPOINT}/api/postcomments/${idPost}/`
-            );
+            const response = await fetch(`${import.meta.env.VITE_API_ENDPOINT}/api/postcomments/${idPost}/`, {
+                method: "GET",
+                headers: {
+                    Authorization: `Bearer ${sessionToken}`,
+                    "Content-Type": "application/json",
+                },
+            });
+
             const data = await response.json();
             setComments(data.comments);
-            setTotalCmt(data.total_comments)
+            setTotalCmt(data.total_comments);
         } catch (error) {
             console.error(error);
         }
     };
 
     useEffect(() => {
-        fetchComments(); // Fetch first page data
-    }, [id]);
+        fetchComments(); // Fetch comments when component mounts
+    }, [idPost]);
 
     const handPostCmt = async () => {
+        if (reply.trim() === '') return; // Prevent posting empty comments
+
         try {
             const response = await fetch(`${import.meta.env.VITE_API_ENDPOINT}/api/postcomments/`, {
                 method: "POST",
@@ -86,13 +73,17 @@ const CommentSection = ({ idPost, onClose }) => {
 
             const data = await response.json();
             if (response.ok) {
-                setComments((prevCmt) => [data, ...prevCmt])
-                setReplyStatus('')
+                setComments((prevCmt) => [...prevCmt, data]); // Thêm comment mới vào cuối danh sách
+                setTotalCmt((prevTotal) => prevTotal + 1);
+                setReplyStatus('');
+                setTimeout(() => {
+                    lastCommentRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }, 100); // Cuộn đến comment cuối
             }
         } catch (error) {
-            console.log(error)
+            console.log(error);
         }
-    }
+    };
 
     return (
         <div
@@ -107,51 +98,18 @@ const CommentSection = ({ idPost, onClose }) => {
                 <div className='flex justify-between items-end'>
                     <div className='flex items-center text-primaryColorGray'>
                         <FaCommentAlt />
-                        <p className='ml-2'>{totalComment} Comment</p>
+                        <p className='ml-2'>{totalComment} bình luận</p>
                     </div>
-                    {/* <div className='relative'>
-                        <button
-                            className='cursor-pointer w-[12rem] text-[0.9rem] flex justify-end items-center border-2 border-black p-2 transition duration-300 rounded-md'
-                            onClick={handleClickSort}
-                        >
-                            Sắp xếp theo: {valueSort}
-                            {
-                                isClickSort ? (
-                                    <FaCaretUp className='ml-2' />
-                                ) : (
-                                    <FaCaretDown className='ml-2' />
-                                )
-                            }
-                        </button>
-                        {
-                            isClickSort && (
-                                <div className='absolute mt-2 left-[40%] bg-gray-50 w-[80px] z-10 rounded-lg'>
-                                    <ul>
-                                        {sorts.map((sort, index) => {
-                                            return (
-                                                <li
-                                                    key={index}
-                                                    onClick={() => handleValueSort(sort)}
-                                                    className='cursor-pointer text-[0.9rem] text-end p-2 hover:text-primaryColorPink'
-                                                >
-                                                    {sort}
-                                                </li>
-                                            )
-                                        })}
-                                    </ul>
-                                </div>
-                            )
-                        }
-                    </div> */}
                 </div>
-                <div className="w-full h-[0.125rem] bg-gray-500 mt-2 mb-5">
-
-                </div>
+                <div className="w-full h-[0.125rem] bg-gray-500 mt-2 mb-5"></div>
                 <div className="min-h-[120px] h-[77%] overflow-auto pr-4 scrollbar-thin scrollbar-thumb-transparent/30 scrollbar-track-transparent">
                     {comments?.map((comment, index) => (
-                        <div key={index}>
+                        <div
+                            key={index}
+                            ref={index === comments.length - 1 ? lastCommentRef : null} // Gắn ref vào comment cuối
+                        >
                             <CommentProvider>
-                                <CommentPart data={comment} avatar={avatar} />
+                                <CommentPart data={comment} avatar={avatar} role='parent' />
                             </CommentProvider>
                         </div>
                     ))}
@@ -191,13 +149,12 @@ const CommentSection = ({ idPost, onClose }) => {
                 </div>
             </div>
         </div>
-
-    )
-}
+    );
+};
 
 CommentSection.propTypes = {
     idPost: PropTypes.string,
-    onClose: PropTypes.func
+    onClose: PropTypes.func,
 };
 
 export default CommentSection;

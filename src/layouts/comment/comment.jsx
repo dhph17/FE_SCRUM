@@ -9,7 +9,7 @@ import { GoReport } from "react-icons/go";
 import { useAppContext } from '../provider/commentProvider';
 
 
-const Comment = ({ dataUser, time, comment, role }) => {
+const Comment = ({ dataUser, time, comment, isMyCmt, role }) => {
     const [isReply, setIsReply] = useState(false)
     const [isReport, setIsReport] = useState(false)
 
@@ -47,7 +47,14 @@ const Comment = ({ dataUser, time, comment, role }) => {
 
     return (
         <div>
-            <div className={`flex w-full items-center mb-5 ${role === 'children' ? 'pl-14 mb-2' : 'mb-2'}`}>
+            <div
+                className={`flex w-full items-center mb-5 ${role === 'children'
+                    ? 'pl-14 mb-2'
+                    : role === 'childrenChild'
+                        ? 'pl-28 mb-2'
+                        : 'mb-2'
+                    }`}
+            >
                 <div className='flex'>
                     <div className='w-[50px] mr-2'>
                         <img
@@ -74,16 +81,20 @@ const Comment = ({ dataUser, time, comment, role }) => {
                                 className='inline-block font-semibold text-[0.9rem] hover:cursor-pointer'
                                 onClick={handleReply}
                             >Trả lời</p>
-                            <FiMoreHorizontal
-                                className='ml-2 text-primaryColorGray cursor-pointer'
-                                onClick={() => setIsReport(!isReport)}
-                            />
                             {
-                                isReport && (
-                                    <div className='absolute flex font-semibold items-center bg-colorPopover rounded-lg cursor-pointer z-10 shadow-lg px-2 py-2 top-5 left-10 hover:text-red-500'>
-                                        <GoReport />
-                                        <p className='ml-2 text-[0.9rem]'>Report</p>
-                                    </div>
+                                !isMyCmt && (
+                                    <>
+                                        <FiMoreHorizontal
+                                            className='ml-2 text-primaryColorGray cursor-pointer'
+                                            onClick={() => setIsReport(!isReport)}
+                                        />
+                                        {isReport && (
+                                            <div className='absolute flex font-semibold items-center bg-slate-100 rounded-lg cursor-pointer z-10 shadow-lg px-2 py-2 top-5 left-10 hover:text-red-500'>
+                                                <GoReport />
+                                                <p className='ml-2 text-[0.9rem]'>Report</p>
+                                            </div>
+                                        )}
+                                    </>
                                 )
                             }
                         </div>
@@ -100,6 +111,7 @@ Comment.propTypes = {
     dataUser: PropTypes.object,
     time: PropTypes.string,
     comment: PropTypes.string,
+    isMyCmt: PropTypes.bool,
     role: PropTypes.string
 };
 

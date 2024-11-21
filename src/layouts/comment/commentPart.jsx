@@ -1,23 +1,32 @@
-import { useState } from 'react'
+import { useState, useRef } from 'react';
 import { useAppContext } from '../../AppProvider';
 import PropTypes from "prop-types";
 import ImgAvatar from "../../assets/image/User.png";
 import { IoIosSend, IoMdClose } from "react-icons/io";
 import Comment from './comment';
-import { useAppContext as useCommentContext } from '../provider/commentProvider'
+import { CommentProvider, useAppContext as useCommentContext } from '../provider/commentProvider';
 import { FaChevronDown, FaChevronUp } from "react-icons/fa";
 
-const CommentPart = ({ data, avatar }) => {
+const CommentPart = ({ data, avatar, role }) => {
     const { id, sessionToken } = useAppContext();
     const { replyStatus, setReplyStatus } = useCommentContext();
     const [reply, setReplyComment] = useState('');
     const [childrenCmt, setChildrenCmt] = useState([]);
     const [showCmtChild, setShowCmtChild] = useState(false);
+    const [visibleCommentsCount, setVisibleCommentsCount] = useState(3);
+    const [commentCount, setCommentCount] = useState(data.comment_children_count);
+    const lastChildRef = useRef(null); // Ref để cuộn đến comment cuối
 
     const toggleViewComments = async (id_parent) => {
-        setShowCmtChild(true)
+        setShowCmtChild(true);
         try {
-            const response = await fetch(`${import.meta.env.VITE_API_ENDPOINT}/api/postcomments/${id_parent}/`);
+            const response = await fetch(`${import.meta.env.VITE_API_ENDPOINT}/api/postcomments/${id_parent}/`, {
+                method: "GET",
+                headers: {
+                    Authorization: `Bearer ${sessionToken}`,
+                    "Content-Type": "application/json",
+                }
+            });
             const commentData = await response.json();
             setChildrenCmt(commentData.comments);
         } catch (error) {
@@ -27,6 +36,7 @@ const CommentPart = ({ data, avatar }) => {
 
     const handleHideComments = () => {
         setShowCmtChild(false);
+        setVisibleCommentsCount(3); // Reset visible count when hiding
     };
 
     const handlePostComment = async (idPost, idCmt) => {
@@ -49,60 +59,96 @@ const CommentPart = ({ data, avatar }) => {
 
             const newComment = await response.json();
             if (response.ok) {
-                setChildrenCmt((prevCmt) => [newComment, ...prevCmt]);
-                setShowCmtChild(true)
-                setReplyComment('')
+                setChildrenCmt((prevCmt) => [...prevCmt, newComment]); // Thêm comment mới vào cuối
+                setShowCmtChild(true);
+                setReplyComment('');
+                setCommentCount((prevCount) => prevCount + 1);
+
+                setTimeout(() => {
+                    lastChildRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }, 100); // Cuộn đến comment cuối
             }
         } catch (error) {
             console.log(error);
         }
     };
 
+    const handleShowMoreComments = () => {
+        setVisibleCommentsCount((prevCount) => prevCount + 3); // Increase visible count by 3
+    };
+
+    const remainingComments = childrenCmt.length - visibleCommentsCount; // Calculate remaining comments
+
     return (
         <div>
-            <Comment dataUser={data?.user} time={data?.created_at} comment={data?.comment || ''} role='parent' />
+            <Comment dataUser={data?.user} time={data?.created_at} isMyCmt={data.is_my_comment} comment={data?.comment || ''} role={role} />
 
             {showCmtChild && (
                 <div>
-                    {childrenCmt.map((childComment, index) => (
-                        <Comment
-                            key={childComment.id || index}
-                            dataUser={childComment.user}
-                            time={childComment.created_at}
-                            comment={childComment.comment}
-                            role="children"
-                        />
+                    {childrenCmt.slice(0, visibleCommentsCount).map((childComment, index) => (
+                        role === 'parent' ? (
+                            <CommentProvider key={index}>
+                                <CommentPart
+                                    data={childComment}
+                                    avatar={avatar}
+                                    role='children'
+                                />
+                            </CommentProvider>
+                        ) : (
+                            <Comment
+                                key={childComment.id || index}
+                                dataUser={childComment.user}
+                                time={childComment.created_at}
+                                comment={childComment.comment}
+                                isMyCmt={childComment.is_my_comment}
+                                role="childrenChild"
+                                ref={index === childrenCmt.length - 1 ? lastChildRef : null} // Gắn ref vào comment cuối
+                            />
+                        )
                     ))}
                 </div>
             )}
 
-            <div className='flex ml-14 mb-2'>
-                {!showCmtChild && data.comment_children_count > 0 && (
+            <div className={`flex mb-2 ${role === 'children' ? 'pl-28' : 'pl-14'}`}>
+                {!showCmtChild && commentCount > 0 && (
                     <div
                         className='flex items-center cursor-pointer group'
                         onClick={() => toggleViewComments(data.comment_id)}
                     >
                         <div className="w-[2rem] h-[0.1rem] bg-gray-400 font-bold mr-3"></div>
                         <p className='text-[0.85rem] text-gray-600 text-nowrap group-hover:underline'>
-                            Xem thêm {data.comment_children_count} câu trả lời
+                            Xem thêm {commentCount} câu trả lời
                         </p>
                         <FaChevronDown className='ml-2 w-3 h-3 text-gray-600 mr-5' />
                     </div>
                 )}
 
                 {showCmtChild && (
-                    <div
-                        className='flex items-center cursor-pointer group'
-                        onClick={handleHideComments}
-                    >
-                        <p className='group-hover:underline text-[0.85rem] text-gray-600'>Ẩn</p>
-                        <FaChevronUp className='ml-2 w-2 h-2 text-gray-600' />
-                    </div>
+                    <>
+                        {remainingComments > 0 && (
+                            <div
+                                className='flex items-center cursor-pointer group'
+                                onClick={handleShowMoreComments}
+                            >
+                                <p className='group-hover:underline text-[0.85rem] text-gray-600'>
+                                    Xem thêm {remainingComments} câu trả lời
+                                </p>
+                                <FaChevronDown className='ml-2 w-3 h-3 text-gray-600' />
+                            </div>
+                        )}
+                        <div
+                            className='flex items-center cursor-pointer group ml-3'
+                            onClick={handleHideComments}
+                        >
+                            <p className='group-hover:underline text-[0.85rem] text-gray-600'>Ẩn</p>
+                            <FaChevronUp className='ml-2 w-2 h-2 text-gray-600' />
+                        </div>
+                    </>
                 )}
             </div>
 
             {replyStatus && (
-                <div className='flex justify-between pl-14 items-center mt-3 mb-7'>
+                <div className={`flex justify-between items-center mt-3 mb-7 ${role === 'children' ? 'pl-28' : 'pl-14'}`}>
                     <div className='w-[100%] mr-2 flex'>
                         <div className='w-[50px] mr-2 flex'>
                             <img
@@ -128,7 +174,8 @@ const CommentPart = ({ data, avatar }) => {
                         </div>
                     </div>
 
-                    <div className='border-2 p-2 rounded-full hover:bg-white hover:text-black transition-all duration-300 cursor-pointer'
+                    <div
+                        className='border-2 p-2 rounded-full hover:bg-white hover:text-black transition-all duration-300 cursor-pointer'
                         onClick={() => handlePostComment(data.post_id, data.comment_id)}
                     >
                         <IoIosSend />
@@ -141,7 +188,8 @@ const CommentPart = ({ data, avatar }) => {
 
 CommentPart.propTypes = {
     data: PropTypes.object,
-    avatar: PropTypes.string
+    avatar: PropTypes.string,
+    role: PropTypes.string,
 };
 
 export default CommentPart;

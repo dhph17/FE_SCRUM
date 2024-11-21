@@ -7,7 +7,8 @@ import {
   faMagnifyingGlass,
   faArrowRightFromBracket,
 } from "@fortawesome/free-solid-svg-icons";
-import Logo from "../../assets/image/logo_.png";
+import Logo from "../../assets/image/coloredlogo.png";
+import LogoLogin from "../../assets/image/whitelogo.png";
 import PropTypes from "prop-types";
 import NotifyAdmin from "../notify/NotifyAdmin";
 import NotifyParent from "../notify/NotifyParent";
@@ -32,9 +33,8 @@ const Header = ({ setSearch }) => {
     if (role !== "admin") {
       const fetchData = async () => {
         try {
-          const url = `${import.meta.env.VITE_API_ENDPOINT}/api/${
-            role === "tutor" ? "tutors" : "parents"
-          }/${id}`;
+          const url = `${import.meta.env.VITE_API_ENDPOINT}/api/${role === "tutor" ? "tutors" : "parents"
+            }/${id}`;
           const response = await fetch(url);
           const data = await response.json();
           setAvatar(data.avatar);
@@ -104,9 +104,9 @@ const Header = ({ setSearch }) => {
         <div className="h-[15vh] w-screen px-28 flex items-center justify-between bg-custom_darkblue">
           <div id="logo-header" onClick={() => navigate("/")}>
             <img
-              src={Logo}
+              src={LogoLogin}
               alt="Logo"
-              className="w-20 h-20 bg-center rounded-full object-cover cursor-pointer"
+              className="h-14 bg-center object-cover cursor-pointer mb-3"
             />
           </div>
           <div className="">
@@ -116,10 +116,9 @@ const Header = ({ setSearch }) => {
                   key={path}
                   to={`${rolePath}/${path}`}
                   className={`font-semibold mx-6 cursor-pointer transition duration-200 
-                    ${
-                      activeLink === path
-                        ? "underline underline-offset-4"
-                        : "hover:scale-110"
+                    ${activeLink === path
+                      ? "underline underline-offset-4"
+                      : "hover:scale-110"
                     }`}
                   onClick={() => setActiveLink(path)}
                 >
@@ -164,9 +163,8 @@ const Header = ({ setSearch }) => {
               />
               <p className="font-semibold">{name}</p>
               <i
-                className={`fas ${
-                  showDropdown ? "fa-chevron-up" : "fa-chevron-down"
-                } text-[0.8rem] ml-1`}
+                className={`fas ${showDropdown ? "fa-chevron-up" : "fa-chevron-down"
+                  } text-[0.8rem] ml-1`}
                 onClick={() => setShowDropdown(!showDropdown)}
               ></i>
               {showDropdown && (
@@ -188,7 +186,7 @@ const Header = ({ setSearch }) => {
               <img
                 src={Logo}
                 alt="Logo"
-                className="w-20 h-20 bg-center rounded-full object-cover cursor-pointer"
+                className="h-14 bg-center object-cover cursor-pointer mb-5"
               />
             </Link>
           </div>
