@@ -1,9 +1,6 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faBell,
-  faCheckCircle,
-  faExclamationCircle,
-  faArrowRight,
   faTimes,
   faGraduationCap,
   faCalendarAlt,
@@ -14,7 +11,6 @@ import {
   faBookOpen,
   faFileAlt,
   faMapMarkerAlt,
-  faUser,
   faClock,
   faSyncAlt,
 } from "@fortawesome/free-solid-svg-icons";
