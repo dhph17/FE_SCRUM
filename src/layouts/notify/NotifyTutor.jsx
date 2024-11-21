@@ -1,6 +1,6 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBell } from "@fortawesome/free-solid-svg-icons";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useAppContext } from "../../AppProvider";
 
 const NotifyTutor = () => {
@@ -8,6 +8,7 @@ const NotifyTutor = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const { id } = useAppContext();
   const [ws, setWs] = useState(null);
+  const dropdownRef = useRef(null);
 
   useEffect(() => {
     const websocket = new WebSocket(
@@ -23,6 +24,11 @@ const NotifyTutor = () => {
       const response = JSON.parse(event.data);
       if (response.type === "unread notifications") {
         setNotifications(response.notifications);
+      } else if (response.type === "new_notification") {
+        setNotifications((prevNotifications) => [
+          ...prevNotifications,
+          response.notification,
+        ]);
       }
     };
 
@@ -36,6 +42,24 @@ const NotifyTutor = () => {
   }, [id]);
 
   const toggleDropdown = () => setIsDropdownOpen(!isDropdownOpen);
+
+  const handleClickOutside = (event) => {
+    if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+      setIsDropdownOpen(false);
+    }
+  };
+
+  useEffect(() => {
+    if (isDropdownOpen) {
+      document.addEventListener("mousedown", handleClickOutside);
+    } else {
+      document.removeEventListener("mousedown", handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [isDropdownOpen]);
 
   const handleMarkAsRead = (notificationId) => {
     if (ws) {
@@ -90,7 +114,10 @@ const NotifyTutor = () => {
       </button>
 
       {isDropdownOpen && (
-        <div className="absolute right-0 mt-2 w-80 bg-white rounded-lg shadow-lg z-10">
+        <div
+          className="absolute right-0 mt-2 w-[25rem] bg-white rounded-lg shadow-lg z-10"
+          ref={dropdownRef}
+        >
           <div className="p-4">
             <ul className="mt-2 max-h-64 overflow-y-auto bg-white rounded-lg">
               {notifications.map((notification) => (
@@ -113,7 +140,7 @@ const NotifyTutor = () => {
                           onClick={() =>
                             handleMarkAsRead(notification.notification_id)
                           }
-                          className="text-xs text-green-500 hover:text-green-600"
+                          className="text-sm text-green-500 hover:text-green-600"
                         >
                           Đánh dấu đã xem
                         </button>
