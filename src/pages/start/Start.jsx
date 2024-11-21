@@ -2,8 +2,8 @@ import Picture from "../../assets/image/Teacher_and_student.png"
 
 const Start = () => {
     return (
-        <div className="px-52 flex items-center space-x-10 mb-16">
-            <div className="w-[65%]">
+        <div className="px-52 flex items-center space-x-10 h-[88vh]">
+            <div className="w-[65%] -mt-8">
                 <div className="font-sriracha font-semibold text-4xl leading-[50px] text-center text-custom_purple mb-10">
                     <h1 className="mb-5">LTMTUTOR:</h1>
                     <h1>MÔI TRƯỜNG KẾT NỐI GIA SƯ VỚI NGƯỜI HỌC NHANH, TIỆN LỢI, MỌI LÚC MỌI NƠI</h1>
@@ -17,7 +17,7 @@ const Start = () => {
                     <button className="bg-custom_darkblue text-white w-1/4 py-3 rounded-md mb-7">Đăng kí gia sư</button>
                 </div>
             </div>
-            <div className="w-[35%]">
+            <div className="w-[35%] -mt-8">
                 <img src={Picture} alt="" />
             </div>
 
