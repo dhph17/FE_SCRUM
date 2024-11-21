@@ -2,7 +2,7 @@ import LogoLogin from "../../assets/image/whitelogo.png";
 
 const Footer = () => {
     return (
-        <footer className="px-10 pt-10 pb-4 bg-custom_darkblue text-white">
+        <footer className="px-10 pt-6 pb-4 bg-custom_darkblue text-white">
             <div className="flex flex-wrap flex-row justify-between items-start">
                 <div className="w-full md:w-1/2 ml-8">
                     <img
@@ -10,7 +10,7 @@ const Footer = () => {
                         alt="Logo"
                         className="h-14 bg-center object-cover cursor-pointer mb-6"
                     />
-                    <p className="text-gray-300 text-lg leading-relaxed">
+                    <p className="text-gray-300 leading-relaxed">
                         Chúng tôi cung cấp nền tảng tìm gia sư trực tuyến với nhiều công cụ hỗ trợ hiện đại, giúp bạn có thể kết nối dễ dàng với phụ huynh và gia sư.
                     </p>
                 </div>
@@ -33,7 +33,7 @@ const Footer = () => {
                     </ul>
                 </div>
             </div>
-            <div className="mt-6 border-t border-gray-700 pt-6 text-center text-gray-400 text-sm">
+            <div className="mt-4 border-t border-gray-700 pt-4 text-center text-gray-400 text-sm">
                 <p>&copy; 2024 Noxa Tutor. Mọi quyền được bảo lưu.</p>
                 <p>
                     <a href="#privacy-policy" className="hover:underline">Chính sách bảo mật</a> |
