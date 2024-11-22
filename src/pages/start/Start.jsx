@@ -5,7 +5,7 @@ const Start = () => {
         <div className="px-52 flex items-center space-x-10 h-[88vh]">
             <div className="w-[65%] -mt-8">
                 <div className="font-sriracha font-semibold text-4xl leading-[50px] text-center text-custom_purple mb-10">
-                    <h1 className="mb-5">LTMTUTOR:</h1>
+                    <h1 className="mb-5">NOXA:</h1>
                     <h1>MÔI TRƯỜNG KẾT NỐI GIA SƯ VỚI NGƯỜI HỌC NHANH, TIỆN LỢI, MỌI LÚC MỌI NƠI</h1>
                 </div>
                 <div className="font-poppins text-custom_gray text-center font-semibold mb-10">

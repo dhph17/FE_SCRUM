@@ -15,6 +15,7 @@ import {
   faSyncAlt,
 } from "@fortawesome/free-solid-svg-icons";
 import { useState, useEffect, useRef } from "react";
+import { FaExclamation } from "react-icons/fa";
 import { useAppContext } from "../../AppProvider";
 import { useNavigate } from "react-router-dom";
 
@@ -97,7 +98,7 @@ const NotifyParent = () => {
   };
 
   const handleGoToPost = (postId) => {
-    navigate(`/post/${postId}`);
+    navigate(`/pending-post/${postId}`);
     setIsDropdownOpen(false);
   };
 
@@ -290,6 +291,14 @@ const NotifyParent = () => {
                   <span>
                     {new Date(selectedPost.last_updated).toLocaleString()}
                   </span>
+                </p>
+              </div>
+
+              <div className="flex items-center">
+                <FaExclamation className="text-gray-500 mr-3" />
+                <p className="text-sm text-gray-600">
+                  Trạng thái bài đăng trước đó:{" "}
+                  <span className="font-semibold">{selectedPost.status}</span>
                 </p>
               </div>
             </div>
