@@ -150,20 +150,28 @@ const DuyetBaiDang = () => {
               key={index}
               className="border-[3px] rounded-[1rem] border-[#002182] shadow-md bg-white"
             >
-              <ItemPost user={post} tag={post.status || "Chờ duyệt"}>
-                <button
-                  className="bg-yellow-500 w-[14vw] p-2 rounded-2xl font-semibold mx-8"
-                  onClick={() => handleApproveClick(post)} // Mở popup xác nhận
-                >
-                  Duyệt bài đăng
-                </button>
-                <button
-                  className="bg-yellow-500 w-[14vw] p-2 rounded-2xl font-semibold mx-8"
-                  onClick={handleDeleteClick(post.post_id)}
-                >
-                  Xóa bài đăng
-                </button>
-              </ItemPost>
+              {post ? (
+                <ItemPost user={post} tag={post.status || "Chờ duyệt"}>
+                  <button
+                    className="bg-yellow-500 w-[14vw] p-2 rounded-2xl font-semibold mx-8"
+                    onClick={() => handleApproveClick(post)} // Mở popup xác nhận
+                  >
+                    Duyệt bài đăng
+                  </button>
+                  <button
+                    className="bg-yellow-500 w-[14vw] p-2 rounded-2xl font-semibold mx-8"
+                    onClick={handleDeleteClick(post.post_id)}
+                  >
+                    Xóa bài đăng
+                  </button>
+                </ItemPost>
+              ) : (
+                <div className="flex justify-center items-center h-[80vh]">
+                  <p className="text-2xl">
+                    Bài đăng hiện không tồn tại hoặc đã bị xóa !
+                  </p>
+                </div>
+              )}
             </div>
           ))}
         </div>

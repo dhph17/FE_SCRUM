@@ -10,6 +10,7 @@ const ManageReport = () => {
   const [reportList, setReportList] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const { sessionToken } = useAppContext();
+  const [existReport, setExistReport] = useState(false);
   const itemsPerPage = 10;
 
   const { idReport } = useParams();
@@ -30,15 +31,17 @@ const ManageReport = () => {
         const data = await response.json();
         console.log("Fetched data:", data);
         if (Array.isArray(data)) {
+          setExistReport(true);
           if (idReport) {
             const report = data.find((report) => report.report_id === idReport);
-            setReportList([report]);
+            setReportList(report ? [report] : []);
             return;
           } else {
             setReportList(data);
           }
         } else {
           console.error("Failed to fetch report");
+          setExistReport(false);
         }
       } catch (error) {
         console.error("Error fetching report:", error);
@@ -62,19 +65,39 @@ const ManageReport = () => {
   return (
     <Admin>
       <Page activeItem={6}>
-        <div className="relative max-h-[38rem] overflow-y-auto grid grid-cols-1 gap-4">
-          <div className="font-bold text-lg">Danh sách báo cáo</div>
-          {currentPosts.map((report) => (
-            <ItemReport key={report.report_id} report={report} />
-          ))}
-        </div>
-        <div className="mt-8">
-          <Pagination
-            currentPage={currentPage}
-            totalPages={totalPages}
-            onPageChange={handlePageChange}
-          />
-        </div>
+        {existReport ? (
+          <div className="relative max-h-[38rem] overflow-y-auto grid grid-cols-1 gap-4">
+            <div className="font-bold text-lg">Danh sách báo cáo</div>
+            {currentPosts.length > 0 ? (
+              currentPosts.map((report) =>
+                report && report.report_id ? (
+                  <ItemReport key={report.report_id} report={report} />
+                ) : (
+                  <div
+                    key={report ? report.id : Math.random()}
+                    className="text-red-500"
+                  >
+                    Báo cáo không tồn tại
+                  </div>
+                )
+              )
+            ) : (
+              <div className="text-red-500 text-center">Không có báo cáo nào</div>
+            )}
+          </div>
+        ) : (
+          <div className="text-center">Không có báo cáo nào</div>
+        )}
+
+        {reportList.length > 0 ? (
+          <div className="mt-8">
+            <Pagination
+              currentPage={currentPage}
+              totalPages={totalPages}
+              onPageChange={handlePageChange}
+            />
+          </div>
+        ) : null}
       </Page>
     </Admin>
   );

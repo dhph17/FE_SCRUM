@@ -98,7 +98,8 @@ const NotifyParent = () => {
   };
 
   const handleGoToPost = (postId) => {
-    navigate(`/pending-post/${postId}`);
+    // to={`/parent/detailPost/${parent.post_id}`}
+    navigate(`/parent/detailPost/${postId}`);
     setIsDropdownOpen(false);
   };
 
@@ -113,6 +114,14 @@ const NotifyParent = () => {
   const unreadCount = notifications.filter(
     (notification) => !notification.read
   ).length;
+
+  const translate = (message) => {
+    if (message === "Your post has been approved") {
+      return "Bài đăng của bạn đã được duyệt";
+    } else {
+      return message;
+    }
+  };
 
   return (
     <div className="relative">
@@ -155,7 +164,8 @@ const NotifyParent = () => {
                     />
                     <div className="flex-1">
                       <p className="text-sm text-gray-800">
-                        {notification.message}
+                        {/* {notification.message} */}
+                        {translate(notification.message)}
                       </p>
                       <p className="text-xs text-gray-500 mb-1">
                         {notification.time}
