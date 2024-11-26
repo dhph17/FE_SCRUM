@@ -3,21 +3,21 @@ import LogoLogin from "../../assets/image/whitelogo.png";
 const Footer = () => {
     return (
         <footer className="px-10 py-5 bg-custom_darkblue text-white">
-            <div className="flex flex-wrap flex-row justify-between items-start">
-                <div className="w-full md:w-1/2 ml-8">
+            <div className="flex items-center gap-60">
+                <div className="w-full md:w-[35%] ml-16">
                     <img
                         src={LogoLogin}
                         alt="Logo"
-                        className="h-14 bg-center object-cover cursor-pointer mb-6"
+                        className="h-8 bg-center object-cover cursor-pointer mb-3"
                     />
-                    <p className="text-gray-300 leading-relaxed">
+                    <p className="text-gray-300 leading-relaxed text-[0.95rem]">
                         Chúng tôi cung cấp nền tảng tìm gia sư trực tuyến với nhiều công cụ hỗ trợ hiện đại, giúp bạn có thể kết nối dễ dàng với phụ huynh và gia sư.
                     </p>
                 </div>
 
-                <div className="w-full md:w-1/3">
+                <div id='contact' className="w-full md:w-1/3">
                     <h3 className="text-lg font-semibold mb-4">Liên hệ</h3>
-                    <ul className="space-y-4">
+                    <ul className="flex gap-10" >
                         <li className="flex items-center">
                             <svg width="20" height="20" fill="white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M48 64C21.5 64 0 85.5 0 112c0 15.1 7.1 29.3 19.2 38.4L236.8 313.6c11.4 8.5 27 8.5 38.4 0L492.8 150.4c12.1-9.1 19.2-23.3 19.2-38.4c0-26.5-21.5-48-48-48L48 64zM0 176L0 384c0 35.3 28.7 64 64 64l384 0c35.3 0 64-28.7 64-64l0-208L294.4 339.2c-22.8 17.1-54 17.1-76.8 0L0 176z" /></svg>
                             <span className="ml-3">noxascrum@gmail.com</span>
@@ -29,7 +29,7 @@ const Footer = () => {
                     </ul>
                 </div>
             </div>
-            <div className="mt-6 border-t border-gray-700 pt-6 text-center text-gray-400 text-sm">
+            <div className="mt-4 border-t border-gray-700 pt-6 text-center text-gray-400 text-[0.85rem]">
                 <p>&copy; 2024 Noxa Tutor. Mọi quyền được bảo lưu.</p>
                 <p>
                     <a href="#privacy-policy" className="hover:underline">Chính sách bảo mật</a> |

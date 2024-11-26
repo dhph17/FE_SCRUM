@@ -33,9 +33,8 @@ const Header = ({ setSearch }) => {
     if (role !== "admin") {
       const fetchData = async () => {
         try {
-          const url = `${import.meta.env.VITE_API_ENDPOINT}/api/${
-            role === "tutor" ? "tutors" : "parents"
-          }/${id}`;
+          const url = `${import.meta.env.VITE_API_ENDPOINT}/api/${role === "tutor" ? "tutors" : "parents"
+            }/${id}`;
           const response = await fetch(url);
           const data = await response.json();
           setAvatar(data.avatar);
@@ -101,15 +100,15 @@ const Header = ({ setSearch }) => {
 
   return (
     <>
-      {role == "admin" ? (
+      {sessionToken ? (
         <div>
-          {sessionToken ? (
-            <div className="h-[10vh] w-screen px-28 flex items-center justify-between bg-custom_darkblue">
+          {role === 'admin' ? (
+            <div className="h-[12vh] w-screen px-28 flex items-center justify-between bg-custom_darkblue">
               <div id="logo-header" onClick={() => navigate("/")}>
                 <img
                   src={LogoLogin}
                   alt="Logo"
-                  className="h-8 bg-center object-cover cursor-pointer"
+                  className="h-10 mb-2 bg-center object-cover cursor-pointer"
                 />
               </div>
               <div className="">
@@ -138,9 +137,7 @@ const Header = ({ setSearch }) => {
                   className="text-white absolute right-3 top-3"
                 />
               </div>
-              {role === "admin" && <NotifyAdmin />}
-              {role === "parent" && <NotifyParent />}
-              {role === "tutor" && <NotifyTutor />}
+              <NotifyAdmin />
 
               <div className="flex text-white items-center cursor-pointer text-[1.1rem]">
                 <div className="relative flex items-center gap-2">
@@ -155,9 +152,8 @@ const Header = ({ setSearch }) => {
                   />
                   <p className="font-semibold">{name}</p>
                   <i
-                    className={`fas ${
-                      showDropdown ? "fa-chevron-up" : "fa-chevron-down"
-                    } text-[0.8rem] ml-1`}
+                    className={`fas ${showDropdown ? "fa-chevron-up" : "fa-chevron-down"
+                      } text-[0.8rem] ml-1`}
                     onClick={() => setShowDropdown(!showDropdown)}
                   ></i>
                   {showDropdown && (
@@ -173,20 +169,12 @@ const Header = ({ setSearch }) => {
               </div>
             </div>
           ) : (
-            <div className="h-[10vh] w-screen px-28 flex items-center justify-between">
-              <error />
-            </div>
-          )}
-        </div>
-      ) : (
-        <div>
-          {sessionToken ? (
-            <div className="h-[10vh] w-screen px-28 flex items-center justify-between bg-custom_darkblue">
+            <div className="h-[12vh] w-screen px-28 flex items-center justify-between bg-custom_darkblue">
               <div id="logo-header" onClick={() => navigate("/")}>
                 <img
                   src={LogoLogin}
                   alt="Logo"
-                  className="h-8 bg-center object-cover cursor-pointer"
+                  className="h-10 mb-2 bg-center object-cover cursor-pointer"
                 />
               </div>
               <div className="">
@@ -196,11 +184,10 @@ const Header = ({ setSearch }) => {
                       key={path}
                       to={`${rolePath}/${path}`}
                       className={`font-semibold mx-6 cursor-pointer transition duration-200 
-                  ${
-                    activeLink === path
-                      ? "underline underline-offset-4"
-                      : "hover:scale-110"
-                  }`}
+                    ${activeLink === path
+                          ? "underline underline-offset-4"
+                          : "hover:scale-110"
+                        }`}
                       onClick={() => setActiveLink(path)}
                     >
                       {path === "main-page" ? "Trang chủ" : "Hồ sơ cá nhân"}
@@ -227,7 +214,6 @@ const Header = ({ setSearch }) => {
                   className="text-white absolute right-3 top-3"
                 />
               </div>
-              {role === "admin" && <NotifyAdmin />}
               {role === "parent" && <NotifyParent />}
               {role === "tutor" && <NotifyTutor />}
 
@@ -244,9 +230,8 @@ const Header = ({ setSearch }) => {
                   />
                   <p className="font-semibold">{name}</p>
                   <i
-                    className={`fas ${
-                      showDropdown ? "fa-chevron-up" : "fa-chevron-down"
-                    } text-[0.8rem] ml-1`}
+                    className={`fas ${showDropdown ? "fa-chevron-up" : "fa-chevron-down"
+                      } text-[0.8rem] ml-1`}
                     onClick={() => setShowDropdown(!showDropdown)}
                   ></i>
                   {showDropdown && (
@@ -261,37 +246,38 @@ const Header = ({ setSearch }) => {
                 </div>
               </div>
             </div>
-          ) : (
-            <div className="h-[10vh] w-screen px-28 flex items-center justify-between">
-              <div id="logo-header">
-                <Link to="/">
-                  <img
-                    src={Logo}
-                    alt="Logo"
-                    className="h-8 bg-center object-cover cursor-pointer"
-                  />
-                </Link>
-              </div>
-              <div className="">
-                <ul className="flex">
-                  <li className="font-semibold mx-6 cursor-pointer">
-                    <Link to="/">GIỚI THIỆU</Link>
-                  </li>
-                  <li className="font-semibold mx-6 cursor-pointer">
-                    <a href="#contact">LIÊN HỆ</a>
-                  </li>
-                </ul>
-              </div>
-              <div className="">
-                <button
-                  className="bg-custom_yellow px-4 py-2 font-semibold rounded-md border border-black"
-                  onClick={() => navigate(`/login`)}
-                >
-                  Đăng nhập
-                </button>
-              </div>
-            </div>
-          )}
+          )
+          }
+        </div>
+      ) : (
+        <div className="h-[12vh] w-screen px-28 flex items-center justify-between">
+          <div id="logo-header">
+            <Link to="/">
+              <img
+                src={Logo}
+                alt="Logo"
+                className="h-10 mb-2 bg-center object-cover cursor-pointer"
+              />
+            </Link>
+          </div>
+          <div className="">
+            <ul className="flex">
+              <li className="font-semibold mx-6 cursor-pointer">
+                <Link to="/">GIỚI THIỆU</Link>
+              </li>
+              <li className="font-semibold mx-6 cursor-pointer">
+                <a href="#contact">LIÊN HỆ</a>
+              </li>
+            </ul>
+          </div>
+          <div className="">
+            <button
+              className="bg-custom_yellow px-4 py-2 font-semibold rounded-md border border-black"
+              onClick={() => navigate(`/login`)}
+            >
+              Đăng nhập
+            </button>
+          </div>
         </div>
       )}
     </>
