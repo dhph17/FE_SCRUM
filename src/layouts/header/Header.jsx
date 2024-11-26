@@ -33,8 +33,9 @@ const Header = ({ setSearch }) => {
     if (role !== "admin") {
       const fetchData = async () => {
         try {
-          const url = `${import.meta.env.VITE_API_ENDPOINT}/api/${role === "tutor" ? "tutors" : "parents"
-            }/${id}`;
+          const url = `${import.meta.env.VITE_API_ENDPOINT}/api/${
+            role === "tutor" ? "tutors" : "parents"
+          }/${id}`;
           const response = await fetch(url);
           const data = await response.json();
           setAvatar(data.avatar);
@@ -100,114 +101,197 @@ const Header = ({ setSearch }) => {
 
   return (
     <>
-      {sessionToken ? (
-        <div className="h-[12vh] w-screen px-28 flex items-center justify-between bg-custom_darkblue">
-          <div id="logo-header" onClick={() => navigate("/")}>
-            <img
-              src={LogoLogin}
-              alt="Logo"
-              className="h-10 bg-center object-cover cursor-pointer mb-3"
-            />
-          </div>
-          <div className="">
-            <ul className="flex text-white text-[1.1rem]">
-              {["main-page", "information"].map((path) => (
-                <Link
-                  key={path}
-                  to={`${rolePath}/${path}`}
-                  className={`font-semibold mx-6 cursor-pointer transition duration-200 
-                    ${activeLink === path
-                      ? "underline underline-offset-4"
-                      : "hover:scale-110"
-                    }`}
-                  onClick={() => setActiveLink(path)}
-                >
-                  {path === "main-page" ? "Trang chủ" : "Hồ sơ cá nhân"}
-                </Link>
-              ))}
-            </ul>
-          </div>
-          <div
-            id="search-header"
-            className="bg-white/50 py-2 w-[25%] relative pl-4 pr-8 rounded-xl"
-          >
-            <input
-              type="text"
-              placeholder="Tìm kiếm"
-              className="w-full text-white bg-transparent border-none outline-none placeholder:text-white"
-              id="search_input"
-              name="search"
-              onChange={handleInputChange}
-              autoComplete="off"
-            />
-            <FontAwesomeIcon
-              id="search-but"
-              icon={faMagnifyingGlass}
-              className="text-white absolute right-3 top-3"
-            />
-          </div>
-          {role === "admin" && <NotifyAdmin />}
-          {role === "parent" && <NotifyParent />}
-          {role === "tutor" && <NotifyTutor />}
+      {role == "admin" ? (
+        <div>
+          {sessionToken ? (
+            <div className="h-[10vh] w-screen px-28 flex items-center justify-between bg-custom_darkblue">
+              <div id="logo-header" onClick={() => navigate("/")}>
+                <img
+                  src={LogoLogin}
+                  alt="Logo"
+                  className="h-8 bg-center object-cover cursor-pointer"
+                />
+              </div>
+              <div className="">
+                <ul className="flex text-white text-[1.1rem]">
+                  <li className="font-semibold mx-6 cursor-pointer transition duration-200 underline underline-offset-4">
+                    Quản lý Admin
+                  </li>
+                </ul>
+              </div>
+              <div
+                id="search-header"
+                className="bg-white/50 py-2 w-[25%] relative pl-4 pr-8 rounded-xl"
+              >
+                <input
+                  type="text"
+                  placeholder="Tìm kiếm"
+                  className="w-full text-white bg-transparent border-none outline-none placeholder:text-white"
+                  id="search_input"
+                  name="search"
+                  onChange={handleInputChange}
+                  autoComplete="off"
+                />
+                <FontAwesomeIcon
+                  id="search-but"
+                  icon={faMagnifyingGlass}
+                  className="text-white absolute right-3 top-3"
+                />
+              </div>
+              {role === "admin" && <NotifyAdmin />}
+              {role === "parent" && <NotifyParent />}
+              {role === "tutor" && <NotifyTutor />}
 
-          <div className="flex text-white items-center cursor-pointer text-[1.1rem]">
-            <div className="relative flex items-center gap-2">
-              <img
-                src={
-                  avatar
-                    ? `${import.meta.env.VITE_API_ENDPOINT}${avatar}`
-                    : User
-                }
-                alt=""
-                className="w-[40px] h-[40px] rounded-full"
-              />
-              <p className="font-semibold">{name}</p>
-              <i
-                className={`fas ${showDropdown ? "fa-chevron-up" : "fa-chevron-down"
-                  } text-[0.8rem] ml-1`}
-                onClick={() => setShowDropdown(!showDropdown)}
-              ></i>
-              {showDropdown && (
-                <div
-                  className="bg-white text-black text-[0.9rem] absolute flex items-center p-2 rounded-md -right-12 top-10 shadow-md border border-slate-200 hover:bg-slate-100"
-                  onClick={handleLogout}
-                >
-                  <FontAwesomeIcon icon={faArrowRightFromBracket} />
-                  <p className="ml-2">Đăng xuất</p>
+              <div className="flex text-white items-center cursor-pointer text-[1.1rem]">
+                <div className="relative flex items-center gap-2">
+                  <img
+                    src={
+                      avatar
+                        ? `${import.meta.env.VITE_API_ENDPOINT}${avatar}`
+                        : User
+                    }
+                    alt=""
+                    className="w-[40px] h-[40px] rounded-full"
+                  />
+                  <p className="font-semibold">{name}</p>
+                  <i
+                    className={`fas ${
+                      showDropdown ? "fa-chevron-up" : "fa-chevron-down"
+                    } text-[0.8rem] ml-1`}
+                    onClick={() => setShowDropdown(!showDropdown)}
+                  ></i>
+                  {showDropdown && (
+                    <div
+                      className="bg-white text-black text-[0.9rem] absolute flex items-center p-2 rounded-md -right-12 top-10 shadow-md border border-slate-200 hover:bg-slate-100"
+                      onClick={handleLogout}
+                    >
+                      <FontAwesomeIcon icon={faArrowRightFromBracket} />
+                      <p className="ml-2">Đăng xuất</p>
+                    </div>
+                  )}
                 </div>
-              )}
+              </div>
             </div>
-          </div>
+          ) : (
+            <div className="h-[10vh] w-screen px-28 flex items-center justify-between">
+              <error />
+            </div>
+          )}
         </div>
       ) : (
-        <div className="h-[12vh] w-screen px-28 flex items-center justify-between">
-          <div id="logo-header">
-            <Link to="/">
-              <img
-                src={Logo}
-                alt="Logo"
-                className="h-10 bg-center object-cover cursor-pointer mb-5"
-              />
-            </Link>
-          </div>
-          <div className="pb-4">
-            <ul className="flex">
-              <li className="font-semibold mx-6 cursor-pointer">
-                <Link to="/">GIỚI THIỆU</Link>
-              </li>
-              <li className="font-semibold mx-6 cursor-pointer">
-                <a href="#contact">LIÊN HỆ</a>
-              </li>
-            </ul>
-          </div>
-          <div className="pb-4">
-            <button
-              className="bg-custom_yellow px-4 py-2 font-semibold rounded-md border border-black"
-              onClick={() => navigate(`/login`)}
-            >
-              Đăng nhập
-            </button>
-          </div>
+        <div>
+          {sessionToken ? (
+            <div className="h-[10vh] w-screen px-28 flex items-center justify-between bg-custom_darkblue">
+              <div id="logo-header" onClick={() => navigate("/")}>
+                <img
+                  src={LogoLogin}
+                  alt="Logo"
+                  className="h-8 bg-center object-cover cursor-pointer"
+                />
+              </div>
+              <div className="">
+                <ul className="flex text-white text-[1.1rem]">
+                  {["main-page", "information"].map((path) => (
+                    <Link
+                      key={path}
+                      to={`${rolePath}/${path}`}
+                      className={`font-semibold mx-6 cursor-pointer transition duration-200 
+                  ${
+                    activeLink === path
+                      ? "underline underline-offset-4"
+                      : "hover:scale-110"
+                  }`}
+                      onClick={() => setActiveLink(path)}
+                    >
+                      {path === "main-page" ? "Trang chủ" : "Hồ sơ cá nhân"}
+                    </Link>
+                  ))}
+                </ul>
+              </div>
+              <div
+                id="search-header"
+                className="bg-white/50 py-2 w-[25%] relative pl-4 pr-8 rounded-xl"
+              >
+                <input
+                  type="text"
+                  placeholder="Tìm kiếm"
+                  className="w-full text-white bg-transparent border-none outline-none placeholder:text-white"
+                  id="search_input"
+                  name="search"
+                  onChange={handleInputChange}
+                  autoComplete="off"
+                />
+                <FontAwesomeIcon
+                  id="search-but"
+                  icon={faMagnifyingGlass}
+                  className="text-white absolute right-3 top-3"
+                />
+              </div>
+              {role === "admin" && <NotifyAdmin />}
+              {role === "parent" && <NotifyParent />}
+              {role === "tutor" && <NotifyTutor />}
+
+              <div className="flex text-white items-center cursor-pointer text-[1.1rem]">
+                <div className="relative flex items-center gap-2">
+                  <img
+                    src={
+                      avatar
+                        ? `${import.meta.env.VITE_API_ENDPOINT}${avatar}`
+                        : User
+                    }
+                    alt=""
+                    className="w-[40px] h-[40px] rounded-full"
+                  />
+                  <p className="font-semibold">{name}</p>
+                  <i
+                    className={`fas ${
+                      showDropdown ? "fa-chevron-up" : "fa-chevron-down"
+                    } text-[0.8rem] ml-1`}
+                    onClick={() => setShowDropdown(!showDropdown)}
+                  ></i>
+                  {showDropdown && (
+                    <div
+                      className="bg-white text-black text-[0.9rem] absolute flex items-center p-2 rounded-md -right-12 top-10 shadow-md border border-slate-200 hover:bg-slate-100"
+                      onClick={handleLogout}
+                    >
+                      <FontAwesomeIcon icon={faArrowRightFromBracket} />
+                      <p className="ml-2">Đăng xuất</p>
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>
+          ) : (
+            <div className="h-[10vh] w-screen px-28 flex items-center justify-between">
+              <div id="logo-header">
+                <Link to="/">
+                  <img
+                    src={Logo}
+                    alt="Logo"
+                    className="h-8 bg-center object-cover cursor-pointer"
+                  />
+                </Link>
+              </div>
+              <div className="">
+                <ul className="flex">
+                  <li className="font-semibold mx-6 cursor-pointer">
+                    <Link to="/">GIỚI THIỆU</Link>
+                  </li>
+                  <li className="font-semibold mx-6 cursor-pointer">
+                    <a href="#contact">LIÊN HỆ</a>
+                  </li>
+                </ul>
+              </div>
+              <div className="">
+                <button
+                  className="bg-custom_yellow px-4 py-2 font-semibold rounded-md border border-black"
+                  onClick={() => navigate(`/login`)}
+                >
+                  Đăng nhập
+                </button>
+              </div>
+            </div>
+          )}
         </div>
       )}
     </>
