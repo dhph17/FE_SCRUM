@@ -7,11 +7,13 @@ import {
 import { FiMoreHorizontal } from "react-icons/fi";
 import { GoReport } from "react-icons/go";
 import { useAppContext } from '../provider/commentProvider';
+import ReportContent from "../popup/reportContent";
 
 
 const Comment = ({ dataUser, time, comment, isMyCmt, role }) => {
     const [isReply, setIsReply] = useState(false)
     const [isReport, setIsReport] = useState(false)
+    const [showReport, setShowReport] = useState(false)
 
     const { replyStatus, setReplyStatus } = useAppContext()
     useEffect(() => {
@@ -89,7 +91,10 @@ const Comment = ({ dataUser, time, comment, isMyCmt, role }) => {
                                             onClick={() => setIsReport(!isReport)}
                                         />
                                         {isReport && (
-                                            <div className='absolute flex font-semibold items-center bg-slate-100 rounded-lg cursor-pointer z-10 shadow-lg px-2 py-2 top-5 left-10 hover:text-red-500'>
+                                            <div
+                                                className='absolute flex font-semibold items-center bg-slate-100 rounded-lg cursor-pointer z-10 shadow-lg px-2 py-2 top-5 left-10 hover:text-red-500'
+                                                onClick={() => setShowReport(true)}
+                                            >
                                                 <GoReport />
                                                 <p className='ml-2 text-[0.9rem]'>Report</p>
                                             </div>
@@ -101,7 +106,17 @@ const Comment = ({ dataUser, time, comment, isMyCmt, role }) => {
                     </div>
                 </div>
             </div>
-
+            {
+                showReport && (
+                    <div className="fixed inset-0 bg-black/70 z-40">
+                        <div className="fixed inset-0 flex items-center justify-center z-40">
+                            <ReportContent
+                                onClose={() => setShowReport(false)}
+                            />
+                        </div>
+                    </div>
+                )
+            }
 
         </div>
     )

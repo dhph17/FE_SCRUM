@@ -6,6 +6,7 @@ import ImgAvatar from "../../assets/image/User.png";
 import { IoIosSend, IoMdClose } from "react-icons/io";
 import { CommentProvider } from '../provider/commentProvider';
 import CommentPart from '../comment/commentPart';
+import NewCommentPart from "../comment/newCommentPart";
 
 const CommentSection = ({ idPost, onClose }) => {
     const { id, sessionToken, role } = useAppContext();
@@ -14,6 +15,7 @@ const CommentSection = ({ idPost, onClose }) => {
     const [reply, setReplyStatus] = useState('');
     const [avatar, setAvatar] = useState('');
     const lastCommentRef = useRef(null); // Ref để theo dõi comment cuối cùng
+    const [newCmt, setNewCmt] = useState([])
 
     useEffect(() => {
         if (role !== 'admin') {
@@ -73,12 +75,9 @@ const CommentSection = ({ idPost, onClose }) => {
 
             const data = await response.json();
             if (response.ok) {
-                setComments((prevCmt) => [...prevCmt, data]); // Thêm comment mới vào cuối danh sách
+                setNewCmt((prev) => [{ data: data, cmtChildShow: [] }, ...prev])
                 setTotalCmt((prevTotal) => prevTotal + 1);
                 setReplyStatus('');
-                setTimeout(() => {
-                    lastCommentRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                }, 100); // Cuộn đến comment cuối
             }
         } catch (error) {
             console.log(error);
@@ -103,6 +102,16 @@ const CommentSection = ({ idPost, onClose }) => {
                 </div>
                 <div className="w-full h-[0.125rem] bg-gray-500 mt-2 mb-5"></div>
                 <div className="min-h-[120px] h-[77%] overflow-auto pr-4 scrollbar-thin scrollbar-thumb-transparent/30 scrollbar-track-transparent">
+                    {newCmt?.map((comment, index) => (
+                        <div
+                            key={index}
+                            ref={index === comments.length - 1 ? lastCommentRef : null} // Gắn ref vào comment cuối
+                        >
+                            <CommentProvider>
+                                <NewCommentPart data={comment} avatar={avatar} role='parent' />
+                            </CommentProvider>
+                        </div>
+                    ))}
                     {comments?.map((comment, index) => (
                         <div
                             key={index}
