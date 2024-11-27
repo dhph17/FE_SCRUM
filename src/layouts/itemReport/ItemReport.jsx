@@ -39,8 +39,10 @@ const ItemReport = ({ report }) => {
     }
   };
 
-  const handleViewPost = (post_id) => {
-    navigate(`/admin/approved-posts/${post_id}`);
+  const handleViewPost = (post_id, comment_id, comments) => {
+    navigate(`/admin/approved-posts/${post_id}`, {
+      state: { comment_id, comments },
+    });
   };
 
   const handleViewFeedBack = (feedback_id) => {
@@ -58,7 +60,7 @@ const ItemReport = ({ report }) => {
         setIsPopupOpen(true);
         console.log("Fetched feedback details:", data.feedbacks);
       })
-      
+
       .catch((error) => {
         console.error("Error fetching feedback details:", error);
       });
@@ -125,8 +127,9 @@ const ItemReport = ({ report }) => {
           <img
             src={
               report.reported_party_avt
-                ? `${import.meta.env.VITE_API_ENDPOINT}${report.reported_party_avt
-                }`
+                ? `${import.meta.env.VITE_API_ENDPOINT}${
+                    report.reported_party_avt
+                  }`
                 : User
             }
             alt="Reported Party Avatar"
@@ -144,7 +147,9 @@ const ItemReport = ({ report }) => {
         <div className="grid grid-cols-2 gap-4 text-gray-700">
           <div>
             <p className="font-semibold">Loại báo cáo:</p>
-            <p className="text-gray-900">{report.type || "N/A"}</p>
+            <p className="text-red-600 font-bold text-lg">
+              {report.type || "N/A"}
+            </p>
           </div>
           <div>
             <p className="font-semibold">Mã bài đăng:</p>
@@ -157,10 +162,11 @@ const ItemReport = ({ report }) => {
           <div className="flex flex-row gap-4 items-center">
             <p className="font-semibold">Trạng thái:</p>
             <span
-              className={`px-3 py-1 rounded-full text-sm font-medium ${report.resolved
-                ? "bg-green-100 text-green-600"
-                : "bg-red-100 text-red-600"
-                }`}
+              className={`px-3 py-1 rounded-full text-sm font-medium ${
+                report.resolved
+                  ? "bg-green-100 text-green-600"
+                  : "bg-red-100 text-red-600"
+              }`}
             >
               {report.resolved ? "Đã giải quyết" : "Chưa giải quyết"}
             </span>
@@ -193,7 +199,18 @@ const ItemReport = ({ report }) => {
           {report.post_id && (
             <button
               className="text-white font-semibold bg-blue-700 py-2 px-4 rounded-lg hover:bg-blue-600"
-              onClick={() => handleViewPost(report.post_id)}
+              onClick={() => {
+                console.log(
+                  "Report comment:",
+                  report.comment_id,
+                  report.comments
+                ); // Ghi log giá trị của report.comment
+                handleViewPost(
+                  report.post_id,
+                  report.comment_id,
+                  report.comments
+                );
+              }}
             >
               Xem bài đăng
             </button>
@@ -234,6 +251,8 @@ ItemReport.propTypes = {
     type: PropTypes.string,
     post_id: PropTypes.string,
     feedback_id: PropTypes.string,
+    comment_id: PropTypes.string,
+    comments: PropTypes.array,
   }).isRequired,
 };
 
