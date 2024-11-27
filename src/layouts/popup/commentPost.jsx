@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 import { useAppContext } from "../../AppProvider";
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState } from 'react';
 import { FaCommentAlt } from "react-icons/fa";
 import ImgAvatar from "../../assets/image/User.png";
 import { IoIosSend, IoMdClose } from "react-icons/io";
@@ -14,7 +14,6 @@ const CommentSection = ({ idPost, onClose }) => {
     const [totalComment, setTotalCmt] = useState(0);
     const [reply, setReplyStatus] = useState('');
     const [avatar, setAvatar] = useState('');
-    const lastCommentRef = useRef(null); // Ref để theo dõi comment cuối cùng
     const [newCmt, setNewCmt] = useState([])
 
     useEffect(() => {
@@ -105,7 +104,6 @@ const CommentSection = ({ idPost, onClose }) => {
                     {newCmt?.map((comment, index) => (
                         <div
                             key={index}
-                            ref={index === comments.length - 1 ? lastCommentRef : null} // Gắn ref vào comment cuối
                         >
                             <CommentProvider>
                                 <NewCommentPart data={comment} avatar={avatar} role='parent' />
@@ -115,7 +113,6 @@ const CommentSection = ({ idPost, onClose }) => {
                     {comments?.map((comment, index) => (
                         <div
                             key={index}
-                            ref={index === comments.length - 1 ? lastCommentRef : null} // Gắn ref vào comment cuối
                         >
                             <CommentProvider>
                                 <CommentPart data={comment} avatar={avatar} role='parent' />

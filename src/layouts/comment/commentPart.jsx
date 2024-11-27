@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react';
+import { useState } from 'react';
 import { useAppContext } from '../../AppProvider';
 import PropTypes from "prop-types";
 import ImgAvatar from "../../assets/image/User.png";
@@ -6,6 +6,7 @@ import { IoIosSend, IoMdClose } from "react-icons/io";
 import Comment from './comment';
 import { CommentProvider, useAppContext as useCommentContext } from '../provider/commentProvider';
 import { FaChevronDown, FaChevronUp } from "react-icons/fa";
+import NewCommentPart from './newCommentPart';
 
 const CommentPart = ({ data, avatar, role }) => {
     const { id, sessionToken } = useAppContext();
@@ -15,7 +16,7 @@ const CommentPart = ({ data, avatar, role }) => {
     const [showCmtChild, setShowCmtChild] = useState(false);
     const [visibleCommentsCount, setVisibleCommentsCount] = useState(3);
     const [commentCount, setCommentCount] = useState(data.comment_children_count);
-    const lastChildRef = useRef(null); // Ref để cuộn đến comment cuối
+    const [newCmt, setNewCmt] = useState([])
 
     const toggleViewComments = async (id_parent) => {
         setShowCmtChild(true);
@@ -28,7 +29,10 @@ const CommentPart = ({ data, avatar, role }) => {
                 }
             });
             const commentData = await response.json();
-            setChildrenCmt(commentData.comments);
+            const sortedComments = commentData.comments.sort((a, b) =>
+                new Date(b.created_at) - new Date(a.created_at)
+            );
+            setChildrenCmt(sortedComments);
         } catch (error) {
             console.error("Failed to load child comments:", error);
         }
@@ -59,14 +63,10 @@ const CommentPart = ({ data, avatar, role }) => {
 
             const newComment = await response.json();
             if (response.ok) {
-                setChildrenCmt((prevCmt) => [...prevCmt, newComment]); // Thêm comment mới vào cuối
+                setNewCmt((prev) => [{ data: newComment, cmtChildShow: [] }, ...prev])
                 setShowCmtChild(true);
                 setReplyComment('');
                 setCommentCount((prevCount) => prevCount + 1);
-
-                setTimeout(() => {
-                    lastChildRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                }, 100); // Cuộn đến comment cuối
             }
         } catch (error) {
             console.log(error);
@@ -81,10 +81,30 @@ const CommentPart = ({ data, avatar, role }) => {
 
     return (
         <div>
-            <Comment dataUser={data?.user} time={data?.created_at} isMyCmt={data.is_my_comment} comment={data?.comment || ''} role={role} />
+            <Comment dataUser={data?.user} time={data?.created_at} isMyCmt={data.is_my_comment} comment={data?.comment || ''} role={role} id={data.comment_id} />
 
             {showCmtChild && (
                 <div>
+                    {newCmt.map((childComment, index) => (
+                        role === 'parent' ? (
+                            <CommentProvider key={index}>
+                                <NewCommentPart
+                                    data={childComment.data}
+                                    avatar={avatar}
+                                    role='children'
+                                />
+                            </CommentProvider>
+                        ) : (
+                            <Comment
+                                key={childComment.data.id || index}
+                                dataUser={childComment.data.user}
+                                time={childComment.data.created_at}
+                                comment={childComment.data.comment}
+                                isMyCmt={childComment.data.is_my_comment}
+                                role="childrenChild"
+                            />
+                        )
+                    ))}
                     {childrenCmt.slice(0, visibleCommentsCount).map((childComment, index) => (
                         role === 'parent' ? (
                             <CommentProvider key={index}>
@@ -102,7 +122,6 @@ const CommentPart = ({ data, avatar, role }) => {
                                 comment={childComment.comment}
                                 isMyCmt={childComment.is_my_comment}
                                 role="childrenChild"
-                                ref={index === childrenCmt.length - 1 ? lastChildRef : null} // Gắn ref vào comment cuối
                             />
                         )
                     ))}

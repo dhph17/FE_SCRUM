@@ -37,8 +37,8 @@ const ReportContent = ({ reportedPartyId, postId, onClose, type }) => {
                     reported_party_id: reportedPartyId,
                     description: finalReportContents.join(', '),
                     type: type,
-                    ...(type === "Đánh giá" ? { feedback_id: postId } : { post_id: postId }),
-                    created_at: Date.now()
+                    ...(type === "Đánh giá" ? { feedback_id: postId } : (type === "Bài đăng" ? { post_id: postId } : { comment_id: postId })),
+                    // created_at: Date.now()
                 }),
             });
             if (response.ok) {
@@ -62,6 +62,17 @@ const ReportContent = ({ reportedPartyId, postId, onClose, type }) => {
                     draggable: true,
                     progress: undefined,
                 });
+                if (type === 'Bình luận') {
+                    toast.error('Bạn đã báo cáo bình luận này rồi', {
+                        position: "bottom-right",
+                        autoClose: 5000,
+                        hideProgressBar: true,
+                        closeOnClick: true,
+                        pauseOnHover: true,
+                        draggable: true,
+                        progress: undefined,
+                    });
+                }
             }
         } catch (error) {
             console.log(error)
