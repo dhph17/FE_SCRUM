@@ -40,6 +40,7 @@ const CommentPart = ({ data, avatar, role }) => {
 
     const handleHideComments = () => {
         setShowCmtChild(false);
+        // setNewCmt([])
         setVisibleCommentsCount(3); // Reset visible count when hiding
     };
 
@@ -89,7 +90,7 @@ const CommentPart = ({ data, avatar, role }) => {
                         role === 'parent' ? (
                             <CommentProvider key={index}>
                                 <NewCommentPart
-                                    data={childComment.data}
+                                    data={childComment}
                                     avatar={avatar}
                                     role='children'
                                 />
@@ -107,7 +108,7 @@ const CommentPart = ({ data, avatar, role }) => {
                             />
                         )
                     ))}
-                    {childrenCmt.slice(0, visibleCommentsCount).map((childComment, index) => (
+                    {childrenCmt.slice(newCmt.length, visibleCommentsCount).map((childComment, index) => (
                         role === 'parent' ? (
                             <CommentProvider key={index}>
                                 <CommentPart

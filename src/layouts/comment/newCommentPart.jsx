@@ -6,13 +6,14 @@ import { IoIosSend, IoMdClose } from "react-icons/io";
 import Comment from './comment';
 import { CommentProvider, useAppContext as useCommentContext } from '../provider/commentProvider';
 import { FaChevronDown, FaChevronUp } from "react-icons/fa";
-import CommentPart from './commentPart';
 
 const NewCommentPart = ({ data, avatar, role }) => {
     const { id, sessionToken } = useAppContext();
     const { replyStatus, setReplyStatus } = useCommentContext();
     const [reply, setReplyComment] = useState('');
     const [showCmtChild, setShowCmtChild] = useState(false);
+    const [newCmt, setNewCmt] = useState([])
+
 
     const handlePostComment = async (idPost, idCmt) => {
         if (reply.trim() === '') return;
@@ -44,7 +45,7 @@ const NewCommentPart = ({ data, avatar, role }) => {
     };
 
     return (
-        <div>
+        <div className='bg-red-300'>
             <Comment dataUser={data?.data.user} time={data?.data.created_at} isMyCmt={data.data.is_my_comment} comment={data?.data.comment || ''} role={role} />
 
             {showCmtChild && (
@@ -52,7 +53,7 @@ const NewCommentPart = ({ data, avatar, role }) => {
                     {data.cmtChildShow.map((childComment, index) => (
                         role === 'parent' ? (
                             <CommentProvider key={index}>
-                                <CommentPart
+                                <NewCommentPart
                                     data={childComment}
                                     avatar={avatar}
                                     role='children'
@@ -66,12 +67,14 @@ const NewCommentPart = ({ data, avatar, role }) => {
                                 comment={childComment.comment}
                                 isMyCmt={childComment.is_my_comment}
                                 role="childrenChild"
-                                id={childComment.data.comment_id}
-                                postId={childComment.data.post_id}
+                                id={childComment.comment_id}
+                                postId={childComment.post_id}
                             />
                         )
-                    ))}
+                    ))
+                    }
                 </div>
+
             )}
 
             <div className={`flex mb-2 ${role === 'children' ? 'pl-28' : 'pl-14'}`}>

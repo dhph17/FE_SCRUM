@@ -6,16 +6,18 @@ import {
 } from "react-icons/fa";
 import { FiMoreHorizontal } from "react-icons/fi";
 import { GoReport } from "react-icons/go";
-import { useAppContext } from '../provider/commentProvider';
+import { useAppContext as useCommentContext } from '../provider/commentProvider';
 import ReportContent from "../popup/reportContent";
+import { useAppContext } from "../../AppProvider";
 
 
 const Comment = ({ dataUser, time, comment, isMyCmt, role, id, postId }) => {
+    const { role: roleContext } = useAppContext()
     const [isReply, setIsReply] = useState(false)
     const [isReport, setIsReport] = useState(false)
     const [showReport, setShowReport] = useState(false)
 
-    const { replyStatus, setReplyStatus } = useAppContext()
+    const { replyStatus, setReplyStatus } = useCommentContext()
     useEffect(() => {
         setIsReply(replyStatus)
     }, [replyStatus])
@@ -74,9 +76,18 @@ const Comment = ({ dataUser, time, comment, isMyCmt, role, id, postId }) => {
                             <p className='font-light text-primaryColorGray text-[0.8rem]'>{formatTime(time || '')}</p>
                         </div>
                         <div className='text-[0.9rem]'>
-                            <div className='text-[0.9rem] line-clamp-3 hover:line-clamp-none'>
-                                <p className='text-justify'>{comment}</p>
-                            </div>
+                            {
+                                comment === 'Bình luận này đã bị xóa do vi phạm tiêu chuẩn cộng đồng' ? (
+                                    <div className='text-[0.85rem] text-red-800 line-clamp-3 hover:line-clamp-none bg-red-100 p-2 rounded-lg shadow-md font-bold my-2'>
+                                        <p className='text-justify'>{comment}</p>
+                                    </div>
+                                ) : (
+                                    <div className='text-[0.9rem] line-clamp-3 hover:line-clamp-none'>
+                                        <p className='text-justify'>{comment}</p>
+                                    </div>
+                                )
+                            }
+
                         </div>
                         <div className='flex items-center mt-1 relative'>
                             <p
@@ -84,7 +95,7 @@ const Comment = ({ dataUser, time, comment, isMyCmt, role, id, postId }) => {
                                 onClick={handleReply}
                             >Trả lời</p>
                             {
-                                !isMyCmt && (
+                                (!isMyCmt && roleContext !== "admin") && (
                                     <>
                                         <FiMoreHorizontal
                                             className='ml-2 text-primaryColorGray cursor-pointer'
