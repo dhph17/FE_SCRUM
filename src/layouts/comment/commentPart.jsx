@@ -19,7 +19,6 @@ const CommentPart = ({ data, avatar, role }) => {
     const [newCmt, setNewCmt] = useState([])
 
     const toggleViewComments = async (id_parent) => {
-        setShowCmtChild(true);
         try {
             const response = await fetch(`${import.meta.env.VITE_API_ENDPOINT}/api/postcomments/${id_parent}/`, {
                 method: "GET",
@@ -33,6 +32,7 @@ const CommentPart = ({ data, avatar, role }) => {
                 new Date(b.created_at) - new Date(a.created_at)
             );
             setChildrenCmt(sortedComments);
+            setShowCmtChild(true);
         } catch (error) {
             console.error("Failed to load child comments:", error);
         }
@@ -40,7 +40,7 @@ const CommentPart = ({ data, avatar, role }) => {
 
     const handleHideComments = () => {
         setShowCmtChild(false);
-        // setNewCmt([])
+        setNewCmt([])
         setVisibleCommentsCount(3); // Reset visible count when hiding
     };
 
@@ -75,10 +75,10 @@ const CommentPart = ({ data, avatar, role }) => {
     };
 
     const handleShowMoreComments = () => {
-        setVisibleCommentsCount((prevCount) => prevCount + 3); // Increase visible count by 3
+        setVisibleCommentsCount((prevCount) => prevCount + 3);
     };
 
-    const remainingComments = childrenCmt.length - visibleCommentsCount; // Calculate remaining comments
+    const remainingComments = childrenCmt.length - visibleCommentsCount;
 
     return (
         <div>
@@ -108,7 +108,7 @@ const CommentPart = ({ data, avatar, role }) => {
                             />
                         )
                     ))}
-                    {childrenCmt.slice(newCmt.length, visibleCommentsCount).map((childComment, index) => (
+                    {childrenCmt.slice(0, visibleCommentsCount).map((childComment, index) => (
                         role === 'parent' ? (
                             <CommentProvider key={index}>
                                 <CommentPart

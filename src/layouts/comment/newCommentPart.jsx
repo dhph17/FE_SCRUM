@@ -14,7 +14,6 @@ const NewCommentPart = ({ data, avatar, role }) => {
     const [showCmtChild, setShowCmtChild] = useState(false);
     const [newCmt, setNewCmt] = useState([])
 
-
     const handlePostComment = async (idPost, idCmt) => {
         if (reply.trim() === '') return;
 
@@ -35,7 +34,13 @@ const NewCommentPart = ({ data, avatar, role }) => {
 
             const newComment = await response.json();
             if (response.ok) {
-                data.cmtChildShow.push(newComment)
+                if (role === "parent") {
+                    console.log('aaaa');
+                    setNewCmt((prev) => [{ data: newComment, cmtChildShow: [] }, ...prev])
+                    data.cmtChildShow.push(newComment)
+                } else {
+                    data.cmtChildShow.unshift(newComment)
+                }
                 setShowCmtChild(true);
                 setReplyComment('');
             }
@@ -45,36 +50,34 @@ const NewCommentPart = ({ data, avatar, role }) => {
     };
 
     return (
-        <div className='bg-red-300'>
+        <div>
             <Comment dataUser={data?.data.user} time={data?.data.created_at} isMyCmt={data.data.is_my_comment} comment={data?.data.comment || ''} role={role} />
 
             {showCmtChild && (
-                <div>
-                    {data.cmtChildShow.map((childComment, index) => (
-                        role === 'parent' ? (
-                            <CommentProvider key={index}>
-                                <NewCommentPart
-                                    data={childComment}
-                                    avatar={avatar}
-                                    role='children'
-                                />
+                role === 'parent' ? (
+                    newCmt?.map((comment, index) => (
+                        <div
+                            key={index}
+                        >
+                            <CommentProvider>
+                                <NewCommentPart data={comment} avatar={avatar} role='children' />
                             </CommentProvider>
-                        ) : (
-                            <Comment
-                                key={childComment.id || index}
-                                dataUser={childComment.user}
-                                time={childComment.created_at}
-                                comment={childComment.comment}
-                                isMyCmt={childComment.is_my_comment}
-                                role="childrenChild"
-                                id={childComment.comment_id}
-                                postId={childComment.post_id}
-                            />
-                        )
+                        </div>
                     ))
-                    }
-                </div>
-
+                ) : (
+                    data.cmtChildShow.map((childComment, index) => (
+                        <Comment
+                            key={childComment.id || index}
+                            dataUser={childComment.user}
+                            time={childComment.created_at}
+                            comment={childComment.comment}
+                            isMyCmt={childComment.is_my_comment}
+                            role="childrenChild"
+                            id={childComment.comment_id}
+                            postId={childComment.post_id}
+                        />
+                    ))
+                )
             )}
 
             <div className={`flex mb-2 ${role === 'children' ? 'pl-28' : 'pl-14'}`}>
