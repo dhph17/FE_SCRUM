@@ -66,6 +66,8 @@ const NewCommentPart = ({ data, avatar, role }) => {
                                 comment={childComment.comment}
                                 isMyCmt={childComment.is_my_comment}
                                 role="childrenChild"
+                                id={childComment.data.comment_id}
+                                postId={childComment.data.post_id}
                             />
                         )
                     ))}

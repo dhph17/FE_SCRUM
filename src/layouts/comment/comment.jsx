@@ -10,7 +10,7 @@ import { useAppContext } from '../provider/commentProvider';
 import ReportContent from "../popup/reportContent";
 
 
-const Comment = ({ dataUser, time, comment, isMyCmt, role, id }) => {
+const Comment = ({ dataUser, time, comment, isMyCmt, role, id, postId }) => {
     const [isReply, setIsReply] = useState(false)
     const [isReport, setIsReport] = useState(false)
     const [showReport, setShowReport] = useState(false)
@@ -114,7 +114,8 @@ const Comment = ({ dataUser, time, comment, isMyCmt, role, id }) => {
                                 onClose={() => setShowReport(false)}
                                 type="Bình luận"
                                 reportedPartyId={dataUser.id}
-                                postId={id}
+                                postId={postId}
+                                cmtId={id}
                             />
                         </div>
                     </div>
@@ -130,7 +131,8 @@ Comment.propTypes = {
     comment: PropTypes.string,
     isMyCmt: PropTypes.bool,
     role: PropTypes.string,
-    id: PropTypes.string
+    id: PropTypes.string,
+    postId: PropTypes.string
 };
 
 export default Comment

@@ -81,7 +81,7 @@ const CommentPart = ({ data, avatar, role }) => {
 
     return (
         <div>
-            <Comment dataUser={data?.user} time={data?.created_at} isMyCmt={data.is_my_comment} comment={data?.comment || ''} role={role} id={data.comment_id} />
+            <Comment dataUser={data?.user} time={data?.created_at} isMyCmt={data.is_my_comment} comment={data?.comment || ''} role={role} id={data.comment_id} postId={data.post_id} />
 
             {showCmtChild && (
                 <div>
@@ -102,6 +102,8 @@ const CommentPart = ({ data, avatar, role }) => {
                                 comment={childComment.data.comment}
                                 isMyCmt={childComment.data.is_my_comment}
                                 role="childrenChild"
+                                id={childComment.data.comment_id}
+                                postId={childComment.data.post_id}
                             />
                         )
                     ))}

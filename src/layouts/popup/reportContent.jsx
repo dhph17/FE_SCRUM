@@ -4,7 +4,7 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useAppContext } from "../../AppProvider";
 
-const ReportContent = ({ reportedPartyId, postId, onClose, type }) => {
+const ReportContent = ({ reportedPartyId, postId, onClose, type, cmtId }) => {
     const { sessionToken, id } = useAppContext();
     const [selectedContents, setSelectedContents] = useState([]);
     const [textareaContent, setTextareaContent] = useState('');
@@ -37,8 +37,9 @@ const ReportContent = ({ reportedPartyId, postId, onClose, type }) => {
                     reported_party_id: reportedPartyId,
                     description: finalReportContents.join(', '),
                     type: type,
-                    ...(type === "Đánh giá" ? { feedback_id: postId } : (type === "Bài đăng" ? { post_id: postId } : { comment_id: postId })),
-                    // created_at: Date.now()
+                    ...(type === "Đánh giá" ? { feedback_id: postId } : (type === "Bài đăng" ? { post_id: postId } : { comment_id: cmtId })),
+                    ...(type === 'Bình luận' && { post_id: postId }),
+                    created_at: Date.now()
                 }),
             });
             if (response.ok) {
@@ -132,7 +133,8 @@ ReportContent.propTypes = {
     onClose: PropTypes.func,
     reportedPartyId: PropTypes.string,
     postId: PropTypes.string,
-    type: PropTypes.string.isRequired
+    type: PropTypes.string.isRequired,
+    cmtId: PropTypes.string
 };
 
 
