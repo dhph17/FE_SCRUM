@@ -14,6 +14,9 @@ const ApprovedPost = () => {
   console.log("Received comment:", comments); // Ghi log giá trị của comment
   const [showPopupCmt, setShowPopupCmt] = useState(false);
   const [popupComments, setPopupComments] = useState([]);
+  const [showConfirmDelete, setShowConfirmDelete] = useState(false);
+  const [commentToDelete, setCommentToDelete] = useState(null);
+
   const [commentsFetched, setCommentsFetched] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const { sessionToken } = useAppContext();
@@ -128,6 +131,45 @@ const ApprovedPost = () => {
     }
   };
 
+  // Admin del cmt
+
+  const handleDeleteComment = async (comment_id) => {
+    try {
+      const response = await fetch(
+        `${
+          import.meta.env.VITE_API_ENDPOINT
+        }/api/admin/report-comment/${comment_id}/`,
+        {
+          method: "DELETE",
+          headers: {
+            Authorization: `Bearer ${sessionToken}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      if (response.ok) {
+        setShowConfirmDelete(false);
+        alert("Xóa bình luận thành công");
+        window.location.reload();
+      } else {
+        console.error("Failed to delete comment");
+        alert("Xóa bình luận không thành công");
+      }
+    } catch (error) {
+      console.error("Error deleting comment:", error);
+    }
+  };
+
+  const handleConfirmDelete = (comment_id) => {
+    setCommentToDelete(comment_id);
+    setShowConfirmDelete(true);
+  };
+
+  const handleCancelDelete = () => {
+    setCommentToDelete(null);
+    setShowConfirmDelete(false);
+  };
+
   return (
     <Admin>
       <Page activeItem={4}>
@@ -201,131 +243,223 @@ const ApprovedPost = () => {
 
         {showPopupCmt && (
           <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-            <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-md relative">
+            <div className="bg-white rounded-lg shadow-2xl w-full max-w-3xl p-8 relative">
+              {/* Nút đóng */}
               <button
                 onClick={() => setShowPopupCmt(false)}
-                className="absolute top-2 right-2 text-gray-500 hover:text-gray-700"
+                className="absolute top-4 right-4 text-gray-500 hover:text-gray-700"
               >
-                Đóng
+                ✕
               </button>
+
               {/* Tiêu đề */}
-              <h2 className="text-2xl font-semibold mb-4 text-center text-gray-800">
+              <h2 className="text-2xl font-bold text-center text-gray-800 border-b pb-4">
                 Bình luận bị báo cáo
               </h2>
-              <div className="space-y-6">
-                {/* Khi không có bình luận */}
-                {popupComments.length === 0 && (
-                  <p className="text-gray-600 text-center">
-                    Không có bình luận nào.
+
+              {/* Nội dung */}
+              <div className="mt-6">
+                {popupComments.length === 0 ? (
+                  <p className="text-gray-600 text-center py-8">
+                    Không có bình luận nào được báo cáo.
                   </p>
-                )}
-                {/* Khi có một bình luận */}
-                {popupComments.length === 1 && (
-                  <div
-                    key={popupComments[0].comment_id}
-                    className="flex items-start p-5 border rounded-lg bg-yellow-100 shadow-md"
-                  >
-                    <img
-                      src={
-                        `${import.meta.env.VITE_API_ENDPOINT}${
-                          popupComments[0].user.avatar
-                        }` || "/default-avatar.png"
-                      }
-                      alt="Avatar"
-                      className="w-12 h-12 rounded-full mr-4"
-                    />
-                    <div>
-                      <p className="text-sm text-gray-600">
-                        Người dùng:{" "}
-                        <span className="font-semibold">
-                          {popupComments[0].user.profilename}
-                        </span>
-                      </p>
-                      <p className="text-xs text-gray-500">
-                        Thời gian:{" "}
-                        {new Date(popupComments[0].created_at).toLocaleString()}
-                      </p>
-                      <p className="text-lg font-semibold text-gray-800 mb-2">
-                        {popupComments[0].comment}
-                      </p>
-                    </div>
+                ) : (
+                  <div>
+                    {/* Trường hợp chỉ có 1 bình luận */}
+                    {popupComments.length === 1 && (
+                      <div className="flex items-start p-5 rounded-lg shadow-md bg-yellow-100">
+                        {/* Avatar người dùng */}
+                        <img
+                          src={
+                            `${import.meta.env.VITE_API_ENDPOINT}${
+                              popupComments[0].user.avatar
+                            }` || "/default-avatar.png"
+                          }
+                          alt="Avatar"
+                          className="w-12 h-12 rounded-full mr-4"
+                        />
+                        <div className="flex-1">
+                          <p className="text-sm text-gray-600">
+                            <strong>Người dùng:</strong>{" "}
+                            <span className="font-semibold">
+                              {popupComments[0].user.profilename}
+                            </span>
+                          </p>
+                          <p className="text-xs text-gray-500">
+                            <strong>Thời gian:</strong>{" "}
+                            {new Date(
+                              popupComments[0].created_at
+                            ).toLocaleString()}
+                          </p>
+                          <div className="mt-3 p-4 bg-white rounded-lg border border-gray-200 shadow">
+                            <p className="text-gray-800 font-medium">
+                              {popupComments[0].comment ===
+                              "Bình luận này đã bị xóa do vi phạm tiêu chuẩn cộng đồng" ? (
+                                <span className="italic text-gray-400">
+                                  {popupComments[0].comment}
+                                </span>
+                              ) : (
+                                popupComments[0].comment
+                              )}
+                            </p>
+                          </div>
+                          <span className="text-xs italic text-red-500 block mt-1">
+                            Bình luận bị báo cáo
+                          </span>
+                          {/* Ẩn nút xóa nếu bình luận đã bị xóa */}
+                          {popupComments[0].comment !==
+                            "Bình luận này đã bị xóa do vi phạm tiêu chuẩn cộng đồng" && (
+                            <button
+                              onClick={() =>
+                                handleConfirmDelete(popupComments[0].comment_id)
+                              }
+                              className="mt-4 px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-all"
+                            >
+                              Xóa bình luận
+                            </button>
+                          )}
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Trường hợp có 2 bình luận */}
+                    {popupComments.length === 2 && (
+                      <div className="space-y-6">
+                        {/* Bình luận gốc */}
+                        <div
+                          key={popupComments[0].comment_id}
+                          className="flex items-start p-5 rounded-lg shadow-md bg-gray-50 relative"
+                        >
+                          <img
+                            src={
+                              `${import.meta.env.VITE_API_ENDPOINT}${
+                                popupComments[0].user.avatar
+                              }` || "/default-avatar.png"
+                            }
+                            alt="Avatar"
+                            className="w-12 h-12 rounded-full mr-4"
+                          />
+                          <div className="flex-1">
+                            <p className="text-sm text-gray-600">
+                              <strong>Người dùng:</strong>{" "}
+                              <span className="font-semibold">
+                                {popupComments[0].user.profilename}
+                              </span>
+                            </p>
+                            <p className="text-xs text-gray-500">
+                              <strong>Thời gian:</strong>{" "}
+                              {new Date(
+                                popupComments[0].created_at
+                              ).toLocaleString()}
+                            </p>
+                            <div className="mt-3 p-4 bg-white rounded-lg border border-gray-200 shadow">
+                              <p className="text-gray-800 font-medium">
+                                {popupComments[0].comment ===
+                                "Bình luận này đã bị xóa do vi phạm tiêu chuẩn cộng đồng" ? (
+                                  <span className="italic text-gray-400">
+                                    {popupComments[0].comment}
+                                  </span>
+                                ) : (
+                                  popupComments[0].comment
+                                )}
+                              </p>
+                            </div>
+                            <span className="text-xs italic text-gray-500 block mt-1">
+                              Bình luận gốc
+                            </span>
+                          </div>
+                        </div>
+
+                        {/* Bình luận bị báo cáo */}
+                        <div
+                          key={popupComments[1].comment_id}
+                          className="flex items-start p-5 rounded-lg shadow-md bg-yellow-100"
+                        >
+                          <img
+                            src={
+                              `${import.meta.env.VITE_API_ENDPOINT}${
+                                popupComments[1].user.avatar
+                              }` || "/default-avatar.png"
+                            }
+                            alt="Avatar"
+                            className="w-12 h-12 rounded-full mr-4"
+                          />
+                          <div className="flex-1">
+                            <p className="text-sm text-gray-600">
+                              <strong>Người dùng:</strong>{" "}
+                              <span className="font-semibold">
+                                {popupComments[1].user.profilename}
+                              </span>
+                            </p>
+                            <p className="text-xs text-gray-500">
+                              <strong>Thời gian:</strong>{" "}
+                              {new Date(
+                                popupComments[1].created_at
+                              ).toLocaleString()}
+                            </p>
+                            <div className="mt-3 p-4 bg-white rounded-lg border border-gray-200 shadow">
+                              <p className="text-gray-800 font-medium">
+                                {popupComments[1].comment ===
+                                "Bình luận này đã bị xóa do vi phạm tiêu chuẩn cộng đồng" ? (
+                                  <span className="italic text-gray-400">
+                                    {popupComments[1].comment}
+                                  </span>
+                                ) : (
+                                  popupComments[1].comment
+                                )}
+                              </p>
+                            </div>
+                            <span className="text-xs italic text-red-500 block mt-1">
+                              Bình luận bị báo cáo
+                            </span>
+                            {/* Ẩn nút xóa nếu bình luận đã bị xóa */}
+                            {popupComments[1].comment !==
+                              "Bình luận này đã bị xóa do vi phạm tiêu chuẩn cộng đồng" && (
+                              <button
+                                onClick={() =>
+                                  handleConfirmDelete(
+                                    popupComments[1].comment_id
+                                  )
+                                }
+                                className="mt-4 px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-all"
+                              >
+                                Xóa bình luận
+                              </button>
+                            )}
+                          </div>
+                        </div>
+                      </div>
+                    )}
                   </div>
                 )}
-                {/* 2 cmt */}
-                {popupComments.length === 2 && (
-                  <div className="space-y-4">
-                    {/* cmt cha */}
-                    <div
-                      key={popupComments[0].comment_id}
-                      className="flex items-end p-4 border rounded-lg bg-gray-50 shadow-sm"
-                    >
-                      <img
-                        src={
-                          `${import.meta.env.VITE_API_ENDPOINT}${
-                            popupComments[0].user.avatar
-                          }` || "/default-avatar.png"
-                        }
-                        alt="Avatar"
-                        className="w-10 h-10 rounded-full mr-4"
-                      />
-                      <div>
-                        <p className="text-lg font-medium text-gray-800">
-                          {popupComments[0].comment}
-                        </p>
-                        <span className="text-xs text-gray-500 italic">
-                          Bình luận gốc
-                        </span>
-                        <p className="text-sm text-gray-600 mt-1">
-                          Người dùng:{" "}
-                          <span className="font-semibold">
-                            {popupComments[0].user.profilename}
-                          </span>
-                        </p>
-                        <p className="text-xs text-gray-500">
-                          Thời gian:{" "}
-                          {new Date(
-                            popupComments[0].created_at
-                          ).toLocaleString()}
-                        </p>
-                      </div>
-                    </div>
-                    {/* cmt con */}
-                    <div
-                      key={popupComments[1].comment_id}
-                      className="flex items-end ml-6 p-4 border rounded-lg bg-yellow-100 shadow-md relative before:absolute before:left-[-24px] before:top-1/2 before:transform before:translate-y-[-50%] before:w-6 before:h-6 before:bg-yellow-100 before:border-l-4 before:border-t-4 before:border-gray-300 before:rounded-full"
-                    >
-                      <img
-                        src={
-                          `${import.meta.env.VITE_API_ENDPOINT}${
-                            popupComments[1].user.avatar
-                          }` || "/default-avatar.png"
-                        }
-                        alt="Avatar"
-                        className="w-10 h-10 rounded-full mr-4"
-                      />
-                      <div>
-                        <p className="text-lg font-medium text-gray-800 bg-yellow-50 px-2 py-1 rounded-lg border-solid border-[1px] border-gray-300">
-                          {popupComments[1].comment}
-                        </p>
-                        <span className="text-xs text-red-500 italic">
-                          Bình luận bị báo cáo
-                        </span>
-                        <p className="text-sm text-gray-600 mt-1">
-                          Người dùng:{" "}
-                          <span className="font-semibold">
-                            {popupComments[1].user.profilename}
-                          </span>
-                        </p>
-                        <p className="text-xs text-gray-500">
-                          Thời gian:{" "}
-                          {new Date(
-                            popupComments[1].created_at
-                          ).toLocaleString()}
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                )}
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Confirm */}
+        {showConfirmDelete && (
+          <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+            <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-sm relative">
+              <h2 className="text-xl font-semibold mb-4 text-center text-gray-800">
+                Xác nhận xóa bình luận
+              </h2>
+              <p className="text-gray-600 text-center mb-6">
+                Bạn có chắc chắn muốn xóa bình luận này không?
+              </p>
+              <div className="flex justify-center space-x-4">
+                <button
+                  onClick={() => handleDeleteComment(commentToDelete)}
+                  className="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-all"
+                >
+                  Xóa
+                </button>
+                <button
+                  onClick={handleCancelDelete}
+                  className="px-4 py-2 bg-gray-300 text-gray-700 rounded-lg hover:bg-gray-400 transition-all"
+                >
+                  Hủy
+                </button>
               </div>
             </div>
           </div>
