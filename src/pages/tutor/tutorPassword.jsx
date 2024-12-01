@@ -45,9 +45,11 @@ const TutorPassword = () => {
                     username: data.user.username || '',
                 });
 
-                if (data.avatar) {
-                    setProfileImage(`http://127.0.0.1:8000${data.avatar}`);
-                }
+                const avatarUrl = data.avatar && data.avatar !== 'Not recorded'
+                ? `http://127.0.0.1:8000${data.avatar}`
+                : 'https://placehold.co/50x50';
+                setProfileImage(avatarUrl);
+                
             } catch (error) {
                 console.error("Error fetching tutor data:", error);
             }

@@ -40,7 +40,7 @@ const TutorProfile = () => {
                 console.error("No tutor ID found in local storage.");
                 return;
             }
-
+    
             try {
                 const response = await axios.get(
                     `http://127.0.0.1:8000/api/tutors/${tutorId}/`,
@@ -52,28 +52,31 @@ const TutorProfile = () => {
                 );
                 const data = response.data;
                 console.log(data);
+    
                 setFormData({
                     tutor_id: data.tutor_id || '',
                     username: (data.user && data.user.username) || '',
                     email: (data.user && data.user.email) || '',
                     role: (data.user && data.user.role) || '',
-                    tutorname: data.tutorname || '',
+                    tutorname: data.tutorname !== "" ? data.tutorname : '',
                     address: data.address !== "Not recorded" ? data.address : '',
-                    birthdate: data.birthdate !== "Not recorded" ? data.birthdate : '',
+                    birthdate: data.birthdate !== "" ? data.birthdate : '',
                     bio_link: data.bio_link !== "Not recorded" ? data.bio_link : '',
                     phone_number: data.phone_number !== "Not recorded" ? data.phone_number : '',
-                    gender: data.gender !== null ? data.gender : 'Nam',
+                    gender: data.gender !== "Not recorded" ? data.gender : 'Nam',
                     educational_background: data.educational_background !== "Not recorded" ? data.educational_background : 'Có bằng tốt nghiệp trung học phổ thông',
                 });
-
-                if (data.avatar) {
-                    setProfileImage(`http://127.0.0.1:8000${data.avatar}`);
-                }
+    
+                const avatarUrl = data.avatar && data.avatar !== 'Not recorded'
+                    ? `http://127.0.0.1:8000${data.avatar}`
+                    : 'https://placehold.co/50x50';
+                setProfileImage(avatarUrl);
+    
             } catch (error) {
                 console.error("Error fetching tutor data:", error);
             }
         };
-
+    
         fetchTutorData();
     }, [tutorId, token]);
 
@@ -93,6 +96,13 @@ const TutorProfile = () => {
         });
     };
 
+    const handleGenderChange = (e) => {
+        const { value } = e.target;
+        if (value !== formData.gender) {
+            setFormData({ ...formData, gender: value });
+        }
+    };
+    
     const handleImageUpload = (e) => {
         const file = e.target.files[0];
         if (file) {
@@ -163,21 +173,27 @@ const TutorProfile = () => {
             'phone_number',
             'educational_background'
         ];
-
+    
         const errors = {};
+
         requiredFields.forEach((field) => {
             if (!formData[field] || formData[field].trim() === '') {
                 errors[field] = 'This field is required';
             }
         });
-
+    
         setValidationErrors(errors);
-
+    
         if (Object.keys(errors).length > 0) {
             alert('Please fill in all required fields.');
             return;
         }
 
+        if (formData.phone_number.length < 10 || formData.phone_number.length > 11) {
+            alert("Phone number must be 10 or 11 digits long.");
+            return;
+        }
+    
         setLoading(true);
         try {
             const formDataToSend = new FormData();
@@ -189,7 +205,7 @@ const TutorProfile = () => {
             formDataToSend.append('bio_link', formData.bio_link);
             formDataToSend.append('phone_number', formData.phone_number);
             formDataToSend.append('educational_background', formData.educational_background);
-
+    
             const response = await axios.put(
                 `http://127.0.0.1:8000/api/tutors/${tutorId}/`,
                 formDataToSend,
@@ -200,7 +216,7 @@ const TutorProfile = () => {
                     },
                 }
             );
-
+    
             console.log("Profile updated successfully:", response.data);
             alert("Profile updated successfully!");
         } catch (error) {
@@ -209,10 +225,6 @@ const TutorProfile = () => {
         } finally {
             setLoading(false);
         }
-    };
-
-    const handleDelete = () => {
-        console.log("Profile deleted");
     };
 
     return (
@@ -269,7 +281,7 @@ const TutorProfile = () => {
                                     <select
                                         name="gender"
                                         value={formData.gender}
-                                        onChange={handleChange}
+                                        onChange={handleGenderChange}
                                         className="w-full border border-gray-300 p-2 rounded"
                                     >
                                         <option value="Nam">Nam</option>
@@ -347,13 +359,6 @@ const TutorProfile = () => {
                                     disabled={loading}
                                 >
                                     {loading ? "Đang lưu..." : "Lưu"}
-                                </button>
-                                <button
-                                    type="button"
-                                    onClick={handleDelete}
-                                    className="bg-red-600 text-white px-6 py-2 rounded"
-                                >
-                                    Xóa hồ sơ
                                 </button>
                             </div>
                         </div>
