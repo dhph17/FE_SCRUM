@@ -47,7 +47,7 @@ const TutorPassword = () => {
 
                 const avatarUrl = data.avatar && data.avatar !== 'Not recorded'
                 ? `http://127.0.0.1:8000${data.avatar}`
-                : 'https://placehold.co/50x50';
+                : User;
                 setProfileImage(avatarUrl);
                 
             } catch (error) {

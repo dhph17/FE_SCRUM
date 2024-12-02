@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import axios from "axios";
 import Panel from "../../layouts/panel/Panel";
 import Tutor from "../../layouts/PageAuthorization/tutor/tutor";
+import User from "../../assets/image/User.png";
 
 const TutorProfile = () => {
     const backgroundEnum = [
@@ -69,7 +70,7 @@ const TutorProfile = () => {
     
                 const avatarUrl = data.avatar && data.avatar !== 'Not recorded'
                     ? `http://127.0.0.1:8000${data.avatar}`
-                    : 'https://placehold.co/50x50';
+                    : User;
                 setProfileImage(avatarUrl);
     
             } catch (error) {
