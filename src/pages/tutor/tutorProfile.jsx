@@ -44,7 +44,7 @@ const TutorProfile = () => {
     
             try {
                 const response = await axios.get(
-                    `http://127.0.0.1:8000/api/tutors/${tutorId}/`,
+                    `${import.meta.env.VITE_API_ENDPOINT}/api/tutors/${tutorId}/`,
                     {
                         headers: {
                             Authorization: `Bearer ${token}`,
@@ -69,7 +69,7 @@ const TutorProfile = () => {
                 });
     
                 const avatarUrl = data.avatar && data.avatar !== 'Not recorded'
-                    ? `http://127.0.0.1:8000${data.avatar}`
+                    ? `${import.meta.env.VITE_API_ENDPOINT}${data.avatar}`
                     : User;
                 setProfileImage(avatarUrl);
     

@@ -56,10 +56,10 @@ const ParentProfile = () => {
                 });
 
                 const avatarUrl = data.avatar && data.avatar !== 'Not recorded'
-                ? `http://127.0.0.1:8000${data.avatar}`
-                : User;
+                ? `${import.meta.env.VITE_API_ENDPOINT}${data.avatar}`
+                    : User;
                 setProfileImage(avatarUrl);
-                
+
             } catch (error) {
                 console.error("Error fetching parent data:", error);
             }
