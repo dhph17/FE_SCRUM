@@ -33,8 +33,9 @@ const Header = ({ setSearch }) => {
     if (role !== "admin") {
       const fetchData = async () => {
         try {
-          const url = `${import.meta.env.VITE_API_ENDPOINT}/api/${role === "tutor" ? "tutors" : "parents"
-            }/${id}`;
+          const url = `${import.meta.env.VITE_API_ENDPOINT}/api/${
+            role === "tutor" ? "tutors" : "parents"
+          }/${id}`;
           const response = await fetch(url);
           const data = await response.json();
           setAvatar(data.avatar);
@@ -102,44 +103,28 @@ const Header = ({ setSearch }) => {
     <>
       {sessionToken ? (
         <div>
-          {role === 'admin' ? (
+          {role === "admin" ? (
             <div className="h-[12vh] w-screen px-28 flex items-center justify-between bg-custom_darkblue">
-              <div id="logo-header" onClick={() => navigate("/")}>
-                <img
-                  src={LogoLogin}
-                  alt="Logo"
-                  className="h-10 mb-2 bg-center object-cover cursor-pointer"
-                />
+              <div className="flex items-center gap-32">
+                <div
+                  id="logo-header"
+                  onClick={() => navigate("/admin/approved-posts")}
+                >
+                  <img
+                    src={LogoLogin}
+                    alt="Logo"
+                    className="h-10 mb-2 bg-center object-cover cursor-pointer"
+                  />
+                </div>
+                <div
+                  className="font-semibold text-white  mx-6 cursor-pointer transition duration-200 underline underline-offset-4"
+                  onClick={() => navigate("/admin/approved-posts")}
+                >
+                  Quản lý Admin
+                </div>
               </div>
-              <div className="">
-                <ul className="flex text-white text-[1.1rem]">
-                  <li className="font-semibold mx-6 cursor-pointer transition duration-200 underline underline-offset-4">
-                    Quản lý Admin
-                  </li>
-                </ul>
-              </div>
-              <div
-                id="search-header"
-                className="bg-white/50 py-2 w-[25%] relative pl-4 pr-8 rounded-xl"
-              >
-                <input
-                  type="text"
-                  placeholder="Tìm kiếm"
-                  className="w-full text-white bg-transparent border-none outline-none placeholder:text-white"
-                  id="search_input"
-                  name="search"
-                  onChange={handleInputChange}
-                  autoComplete="off"
-                />
-                <FontAwesomeIcon
-                  id="search-but"
-                  icon={faMagnifyingGlass}
-                  className="text-white absolute right-3 top-3"
-                />
-              </div>
-              <NotifyAdmin />
-
-              <div className="flex text-white items-center cursor-pointer text-[1.1rem]">
+              <div className="flex text-white items-center cursor-pointer text-[1.1rem] gap-10">
+                <NotifyAdmin />
                 <div className="relative flex items-center gap-2">
                   <img
                     src={
@@ -152,8 +137,9 @@ const Header = ({ setSearch }) => {
                   />
                   <p className="font-semibold">{name}</p>
                   <i
-                    className={`fas ${showDropdown ? "fa-chevron-up" : "fa-chevron-down"
-                      } text-[0.8rem] ml-1`}
+                    className={`fas ${
+                      showDropdown ? "fa-chevron-up" : "fa-chevron-down"
+                    } text-[0.8rem] ml-1`}
                     onClick={() => setShowDropdown(!showDropdown)}
                   ></i>
                   {showDropdown && (
@@ -170,7 +156,19 @@ const Header = ({ setSearch }) => {
             </div>
           ) : (
             <div className="h-[12vh] w-screen px-28 flex items-center justify-between bg-custom_darkblue">
-              <div id="logo-header" onClick={() => navigate("/")}>
+              <div
+                id="logo-header"
+                onClick={() => {
+                  if (role === "tutor") {
+                    navigate("/tutor/main-page", { replace: true });
+                  } else if (role === "parent") {
+                    navigate("/parent/main-page", { replace: true });
+                  }
+                  setTimeout(() => {
+                    window.location.reload();
+                  }, 0);
+                }}
+              >
                 <img
                   src={LogoLogin}
                   alt="Logo"
@@ -184,10 +182,11 @@ const Header = ({ setSearch }) => {
                       key={path}
                       to={`${rolePath}/${path}`}
                       className={`font-semibold mx-6 cursor-pointer transition duration-200 
-                    ${activeLink === path
-                          ? "underline underline-offset-4"
-                          : "hover:scale-110"
-                        }`}
+                    ${
+                      activeLink === path
+                        ? "underline underline-offset-4"
+                        : "hover:scale-110"
+                    }`}
                       onClick={() => setActiveLink(path)}
                     >
                       {path === "main-page" ? "Trang chủ" : "Hồ sơ cá nhân"}
@@ -230,8 +229,9 @@ const Header = ({ setSearch }) => {
                   />
                   <p className="font-semibold">{name}</p>
                   <i
-                    className={`fas ${showDropdown ? "fa-chevron-up" : "fa-chevron-down"
-                      } text-[0.8rem] ml-1`}
+                    className={`fas ${
+                      showDropdown ? "fa-chevron-up" : "fa-chevron-down"
+                    } text-[0.8rem] ml-1`}
                     onClick={() => setShowDropdown(!showDropdown)}
                   ></i>
                   {showDropdown && (
@@ -246,8 +246,7 @@ const Header = ({ setSearch }) => {
                 </div>
               </div>
             </div>
-          )
-          }
+          )}
         </div>
       ) : (
         <div className="h-[12vh] w-screen px-28 flex items-center justify-between">
