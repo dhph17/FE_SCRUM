@@ -30,7 +30,7 @@ const ParentPassword = () => {
         const fetchParentData = async () => {
             try {
                 const response = await axios.get(
-                    `http://127.0.0.1:8000/api/parents/${parentId}/`,
+                    `${import.meta.env.VITE_API_ENDPOINT}/api/parents/${parentId}/`,
                     {
                         headers: {
                             Authorization: `Bearer ${token}`,
@@ -45,9 +45,11 @@ const ParentPassword = () => {
                     username: data.user.username || '',
                 });
 
-                if (data.avatar) {
-                    setProfileImage(`http://127.0.0.1:8000${data.avatar}`);
-                }
+                const avatarUrl = data.avatar && data.avatar !== 'Not recorded'
+                ? `${import.meta.env.VITE_API_ENDPOINT}${data.avatar}`
+                : User;
+                setProfileImage(avatarUrl);
+                
             } catch (error) {
                 console.error("Error fetching parent data:", error);
             }
@@ -87,7 +89,7 @@ const ParentPassword = () => {
         setLoading(true);
         try {
             const response = await axios.post(
-                "http://127.0.0.1:8000/api/change-password/",
+                "${import.meta.env.VITE_API_ENDPOINT}/api/change-password/",
                 {
                     old_password: formData.currentPassword,
                     new_password: formData.newPassword,

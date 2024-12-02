@@ -91,6 +91,10 @@ const Header = ({ setSearch }) => {
     setSearch(query);
   };
 
+  const avatarUrl = avatar && avatar !== "Not recorded" 
+  ? `${import.meta.env.VITE_API_ENDPOINT}${avatar}` 
+  : User;
+
   const debouncedHandleSearch = useCallback(debounce(handleSearch, 1000), []);
 
   const handleInputChange = (e) => {
@@ -142,11 +146,7 @@ const Header = ({ setSearch }) => {
               <div className="flex text-white items-center cursor-pointer text-[1.1rem]">
                 <div className="relative flex items-center gap-2">
                   <img
-                    src={
-                      avatar
-                        ? `${import.meta.env.VITE_API_ENDPOINT}${avatar}`
-                        : User
-                    }
+                    src={avatarUrl}
                     alt=""
                     className="w-[40px] h-[40px] rounded-full"
                   />
@@ -220,11 +220,7 @@ const Header = ({ setSearch }) => {
               <div className="flex text-white items-center cursor-pointer text-[1.1rem]">
                 <div className="relative flex items-center gap-2">
                   <img
-                    src={
-                      avatar
-                        ? `${import.meta.env.VITE_API_ENDPOINT}${avatar}`
-                        : User
-                    }
+                    src={avatarUrl}
                     alt=""
                     className="w-[40px] h-[40px] rounded-full"
                   />

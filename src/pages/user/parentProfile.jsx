@@ -45,19 +45,21 @@ const ParentProfile = () => {
 
                 setFormData({
                     parent_id: data.parent_id,
-                    username: data.user.username || '',
+                    username: data.user.username !== "Not recorded" ? data.user.username : 'username',
                     email: data.user.email || '',
                     role: data.user.role || '',
                     parentname: data.parentname || '',
                     address: data.address !== "Not recorded" ? data.address : '',
-                    birthdate: data.birthdate !== "Not recorded" ? data.birthdate : '',
+                    birthdate: data.birthdate !== "" ? data.birthdate : '',
                     phone_number: data.phone_number !== "Not recorded" ? data.phone_number : '',
-                    gender: data.gender !== null ? data.gender : 'Nam',
+                    gender: data.gender !== "Not recorded" ? data.gender : 'Nam',
                 });
 
-                if (data.avatar) {
-                    setProfileImage(`${import.meta.env.VITE_API_ENDPOINT}${data.avatar}`);
-                }
+                const avatarUrl = data.avatar && data.avatar !== 'Not recorded'
+                ? `${import.meta.env.VITE_API_ENDPOINT}${data.avatar}`
+                    : User;
+                setProfileImage(avatarUrl);
+
             } catch (error) {
                 console.error("Error fetching parent data:", error);
             }
@@ -80,6 +82,13 @@ const ParentProfile = () => {
             ...formData,
             [name]: value
         });
+    };
+
+    const handleGenderChange = (e) => {
+        const { value } = e.target;
+        if (value !== formData.gender) {
+            setFormData({ ...formData, gender: value });
+        }
     };
 
     const handleImageUpload = (e) => {
@@ -252,7 +261,7 @@ const ParentProfile = () => {
                                         type="text"
                                         name="parentname"
                                         value={formData.parentname}
-                                        onChange={handleChange}
+                                        onChange={handleGenderChange}
                                         className="w-full border border-gray-300 p-2 rounded"
                                     />
                                 </div>
@@ -307,13 +316,6 @@ const ParentProfile = () => {
                                     disabled={loading}
                                 >
                                     {loading ? "Đang lưu..." : "Lưu"}
-                                </button>
-                                <button
-                                    type="button"
-                                    onClick={handleDelete}
-                                    className="bg-red-600 text-white px-6 py-2 rounded w-[8rem]"
-                                >
-                                    Xóa hồ sơ
                                 </button>
                             </div>
                         </div>
