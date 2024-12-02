@@ -89,31 +89,35 @@ const Comment = ({ dataUser, time, comment, isMyCmt, role, id, postId, isDeleted
                             }
 
                         </div>
-                        <div className='flex items-center mt-1 relative'>
-                            <p
-                                className='inline-block font-semibold text-[0.9rem] hover:cursor-pointer'
-                                onClick={handleReply}
-                            >Trả lời</p>
-                            {
-                                (!isMyCmt && roleContext !== "admin" && !isDeleted) && (
-                                    <>
-                                        <FiMoreHorizontal
-                                            className='ml-2 text-primaryColorGray cursor-pointer'
-                                            onClick={() => setIsReport(!isReport)}
-                                        />
-                                        {isReport && (
-                                            <div
-                                                className='absolute flex font-semibold items-center bg-slate-100 rounded-lg cursor-pointer z-10 shadow-lg px-2 py-2 top-5 left-10 hover:text-red-500'
-                                                onClick={() => setShowReport(true)}
-                                            >
-                                                <GoReport />
-                                                <p className='ml-2 text-[0.9rem]'>Report</p>
-                                            </div>
-                                        )}
-                                    </>
-                                )
-                            }
-                        </div>
+                        {
+                            roleContext !== 'admin' && (
+                                <div className='flex items-center mt-1 relative'>
+                                    <p
+                                        className='inline-block font-semibold text-[0.9rem] hover:cursor-pointer'
+                                        onClick={handleReply}
+                                    >Trả lời</p>
+                                    {
+                                        (!isMyCmt && roleContext !== "admin" && !isDeleted) && (
+                                            <>
+                                                <FiMoreHorizontal
+                                                    className='ml-2 text-primaryColorGray cursor-pointer'
+                                                    onClick={() => setIsReport(!isReport)}
+                                                />
+                                                {isReport && (
+                                                    <div
+                                                        className='absolute flex font-semibold items-center bg-slate-100 rounded-lg cursor-pointer z-10 shadow-lg px-2 py-2 top-5 left-10 hover:text-red-500'
+                                                        onClick={() => setShowReport(true)}
+                                                    >
+                                                        <GoReport />
+                                                        <p className='ml-2 text-[0.9rem]'>Report</p>
+                                                    </div>
+                                                )}
+                                            </>
+                                        )
+                                    }
+                                </div>
+                            )
+                        }
                     </div>
                 </div>
             </div>

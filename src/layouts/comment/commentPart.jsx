@@ -71,6 +71,7 @@ const CommentPart = ({ data, avatar, role }) => {
             }
         } catch (error) {
             console.log(error);
+
         }
     };
 

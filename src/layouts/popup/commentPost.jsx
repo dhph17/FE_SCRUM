@@ -100,7 +100,7 @@ const CommentSection = ({ idPost, onClose }) => {
                     </div>
                 </div>
                 <div className="w-full h-[0.125rem] bg-gray-500 mt-2 mb-5"></div>
-                <div className="min-h-[120px] h-[77%] overflow-auto pr-4 scrollbar-thin scrollbar-thumb-transparent/30 scrollbar-track-transparent">
+                <div className={`min-h-[120px] ${role !== 'admin' ? 'h-[77%]' : 'h-[85%]'} overflow-auto pr-4 scrollbar-thin scrollbar-thumb-transparent/30 scrollbar-track-transparent`}>
                     {newCmt?.map((comment, index) => (
                         <div
                             key={index}
@@ -120,39 +120,43 @@ const CommentSection = ({ idPost, onClose }) => {
                         </div>
                     ))}
                 </div>
-                <div className='flex justify-between items-center mt-5'>
-                    <div className='w-[100%] mr-2 flex'>
-                        <div className='w-[50px] mr-2 flex'>
-                            <img
-                                src={avatar ? `${import.meta.env.VITE_API_ENDPOINT}${avatar}` : ImgAvatar}
-                                alt="avatar"
-                                className="rounded-full w-[40px] h-[40px] mr-3"
-                            />
-                        </div>
+                {
+                    role !== 'admin' && (
+                        <div className='flex justify-between items-center mt-5'>
+                            <div className='w-[100%] mr-2 flex'>
+                                <div className='w-[50px] mr-2 flex'>
+                                    <img
+                                        src={avatar ? `${import.meta.env.VITE_API_ENDPOINT}${avatar}` : ImgAvatar}
+                                        alt="avatar"
+                                        className="rounded-full w-[40px] h-[40px] mr-3"
+                                    />
+                                </div>
 
-                        <div className='relative w-[88%]'>
-                            <input
-                                type="text"
-                                className='w-full py-2 bg-transparent border-2 border-custom_gray text-[0.9rem] rounded-3xl pl-3 pr-10 focus:border-black'
-                                placeholder='Thêm bình luận...'
-                                maxLength={500}
-                                value={reply}
-                                onChange={(e) => setReplyStatus(e.target.value)}
-                            />
-                            <IoMdClose
-                                className='w-6 h-6 absolute right-3 top-2 cursor-pointer'
-                                onClick={() => setReplyStatus('')}
-                            />
-                        </div>
-                    </div>
+                                <div className='relative w-[88%]'>
+                                    <input
+                                        type="text"
+                                        className='w-full py-2 bg-transparent border-2 border-custom_gray text-[0.9rem] rounded-3xl pl-3 pr-10 focus:border-black'
+                                        placeholder='Thêm bình luận...'
+                                        maxLength={500}
+                                        value={reply}
+                                        onChange={(e) => setReplyStatus(e.target.value)}
+                                    />
+                                    <IoMdClose
+                                        className='w-6 h-6 absolute right-3 top-2 cursor-pointer'
+                                        onClick={() => setReplyStatus('')}
+                                    />
+                                </div>
+                            </div>
 
-                    <div
-                        className='border-2 p-2 rounded-full bg-white text-custom_gray hover:text-black hover:border-black transition-all duration-300 cursor-pointer'
-                        onClick={handPostCmt}
-                    >
-                        <IoIosSend />
-                    </div>
-                </div>
+                            <div
+                                className='border-2 p-2 rounded-full bg-white text-custom_gray hover:text-black hover:border-black transition-all duration-300 cursor-pointer'
+                                onClick={handPostCmt}
+                            >
+                                <IoIosSend />
+                            </div>
+                        </div>
+                    )
+                }
             </div>
         </div>
     );

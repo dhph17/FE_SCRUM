@@ -1,8 +1,9 @@
 import { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import { FaLink } from "react-icons/fa6";
+import UserImage from '../../assets/image/User.png'
 
-const TutorProfile = ({ tutor_id, onClose }) => {
+const TutorProfile = ({ tutor_id, onClose, children }) => {
   const handleBackgroundClick = (event) => {
     if (event.target === event.currentTarget) {
       onClose();
@@ -57,16 +58,16 @@ const TutorProfile = ({ tutor_id, onClose }) => {
           Hồ Sơ Gia Sư
         </h2>
         <div className="flex flex-col items-center">
-          <div className="flex gap-6">
+          <div className="flex gap-16">
             {/* Avar */}
             <div className="md:mb-0 md:w-1/2 flex flex-col justify-between">
               <div className="flex flex-col items-center">
                 <img
                   src={
-                    `${import.meta.env.VITE_API_ENDPOINT}${tutorProfile.avatar}`
+                    tutorProfile.avatar !== "Not recorded" ? `${import.meta.env.VITE_API_ENDPOINT}${tutorProfile.avatar}` : UserImage
                   }
                   alt="Tutor Avatar"
-                  className="rounded-full w-[7rem] h-[7rem] object-cover shadow-lg border-[3px] border-[#002182] self-center"
+                  className="rounded-full w-[7rem] h-[7rem] object-cover shadow-lg  self-center"
                 />
                 <p className="text-lg font-medium flex flex-row mt-2">
                   {tutorProfile.user.username}
@@ -76,13 +77,13 @@ const TutorProfile = ({ tutor_id, onClose }) => {
                 <p className="text-lg font-medium flex">
                   <strong className="text-nowrap">Họ và tên:</strong>
                   <p className="text-[#002182] ml-5 font-normal text-nowrap">
-                    {tutorProfile.tutorname}
+                    {tutorProfile.tutorname !== "Not recorded" ? tutorProfile.tutorname : ''}
                   </p>
                 </p>
                 <p className="text-lg font-medium flex flex-row">
                   <strong className="text-nowrap">Số điện thoại:</strong>{" "}
                   <div className="text-[#002182] ml-5 font-normal">
-                    {tutorProfile.phone_number}
+                    {tutorProfile.phone_number !== "Not recorded" ? tutorProfile.phone_number : ''}
                   </div>
                 </p>
               </div>
@@ -101,19 +102,19 @@ const TutorProfile = ({ tutor_id, onClose }) => {
               <p className="text-lg font-medium flex flex-row">
                 <strong>Ngày sinh:</strong>{" "}
                 <div className="text-[#002182] ml-5 font-normal">
-                  {tutorProfile.birthdate}
+                  {tutorProfile.phone_number !== "Not recorded" ? tutorProfile.phone_number : ''}
                 </div>
               </p>
               <p className="text-lg font-medium flex flex-row">
                 <strong>Giới tính:</strong>{" "}
                 <div className="text-[#002182] ml-5 font-normal">
-                  {tutorProfile.gender}
+                  {tutorProfile.gender !== "Not recorded" ? tutorProfile.gender : ''}
                 </div>
               </p>
               <p className="text-lg font-medium flex flex-row">
                 <strong className="text-nowrap">Địa chỉ:</strong>{" "}
                 <div className="text-[#002182] ml-5 font-normal">
-                  {tutorProfile.address}
+                  {tutorProfile.address !== "Not recorded" ? tutorProfile.address : ''}
                 </div>
               </p>
               <p className="text-lg font-medium flex flex-row">
@@ -124,24 +125,29 @@ const TutorProfile = ({ tutor_id, onClose }) => {
               </p>
               <p className="text-lg font-medium flex flex-row">
                 <strong>Liên kết:</strong>{" "}
-                <a
-                  href={tutorProfile.bio_link}
-                  className="text-blue-500 hover:underline ml-5"
-                >
-                  <FaLink className="w-5 h-5" />
-                </a>
+                {
+                  tutorProfile.address !== "Not recorded" && (
+                    <a
+                      href={tutorProfile.bio_link}
+                      className="text-blue-500 hover:underline ml-5"
+                    >
+                      <FaLink className="w-5 h-5" />
+                    </a>
+                  )
+                }
               </p>
             </div>
           </div>
+          {children}
           <div className="flex justify-center mt-6 gap-10">
             <button
-              className="bg-red-500 w-[9rem] text-white px-6 py-3 rounded-lg shadow hover:bg-red-600 transition duration-300"
+              className="bg-red-500 w-[8rem] text-white py-3 rounded-lg shadow hover:bg-red-600 transition duration-300"
               onClick={onClose}
             >
               Đóng
             </button>
             <button
-              className="bg-[#002182] w-[9rem] text-white px-6 py-3 rounded-lg shadow hover:bg-blue-700 transition duration-300"
+              className="bg-[#002182] w-[8rem] text-white py-3 rounded-lg shadow hover:bg-blue-700 transition duration-300"
               onClick={onClose}
             >
               Nhận gia sư
@@ -157,6 +163,7 @@ const TutorProfile = ({ tutor_id, onClose }) => {
 TutorProfile.propTypes = {
   tutor_id: PropTypes.string.isRequired,
   onClose: PropTypes.func.isRequired,
+  children: PropTypes.node,
 };
 
 export default TutorProfile;

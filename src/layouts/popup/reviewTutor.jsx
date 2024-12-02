@@ -16,7 +16,7 @@ const ReviewTutor = ({ onClose, tutor_id }) => {
         const fetchTutorData = async () => {
             try {
                 const response = await axios.get(
-                    `http://127.0.0.1:8000/api/tutors/${tutor_id}/`,
+                    `${import.meta.env.VITE_API_ENDPOINT}/api/tutors/${tutor_id}/`,
                     {
                         headers: {
                             // Authorization: `Bearer ${sessionToken}`,
@@ -24,7 +24,6 @@ const ReviewTutor = ({ onClose, tutor_id }) => {
                     }
                 );
                 const data = response.data;
-                console.log(data);
                 setProfile(data);
             } catch (error) {
                 console.error("Error fetching tutor data:", error);
@@ -41,16 +40,24 @@ const ReviewTutor = ({ onClose, tutor_id }) => {
         >
             <div className="bg-gray-200 w-[70%] px-2 py-5">
                 <div className="flex items-center gap-3 mb-5 ml-4">
-                    <img
-                        src={profile?.avatar ? `${import.meta.env.VITE_API_ENDPOINT}${profile.avatar}` : Image}
-                        alt=""
-                        className="w-[50px] h-[50px] rounded-full object-cover"
-                    />
+                    {profile && profile.avatar !== 'Not recorded' ? (
+                        <img
+                            src={`${import.meta.env.VITE_API_ENDPOINT}${profile.avatar}`}
+                            alt="Avatar"
+                            className="w-[50px] h-[50px] rounded-full object-cover"
+                        />
+                    ) : (
+                        <img
+                            src={Image}
+                            alt="Avatar mặc định"
+                            className="w-[50px] h-[50px] rounded-full object-cover"
+                        />
+                    )}
                     <p
                         className="font-semibold text-[1.1rem] hover:underline"
                     >{profile?.tutorname || profile?.user?.username}</p>
                 </div>
-                <Review height='max-h-[450px]' tutor_id={tutor_id} />
+                <Review height='h-[50vh]' tutor_id={tutor_id} />
                 <div className="mt-3 flex w-full justify-end">
                     <button
                         className=" bg-red-500 mr-8 w-[100px] text-white py-2 rounded-lg shadow hover:bg-red-600 transition duration-300"
