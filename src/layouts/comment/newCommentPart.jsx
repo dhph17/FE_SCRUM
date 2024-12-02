@@ -51,7 +51,7 @@ const NewCommentPart = ({ data, avatar, role }) => {
 
     return (
         <div>
-            <Comment dataUser={data?.data.user} time={data?.data.created_at} isMyCmt={data.data.is_my_comment} comment={data?.data.comment || ''} role={role} />
+            <Comment dataUser={data?.data.user} time={data?.data.created_at} isMyCmt={data.data.is_my_comment} comment={data?.data.comment || ''} role={role} isDeleted={data.data.is_deleted} />
 
             {showCmtChild && (
                 role === 'parent' ? (
@@ -75,6 +75,7 @@ const NewCommentPart = ({ data, avatar, role }) => {
                             role="childrenChild"
                             id={childComment.comment_id}
                             postId={childComment.post_id}
+                            isDeleted={childComment.is_deleted}
                         />
                     ))
                 )

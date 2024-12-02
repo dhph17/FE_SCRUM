@@ -82,8 +82,7 @@ const CommentPart = ({ data, avatar, role }) => {
 
     return (
         <div>
-            <Comment dataUser={data?.user} time={data?.created_at} isMyCmt={data.is_my_comment} comment={data?.comment || ''} role={role} id={data.comment_id} postId={data.post_id} />
-
+            <Comment dataUser={data?.user} time={data?.created_at} isMyCmt={data.is_my_comment} comment={data?.comment || ''} role={role} id={data.comment_id} postId={data.post_id} isDeleted={data.is_deleted} />
             {showCmtChild && (
                 <div>
                     {newCmt.map((childComment, index) => (
@@ -105,6 +104,7 @@ const CommentPart = ({ data, avatar, role }) => {
                                 role="childrenChild"
                                 id={childComment.data.comment_id}
                                 postId={childComment.data.post_id}
+                                isDeleted={childComment.data.is_deleted}
                             />
                         )
                     ))}
@@ -125,6 +125,9 @@ const CommentPart = ({ data, avatar, role }) => {
                                 comment={childComment.comment}
                                 isMyCmt={childComment.is_my_comment}
                                 role="childrenChild"
+                                id={childComment.comment_id}
+                                postId={childComment.post_id}
+                                isDeleted={childComment.is_deleted}
                             />
                         )
                     ))}

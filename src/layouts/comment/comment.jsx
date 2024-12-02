@@ -11,7 +11,7 @@ import ReportContent from "../popup/reportContent";
 import { useAppContext } from "../../AppProvider";
 
 
-const Comment = ({ dataUser, time, comment, isMyCmt, role, id, postId }) => {
+const Comment = ({ dataUser, time, comment, isMyCmt, role, id, postId, isDeleted }) => {
     const { role: roleContext } = useAppContext()
     const [isReply, setIsReply] = useState(false)
     const [isReport, setIsReport] = useState(false)
@@ -77,7 +77,7 @@ const Comment = ({ dataUser, time, comment, isMyCmt, role, id, postId }) => {
                         </div>
                         <div className='text-[0.9rem]'>
                             {
-                                comment === 'Bình luận này đã bị xóa do vi phạm tiêu chuẩn cộng đồng' ? (
+                                isDeleted ? (
                                     <div className='text-[0.85rem] text-red-800 line-clamp-3 hover:line-clamp-none bg-red-100 p-2 rounded-lg shadow-md font-bold my-2'>
                                         <p className='text-justify'>{comment}</p>
                                     </div>
@@ -95,7 +95,7 @@ const Comment = ({ dataUser, time, comment, isMyCmt, role, id, postId }) => {
                                 onClick={handleReply}
                             >Trả lời</p>
                             {
-                                (!isMyCmt && roleContext !== "admin") && (
+                                (!isMyCmt && roleContext !== "admin" && !isDeleted) && (
                                     <>
                                         <FiMoreHorizontal
                                             className='ml-2 text-primaryColorGray cursor-pointer'
@@ -143,7 +143,8 @@ Comment.propTypes = {
     isMyCmt: PropTypes.bool,
     role: PropTypes.string,
     id: PropTypes.string,
-    postId: PropTypes.string
+    postId: PropTypes.string,
+    isDeleted: PropTypes.bool
 };
 
 export default Comment

@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom"
 const Start = () => {
     const navigate = useNavigate()
     return (
-        <div className="px-40 flex items-center space-x-10 mt-6 mb-16">
+        <div className="px-40 flex items-center space-x-10 mt-4 mb-12">
             <div className="w-[60%]">
                 <div className="font-sriracha font-semibold text-3xl leading-[50px] text-center text-custom_purple mb-6">
                     <h1 className="mb-5 text-4xl">NOXA TUTOR</h1>
