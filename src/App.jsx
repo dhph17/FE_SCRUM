@@ -35,6 +35,7 @@ import SuatDayDaDuocNhan from "./pages/tutor/SuatDayDaDuocNhan";
 import MyReviews from "./pages/tutor/MyReviews";
 import ManageReport from "./pages/admin/ManageReport";
 import StatisticalApp from "./pages/admin/statisticalApp";
+import ChangePasswordNotify from "./pages/login/ChangePasswordNotify";
 
 function App() {
   const [searchTerm, setSearchTerm] = useState("");
@@ -51,6 +52,7 @@ function App() {
           <Route path="/verifyEmail" element={<VerifyEmail />} />
           <Route path="/forgotPassword" element={<ForgotPasswordPage />} />
           <Route path="/createNewPassword" element={<CreateNewPassword />} />
+          <Route path="/changePasswordNotify" element={<ChangePasswordNotify />} />
           <Route path="/panel" element={<Panel />} />
           <Route path="/admin/tutor-account" element={<TutorAccount />} />
           <Route path="/admin/parent-account" element={<ParentAccount />} />

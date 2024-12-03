@@ -2,12 +2,14 @@ import Page from "../../layouts/login_signup/Page";
 import Image1 from "../../assets/image/image_service_email.png";
 import { useState } from "react";
 import { ClipLoader } from "react-spinners";
+import { useNavigate } from "react-router-dom";
 
 const ForgotPasswordPage = () => {
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -77,23 +79,35 @@ const ForgotPasswordPage = () => {
           )}
           {message && (
             <div className="flex justify-center w-auto">
-              <p className="text-green-500 text-center break-words max-w-[20rem]">
+              <p className="text-green-700 font-semibold text-center break-words max-w-[20rem]">
                 {message}
               </p>
             </div>
           )}
           {error && (
             <div className="flex justify-center w-auto">
-              <p className="text-red-500 text-center mt-2">{error}</p>
+              <p className="text-red-500 text-center font-semibold mt-2">{error}</p>
             </div>
           )}
-          <div className="flex justify-center mt-5">
+          <div className="flex flex-col justify-center items-center gap-3">
+            {message && (
+              <>
+                <button
+                  className="bg-green-600 text-white w-[310px] h-[40px] rounded-xl font-bold"
+                  onClick={() => navigate("/changePasswordNotify")}
+                >
+                  Tiếp tục
+                </button>
+              </>
+            )}
             <button
               type="submit"
-              className="bg-custom_yellow w-[320px] h-[50px] rounded-xl font-bold"
+              className="bg-custom_yellow w-[310px] h-[40px] rounded-xl font-bold"
               disabled={isLoading}
             >
-              {isLoading ? "Đang gửi..." : "Gửi"}
+              {isLoading && "Đang gửi..."}
+              {!isLoading && !error && !message && "Gửi"}
+              {!isLoading && (error || message) && "Gửi lại"}
             </button>
           </div>
           <div className="flex justify-center">
