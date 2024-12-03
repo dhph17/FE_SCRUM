@@ -128,7 +128,7 @@ const CommentSection = ({ idPost, onClose }) => {
                                     <img
                                         src={avatar ? `${import.meta.env.VITE_API_ENDPOINT}${avatar}` : ImgAvatar}
                                         alt="avatar"
-                                        className="rounded-full w-[40px] h-[40px] mr-3"
+                                        className="rounded-full w-[40px] h-[40px] mr-3 object-cover"
                                     />
                                 </div>
 

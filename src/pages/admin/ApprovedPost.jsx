@@ -105,7 +105,9 @@ const ApprovedPost = () => {
       const fetchedComments = await Promise.all(
         comments.map(async (id) => {
           const response = await fetch(
-            `http://127.0.0.1:8000/api/admin/report-comment/${id}/`,
+            `${
+              import.meta.env.VITE_API_ENDPOINT
+            }/api/admin/report-comment/${id}/`,
             {
               method: "GET",
               headers: {
@@ -276,7 +278,7 @@ const ApprovedPost = () => {
                             }` || "/default-avatar.png"
                           }
                           alt="Avatar"
-                          className="w-12 h-12 rounded-full mr-4"
+                          className="w-12 h-12 rounded-full mr-4 object-cover"
                         />
                         <div className="flex-1">
                           <p className="text-sm text-gray-600">
@@ -337,7 +339,7 @@ const ApprovedPost = () => {
                               }` || "/default-avatar.png"
                             }
                             alt="Avatar"
-                            className="w-12 h-12 rounded-full mr-4"
+                            className="w-12 h-12 rounded-full mr-4 object-cover"
                           />
                           <div className="flex-1">
                             <p className="text-sm text-gray-600">
@@ -382,7 +384,7 @@ const ApprovedPost = () => {
                               }` || "/default-avatar.png"
                             }
                             alt="Avatar"
-                            className="w-12 h-12 rounded-full mr-4"
+                            className="w-12 h-12 rounded-full mr-4 object-cover"
                           />
                           <div className="flex-1">
                             <p className="text-sm text-gray-600">

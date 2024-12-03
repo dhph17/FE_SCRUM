@@ -93,7 +93,7 @@ const ItemPostVu = ({ user, children, tag, comment_id, comment }) => {
         <div className="flex items-center gap-7">
           <div className="flex gap-5">
             <img
-              className="w-[50px] h-[50px] rounded-full"
+              className="w-[50px] h-[50px] rounded-full object-cover"
               src={
                 user.avatar
                   ? `${import.meta.env.VITE_API_ENDPOINT}${user.avatar}`

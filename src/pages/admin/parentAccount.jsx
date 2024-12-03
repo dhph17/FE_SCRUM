@@ -35,7 +35,9 @@ const ParentAccount = () => {
     const fetchParents = async () => {
       setLoading(true);
       try {
-        const response = await axios.get("http://127.0.0.1:8000/api/parents/");
+        const response = await axios.get(
+          `${import.meta.env.VITE_API_ENDPOINT}/api/parents/`
+        );
         setParents(response.data);
       } catch (error) {
         console.error("Error fetching parent data", error);
@@ -90,7 +92,9 @@ const ParentAccount = () => {
 
   const openInfoModal = async (id) => {
     try {
-      const response = await axios.get(`http://127.0.0.1:8000/api/parents/${id}/`);
+      const response = await axios.get(
+        `${import.meta.env.VITE_API_ENDPOINT}/api/parents/${id}/`
+      );
       setSelectedParent(response.data);
       setShowInfoModal(true);
     } catch (error) {

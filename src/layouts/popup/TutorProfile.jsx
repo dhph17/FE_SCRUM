@@ -67,7 +67,7 @@ const TutorProfile = ({ tutor_id, onClose, children }) => {
                     tutorProfile.avatar !== "Not recorded" ? `${import.meta.env.VITE_API_ENDPOINT}${tutorProfile.avatar}` : UserImage
                   }
                   alt="Tutor Avatar"
-                  className="rounded-full w-[7rem] h-[7rem] object-cover shadow-lg  self-center"
+                  className="rounded-full w-[7rem] h-[7rem] object-cover shadow-lg self-center"
                 />
                 <p className="text-lg font-medium flex flex-row mt-2">
                   {tutorProfile.user.username}

@@ -47,7 +47,8 @@ const MainPageParent = ({ searchTerm }) => {
         // );
         let url = `${import.meta.env.VITE_API_ENDPOINT}/api/posts/`;
         if (searchTerm && searchTerm.trim() !== "") {
-          url = `http://127.0.0.1:8000/api/search/?text=${searchTerm}`;
+          // url = `http://127.0.0.1:8000/api/search/?text=${searchTerm}`;
+          url = `${import.meta.env.VITE_API_ENDPOINT}/api/search/?text=${searchTerm}`;
         }
 
         // await new Promise((resolve) => setTimeout(resolve, 1000));

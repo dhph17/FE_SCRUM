@@ -18,16 +18,21 @@ const FeedbackPopup = ({ feedbackDetails, onClose }) => {
           <div>
             <div className="flex items-center mb-4">
               <img
-                src={"http://127.0.0.1:8000" + feedbackDetails.parent_avt}
+                src={
+                  `${import.meta.env.VITE_API_ENDPOINT}` +
+                  feedbackDetails.parent_avt
+                }
                 alt="Parent Avatar"
-                className="w-16 h-16 rounded-full mr-4 shadow-md object-contain border border-gray-200"
+                className="w-16 h-16 rounded-full mr-4 shadow-md object-cover border border-gray-200"
               />
               <div>
                 <h3 className="text-lg font-semibold text-gray-800">
                   {feedbackDetails.parent_name}
                 </h3>
                 <div className="flex flex-row gap-[4rem]">
-                  <div className="text-sm italic text-gray-400">Phụ huynh đã đánh giá</div>
+                  <div className="text-sm italic text-gray-400">
+                    Phụ huynh đã đánh giá
+                  </div>
                   <div className="flex items-center">
                     {[...Array(5)].map((star, index) => {
                       const ratingValue = index + 1;

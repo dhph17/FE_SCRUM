@@ -10,11 +10,8 @@ import Tutor from "../../layouts/PageAuthorization/tutor/tutor";
 import Popup from "reactjs-popup";
 import { toast } from "react-toastify";
 
-
-
-
 const MainPageTutor = ({ searchTerm }) => {
-  let navigate = useNavigate()
+  let navigate = useNavigate();
   const { sessionToken, id } = useAppContext();
   const [posts, setPost] = useState([]);
   const [showPopup, setShowPopup] = useState(false);
@@ -47,7 +44,9 @@ const MainPageTutor = ({ searchTerm }) => {
       try {
         let url = `${import.meta.env.VITE_API_ENDPOINT}/api/posts/`;
         if (searchTerm && searchTerm.trim() !== "") {
-          url = `http://127.0.0.1:8000/api/search/?text=${searchTerm}`;
+          url = `${
+            import.meta.env.VITE_API_ENDPOINT
+          }/api/search/?text=${searchTerm}`;
         }
 
         const response = await fetch(url, {
@@ -62,7 +61,6 @@ const MainPageTutor = ({ searchTerm }) => {
         console.log(data);
         console.log(id);
         if (response.ok) {
-
           let filteredPosts = data.filter(
             (post) => post.status === "Đã phê duyệt"
           );
@@ -152,14 +150,17 @@ const MainPageTutor = ({ searchTerm }) => {
     };
 
     try {
-      const response = await fetch("http://127.0.0.1:8000/api/tutor/posts/", {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${sessionToken}`,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(requestData),
-      });
+      const response = await fetch(
+        `${import.meta.env.VITE_API_ENDPOINT}/api/tutor/posts/`,
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${sessionToken}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(requestData),
+        }
+      );
 
       const data = await response.json();
       console.log("Response data:", data);
@@ -168,7 +169,7 @@ const MainPageTutor = ({ searchTerm }) => {
           position: "bottom-right",
           autoClose: 3000,
         });
-        navigate("/tutor/registered")
+        navigate("/tutor/registered");
       } else {
         toast.error("Đăng ký thất bại!", {
           position: "bottom-right",
@@ -183,8 +184,6 @@ const MainPageTutor = ({ searchTerm }) => {
       });
     }
   };
-
-
 
   return (
     <Tutor>

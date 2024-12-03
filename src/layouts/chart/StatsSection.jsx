@@ -15,7 +15,9 @@ const StatsSection = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await fetch('http://127.0.0.1:8000/api/statistics/');
+                const response = await fetch(
+                  `${import.meta.env.VITE_API_ENDPOINT}/api/statistics/`
+                );
                 const data = await response.json();
                 const { tutors_total, parents_total, posts_total, queue } = data.data.summary_stat;
 

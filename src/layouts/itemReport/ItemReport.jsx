@@ -112,7 +112,7 @@ const ItemReport = ({ report }) => {
                 : User
             }
             alt="Reporter Avatar"
-            className="w-12 h-12 rounded-full mr-3 object-contain border border-gray-500"
+            className="w-12 h-12 rounded-full mr-3 object-cover border border-gray-500"
           />
           <div className="flex-1">
             <p className="text-gray-900 font-medium">
@@ -133,7 +133,7 @@ const ItemReport = ({ report }) => {
                 : User
             }
             alt="Reported Party Avatar"
-            className="w-12 h-12 rounded-full mr-3 object-contain border border-gray-500"
+            className="w-12 h-12 rounded-full mr-3 object-cover border border-gray-500"
           />
           <div className="flex-1">
             <p className="text-gray-900 font-medium">

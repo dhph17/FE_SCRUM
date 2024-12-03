@@ -7,7 +7,7 @@ import Popup from "reactjs-popup";
 import Parent from "../../layouts/PageAuthorization/parent/parent";
 import Panel from "../../layouts/panel/Panel";
 import Img3 from "../../assets/image/medal.png";
-import UserImage from '../../assets/image/User.png'
+import UserImage from "../../assets/image/User.png";
 import ClassTimeDetail from "../../layouts/popup/classTime_Popup";
 import TutorProfile from "../../layouts/popup/TutorProfile";
 import ReviewTutor from "../../layouts/popup/reviewTutor";
@@ -171,10 +171,11 @@ const DetailPost = () => {
               <div className="flex justify-between px-4">
                 <div className="flex gap-5 ">
                   <img
-                    className="w-[50px] h-[50px] rounded-full"
+                    className="w-[50px] h-[50px] rounded-full object-cover"
                     // src="https://th.bing.com/th/id/OIP.0xm7fJtBKdm3hIVhXfmpQQHaJ4?&w=160&h=240&c=7&dpr=1.3&pid=ImgDet"
-                    src={`${import.meta.env.VITE_API_ENDPOINT}${dataPost.avatar
-                      }`}
+                    src={`${import.meta.env.VITE_API_ENDPOINT}${
+                      dataPost.avatar
+                    }`}
                     alt="avatar"
                   />
                   <div>
@@ -308,7 +309,13 @@ const DetailPost = () => {
                   >
                     <div className="flex items-center gap-3">
                       <img
-                        src={tutor.avatar !== 'No avatar' ? `${import.meta.env.VITE_API_ENDPOINT}${tutor.avatar}` : UserImage}
+                        src={
+                          tutor.avatar !== "No avatar"
+                            ? `${import.meta.env.VITE_API_ENDPOINT}${
+                                tutor.avatar
+                              }`
+                            : UserImage
+                        }
                         alt=""
                         className="w-[50px] h-[50px] rounded-full object-cover"
                       />

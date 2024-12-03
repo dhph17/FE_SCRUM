@@ -236,9 +236,11 @@ const NotifyParent = () => {
             {/* User Info */}
             <div className="flex items-center gap-4 mb-6">
               <img
-                src={`http://127.0.0.1:8000${selectedPost.avatar}`}
+                src={`${import.meta.env.VITE_API_ENDPOINT}${
+                  selectedPost.avatar
+                }`}
                 alt="Avatar"
-                className="w-16 h-16 rounded-full border-4 border-blue-500 shadow-md"
+                className="w-16 h-16 rounded-full border-4 border-blue-500 shadow-md object-cover"
               />
               <p className="text-lg font-semibold text-gray-800">
                 Người đăng:{" "}

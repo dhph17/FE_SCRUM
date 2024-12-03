@@ -8,9 +8,10 @@ const sanitizeData = (value) => {
 const ParentInfoPopup = ({ isOpen, onClose, parent }) => {
   if (!isOpen || !parent) return null;
 
-  const avatarUrl = parent.avatar === "Not recorded" 
-    ? User 
-    : `http://127.0.0.1:8000${parent.avatar}`;
+  const avatarUrl =
+    parent.avatar === "Not recorded"
+      ? User
+      : `${import.meta.env.VITE_API_ENDPOINT}${parent.avatar}`;
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-8">

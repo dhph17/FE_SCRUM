@@ -98,7 +98,7 @@ const Review = ({ height, tutor_id }) => {
     const fetchReviews = async () => {
       try {
         const response = await fetch(
-          `http://127.0.0.1:8000/api/class/feedback/${tutor_id}`
+          `${import.meta.env.VITE_API_ENDPOINT}/api/class/feedback/${tutor_id}`
         );
         const data = await response.json();
         if (Array.isArray(data.feedbacks)) {
@@ -113,7 +113,7 @@ const Review = ({ height, tutor_id }) => {
             comment: review.description,
             username: review.parent_name,
             avatar: review.parent_avt
-              ? `http://127.0.0.1:8000${review.parent_avt}`
+              ? `${import.meta.env.VITE_API_ENDPOINT}${review.parent_avt}`
               : Image,
             tutor_id: review.tutor_id,
             class_id: review.class_id,
@@ -255,7 +255,7 @@ const Review = ({ height, tutor_id }) => {
                       <img
                         src={review.avatar}
                         alt={review.username}
-                        className="w-12 h-12 rounded-full"
+                        className="w-12 h-12 rounded-full object-cover"
                       />
                       <strong className="text-lg font-semibold ml-1">
                         {review.username}

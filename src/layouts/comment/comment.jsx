@@ -66,7 +66,7 @@ const Comment = ({ dataUser, time, comment, isMyCmt, role, id, postId, isDeleted
                             width={40}
                             height={40}
                             alt="avatar"
-                            className="rounded-full w-[40px] h-[40px]"
+                            className="rounded-full w-[40px] h-[40px] object-cover"
                         />
                     </div>
                     <div className='w-[100%]'>

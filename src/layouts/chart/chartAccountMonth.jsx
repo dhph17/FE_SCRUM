@@ -30,7 +30,9 @@ const MonthlyAccountChart = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await fetch('http://127.0.0.1:8000/api/statistics/?category=users');
+                const response = await fetch(
+                  `${import.meta.env.VITE_API_ENDPOINT}/api/statistics/?category=users`
+                );
                 const result = await response.json();
                 setApiData(result.data.users_stat_by_roles);
             } catch (error) {
