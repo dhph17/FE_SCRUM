@@ -41,7 +41,7 @@ const TutorProfile = () => {
                 console.error("No tutor ID found in local storage.");
                 return;
             }
-    
+
             try {
                 const response = await axios.get(
                     `${import.meta.env.VITE_API_ENDPOINT}/api/tutors/${tutorId}/`,
@@ -53,7 +53,7 @@ const TutorProfile = () => {
                 );
                 const data = response.data;
                 console.log(data);
-    
+
                 setFormData({
                     tutor_id: data.tutor_id || '',
                     username: (data.user && data.user.username) || '',
@@ -67,17 +67,17 @@ const TutorProfile = () => {
                     gender: data.gender !== "Not recorded" ? data.gender : 'Nam',
                     educational_background: data.educational_background !== "Not recorded" ? data.educational_background : 'Có bằng tốt nghiệp trung học phổ thông',
                 });
-    
+
                 const avatarUrl = data.avatar && data.avatar !== 'Not recorded'
                     ? `${import.meta.env.VITE_API_ENDPOINT}${data.avatar}`
                     : User;
                 setProfileImage(avatarUrl);
-    
+
             } catch (error) {
                 console.error("Error fetching tutor data:", error);
             }
         };
-    
+
         fetchTutorData();
     }, [tutorId, token]);
 
@@ -103,7 +103,7 @@ const TutorProfile = () => {
             setFormData({ ...formData, gender: value });
         }
     };
-    
+
     const handleImageUpload = (e) => {
         const file = e.target.files[0];
         if (file) {
@@ -144,7 +144,7 @@ const TutorProfile = () => {
     const updateAvatar = async (file) => {
         const formData = new FormData();
         formData.append("avatar", file);
-    
+
         try {
             const response = await axios.post(
                 `http://127.0.0.1:8000/api/profile/avatar/`,
@@ -156,10 +156,10 @@ const TutorProfile = () => {
                     },
                 }
             );
-    
+
             console.log("Avatar updated successfully:", response.data);
             alert("Cập nhật avatar thành công!");
-            
+
             window.location.reload();
         } catch (error) {
             console.error("Error updating avatar:", error);
@@ -176,7 +176,7 @@ const TutorProfile = () => {
             'phone_number',
             'educational_background'
         ];
-    
+
         const errors = {};
 
         requiredFields.forEach((field) => {
@@ -184,9 +184,9 @@ const TutorProfile = () => {
                 errors[field] = 'Thông tin bắt buộc';
             }
         });
-    
+
         setValidationErrors(errors);
-    
+
         if (Object.keys(errors).length > 0) {
             alert('Hãy nhập tất cả thông tin bắt buộc.');
             return;
@@ -196,7 +196,7 @@ const TutorProfile = () => {
             alert("Số điện thoại phải 10 hoặc 11 số.");
             return;
         }
-    
+
         setLoading(true);
         try {
             const formDataToSend = new FormData();
@@ -208,9 +208,9 @@ const TutorProfile = () => {
             formDataToSend.append('bio_link', formData.bio_link);
             formDataToSend.append('phone_number', formData.phone_number);
             formDataToSend.append('educational_background', formData.educational_background);
-    
+
             const response = await axios.put(
-                `http://127.0.0.1:8000/api/tutors/${tutorId}/`,
+                `${import.meta.env.VITE_API_ENDPOINT}/api/tutors/${tutorId}/`,
                 formDataToSend,
                 {
                     headers: {
@@ -219,7 +219,7 @@ const TutorProfile = () => {
                     },
                 }
             );
-    
+
             console.log("Profile updated successfully:", response.data);
             alert("Cập nhật thành công!");
         } catch (error) {

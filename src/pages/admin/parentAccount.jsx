@@ -5,7 +5,7 @@ import Admin from "../../layouts/PageAuthorization/admin/admin";
 import axios from "axios";
 import { useAppContext } from "../../AppProvider";
 import DeleteAccount from "../../layouts/popup/DeleteAccount";
-import ParentInfoPopup from "../../layouts/popup/ParentInfoPopup"; 
+import ParentInfoPopup from "../../layouts/popup/ParentInfoPopup";
 
 const ParentAccount = () => {
   const { sessionToken } = useAppContext();
@@ -90,7 +90,14 @@ const ParentAccount = () => {
 
   const openInfoModal = async (id) => {
     try {
-      const response = await axios.get(`http://127.0.0.1:8000/api/parents/${id}/`);
+      const response = await axios.get(
+        `${import.meta.env.VITE_API_ENDPOINT}/api/parents/${id}/`,
+        {
+          headers: {
+            Authorization: `Bearer ${sessionToken}`,
+          },
+        }
+      );
       setSelectedParent(response.data);
       setShowInfoModal(true);
     } catch (error) {
@@ -174,13 +181,13 @@ const ParentAccount = () => {
           parent={selectedParent}
         />
 
-        <DeleteAccount 
-            isOpen={showDeleteModal} 
-            onClose={closeDeleteModal} 
-            onConfirm={handleDeleteParent}
+        <DeleteAccount
+          isOpen={showDeleteModal}
+          onClose={closeDeleteModal}
+          onConfirm={handleDeleteParent}
         />
       </Panel>
-      </Admin>
+    </Admin>
   );
 };
 

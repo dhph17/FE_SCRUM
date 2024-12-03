@@ -84,7 +84,14 @@ const TutorAccount = () => {
 
   const openInfoModal = async (id) => {
     try {
-      const response = await axios.get(`http://127.0.0.1:8000/api/tutors/${id}/`);
+      const response = await axios.get(
+        `${import.meta.env.VITE_API_ENDPOINT}/api/tutors/${id}/`,
+        {
+          headers: {
+            Authorization: `Bearer ${sessionToken}`,
+          },
+        }
+      );
       setSelectedTutor(response.data);
       setShowInfoModal(true);
     } catch (error) {

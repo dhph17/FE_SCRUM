@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import axios from "axios";
 import Panel from "../../layouts/panel/Panel";
 import Parent from "../../layouts/PageAuthorization/parent/parent";
+import User from "../../assets/image/User.png";
 
 const ParentProfile = () => {
     const [formData, setFormData] = useState({
@@ -57,7 +58,7 @@ const ParentProfile = () => {
                 });
 
                 const avatarUrl = data.avatar && data.avatar !== 'Not recorded'
-                ? `${import.meta.env.VITE_API_ENDPOINT}${data.avatar}`
+                    ? `${import.meta.env.VITE_API_ENDPOINT}${data.avatar}`
                     : User;
                 setProfileImage(avatarUrl);
 
@@ -218,9 +219,9 @@ const ParentProfile = () => {
         }
     };
 
-    const handleDelete = () => {
-        console.log("Profile deleted");
-    };
+    // const handleDelete = () => {
+    //     console.log("Profile deleted");
+    // };
 
     return (
         <Parent>

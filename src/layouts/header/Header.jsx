@@ -33,12 +33,22 @@ const Header = ({ setSearch }) => {
     if (role !== "admin") {
       const fetchData = async () => {
         try {
-          const url = `${import.meta.env.VITE_API_ENDPOINT}/api/${
-            role === "tutor" ? "tutors" : "parents"
-          }/${id}`;
-          const response = await fetch(url);
+          const url = `${import.meta.env.VITE_API_ENDPOINT}/api/${role === "tutor" ? "tutors" : "parents"
+            }/${id}`;
+          const response = await fetch(url, {
+            method: "GET",
+            headers: {
+              Authorization: `Bearer ${sessionToken}`,
+              "Content-Type": "application/json",
+            },
+          });
           const data = await response.json();
-          setAvatar(data.avatar);
+          if (response.ok) {
+            setAvatar(data.avatar);
+          } else {
+            localStorage.clear()
+
+          }
         } catch (error) {
           console.error("Error fetching data:", error);
         }
@@ -92,9 +102,9 @@ const Header = ({ setSearch }) => {
     setSearch(query);
   };
 
-  const avatarUrl = avatar && avatar !== "Not recorded" 
-  ? `${import.meta.env.VITE_API_ENDPOINT}${avatar}` 
-  : User;
+  const avatarUrl = avatar && avatar !== "Not recorded"
+    ? `${import.meta.env.VITE_API_ENDPOINT}${avatar}`
+    : User;
 
   const debouncedHandleSearch = useCallback(debounce(handleSearch, 1000), []);
 
@@ -121,7 +131,7 @@ const Header = ({ setSearch }) => {
                   />
                 </div>
                 <div
-                  className="font-semibold text-white  mx-6 cursor-pointer transition duration-200 underline underline-offset-4"
+                  className=" text-white mx-6 cursor-pointer transition duration-200 underline underline-offset-4 font-semibold"
                   onClick={() => navigate("/admin/approved-posts")}
                 >
                   Quản lý Admin
@@ -137,9 +147,8 @@ const Header = ({ setSearch }) => {
                   />
                   <p className="font-semibold">{name}</p>
                   <i
-                    className={`fas ${
-                      showDropdown ? "fa-chevron-up" : "fa-chevron-down"
-                    } text-[0.8rem] ml-1`}
+                    className={`fas ${showDropdown ? "fa-chevron-up" : "fa-chevron-down"
+                      } text-[0.8rem] ml-1`}
                     onClick={() => setShowDropdown(!showDropdown)}
                   ></i>
                   {showDropdown && (
@@ -182,11 +191,10 @@ const Header = ({ setSearch }) => {
                       key={path}
                       to={`${rolePath}/${path}`}
                       className={`font-semibold mx-6 cursor-pointer transition duration-200 
-                    ${
-                      activeLink === path
-                        ? "underline underline-offset-4"
-                        : "hover:scale-110"
-                    }`}
+                    ${activeLink === path
+                          ? "underline underline-offset-4"
+                          : "hover:scale-110"
+                        }`}
                       onClick={() => setActiveLink(path)}
                     >
                       {path === "main-page" ? "Trang chủ" : "Hồ sơ cá nhân"}
@@ -225,9 +233,8 @@ const Header = ({ setSearch }) => {
                   />
                   <p className="font-semibold">{name}</p>
                   <i
-                    className={`fas ${
-                      showDropdown ? "fa-chevron-up" : "fa-chevron-down"
-                    } text-[0.8rem] ml-1`}
+                    className={`fas ${showDropdown ? "fa-chevron-up" : "fa-chevron-down"
+                      } text-[0.8rem] ml-1`}
                     onClick={() => setShowDropdown(!showDropdown)}
                   ></i>
                   {showDropdown && (
