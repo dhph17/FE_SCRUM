@@ -45,7 +45,7 @@ const ParentProfile = () => {
 
                 setFormData({
                     parent_id: data.parent_id,
-                    username: data.user.username !== "Not recorded" ? data.user.username : 'username',
+                    username: (data.user && data.user.username) || '',
                     email: data.user.email || '',
                     role: data.user.role || '',
                     parentname: data.parentname || '',
@@ -96,17 +96,17 @@ const ParentProfile = () => {
         if (file) {
             const fileType = file.type;
             if (fileType !== "image/png" && fileType !== "image/jpeg") {
-                alert("Please upload a .png or .jpg image.");
+                alert("Định dạng file phải là .png hoặc .jpg (25MB).");
                 fileInputRef.current.value = ""; // Reset file input
-                setFileName("Choose a file"); // Reset file name display
+                setFileName("Chọn file"); // Reset file name display
                 return;
             }
 
             const fileSizeLimit = 25 * 1024 * 1024;
             if (file.size > fileSizeLimit) {
-                alert("File size should not exceed 25 MB.");
+                alert("File không được quá 25 MB.");
                 fileInputRef.current.value = "";
-                setFileName("Choose a file");
+                setFileName("Chọn file");
                 return;
             }
 
@@ -145,10 +145,10 @@ const ParentProfile = () => {
             );
 
             console.log("Avatar updated successfully:", response.data);
-            alert("Avatar updated successfully!");
+            alert("Cập nhật avatar thành công!");
         } catch (error) {
             console.error("Error updating avatar:", error);
-            alert("Failed to update avatar.");
+            alert("Cập nhật avatar thất bại.");
         }
     };
 
@@ -164,17 +164,17 @@ const ParentProfile = () => {
         const errors = {};
         requiredFields.forEach((field) => {
             if (!formData[field] || formData[field].trim() === '') {
-                errors[field] = 'This field is required';
+                errors[field] = 'Thông tin bắt buộc';
             }
         });
 
         if (Object.keys(errors).length > 0) {
-            alert('Please fill in all required fields.');
+            alert('Hãy nhập tất cả thông tin bắt buộc.');
             return;
         }
 
         if (formData.phone_number.length < 10 || formData.phone_number.length > 11) {
-            alert("Phone number must be 10 or 11 digits long.");
+            alert("Số điện thoại phải 10 hoặc 11 số.");
             return;
         }
 
@@ -204,10 +204,10 @@ const ParentProfile = () => {
             );
 
             console.log("Profile updated successfully:", response.data);
-            alert("Profile updated successfully!");
+            alert("Cập nhật thành công!");
         } catch (error) {
             console.error("Error updating profile:", error);
-            alert("Failed to update profile.");
+            alert("Cập nhật thất bại.");
         } finally {
             setLoading(false);
         }

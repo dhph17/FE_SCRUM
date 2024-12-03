@@ -1,9 +1,16 @@
 import PropTypes from "prop-types";
+import User from "../../assets/image/User.png";
+
+const sanitizeData = (value) => {
+  return value === "Not recorded" ? "" : value;
+};
 
 const TutorInfoPopup = ({ isOpen, onClose, tutor }) => {
   if (!isOpen || !tutor) return null;
 
-  const avatarUrl = `http://127.0.0.1:8000${tutor.avatar}`;
+  const avatarUrl = tutor.avatar === "Not recorded" 
+    ? User 
+    : `http://127.0.0.1:8000${parent.avatar}`;
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-8">
@@ -21,16 +28,16 @@ const TutorInfoPopup = ({ isOpen, onClose, tutor }) => {
           </div>
           <div className="grid grid-cols-2 gap-4 mb-4 text-1xl">
             <div className="flex flex-col gap-y-3">
-              <p><strong>Họ tên:</strong> {tutor.tutorname}</p>
-              <p><strong>Giới tính:</strong> {tutor.gender}</p>
-              <p><strong>Ngày sinh:</strong> {tutor.birthdate}</p>
-              <p><strong>Trình độ học vấn:</strong> {tutor.educational_background}</p>
+              <p><strong>Họ tên:</strong> {sanitizeData(tutor.tutorname)}</p>
+              <p><strong>Giới tính:</strong> {sanitizeData(tutor.gender)}</p>
+              <p><strong>Ngày sinh:</strong> {sanitizeData(tutor.birthdate)}</p>
+              <p><strong>Trình độ học vấn:</strong> {sanitizeData(tutor.educational_background)}</p>
             </div>
             <div className="flex flex-col gap-y-3">
-              <p><strong>Số điện thoại:</strong> {tutor.phone_number}</p>
-              <p><strong>Email:</strong> {tutor.user.email}</p>
-              <p><strong>Liên kết bio:</strong> {tutor.bio_link}</p>
-              <p><strong>Địa chỉ:</strong> {tutor.address}</p>
+              <p><strong>Số điện thoại:</strong> {sanitizeData(tutor.phone_number)}</p>
+              <p><strong>Email:</strong> {sanitizeData(tutor.user?.email)}</p>
+              <p><strong>Liên kết bio:</strong> {sanitizeData(tutor.bio_link)}</p>
+              <p><strong>Địa chỉ:</strong> {sanitizeData(tutor.address)}</p>
             </div>
           </div>
           <div className="flex justify-center">
@@ -46,6 +53,7 @@ const TutorInfoPopup = ({ isOpen, onClose, tutor }) => {
     </div>
   );
 };
+
 TutorInfoPopup.propTypes = {
   isOpen: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,

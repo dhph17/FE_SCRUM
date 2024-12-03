@@ -1,9 +1,17 @@
 import PropTypes from "prop-types";
+import User from "../../assets/image/User.png";
+
+const sanitizeData = (value) => {
+  return value === "Not recorded" ? "" : value;
+};
 
 const ParentInfoPopup = ({ isOpen, onClose, parent }) => {
   if (!isOpen || !parent) return null;
 
-  const avatarUrl = `http://127.0.0.1:8000${parent.avatar}`;
+  const avatarUrl = parent.avatar === "Not recorded" 
+    ? User 
+    : `http://127.0.0.1:8000${parent.avatar}`;
+
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-8">
       <div className="bg-white rounded-lg shadow-lg w-full max-w-2xl">
@@ -20,14 +28,14 @@ const ParentInfoPopup = ({ isOpen, onClose, parent }) => {
           </div>
           <div className="grid grid-cols-2 gap-4 mb-4 text-1xl">
             <div className="flex flex-col gap-y-3">
-              <p><strong>Họ tên:</strong> {parent.parentname}</p>
-              <p><strong>Giới tính:</strong> {parent.gender}</p>
-              <p><strong>Ngày sinh:</strong> {parent.birthdate}</p>
+              <p><strong>Họ tên:</strong> {sanitizeData(parent.parentname)}</p>
+              <p><strong>Giới tính:</strong> {sanitizeData(parent.gender)}</p>
+              <p><strong>Ngày sinh:</strong> {sanitizeData(parent.birthdate)}</p>
             </div>
             <div className="flex flex-col gap-y-3">
-              <p><strong>Số điện thoại:</strong> {parent.phone_number}</p>
-              <p><strong>Email:</strong> {parent.user.email}</p>
-              <p><strong>Địa chỉ:</strong> {parent.address}</p>
+              <p><strong>Số điện thoại:</strong> {sanitizeData(parent.phone_number)}</p>
+              <p><strong>Email:</strong> {sanitizeData(parent.user?.email)}</p>
+              <p><strong>Địa chỉ:</strong> {sanitizeData(parent.address)}</p>
             </div>
           </div>
           <div className="flex justify-center">
@@ -43,6 +51,7 @@ const ParentInfoPopup = ({ isOpen, onClose, parent }) => {
     </div>
   );
 };
+
 ParentInfoPopup.propTypes = {
   isOpen: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
@@ -56,7 +65,7 @@ ParentInfoPopup.propTypes = {
       email: PropTypes.string,
     }),
     address: PropTypes.string,
-  }).isRequired,
+  }),
 };
 
 export default ParentInfoPopup;
