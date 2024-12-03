@@ -147,6 +147,8 @@ const ParentProfile = () => {
 
             console.log("Avatar updated successfully:", response.data);
             alert("Cập nhật avatar thành công!");
+
+            window.location.reload();
         } catch (error) {
             console.error("Error updating avatar:", error);
             alert("Cập nhật avatar thất bại.");

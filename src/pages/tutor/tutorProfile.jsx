@@ -144,7 +144,7 @@ const TutorProfile = () => {
     const updateAvatar = async (file) => {
         const formData = new FormData();
         formData.append("avatar", file);
-
+    
         try {
             const response = await axios.post(
                 `http://127.0.0.1:8000/api/profile/avatar/`,
@@ -156,9 +156,11 @@ const TutorProfile = () => {
                     },
                 }
             );
-
+    
             console.log("Avatar updated successfully:", response.data);
             alert("Cập nhật avatar thành công!");
+            
+            window.location.reload();
         } catch (error) {
             console.error("Error updating avatar:", error);
             alert("Cập nhật avatar thất bại.");
