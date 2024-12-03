@@ -58,7 +58,7 @@ const Header = ({ setSearch }) => {
           },
         }
       );
-
+  
       if (response.ok) {
         setSessionToken("");
         setRole("");
@@ -68,7 +68,25 @@ const Header = ({ setSearch }) => {
         localStorage.removeItem("refreshToken");
         navigate("/");
       } else {
-        console.error("Logout failed!");
+        const errorData = await response.json();
+        // Check if the response matches the token expiration structure
+        if (
+          errorData.code === "token_not_valid" &&
+          errorData.messages.some(
+            (message) => message.message === "Token is invalid or expired"
+          )
+        ) {
+          console.warn("Token expired, clearing local storage.");
+          localStorage.removeItem("refreshToken");
+          setSessionToken("");
+          setRole("");
+          setId("");
+          setSearch("");
+          setShowDropdown(false);
+          navigate("/");
+        } else {
+          console.error("Logout failed!", errorData);
+        }
       }
     } catch (error) {
       console.error("Error logging out:", error);
@@ -258,12 +276,6 @@ const Header = ({ setSearch }) => {
           </div>
           <div className="">
             <ul className="flex">
-              <li className="font-semibold mx-6 cursor-pointer">
-                <Link to="/">GIỚI THIỆU</Link>
-              </li>
-              <li className="font-semibold mx-6 cursor-pointer">
-                <a href="#contact">LIÊN HỆ</a>
-              </li>
             </ul>
           </div>
           <div className="">
