@@ -12,6 +12,12 @@ const ParentAccount = () => {
 
   const [parents, setParents] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
+  useEffect(() => {
+    const savedPage = localStorage.getItem("currentPage");
+    if (savedPage) {
+      setCurrentPage(parseInt(savedPage, 10));
+    }
+  }, []);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [showDeleteModal, setShowDeleteModal] = useState(false);

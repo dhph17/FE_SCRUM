@@ -3,7 +3,6 @@ import { useEffect, useState } from "react";
 import { useAppContext } from "../../AppProvider";
 import { useNavigate } from "react-router-dom";
 
-
 import Popup from "reactjs-popup";
 import Page from "../../layouts/panel/Panel";
 
@@ -17,6 +16,12 @@ const SuatDayDaDangKy = () => {
   const [posts, setPost] = useState([]);
   const [showPopup, setShowPopup] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
+  useEffect(() => {
+    const savedPage = localStorage.getItem("currentPage");
+    if (savedPage) {
+      setCurrentPage(parseInt(savedPage, 10));
+    }
+  }, []);
   const itemsPerPage = 10;
   const totalPages = Math.ceil(posts.length / itemsPerPage);
   const [selectedPostId, setSelectedPostId] = useState(null);
@@ -33,7 +38,9 @@ const SuatDayDaDangKy = () => {
     const fetchData = async () => {
       try {
         const response = await fetch(
-          `${import.meta.env.VITE_API_ENDPOINT}/api/tutor/posts/?status=registered`,
+          `${
+            import.meta.env.VITE_API_ENDPOINT
+          }/api/tutor/posts/?status=registered`,
           {
             method: "GET",
             headers: {
@@ -71,8 +78,6 @@ const SuatDayDaDangKy = () => {
     };
     fetchData();
   }, []);
-
-
 
   const confirmSubmission = async (postId) => {
     setShowPopup(false);

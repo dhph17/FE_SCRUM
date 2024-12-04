@@ -1,4 +1,4 @@
-import PropTypes from 'prop-types';
+import PropTypes from "prop-types";
 
 const Pagination = ({ currentPage, totalPages, onPageChange }) => {
   const generatePageNumbers = () => {
@@ -15,7 +15,7 @@ const Pagination = ({ currentPage, totalPages, onPageChange }) => {
       let endPage = Math.min(totalPages, currentPage + sidePages);
 
       if (startPage > 1) {
-        pageNumbers.push(1, '...');
+        pageNumbers.push(1, "...");
       }
 
       for (let i = startPage; i <= endPage; i++) {
@@ -23,7 +23,7 @@ const Pagination = ({ currentPage, totalPages, onPageChange }) => {
       }
 
       if (endPage < totalPages) {
-        pageNumbers.push('...', totalPages);
+        pageNumbers.push("...", totalPages);
       }
     }
 
@@ -42,13 +42,22 @@ const Pagination = ({ currentPage, totalPages, onPageChange }) => {
     }
   };
 
+  const updatePage = (page) => {
+    // Lưu `currentPage` vào `localStorage`
+    localStorage.setItem("currentPage", page);
+    onPageChange(page);
+
+    // Reload trang
+    window.location.reload();
+  };
+
   return (
     <div className="flex justify-between items-center mt-2 bg-gray-200 p-2 rounded-lg w-full border-2 border-black">
       <button
         className="px-4 py-2 bg-gray-300 text-gray-800 rounded-l-lg font-bold"
         onClick={handlePreviousPage}
         disabled={currentPage === 1}
-        style={{ minWidth: '100px', textAlign: 'center' }}
+        style={{ minWidth: "100px", textAlign: "center" }}
       >
         &lt; Trang trước
       </button>
@@ -57,11 +66,12 @@ const Pagination = ({ currentPage, totalPages, onPageChange }) => {
         {generatePageNumbers().map((page, index) => (
           <button
             key={index}
-            className={`w-12 h-10 flex items-center justify-center rounded-full ${currentPage === page
-              ? "bg-custom_darkblue text-white"
-              : "bg-gray-300 text-gray-800"
-              } ${page === "..." ? "cursor-default" : ""}`}
-            onClick={() => page !== "..." && onPageChange(page)}
+            className={`w-12 h-10 flex items-center justify-center rounded-full ${
+              currentPage === page
+                ? "bg-custom_darkblue text-white"
+                : "bg-gray-300 text-gray-800"
+            } ${page === "..." ? "cursor-default" : ""}`}
+            onClick={() => page !== "..." && updatePage(page)}
             disabled={page === "..."}
           >
             {page}
@@ -73,7 +83,7 @@ const Pagination = ({ currentPage, totalPages, onPageChange }) => {
         className="px-4 py-2 bg-gray-300 text-gray-800 rounded-r-lg font-bold"
         onClick={handleNextPage}
         disabled={currentPage === totalPages}
-        style={{ minWidth: '100px', textAlign: 'center' }}
+        style={{ minWidth: "100px", textAlign: "center" }}
       >
         Trang sau &gt;
       </button>
@@ -84,7 +94,7 @@ const Pagination = ({ currentPage, totalPages, onPageChange }) => {
 Pagination.propTypes = {
   currentPage: PropTypes.number,
   totalPages: PropTypes.number,
-  onPageChange: PropTypes.func
+  onPageChange: PropTypes.func,
 };
 
 export default Pagination;

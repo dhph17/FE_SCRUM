@@ -19,6 +19,13 @@ const ApprovedPost = () => {
 
   const [commentsFetched, setCommentsFetched] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
+
+  useEffect(() => {
+    const savedPage = localStorage.getItem("currentPage");
+    if (savedPage) {
+      setCurrentPage(parseInt(savedPage, 10));
+    }
+  }, []);
   const { sessionToken } = useAppContext();
   const itemsPerPage = 10;
   const { postId } = useParams();

@@ -17,6 +17,12 @@ const TutorAccount = () => {
 
   const [tutors, setTutors] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
+  useEffect(() => {
+    const savedPage = localStorage.getItem("currentPage");
+    if (savedPage) {
+      setCurrentPage(parseInt(savedPage, 10));
+    }
+  }, []);
   const itemsPerPage = 10;
   const totalPages = Math.ceil(tutors.length / itemsPerPage);
 

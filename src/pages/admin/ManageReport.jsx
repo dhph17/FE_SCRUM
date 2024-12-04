@@ -10,6 +10,12 @@ const ManageReport = () => {
   const [reportList, setReportList] = useState([]);
 
   const [currentPage, setCurrentPage] = useState(1);
+  useEffect(() => {
+    const savedPage = localStorage.getItem("currentPage");
+    if (savedPage) {
+      setCurrentPage(parseInt(savedPage, 10));
+    }
+  }, []);
   const { sessionToken } = useAppContext();
   const [existReport, setExistReport] = useState(false);
   const itemsPerPage = 10;
