@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import axios from "axios";
 import Panel from "../../layouts/panel/Panel";
 import Parent from "../../layouts/PageAuthorization/parent/parent";
+import User from "../../assets/image/User.png";
 
 const ParentProfile = () => {
     const [formData, setFormData] = useState({
@@ -19,6 +20,7 @@ const ParentProfile = () => {
     const [profileImage, setProfileImage] = useState(null);
     const [fileName, setFileName] = useState("Choose a file");
     const [loading, setLoading] = useState(false);
+    const [validationErrors, setValidationErrors] = useState({});
     const rawParentId = localStorage.getItem("id") || "";
     const token = localStorage.getItem("accessToken");
 
@@ -56,7 +58,7 @@ const ParentProfile = () => {
                 });
 
                 const avatarUrl = data.avatar && data.avatar !== 'Not recorded'
-                ? `${import.meta.env.VITE_API_ENDPOINT}${data.avatar}`
+                    ? `${import.meta.env.VITE_API_ENDPOINT}${data.avatar}`
                     : User;
                 setProfileImage(avatarUrl);
 
@@ -146,6 +148,8 @@ const ParentProfile = () => {
 
             console.log("Avatar updated successfully:", response.data);
             alert("Cập nhật avatar thành công!");
+
+            window.location.reload();
         } catch (error) {
             console.error("Error updating avatar:", error);
             alert("Cập nhật avatar thất bại.");
@@ -167,6 +171,8 @@ const ParentProfile = () => {
                 errors[field] = 'Thông tin bắt buộc';
             }
         });
+
+        setValidationErrors(errors);
 
         if (Object.keys(errors).length > 0) {
             alert('Hãy nhập tất cả thông tin bắt buộc.');
@@ -213,9 +219,9 @@ const ParentProfile = () => {
         }
     };
 
-    const handleDelete = () => {
-        console.log("Profile deleted");
-    };
+    // const handleDelete = () => {
+    //     console.log("Profile deleted");
+    // };
 
     return (
         <Parent>
@@ -262,8 +268,9 @@ const ParentProfile = () => {
                                         name="parentname"
                                         value={formData.parentname}
                                         onChange={handleGenderChange}
-                                        className="w-full border border-gray-300 p-2 rounded"
+                                        className={`w-full border ${validationErrors.parentname ? "border-red-500" : "border-gray-300"} p-2 rounded`}
                                     />
+                                    {validationErrors.parentname && <p className="text-red-500 text-sm">{validationErrors.parentname}</p>}
                                 </div>
                                 <div>
                                     <label className="block mb-1 font-medium">Giới tính <span className="text-red-500">*</span></label>
@@ -284,8 +291,9 @@ const ParentProfile = () => {
                                         name="birthdate"
                                         value={formData.birthdate}
                                         onChange={handleChange}
-                                        className="w-full border border-gray-300 p-2 rounded"
+                                        className={`w-full border ${validationErrors.birthdate ? "border-red-500" : "border-gray-300"} p-2 rounded`}
                                     />
+                                    {validationErrors.birthdate && <p className="text-red-500 text-sm">{validationErrors.birthdate}</p>}
                                 </div>
                                 <div>
                                     <label className="block mb-1 font-medium">Địa chỉ hiện tại <span className="text-red-500">*</span></label>
@@ -294,8 +302,9 @@ const ParentProfile = () => {
                                         name="address"
                                         value={formData.address}
                                         onChange={handleChange}
-                                        className="w-full border border-gray-300 p-2 rounded"
+                                        className={`w-full border ${validationErrors.address ? "border-red-500" : "border-gray-300"} p-2 rounded`}
                                     />
+                                    {validationErrors.address && <p className="text-red-500 text-sm">{validationErrors.address}</p>}
                                 </div>
                                 <div>
                                     <label className="block mb-1 font-medium">Số điện thoại <span className="text-red-500">*</span></label>
@@ -304,8 +313,9 @@ const ParentProfile = () => {
                                         name="phone_number"
                                         value={formData.phone_number}
                                         onChange={handleChange}
-                                        className="w-full border border-gray-300 p-2 rounded"
+                                        className={`w-full border ${validationErrors.phone_number ? "border-red-500" : "border-gray-300"} p-2 rounded`}
                                     />
+                                    {validationErrors.phone_number && <p className="text-red-500 text-sm">{validationErrors.phone_number}</p>}
                                 </div>
                             </form>
                             <div className="flex justify-center gap-4 mt-6">

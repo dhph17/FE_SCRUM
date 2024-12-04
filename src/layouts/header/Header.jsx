@@ -35,9 +35,20 @@ const Header = ({ setSearch }) => {
         try {
           const url = `${import.meta.env.VITE_API_ENDPOINT}/api/${role === "tutor" ? "tutors" : "parents"
             }/${id}`;
-          const response = await fetch(url);
+          const response = await fetch(url, {
+            method: "GET",
+            headers: {
+              Authorization: `Bearer ${sessionToken}`,
+              "Content-Type": "application/json",
+            },
+          });
           const data = await response.json();
-          setAvatar(data.avatar);
+          if (response.ok) {
+            setAvatar(data.avatar);
+          } else {
+            localStorage.clear()
+
+          }
         } catch (error) {
           console.error("Error fetching data:", error);
         }
@@ -91,9 +102,9 @@ const Header = ({ setSearch }) => {
     setSearch(query);
   };
 
-  const avatarUrl = avatar && avatar !== "Not recorded" 
-  ? `${import.meta.env.VITE_API_ENDPOINT}${avatar}` 
-  : User;
+  const avatarUrl = avatar && avatar !== "Not recorded"
+    ? `${import.meta.env.VITE_API_ENDPOINT}${avatar}`
+    : User;
 
   const debouncedHandleSearch = useCallback(debounce(handleSearch, 1000), []);
 
@@ -108,41 +119,25 @@ const Header = ({ setSearch }) => {
         <div>
           {role === "admin" ? (
             <div className="h-[12vh] w-screen px-28 flex items-center justify-between bg-custom_darkblue">
-              <div id="logo-header" onClick={() => navigate("/")}>
-                <img
-                  src={LogoLogin}
-                  alt="Logo"
-                  className="h-10 mb-2 bg-center object-cover cursor-pointer"
-                />
+              <div className="flex items-center gap-32">
+                <div
+                  id="logo-header"
+                  onClick={() => navigate("/admin/approved-posts")}
+                >
+                  <img
+                    src={LogoLogin}
+                    alt="Logo"
+                    className="h-10 mb-2 bg-center object-cover cursor-pointer"
+                  />
+                </div>
+                <div
+                  className=" text-white mx-6 cursor-pointer transition duration-200 underline underline-offset-4 font-semibold"
+                  onClick={() => navigate("/admin/approved-posts")}
+                >
+                  Quản lý Admin
+                </div>
               </div>
-              <div className="">
-                <ul className="flex text-white text-[1.1rem]">
-                  <li className="font-semibold mx-6 cursor-pointer transition duration-200 underline underline-offset-4">
-                    Quản lý Admin
-                  </li>
-                </ul>
-              </div>
-              {/* <div
-                id="search-header"
-                className="bg-white/50 py-2 w-[25%] relative pl-4 pr-8 rounded-xl"
-              >
-                <input
-                  type="text"
-                  placeholder="Tìm kiếm"
-                  className="w-full text-white bg-transparent border-none outline-none placeholder:text-white"
-                  id="search_input"
-                  name="search"
-                  onChange={handleInputChange}
-                  autoComplete="off"
-                />
-                <FontAwesomeIcon
-                  id="search-but"
-                  icon={faMagnifyingGlass}
-                  className="text-white absolute right-3 top-3"
-                />
-              </div> */}
-
-              <div className="flex gap-20 text-white items-center cursor-pointer text-[1.1rem]">
+              <div className="flex text-white items-center cursor-pointer text-[1.1rem] gap-10">
                 <NotifyAdmin />
                 <div className="relative flex items-center gap-2">
                   <img
@@ -171,7 +166,19 @@ const Header = ({ setSearch }) => {
             </div>
           ) : (
             <div className="h-[12vh] w-screen px-28 flex items-center justify-between bg-custom_darkblue">
-              <div id="logo-header" onClick={() => navigate("/")}>
+              <div
+                id="logo-header"
+                onClick={() => {
+                  if (role === "tutor") {
+                    navigate("/tutor/main-page", { replace: true });
+                  } else if (role === "parent") {
+                    navigate("/parent/main-page", { replace: true });
+                  }
+                  setTimeout(() => {
+                    window.location.reload();
+                  }, 0);
+                }}
+              >
                 <img
                   src={LogoLogin}
                   alt="Logo"

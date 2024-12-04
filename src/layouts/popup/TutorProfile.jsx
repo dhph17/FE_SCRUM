@@ -2,8 +2,10 @@ import { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import { FaLink } from "react-icons/fa6";
 import UserImage from '../../assets/image/User.png'
+import { useAppContext } from "../../AppProvider";
 
 const TutorProfile = ({ tutor_id, onClose, children }) => {
+  const { sessionToken } = useAppContext()
   const handleBackgroundClick = (event) => {
     if (event.target === event.currentTarget) {
       onClose();
@@ -31,9 +33,13 @@ const TutorProfile = ({ tutor_id, onClose, children }) => {
     if (tutor_id) {
       const fetchTutorProfile = async () => {
         try {
-          const response = await fetch(
-            `${import.meta.env.VITE_API_ENDPOINT}/api/tutors/${tutor_id}`
-          );
+          const response = await fetch(`${import.meta.env.VITE_API_ENDPOINT}/api/tutors/${tutor_id}`, {
+            method: "GET",
+            headers: {
+              Authorization: `Bearer ${sessionToken}`,
+              "Content-Type": "application/json",
+            },
+          });
           const data = await response.json();
           setTutorProfile(data);
         } catch (error) {

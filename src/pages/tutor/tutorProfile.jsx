@@ -34,55 +34,51 @@ const TutorProfile = () => {
   const token = localStorage.getItem("accessToken");
   const tutorId = rawTutorId.replace(/-/g, "");
 
-  useEffect(() => {
-    const fetchTutorData = async () => {
-      if (!tutorId) {
-        console.error("No tutor ID found in local storage.");
-        return;
-      }
+    useEffect(() => {
+        const fetchTutorData = async () => {
+            if (!tutorId) {
+                console.error("No tutor ID found in local storage.");
+                return;
+            }
 
-      try {
-        const response = await axios.get(
-          `${import.meta.env.VITE_API_ENDPOINT}/api/tutors/${tutorId}/`,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
-        const data = response.data;
-        console.log(data);
+            try {
+                const response = await axios.get(
+                    `${import.meta.env.VITE_API_ENDPOINT}/api/tutors/${tutorId}/`,
+                    {
+                        headers: {
+                            Authorization: `Bearer ${token}`,
+                        },
+                    }
+                );
+                const data = response.data;
+                console.log(data);
 
-        setFormData({
-          tutor_id: data.tutor_id || "",
-          username: (data.user && data.user.username) || "",
-          email: (data.user && data.user.email) || "",
-          role: (data.user && data.user.role) || "",
-          tutorname: data.tutorname !== "" ? data.tutorname : "",
-          address: data.address !== "Not recorded" ? data.address : "",
-          birthdate: data.birthdate !== "" ? data.birthdate : "",
-          bio_link: data.bio_link !== "Not recorded" ? data.bio_link : "",
-          phone_number:
-            data.phone_number !== "Not recorded" ? data.phone_number : "",
-          gender: data.gender !== "Not recorded" ? data.gender : "Nam",
-          educational_background:
-            data.educational_background !== "Not recorded"
-              ? data.educational_background
-              : "Có bằng tốt nghiệp trung học phổ thông",
-        });
+                setFormData({
+                    tutor_id: data.tutor_id || '',
+                    username: (data.user && data.user.username) || '',
+                    email: (data.user && data.user.email) || '',
+                    role: (data.user && data.user.role) || '',
+                    tutorname: data.tutorname !== "" ? data.tutorname : '',
+                    address: data.address !== "Not recorded" ? data.address : '',
+                    birthdate: data.birthdate !== "" ? data.birthdate : '',
+                    bio_link: data.bio_link !== "Not recorded" ? data.bio_link : '',
+                    phone_number: data.phone_number !== "Not recorded" ? data.phone_number : '',
+                    gender: data.gender !== "Not recorded" ? data.gender : 'Nam',
+                    educational_background: data.educational_background !== "Not recorded" ? data.educational_background : 'Có bằng tốt nghiệp trung học phổ thông',
+                });
 
-        const avatarUrl =
-          data.avatar && data.avatar !== "Not recorded"
-            ? `${import.meta.env.VITE_API_ENDPOINT}${data.avatar}`
-            : User;
-        setProfileImage(avatarUrl);
-      } catch (error) {
-        console.error("Error fetching tutor data:", error);
-      }
-    };
+                const avatarUrl = data.avatar && data.avatar !== 'Not recorded'
+                    ? `${import.meta.env.VITE_API_ENDPOINT}${data.avatar}`
+                    : User;
+                setProfileImage(avatarUrl);
 
-    fetchTutorData();
-  }, [tutorId, token]);
+            } catch (error) {
+                console.error("Error fetching tutor data:", error);
+            }
+        };
+
+        fetchTutorData();
+    }, [tutorId, token]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -100,23 +96,23 @@ const TutorProfile = () => {
     });
   };
 
-  const handleGenderChange = (e) => {
-    const { value } = e.target;
-    if (value !== formData.gender) {
-      setFormData({ ...formData, gender: value });
-    }
-  };
+    const handleGenderChange = (e) => {
+        const { value } = e.target;
+        if (value !== formData.gender) {
+            setFormData({ ...formData, gender: value });
+        }
+    };
 
-  const handleImageUpload = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      const fileType = file.type;
-      if (fileType !== "image/png" && fileType !== "image/jpeg") {
-        alert("Please upload a .png or .jpg image.");
-        fileInputRef.current.value = ""; // Reset file input
-        setFileName("Choose a file"); // Reset file name display
-        return;
-      }
+    const handleImageUpload = (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            const fileType = file.type;
+            if (fileType !== "image/png" && fileType !== "image/jpeg") {
+                alert("Please upload a .png or .jpg image.");
+                fileInputRef.current.value = ""; // Reset file input
+                setFileName("Choose a file"); // Reset file name display
+                return;
+            }
 
       const fileSizeLimit = 25 * 1024 * 1024;
       if (file.size > fileSizeLimit) {
@@ -160,82 +156,78 @@ const TutorProfile = () => {
         }
       );
 
-      console.log("Avatar updated successfully:", response.data);
-      alert("Cập nhật avatar thành công!");
-    } catch (error) {
-      console.error("Error updating avatar:", error);
-      alert("Cập nhật avatar thất bại.");
-    }
-  };
+            console.log("Avatar updated successfully:", response.data);
+            alert("Cập nhật avatar thành công!");
 
-  const handleSave = async () => {
-    const requiredFields = [
-      "tutorname",
-      "gender",
-      "birthdate",
-      "address",
-      "phone_number",
-      "educational_background",
-    ];
-
-    const errors = {};
-
-    requiredFields.forEach((field) => {
-      if (!formData[field] || formData[field].trim() === "") {
-        errors[field] = "Thông tin bắt buộc";
-      }
-    });
-
-    setValidationErrors(errors);
-
-    if (Object.keys(errors).length > 0) {
-      alert("Hãy nhập tất cả thông tin bắt buộc.");
-      return;
-    }
-
-    if (
-      formData.phone_number.length < 10 ||
-      formData.phone_number.length > 11
-    ) {
-      alert("Số điện thoại phải 10 hoặc 11 số.");
-      return;
-    }
-
-    setLoading(true);
-    try {
-      const formDataToSend = new FormData();
-      formDataToSend.append("tutorname", formData.tutorname);
-      formDataToSend.append("address", formData.address);
-      formDataToSend.append("gender", formData.gender);
-      formDataToSend.append("username", formData.username);
-      formDataToSend.append("birthdate", formData.birthdate);
-      formDataToSend.append("bio_link", formData.bio_link);
-      formDataToSend.append("phone_number", formData.phone_number);
-      formDataToSend.append(
-        "educational_background",
-        formData.educational_background
-      );
-
-      const response = await axios.put(
-        `http://127.0.0.1:8000/api/tutors/${tutorId}/`,
-        formDataToSend,
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
+            window.location.reload();
+        } catch (error) {
+            console.error("Error updating avatar:", error);
+            alert("Cập nhật avatar thất bại.");
         }
-      );
+    };
 
-      console.log("Profile updated successfully:", response.data);
-      alert("Cập nhật thành công!");
-    } catch (error) {
-      console.error("Error updating profile:", error);
-      alert("Cập nhật thất bại.");
-    } finally {
-      setLoading(false);
-    }
-  };
+    const handleSave = async () => {
+        const requiredFields = [
+            'tutorname',
+            'gender',
+            'birthdate',
+            'address',
+            'phone_number',
+            'educational_background'
+        ];
+
+        const errors = {};
+
+        requiredFields.forEach((field) => {
+            if (!formData[field] || formData[field].trim() === '') {
+                errors[field] = 'Thông tin bắt buộc';
+            }
+        });
+
+        setValidationErrors(errors);
+
+        if (Object.keys(errors).length > 0) {
+            alert('Hãy nhập tất cả thông tin bắt buộc.');
+            return;
+        }
+
+        if (formData.phone_number.length < 10 || formData.phone_number.length > 11) {
+            alert("Số điện thoại phải 10 hoặc 11 số.");
+            return;
+        }
+
+        setLoading(true);
+        try {
+            const formDataToSend = new FormData();
+            formDataToSend.append('tutorname', formData.tutorname);
+            formDataToSend.append('address', formData.address);
+            formDataToSend.append('gender', formData.gender);
+            formDataToSend.append('username', formData.username);
+            formDataToSend.append('birthdate', formData.birthdate);
+            formDataToSend.append('bio_link', formData.bio_link);
+            formDataToSend.append('phone_number', formData.phone_number);
+            formDataToSend.append('educational_background', formData.educational_background);
+
+            const response = await axios.put(
+                `${import.meta.env.VITE_API_ENDPOINT}/api/tutors/${tutorId}/`,
+                formDataToSend,
+                {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        Authorization: `Bearer ${token}`,
+                    },
+                }
+            );
+
+            console.log("Profile updated successfully:", response.data);
+            alert("Cập nhật thành công!");
+        } catch (error) {
+            console.error("Error updating profile:", error);
+            alert("Cập nhật thất bại.");
+        } finally {
+            setLoading(false);
+        }
+    };
 
   return (
     <Tutor>
@@ -272,131 +264,114 @@ const TutorProfile = () => {
               </label>
             </div>
 
-            <div className="w-2/3">
-              <h2 className="text-2xl font-bold mb-6 text-center">
-                Tạo hồ sơ gia sư
-              </h2>
-              <form className="grid grid-cols-2 gap-4">
-                <div>
-                  <label className="block mb-1 font-medium">
-                    Họ tên <span className="text-red-500">*</span>
-                  </label>
-                  <input
-                    type="text"
-                    name="tutorname"
-                    value={formData.tutorname}
-                    onChange={handleChange}
-                    className={`w-full border ${
-                      validationErrors.tutorname
-                        ? "border-red-500"
-                        : "border-gray-300"
-                    } p-2 rounded`}
-                  />
-                  {validationErrors.tutorname && (
-                    <p className="text-red-500 text-sm">
-                      {validationErrors.tutorname}
-                    </p>
-                  )}
+                        <div className="w-2/3">
+                            <h2 className="text-2xl font-bold mb-6 text-center">Tạo hồ sơ gia sư</h2>
+                            <form className="grid grid-cols-2 gap-4">
+                                <div>
+                                    <label className="block mb-1 font-medium">Họ tên <span className="text-red-500">*</span></label>
+                                    <input
+                                        type="text"
+                                        name="tutorname"
+                                        value={formData.tutorname}
+                                        onChange={handleChange}
+                                        className={`w-full border ${validationErrors.tutorname ? "border-red-500" : "border-gray-300"} p-2 rounded`}
+                                    />
+                                    {validationErrors.tutorname && <p className="text-red-500 text-sm">{validationErrors.tutorname}</p>}
+                                </div>
+                                <div>
+                                    <label className="block mb-1 font-medium">Giới tính <span className="text-red-500">*</span></label>
+                                    <select
+                                        name="gender"
+                                        value={formData.gender}
+                                        onChange={handleGenderChange}
+                                        className="w-full border border-gray-300 p-2 rounded"
+                                    >
+                                        <option value="Nam">Nam</option>
+                                        <option value="Nữ">Nữ</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label className="block mb-1 font-medium">Ngày sinh <span className="text-red-500">*</span></label>
+                                    <input
+                                        type="date"
+                                        name="birthdate"
+                                        value={formData.birthdate}
+                                        onChange={handleChange}
+                                        className={`w-full border ${validationErrors.birthdate ? "border-red-500" : "border-gray-300"} p-2 rounded`}
+                                    />
+                                    {validationErrors.birthdate && <p className="text-red-500 text-sm">{validationErrors.birthdate}</p>}
+                                </div>
+                                <div>
+                                    <label className="block mb-1 font-medium">Địa chỉ hiện tại <span className="text-red-500">*</span></label>
+                                    <input
+                                        type="text"
+                                        name="address"
+                                        value={formData.address}
+                                        onChange={handleChange}
+                                        className={`w-full border ${validationErrors.address ? "border-red-500" : "border-gray-300"} p-2 rounded`}
+                                    />
+                                    {validationErrors.address && <p className="text-red-500 text-sm">{validationErrors.address}</p>}
+                                </div>
+                                <div>
+                                    <label className="block mb-1 font-medium">Số điện thoại <span className="text-red-500">*</span></label>
+                                    <input
+                                        type="text"
+                                        name="phone_number"
+                                        value={formData.phone_number}
+                                        onChange={handleChange}
+                                        className={`w-full border ${validationErrors.phone_number ? "border-red-500" : "border-gray-300"} p-2 rounded`}
+                                    />
+                                    {validationErrors.phone_number && <p className="text-red-500 text-sm">{validationErrors.phone_number}</p>}
+                                </div>
+                                <div>
+                                    <label className="block mb-1 font-medium">Liên kết bio</label>
+                                    <input
+                                        type="text"
+                                        name="bio_link"
+                                        value={formData.bio_link}
+                                        onChange={handleChange}
+                                        className="w-full border border-gray-300 p-2 rounded"
+                                    />
+                                </div>
+                                <div>
+                                    <label className="block mb-1 font-medium">
+                                        Trình độ học vấn <span className="text-red-500">*</span>
+                                    </label>
+                                    <select
+                                        name="educational_background"
+                                        value={formData.educational_background}
+                                        onChange={handleChange}
+                                        className="w-full border border-gray-300 p-2 rounded"
+                                    >
+                                        {backgroundEnum.map((option, index) => (
+                                            <option key={index} value={option}>
+                                                {option}
+                                            </option>
+                                        ))}
+                                    </select>
+                                    {validationErrors.educational_background && (
+                                        <p className="text-red-500 text-sm">
+                                            {validationErrors.educational_background}
+                                        </p>
+                                    )}
+                                </div>
+                            </form>
+                            <div className="flex justify-center gap-4 mt-6">
+                                <button
+                                    type="button"
+                                    onClick={handleSave}
+                                    className="bg-blue-600 text-white px-6 py-2 rounded"
+                                    disabled={loading}
+                                >
+                                    {loading ? "Đang lưu..." : "Lưu"}
+                                </button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div>
-                  <label className="block mb-1 font-medium">
-                    Giới tính <span className="text-red-500">*</span>
-                  </label>
-                  <select
-                    name="gender"
-                    value={formData.gender}
-                    onChange={handleGenderChange}
-                    className="w-full border border-gray-300 p-2 rounded"
-                  >
-                    <option value="Nam">Nam</option>
-                    <option value="Nữ">Nữ</option>
-                  </select>
-                </div>
-                <div>
-                  <label className="block mb-1 font-medium">
-                    Ngày sinh <span className="text-red-500">*</span>
-                  </label>
-                  <input
-                    type="date"
-                    name="birthdate"
-                    value={formData.birthdate}
-                    onChange={handleChange}
-                    className="w-full border border-gray-300 p-2 rounded"
-                  />
-                </div>
-                <div>
-                  <label className="block mb-1 font-medium">
-                    Địa chỉ hiện tại <span className="text-red-500">*</span>
-                  </label>
-                  <input
-                    type="text"
-                    name="address"
-                    value={formData.address}
-                    onChange={handleChange}
-                    className="w-full border border-gray-300 p-2 rounded"
-                  />
-                </div>
-                <div>
-                  <label className="block mb-1 font-medium">
-                    Số điện thoại <span className="text-red-500">*</span>
-                  </label>
-                  <input
-                    type="text"
-                    name="phone_number"
-                    value={formData.phone_number}
-                    onChange={handleChange}
-                    className="w-full border border-gray-300 p-2 rounded"
-                  />
-                </div>
-                <div>
-                  <label className="block mb-1 font-medium">Liên kết bio</label>
-                  <input
-                    type="text"
-                    name="bio_link"
-                    value={formData.bio_link}
-                    onChange={handleChange}
-                    className="w-full border border-gray-300 p-2 rounded"
-                  />
-                </div>
-                <div>
-                  <label className="block mb-1 font-medium">
-                    Trình độ học vấn <span className="text-red-500">*</span>
-                  </label>
-                  <select
-                    name="educational_background"
-                    value={formData.educational_background}
-                    onChange={handleChange}
-                    className="w-full border border-gray-300 p-2 rounded"
-                  >
-                    {backgroundEnum.map((option, index) => (
-                      <option key={index} value={option}>
-                        {option}
-                      </option>
-                    ))}
-                  </select>
-                  {validationErrors.educational_background && (
-                    <p className="text-red-500 text-sm">
-                      {validationErrors.educational_background}
-                    </p>
-                  )}
-                </div>
-              </form>
-              <div className="flex justify-center gap-4 mt-6">
-                <button
-                  type="button"
-                  onClick={handleSave}
-                  className="bg-blue-600 text-white px-6 py-2 rounded"
-                  disabled={loading}
-                >
-                  {loading ? "Đang lưu..." : "Lưu"}
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </Panel>
-    </Tutor>
-  );
+            </Panel>
+        </Tutor>
+    );
 };
 
 export default TutorProfile;

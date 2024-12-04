@@ -12,55 +12,67 @@ const Register_Form = () => {
   const [role, setRole] = useState("tutor");
   const [confirmPassword, setConfirm] = useState("");
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+const handleSubmit = async (e) => {
+  e.preventDefault();
 
-    if (password !== confirmPassword) {
-      setError("Nhập đúng mật khẩu xác nhận");
-      return;
-    }
+  if (password !== confirmPassword) {
+    setError("Nhập đúng mật khẩu xác nhận");
+    return;
+  }
 
-    try {
-      const response = await fetch(
-        `${import.meta.env.VITE_API_ENDPOINT}/api/register/`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
+  try {
+    const response = await fetch(
+      `${import.meta.env.VITE_API_ENDPOINT}/api/register/`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          user: {
+            username: username,
+            email: email,
+            password: password,
+            role: role,
           },
-          body: JSON.stringify({
-            user: {
-              username: username,
-              email: email,
-              password: password,
-              role: role,
-            },
-          }),
-        }
-      );
-
-      const data = await response.json();
-      console.log(response);
-
-      if (response.ok) {
-        navigate("/VerifyEmail", { state: { email: email } });
-        // console.log(data);
-      } else {
-        if (data.email && data.username) {
-          setError("Tài khoản đã tồn tại");
-        } else if (data.email) {
-          setError("Email đã tồn tại");
-        } else if (data.username) {
-          setError("Đã tồn tại tên người dùng");
-        } else {
-          setError(data.message || "Đã xảy ra lỗi khi đăng ký");
-        }
+        }),
       }
-    } catch (error) {
-      console.log(error);
-      setError("Có lỗi xảy ra. Vui lòng thử lại sau.");
+    );
+
+    const data = await response.json();
+    console.log(response);
+
+    if (response.ok) {
+      navigate("/VerifyEmail", { state: { email: email } });
+    } else {
+      const errorMessage = data[0];
+
+      if (
+        (errorMessage.includes("email") && errorMessage.includes("username")) ||
+        (errorMessage.includes("accounts_user.email") &&
+          errorMessage.includes("accounts_user.username"))
+      ) {
+        setError("Tài khoản đã tồn tại");
+      } else if (
+        errorMessage.includes("email") ||
+        errorMessage.includes("accounts_user.email")
+      ) {
+        setError("Email đã tồn tại");
+      } else if (
+        errorMessage.includes("username") ||
+        errorMessage.includes("accounts_user.username")
+      ) {
+        setError("Đã tồn tại tên người dùng");
+      } else {
+        setError("Đã xảy ra lỗi khi đăng ký");
+      }
     }
-  };
+  } catch (error) {
+    console.log(error);
+    setError("Có lỗi xảy ra. Vui lòng thử lại sau.");
+  }
+};
+
   return (
     <div className="bg-white shadow-lg rounded-3xl px-9 py-4 w-[400px] mx-auto border-2 border-[#002182] -mt-12">
       <h2 className="text-[1.5rem] font-bold text-center mb-6">Đăng Kí</h2>

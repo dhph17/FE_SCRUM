@@ -3,8 +3,10 @@ import Review from "../review/Review"
 import Image from "../../assets/image/User.png";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { useAppContext } from "../../AppProvider";
 
 const ReviewTutor = ({ onClose, tutor_id }) => {
+    const { sessionToken } = useAppContext()
     const [profile, setProfile] = useState()
     const handleBackgroundClick = (event) => {
         if (event.target === event.currentTarget) {
@@ -19,7 +21,7 @@ const ReviewTutor = ({ onClose, tutor_id }) => {
                     `${import.meta.env.VITE_API_ENDPOINT}/api/tutors/${tutor_id}/`,
                     {
                         headers: {
-                            // Authorization: `Bearer ${sessionToken}`,
+                            Authorization: `Bearer ${sessionToken}`,
                         },
                     }
                 );

@@ -7,7 +7,7 @@ import Parent from "../../layouts/PageAuthorization/parent/parent";
 import User from '../../assets/image/User.png'
 
 const ParentPassword = () => {
-    const { setSessionToken, setRole, setId } = useAppContext()
+    const { setSessionToken, setRole, setId, sessionToken } = useAppContext()
     let navigate = useNavigate()
     const [formData, setFormData] = useState({
         parentname: '',
@@ -33,7 +33,7 @@ const ParentPassword = () => {
                     `${import.meta.env.VITE_API_ENDPOINT}/api/parents/${parentId}/`,
                     {
                         headers: {
-                            Authorization: `Bearer ${token}`,
+                            Authorization: `Bearer ${sessionToken}`,
                         },
                     }
                 );
@@ -46,10 +46,10 @@ const ParentPassword = () => {
                 });
 
                 const avatarUrl = data.avatar && data.avatar !== 'Not recorded'
-                ? `${import.meta.env.VITE_API_ENDPOINT}${data.avatar}`
-                : User;
+                    ? `${import.meta.env.VITE_API_ENDPOINT}${data.avatar}`
+                    : User;
                 setProfileImage(avatarUrl);
-                
+
             } catch (error) {
                 console.error("Error fetching parent data:", error);
             }
