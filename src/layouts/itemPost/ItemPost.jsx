@@ -61,13 +61,12 @@ const ItemPostVu = ({ user, children, tag, comment_id, comment }) => {
       });
 
       if (response.ok) {
-        // Check for the specific status codes
         if (response.status === 201) { // Liked
           setIsLike('fa-solid fa-thumbs-up');
-          setTotalLike((prev) => prev + 1);
+          setTotalLike(totalLike + 1); // Cập nhật trực tiếp
         } else if (response.status === 204) { // Unliked
           setIsLike('fa-regular fa-thumbs-up');
-          setTotalLike((prev) => prev - 1);
+          setTotalLike(totalLike - 1); // Cập nhật trực tiếp
         }
       }
     } catch (error) {
@@ -209,10 +208,12 @@ const ItemPostVu = ({ user, children, tag, comment_id, comment }) => {
           {(tag === undefined ||
             tag === "Đã phê duyệt") && (
               <div className="absolute flex gap-3 -bottom-[30%] left-5">
-                <div className="flex items-center gap-2 bg-white p-3 rounded-full cursor-pointer group border border-slate-500">
+                <div
+                  className="flex items-center gap-2 bg-white p-3 rounded-full cursor-pointer group border border-slate-500"
+                  onClick={() => handleLike(user.post_id)}
+                >
                   <i
                     className={`${isLike} text-[1.1rem] group-hover:scale-110`}
-                    onClick={() => handleLike(user.post_id)}
                   ></i>
                   <p>{totalLike}</p>
                 </div>
