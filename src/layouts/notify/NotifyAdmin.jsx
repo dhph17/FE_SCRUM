@@ -19,7 +19,7 @@ const NotifyAdmin = () => {
 
   useEffect(() => {
     const websocket = new WebSocket(
-      `ws://127.0.0.1:8000/ws/notifications/?user_id=${id}`
+      `${import.meta.env.VITE_API_ENDPOINT_NOTIFICATION}/ws/notifications/?user_id=${id}`
     );
 
     websocket.onopen = () => {
@@ -127,15 +127,13 @@ const NotifyAdmin = () => {
                 .map((notification) => (
                   <li
                     key={notification.notification_id}
-                    className={`p-3 border-b flex items-start ${
-                      notification.read ? "bg-gray-200" : "bg-white"
-                    } hover:bg-gray-100 transition duration-300`}
+                    className={`p-3 border-b flex items-start ${notification.read ? "bg-gray-200" : "bg-white"
+                      } hover:bg-gray-100 transition duration-300`}
                   >
                     <img
-                      src={`${import.meta.env.VITE_API_ENDPOINT}${
-                        notification.additional_information?.reporter_avatar ||
+                      src={`${import.meta.env.VITE_API_ENDPOINT}${notification.additional_information?.reporter_avatar ||
                         notification.additional_information?.parent_avatar
-                      }`}
+                        }`}
                       alt="Avatar"
                       className="h-12 w-12 rounded-full mr-3 object-cover border-[1px] border-gray-400 border-solid"
                     />

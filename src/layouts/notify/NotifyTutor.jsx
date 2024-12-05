@@ -12,7 +12,7 @@ const NotifyTutor = () => {
 
   useEffect(() => {
     const websocket = new WebSocket(
-      `ws://127.0.0.1:8000/ws/notifications/?user_id=${id}`
+      `${import.meta.env.VITE_API_ENDPOINT_NOTIFICATION}/ws/notifications/?user_id=${id}`
     );
 
     websocket.onopen = () => {
@@ -123,9 +123,8 @@ const NotifyTutor = () => {
               {notifications.map((notification) => (
                 <li
                   key={notification.notification_id}
-                  className={`p-3 border-b flex items-start ${
-                    notification.read ? "bg-gray-200" : ""
-                  }`}
+                  className={`p-3 border-b flex items-start ${notification.read ? "bg-gray-200" : ""
+                    }`}
                 >
                   <div className="flex-1">
                     <p className="text-sm text-gray-800">

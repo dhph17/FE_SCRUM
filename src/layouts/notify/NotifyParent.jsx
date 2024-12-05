@@ -30,7 +30,7 @@ const NotifyParent = () => {
 
   useEffect(() => {
     const websocket = new WebSocket(
-      `ws://127.0.0.1:8000/ws/notifications/?user_id=${id}`
+      `${import.meta.env.VITE_API_ENDPOINT_NOTIFICATION}/ws/notifications/?user_id=${id}`
     );
 
     websocket.onopen = () => {
@@ -150,9 +150,8 @@ const NotifyParent = () => {
                 .map((notification) => (
                   <li
                     key={notification.notification_id}
-                    className={`p-3 border-b flex items-start ${
-                      notification.read ? "bg-gray-200" : "bg-white"
-                    } hover:bg-gray-100 transition duration-300`}
+                    className={`p-3 border-b flex items-start ${notification.read ? "bg-gray-200" : "bg-white"
+                      } hover:bg-gray-100 transition duration-300`}
                   >
                     <img
                       src={
@@ -183,7 +182,7 @@ const NotifyParent = () => {
                         )}
                         {notification.additional_information?.post_id &&
                           notification.message ===
-                            "Your post has been approved" && (
+                          "Your post has been approved" && (
                             <button
                               onClick={() =>
                                 handleGoToPost(
@@ -236,9 +235,8 @@ const NotifyParent = () => {
             {/* User Info */}
             <div className="flex items-center gap-4 mb-6">
               <img
-                src={`${import.meta.env.VITE_API_ENDPOINT}${
-                  selectedPost.avatar
-                }`}
+                src={`${import.meta.env.VITE_API_ENDPOINT}${selectedPost.avatar
+                  }`}
                 alt="Avatar"
                 className="w-16 h-16 rounded-full border-4 border-blue-500 shadow-md object-cover"
               />
