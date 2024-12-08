@@ -126,7 +126,7 @@ const Header = ({ setSearch }) => {
         <div>
           {role === 'admin' ? (
             <div className="h-[12vh] w-screen px-28 flex items-center justify-between bg-custom_darkblue">
-              <div id="logo-header" onClick={() => navigate("/")}>
+              <div id="logo-header">
                 <img
                   src={LogoLogin}
                   alt="Logo"
@@ -188,7 +188,7 @@ const Header = ({ setSearch }) => {
             </div>
           ) : (
             <div className="h-[12vh] w-screen px-28 flex items-center justify-between bg-custom_darkblue">
-              <div id="logo-header" onClick={() => navigate("/")}>
+              <div id="logo-header">
                 <img
                   src={LogoLogin}
                   alt="Logo"
