@@ -267,7 +267,7 @@ const ParentProfile = () => {
                                         type="text"
                                         name="parentname"
                                         value={formData.parentname}
-                                        onChange={handleGenderChange}
+                                        onChange={handleChange}
                                         className={`w-full border ${validationErrors.parentname ? "border-red-500" : "border-gray-300"} p-2 rounded`}
                                     />
                                     {validationErrors.parentname && <p className="text-red-500 text-sm">{validationErrors.parentname}</p>}
@@ -277,7 +277,7 @@ const ParentProfile = () => {
                                     <select
                                         name="gender"
                                         value={formData.gender}
-                                        onChange={handleChange}
+                                        onChange={handleGenderChange}
                                         className="w-full border border-gray-300 p-2 rounded"
                                     >
                                         <option value="Nam">Nam</option>
