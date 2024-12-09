@@ -61,12 +61,12 @@ const ItemPostVu = ({ user, children, tag, comment_id, comment }) => {
       });
 
       if (response.ok) {
-        if (response.status === 201) { // Liked
+        if (response.status === 201) {
           setIsLike('fa-solid fa-thumbs-up');
-          setTotalLike(totalLike + 1); // Cập nhật trực tiếp
-        } else if (response.status === 204) { // Unliked
+          setTotalLike((prevTotal) => prevTotal + 1);
+        } else if (response.status === 204) {
           setIsLike('fa-regular fa-thumbs-up');
-          setTotalLike(totalLike - 1); // Cập nhật trực tiếp
+          setTotalLike((prevTotal) => Math.max(0, prevTotal - 1));
         }
       }
     } catch (error) {

@@ -89,7 +89,7 @@ const ParentPassword = () => {
         setLoading(true);
         try {
             const response = await axios.post(
-                "${import.meta.env.VITE_API_ENDPOINT}/api/change-password/",
+                `${import.meta.env.VITE_API_ENDPOINT}/api/change-password/`,
                 {
                     old_password: formData.currentPassword,
                     new_password: formData.newPassword,

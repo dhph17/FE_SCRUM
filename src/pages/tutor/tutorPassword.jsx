@@ -46,10 +46,10 @@ const TutorPassword = () => {
                 });
 
                 const avatarUrl = data.avatar && data.avatar !== 'Not recorded'
-                ? `${import.meta.env.VITE_API_ENDPOINT}${data.avatar}`
-                : User;
+                    ? `${import.meta.env.VITE_API_ENDPOINT}${data.avatar}`
+                    : User;
                 setProfileImage(avatarUrl);
-                
+
             } catch (error) {
                 console.error("Error fetching tutor data:", error);
             }
@@ -89,7 +89,7 @@ const TutorPassword = () => {
         setLoading(true);
         try {
             const response = await axios.post(
-                "${import.meta.env.VITE_API_ENDPOINT}/api/change-password/",
+                `${import.meta.env.VITE_API_ENDPOINT}/api/change-password/`,
                 {
                     old_password: formData.currentPassword,
                     new_password: formData.newPassword,

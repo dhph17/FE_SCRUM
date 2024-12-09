@@ -55,6 +55,7 @@ const TutorProfileToReview = ({ tutor_id, idPost, idParent, onClose, }) => {
         <TutorProfile
             tutor_id={tutor_id}
             onClose={onClose}
+            component='review'
         >
             <div className="flex flex-col p-8 py-8 rounded-lg shadow-lg w-[70%] mt-5 border-2 border-slate-300">
                 <div className="flex space-x-5 mb-4 justify-center">

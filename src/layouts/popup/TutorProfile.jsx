@@ -4,7 +4,7 @@ import { FaLink } from "react-icons/fa6";
 import UserImage from '../../assets/image/User.png'
 import { useAppContext } from "../../AppProvider";
 
-const TutorProfile = ({ tutor_id, onClose, children }) => {
+const TutorProfile = ({ tutor_id, onClose, children, component }) => {
   const { sessionToken } = useAppContext()
   const handleBackgroundClick = (event) => {
     if (event.target === event.currentTarget) {
@@ -152,12 +152,16 @@ const TutorProfile = ({ tutor_id, onClose, children }) => {
             >
               Đóng
             </button>
-            <button
-              className="bg-[#002182] w-[8rem] text-white py-3 rounded-lg shadow hover:bg-blue-700 transition duration-300"
-              onClick={onClose}
-            >
-              Nhận gia sư
-            </button>
+            {
+              component !== 'review' && (
+                <button
+                  className="bg-[#002182] w-[8rem] text-white py-3 rounded-lg shadow hover:bg-blue-700 transition duration-300"
+                  onClick={onClose}
+                >
+                  Nhận gia sư
+                </button>
+              )
+            }
           </div>
         </div>
 
@@ -170,6 +174,7 @@ TutorProfile.propTypes = {
   tutor_id: PropTypes.string.isRequired,
   onClose: PropTypes.func.isRequired,
   children: PropTypes.node,
+  component: PropTypes.string
 };
 
 export default TutorProfile;
