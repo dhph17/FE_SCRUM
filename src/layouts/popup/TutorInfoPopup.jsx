@@ -12,7 +12,7 @@ const TutorInfoPopup = ({ isOpen, onClose, tutor }) => {
   const avatarUrl =
     tutor.avatar === "Not recorded"
       ? User
-      : `${import.meta.env.VITE_API_ENDPOINT}${parent.avatar}`;
+      : `${import.meta.env.VITE_API_ENDPOINT}${tutor.avatar}`;
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-8">
