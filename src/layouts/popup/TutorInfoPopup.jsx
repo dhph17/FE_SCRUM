@@ -1,5 +1,6 @@
 import PropTypes from "prop-types";
 import User from "../../assets/image/User.png";
+import { FaLink } from "react-icons/fa6";
 
 const sanitizeData = (value) => {
   return value === "Not recorded" ? "" : value;
@@ -37,7 +38,19 @@ const TutorInfoPopup = ({ isOpen, onClose, tutor }) => {
             <div className="flex flex-col gap-y-3">
               <p><strong>Số điện thoại:</strong> {sanitizeData(tutor.phone_number)}</p>
               <p><strong>Email:</strong> {sanitizeData(tutor.user?.email)}</p>
-              <p><strong>Liên kết bio:</strong> {sanitizeData(tutor.bio_link)}</p>
+              <p className="flex ">
+                <strong>Liên kết:</strong>{" "}
+                {
+                  tutor.address !== "Not recorded" && (
+                    <a
+                      href={tutor.bio_link}
+                      className="text-blue-500 hover:underline ml-5"
+                    >
+                      <FaLink className="w-5 h-5" />
+                    </a>
+                  )
+                }
+              </p>
               <p><strong>Địa chỉ:</strong> {sanitizeData(tutor.address)}</p>
             </div>
           </div>
